@@ -7,12 +7,6 @@ export interface ProductFilters extends BaseFilters {
 }
 
 // Shared common filters
-export const baseFiltersSchema = z.object({
-  pageNumber: z.coerce.number().min(1).optional(),
-  pageSize: z.coerce.number().min(1).max(100).optional(),
-  searchValue: z.string().optional(),
-});
-
 // Categories
 export interface CategoryResponse {
   id: string;
@@ -33,7 +27,7 @@ export const createProductSchema = z.object({
   name: z.string().min(1, "اسم المنتج مطلوب"),
   departmentId: z.string().min(1, "القسم الفرعي مطلوب"),
   categoryId: z.string().min(1, "القسم الرئيسي مطلوب"),
-  image: z.custom<FileList>((val) => val instanceof FileList, "يجب أن يكون ملفًا").optional().or(z.any()),
+  image: z.instanceof(File, { message: "يجب أن يكون ملفًا" }).optional(),
   minQuantityAlert: z.coerce.number().min(0, "يجب أن تكون 0 أو أكثر"),
   storageLocation: z.string().optional(),
   propertiesList: z.array(z.object({

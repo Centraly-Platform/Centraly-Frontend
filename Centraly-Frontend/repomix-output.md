@@ -37,6 +37,7 @@ The content is organized as follows:
 ```
 .env.example
 .gitignore
+.husky/pre-commit
 .oxlintrc.json
 index.html
 package.json
@@ -46,7 +47,6 @@ README.md
 repomix.config.json
 src/App.css
 src/App.tsx
-src/app/routes/index.tsx
 src/assets/hero.png
 src/assets/react.svg
 src/assets/vite.svg
@@ -56,15 +56,22 @@ src/core/repositories/IFinanceRepository.ts
 src/core/repositories/IInventoryRepository.ts
 src/core/repositories/IInvoicesRepository.ts
 src/features/auth/api/AuthApi.ts
+src/features/auth/components/HasPermission.tsx
 src/features/auth/components/LoginForm.tsx
 src/features/auth/hooks/useAuth.tsx
 src/features/auth/pages/LoginPage.tsx
 src/features/auth/schemas/loginSchema.ts
 src/features/contacts/api/ContactsApi.ts
 src/features/contacts/hooks/useContacts.ts
+src/features/contacts/pages/CustomersPage.tsx
+src/features/contacts/pages/SuppliersPage.tsx
 src/features/contacts/schemas/contactSchemas.ts
+src/features/dashboard/pages/DashboardPage.tsx
 src/features/finance/api/FinanceApi.ts
 src/features/finance/hooks/useFinance.ts
+src/features/finance/pages/DrawerPage.tsx
+src/features/finance/pages/ExpensesPage.tsx
+src/features/finance/pages/SafePage.tsx
 src/features/finance/schemas/financeSchemas.ts
 src/features/inventory/api/InventoryApi.ts
 src/features/inventory/components/AddProductForm.tsx
@@ -72,36 +79,36 @@ src/features/inventory/components/ProductFilters.tsx
 src/features/inventory/components/ProductsTable.tsx
 src/features/inventory/components/ProductStatusBadge.tsx
 src/features/inventory/hooks/useInventory.ts
+src/features/inventory/pages/CategoriesPage.tsx
+src/features/inventory/pages/ProductsPage.tsx
 src/features/inventory/schemas/inventorySchemas.ts
 src/features/invoices/api/InvoicesApi.ts
 src/features/invoices/hooks/useInvoices.ts
 src/features/invoices/schemas/invoiceSchemas.ts
 src/features/invoices/schemas/returnSchemas.ts
+src/features/purchases/pages/PurchasesHistoryPage.tsx
+src/features/sales/pages/PosPage.tsx
+src/features/sales/pages/SalesHistoryPage.tsx
 src/index.css
 src/lib/axios.ts
 src/lib/storage.ts
 src/lib/utils.ts
 src/main.tsx
-src/pages/auth/LoginPage.tsx
-src/pages/contacts/CustomersPage.tsx
-src/pages/contacts/SuppliersPage.tsx
-src/pages/dashboard/DashboardPage.tsx
-src/pages/finance/DrawerPage.tsx
-src/pages/finance/ExpensesPage.tsx
-src/pages/finance/SafePage.tsx
-src/pages/inventory/CategoriesPage.tsx
-src/pages/inventory/ProductsPage.tsx
-src/pages/purchases/PurchasesHistoryPage.tsx
-src/pages/sales/PosPage.tsx
-src/pages/sales/SalesHistoryPage.tsx
+src/setupTests.ts
+src/shared/components/errors/FeatureBoundaryLayout.tsx
+src/shared/components/errors/FeatureErrorBoundary.tsx
+src/shared/components/errors/GlobalErrorBoundary.tsx
 src/shared/components/layout/AppLayout.tsx
 src/shared/components/layout/Header.tsx
 src/shared/components/layout/Sidebar.tsx
+src/shared/components/ui/__tests__/Button.test.tsx
 src/shared/components/ui/Button.tsx
 src/shared/components/ui/DataTable.tsx
 src/shared/components/ui/Input.tsx
 src/shared/components/ui/Label.tsx
+src/shared/components/ui/PageLoader.tsx
 src/shared/components/ui/RightDrawer.tsx
+src/shared/hooks/__tests__/useDebounce.test.ts
 src/shared/hooks/useDebounce.ts
 src/shared/styles/tokens.ts
 src/shared/types/pagination.ts
@@ -147,6 +154,11 @@ dist-ssr
 *.sw?
 ````
 
+## File: .husky/pre-commit
+````
+npx lint-staged
+````
+
 ## File: .oxlintrc.json
 ````json
 {
@@ -190,7 +202,8 @@ dist-ssr
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -211,13 +224,27 @@ dist-ssr
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.6",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
+    "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
+    "lint-staged": "^17.3.0",
     "oxlint": "^1.75.0",
     "typescript": "~6.0.2",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "vitest": "^4.1.11"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "oxlint",
+      "vitest related --run",
+      "tsc --noEmit"
+    ]
   }
 }
 ````
@@ -500,33 +527,28 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 
 ## File: src/App.tsx
 ````typescript
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./features/auth/hooks/useAuth";
-import { LoginPage } from "./pages/auth/LoginPage";
 import { AppLayout } from "./shared/components/layout/AppLayout";
+import { PageLoader } from "./shared/components/ui/PageLoader";
+import { FeatureBoundaryLayout } from "./shared/components/errors/FeatureBoundaryLayout";
 
-// Pages — Inventory
-import { DashboardPage } from "./pages/dashboard/DashboardPage";
-import { ProductsPage } from "./pages/inventory/ProductsPage";
-import { CategoriesPage } from "./pages/inventory/CategoriesPage";
-
-// Pages — Sales
-import { PosPage } from "./pages/sales/PosPage";
-import { SalesHistoryPage } from "./pages/sales/SalesHistoryPage";
-
-// Pages — Purchases
-import { PurchasesHistoryPage } from "./pages/purchases/PurchasesHistoryPage";
-
-// Pages — Contacts
-import { CustomersPage } from "./pages/contacts/CustomersPage";
-import { SuppliersPage } from "./pages/contacts/SuppliersPage";
-
-// Pages — Finance
-import { DrawerPage } from "./pages/finance/DrawerPage";
-import { SafePage } from "./pages/finance/SafePage";
-import { ExpensesPage } from "./pages/finance/ExpensesPage";
+// Lazy Loaded Pages
+const LoginPage = lazy(() => import("./features/auth/pages/LoginPage").then(module => ({ default: module.LoginPage })));
+const DashboardPage = lazy(() => import("./features/dashboard/pages/DashboardPage").then(module => ({ default: module.DashboardPage })));
+const ProductsPage = lazy(() => import("./features/inventory/pages/ProductsPage").then(module => ({ default: module.ProductsPage })));
+const CategoriesPage = lazy(() => import("./features/inventory/pages/CategoriesPage").then(module => ({ default: module.CategoriesPage })));
+const PosPage = lazy(() => import("./features/sales/pages/PosPage").then(module => ({ default: module.PosPage })));
+const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryPage").then(module => ({ default: module.SalesHistoryPage })));
+const PurchasesHistoryPage = lazy(() => import("./features/purchases/pages/PurchasesHistoryPage").then(module => ({ default: module.PurchasesHistoryPage })));
+const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
+const SuppliersPage = lazy(() => import("./features/contacts/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
+const DrawerPage = lazy(() => import("./features/finance/pages/DrawerPage").then(module => ({ default: module.DrawerPage })));
+const SafePage = lazy(() => import("./features/finance/pages/SafePage").then(module => ({ default: module.SafePage })));
+const ExpensesPage = lazy(() => import("./features/finance/pages/ExpensesPage").then(module => ({ default: module.ExpensesPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -534,10 +556,24 @@ const queryClient = new QueryClient({
   },
 });
 
-// Guard: redirects to /login if not authenticated
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+// Guard: redirects to /login if not authenticated, and checks permissions
+function ProtectedRoute({ children, requiredPermissions = [] }: { children: React.ReactNode, requiredPermissions?: string[] }) {
+  const { isAuthenticated, hasPermission } = useAuth();
+  
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+
+  if (requiredPermissions.length > 0) {
+    const hasAll = requiredPermissions.every(p => hasPermission(p));
+    if (!hasAll) {
+      return (
+        <div className="flex h-screen items-center justify-center bg-gray-50 flex-col gap-4">
+          <h1 className="text-2xl font-bold text-gray-800">غير مصرح لك بالدخول</h1>
+          <p className="text-gray-500">لا تملك الصلاحيات الكافية للوصول إلى هذه الصفحة.</p>
+        </div>
+      );
+    }
+  }
+
   return <>{children}</>;
 }
 
@@ -556,66 +592,60 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Toaster position="top-center" richColors />
-          <Routes>
-            {/* Public */}
-            <Route path="/login" element={<LoginPage />} />
+          
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Public */}
+              <Route path="/login" element={<LoginPage />} />
 
-            {/* Protected — wrapped in AppLayout */}
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route path="/"                   element={<DashboardPage />} />
+              {/* Protected — wrapped in AppLayout */}
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="/" element={<DashboardPage />} />
 
-              <Route path="/sales/pos"          element={<PosPage />} />
-              <Route path="/sales/history"      element={<SalesHistoryPage />} />
-              <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
+                <Route element={<FeatureBoundaryLayout featureName="المبيعات" />}>
+                  <Route path="/sales/pos"          element={<PosPage />} />
+                  <Route path="/sales/history"      element={<SalesHistoryPage />} />
+                  <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
+                </Route>
 
-              <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
-              <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
-              <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
+                <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
+                  <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
+                  <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
+                  <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
+                </Route>
 
-              <Route path="/inventory/products"   element={<ProductsPage />} />
-              <Route path="/inventory/categories" element={<CategoriesPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
+                  <Route path="/inventory/products"   element={<ProductsPage />} />
+                  <Route path="/inventory/categories" element={<CategoriesPage />} />
+                </Route>
 
-              <Route path="/contacts/customers" element={<CustomersPage />} />
-              <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="جهات الاتصال" />}>
+                  <Route path="/contacts/customers" element={<CustomersPage />} />
+                  <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                </Route>
 
-              <Route path="/finance/drawer"   element={<DrawerPage />} />
-              <Route path="/finance/safe"     element={<SafePage />} />
-              <Route path="/finance/expenses" element={<ExpensesPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="المالية" />}>
+                  <Route path="/finance/drawer"   element={<DrawerPage />} />
+                  <Route path="/finance/safe"     element={<SafePage />} />
+                  <Route path="/finance/expenses" element={<ExpensesPage />} />
+                </Route>
 
-              <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
-            </Route>
+                <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
+              </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  );
-}
-````
-
-## File: src/app/routes/index.tsx
-````typescript
-import { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-
-const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
-
-export function AppRoutes() {
-  return (
-    <Suspense fallback={<div className="flex h-screen items-center justify-center">جاري التحميل...</div>}>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </Suspense>
   );
 }
 ````
@@ -650,7 +680,7 @@ export interface IAuthRepository {
 
 ## File: src/core/repositories/IContactsRepository.ts
 ````typescript
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CreateCustomerRequest, 
   CustomerResponse, 
@@ -658,12 +688,14 @@ import {
   CreateSupplierRequest, 
   SupplierResponse, 
   SupplierStatementItemResponse, 
-  CreatePaymentRequest 
+  CreatePaymentRequest,
+  ContactFilters,
+  StatementFilters
 } from "@/features/contacts/schemas/contactSchemas";
 
 export interface IContactsRepository {
   // Customers
-  getCustomers(filters: RequestFilters): Promise<PaginatedList<CustomerResponse>>;
+  getCustomers(filters: ContactFilters): Promise<PaginatedList<CustomerResponse>>;
   getCustomer(id: string): Promise<CustomerResponse>;
   getCustomerDebtHistory(id: string): Promise<CustomerDebtHistoryResponse>;
   createCustomer(data: CreateCustomerRequest): Promise<string>;
@@ -671,30 +703,31 @@ export interface IContactsRepository {
   deleteCustomer(id: string): Promise<void>;
   
   // Customer Transactions
-  getCustomerStatement(filters: RequestFilters): Promise<PaginatedList<CustomerStatementResponse>>;
+  getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>>;
   addCustomerPayment(customerId: string, data: CreatePaymentRequest): Promise<string>;
 
   // Suppliers
-  getSuppliers(filters: RequestFilters): Promise<PaginatedList<SupplierResponse>>;
+  getSuppliers(filters: ContactFilters): Promise<PaginatedList<SupplierResponse>>;
   getSupplier(id: string): Promise<SupplierResponse>;
   createSupplier(data: CreateSupplierRequest): Promise<string>;
   updateSupplier(id: string, data: CreateSupplierRequest): Promise<void>;
   deleteSupplier(id: string): Promise<void>;
 
   // Supplier Transactions
-  getSupplierStatement(filters: RequestFilters): Promise<PaginatedList<SupplierStatementItemResponse>>;
+  getSupplierStatement(filters: StatementFilters): Promise<PaginatedList<SupplierStatementItemResponse>>;
   addSupplierPayment(supplierId: string, data: CreatePaymentRequest): Promise<string>;
 }
 ````
 
 ## File: src/core/repositories/IFinanceRepository.ts
 ````typescript
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   OpenSessionRequest, DrawerSessionResponse, AddManualTransactionRequest,
   CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest,
   CreateExpenseCategoryRequest, ExpenseCategoryResponse,
-  CreateExpenseRequest, ExpenseResponse
+  CreateExpenseRequest, ExpenseResponse,
+  FinanceFilters
 } from "@/features/finance/schemas/financeSchemas";
 
 export interface IFinanceRepository {
@@ -707,66 +740,69 @@ export interface IFinanceRepository {
   // Safe
   getSafes(): Promise<SafeResponse[]>;
   createSafe(data: CreateSafeRequest): Promise<string>;
-  getSafeTransactions(safeId: string, filters: RequestFilters): Promise<PaginatedList<SafeTransactionResponse>>;
+  getSafeTransactions(safeId: string, filters: FinanceFilters): Promise<PaginatedList<SafeTransactionResponse>>;
   receiveDrawerDeposit(safeId: string, data: ReceiveDrawerDepositRequest): Promise<string>;
 
   // Expenses
   getExpenseCategories(): Promise<ExpenseCategoryResponse[]>;
   createExpenseCategory(data: CreateExpenseCategoryRequest): Promise<string>;
-  getExpenses(filters: RequestFilters): Promise<PaginatedList<ExpenseResponse>>;
+  getExpenses(filters: FinanceFilters): Promise<PaginatedList<ExpenseResponse>>;
   createExpense(data: CreateExpenseRequest): Promise<string>;
 }
 ````
 
 ## File: src/core/repositories/IInventoryRepository.ts
 ````typescript
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CategoryResponse, 
   CreateProductRequest, 
   DepartmentResponse, 
   ProductBatchResponse, 
-  ProductResponse 
+  ProductResponse,
+  ProductFilters
 } from "@/features/inventory/schemas/inventorySchemas";
 
 export interface IInventoryRepository {
   // Categories
-  getCategories(filters?: RequestFilters): Promise<PaginatedList<CategoryResponse>>;
+  getCategories(filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>>;
   createCategory(name: string, description?: string): Promise<string>;
   
   // Departments
-  getDepartments(categoryId?: string, filters?: RequestFilters): Promise<PaginatedList<DepartmentResponse>>;
+  getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>>;
   createDepartment(categoryId: string, name: string): Promise<string>;
 
   // Products
-  getProducts(filters: RequestFilters): Promise<PaginatedList<ProductResponse>>;
+  getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>>;
   getProduct(id: string): Promise<ProductResponse>;
   createProduct(data: CreateProductRequest): Promise<string>;
   updateProduct(id: string, data: CreateProductRequest): Promise<void>;
   deleteProduct(id: string): Promise<void>;
 
   // Batches
-  getProductBatches(filters: RequestFilters): Promise<PaginatedList<ProductBatchResponse>>;
+  getProductBatches(filters: ProductFilters): Promise<PaginatedList<ProductBatchResponse>>;
 }
 ````
 
 ## File: src/core/repositories/IInvoicesRepository.ts
 ````typescript
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
-  CreateSalesInvoiceRequest, SalesInvoiceResponse,
-  CreatePurchaseInvoiceRequest, PurchaseInvoiceResponse
+  CreateSalesInvoiceRequest,  SalesInvoiceResponse, 
+  CreatePurchaseInvoiceRequest, 
+  PurchaseInvoiceResponse,
+  InvoiceFilters
 } from "@/features/invoices/schemas/invoiceSchemas";
 import { CreateSupplierReturnRequest, CreateCustomerReturnRequest } from "@/features/invoices/schemas/returnSchemas";
 
 export interface IInvoicesRepository {
   // Sales Invoices
-  getSalesInvoices(filters: RequestFilters): Promise<PaginatedList<SalesInvoiceResponse>>;
+  getSalesInvoices(filters: InvoiceFilters): Promise<PaginatedList<SalesInvoiceResponse>>;
   getSalesInvoice(id: string): Promise<SalesInvoiceResponse>;
   createSalesInvoice(data: CreateSalesInvoiceRequest): Promise<string>;
   
   // Purchase Invoices
-  getPurchaseInvoices(filters: RequestFilters): Promise<PaginatedList<PurchaseInvoiceResponse>>;
+  getPurchaseInvoices(filters: InvoiceFilters): Promise<PaginatedList<PurchaseInvoiceResponse>>;
   getPurchaseInvoice(id: string): Promise<PurchaseInvoiceResponse>;
   createPurchaseInvoice(data: CreatePurchaseInvoiceRequest): Promise<string>;
 
@@ -790,6 +826,28 @@ export class AuthRepository implements IAuthRepository {
 }
 
 export const authRepository = new AuthRepository();
+````
+
+## File: src/features/auth/components/HasPermission.tsx
+````typescript
+import React from 'react';
+import { useAuth } from '../hooks/useAuth';
+
+interface HasPermissionProps {
+  permission: string;
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+}
+
+export function HasPermission({ permission, children, fallback = null }: HasPermissionProps) {
+  const { hasPermission } = useAuth();
+
+  if (hasPermission(permission)) {
+    return <>{children}</>;
+  }
+
+  return <>{fallback}</>;
+}
 ````
 
 ## File: src/features/auth/components/LoginForm.tsx
@@ -902,22 +960,32 @@ import { storage } from "@/lib/storage";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  permissions: string[];
   logout: () => void;
+  hasPermission: (permission: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!storage.getToken());
+  // Mock permissions until backend sends them in the login response
+  const [permissions, setPermissions] = useState<string[]>(isAuthenticated ? ["inventory:read", "inventory:write", "sales:read"] : []);
 
   const logout = () => {
     storage.clearToken();
     setIsAuthenticated(false);
+    setPermissions([]);
     window.location.href = '/login';
   };
 
+  const hasPermission = (permission: string) => {
+    // Admin override or specific permission check
+    return permissions.includes("admin") || permissions.includes(permission);
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, permissions, logout, hasPermission }}>
       {children}
     </AuthContext.Provider>
   );
@@ -939,8 +1007,9 @@ export function useLogin() {
       storage.setToken(data.token);
       window.location.href = '/';
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || "فشل تسجيل الدخول. تحقق من البيانات.";
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } };
+      const message = err.response?.data?.message || "فشل تسجيل الدخول. تحقق من البيانات.";
       toast.error(message);
     },
   });
@@ -949,17 +1018,44 @@ export function useLogin() {
 
 ## File: src/features/auth/pages/LoginPage.tsx
 ````typescript
-import { LoginForm } from "../components/LoginForm";
+import { LoginForm } from "@/features/auth/components/LoginForm";
 
-export default function LoginPage() {
+/**
+ * Login Page — full-screen centered layout matching design spec.
+ * Background: #f8fafc (slate-50), card: white rounded-xl shadow-sm.
+ */
+export function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-md bg-surface p-8 rounded-xl shadow-sm border border-border">
+    <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] px-4">
+      <div className="w-full max-w-md">
+
+        {/* Logo / Branding */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">سنترالي</h1>
-          <p className="text-muted-text">قم بتسجيل الدخول للوصول إلى لوحة التحكم</p>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl shadow-lg mb-4">
+            <span className="text-white text-2xl font-bold">س</span>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900">سنترالي</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            نظام إدارة الأعمال الذكية
+          </p>
         </div>
-        <LoginForm />
+
+        {/* Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-gray-800">مرحباً بك</h2>
+            <p className="text-sm text-gray-500 mt-1">
+              قم بتسجيل الدخول للوصول إلى لوحة التحكم
+            </p>
+          </div>
+
+          <LoginForm />
+        </div>
+
+        {/* Footer note */}
+        <p className="text-center text-xs text-gray-400 mt-6">
+          © {new Date().getFullYear()} سنترالي — جميع الحقوق محفوظة
+        </p>
       </div>
     </div>
   );
@@ -983,18 +1079,20 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 ````typescript
 import { apiClient } from "@/lib/axios";
 import { IContactsRepository } from "@/core/repositories/IContactsRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CreateCustomerRequest, CustomerResponse, CustomerStatementResponse, 
   CreateSupplierRequest, SupplierResponse, SupplierStatementItemResponse, 
-  CreatePaymentRequest 
+  CreatePaymentRequest,
+  ContactFilters,
+  StatementFilters
 } from "../schemas/contactSchemas";
 
 import { CustomerDebtHistoryResponse } from '../schemas/contactSchemas';
 
 export class ContactsRepository implements IContactsRepository {
   // --- Customers ---
-  async getCustomers(filters: RequestFilters): Promise<PaginatedList<CustomerResponse>> {
+  async getCustomers(filters: ContactFilters): Promise<PaginatedList<CustomerResponse>> {
     const { data } = await apiClient.get<PaginatedList<CustomerResponse>>('/customers', { params: filters });
     return data;
   }
@@ -1022,7 +1120,7 @@ export class ContactsRepository implements IContactsRepository {
     await apiClient.delete(`/customers/${id}`);
   }
 
-  async getCustomerStatement(filters: RequestFilters): Promise<PaginatedList<CustomerStatementResponse>> {
+  async getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>> {
     if (!filters.customerId) throw new Error("customerId is required for statement");
     const { data } = await apiClient.get<PaginatedList<CustomerStatementResponse>>(`/customers/${filters.customerId}/transactions/statement`, { params: filters });
     return data;
@@ -1034,7 +1132,7 @@ export class ContactsRepository implements IContactsRepository {
   }
 
   // --- Suppliers ---
-  async getSuppliers(filters: RequestFilters): Promise<PaginatedList<SupplierResponse>> {
+  async getSuppliers(filters: ContactFilters): Promise<PaginatedList<SupplierResponse>> {
     const { data } = await apiClient.get<PaginatedList<SupplierResponse>>('/suppliers', { params: filters });
     return data;
   }
@@ -1057,7 +1155,7 @@ export class ContactsRepository implements IContactsRepository {
     await apiClient.delete(`/suppliers/${id}`);
   }
 
-  async getSupplierStatement(filters: RequestFilters): Promise<PaginatedList<SupplierStatementItemResponse>> {
+  async getSupplierStatement(filters: StatementFilters): Promise<PaginatedList<SupplierStatementItemResponse>> {
     if (!filters.supplierId) throw new Error("supplierId is required for statement");
     const { data } = await apiClient.get<PaginatedList<SupplierStatementItemResponse>>(`/suppliers/${filters.supplierId}/statement`, { params: filters });
     return data;
@@ -1077,23 +1175,26 @@ export const contactsRepository = new ContactsRepository();
 ````typescript
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { contactsRepository } from "../api/ContactsApi";
-import { RequestFilters } from "@/shared/types/pagination";
-import { CreateCustomerRequest, CreateSupplierRequest, CreatePaymentRequest } from "../schemas/contactSchemas";
+
+import { 
+  CreateCustomerRequest, CreateSupplierRequest, CreatePaymentRequest,
+  ContactFilters, StatementFilters 
+} from "../schemas/contactSchemas";
 import { toast } from "sonner";
 
 export const CONTACT_KEYS = {
-  customers: (filters: RequestFilters) => ["customers", filters] as const,
+  customers: (filters: ContactFilters) => ["customers", filters] as const,
   customerDetails: (id: string) => ["customers", id] as const,
-  customerStatement: (filters: RequestFilters) => ["customers", "statement", filters] as const,
+  customerStatement: (filters: StatementFilters) => ["customers", "statement", filters] as const,
   
-  suppliers: (filters: RequestFilters) => ["suppliers", filters] as const,
+  suppliers: (filters: ContactFilters) => ["suppliers", filters] as const,
   supplierDetails: (id: string) => ["suppliers", id] as const,
-  supplierStatement: (filters: RequestFilters) => ["suppliers", "statement", filters] as const,
+  supplierStatement: (filters: StatementFilters) => ["suppliers", "statement", filters] as const,
 };
 
 // --- Customer Queries & Mutations ---
 
-export function useCustomers(filters: RequestFilters) {
+export function useCustomers(filters: ContactFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.customers(filters),
     queryFn: () => contactsRepository.getCustomers(filters),
@@ -1108,7 +1209,7 @@ export function useCustomer(id: string) {
   });
 }
 
-export function useCustomerStatement(filters: RequestFilters) {
+export function useCustomerStatement(filters: StatementFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.customerStatement(filters),
     queryFn: () => contactsRepository.getCustomerStatement(filters),
@@ -1143,7 +1244,7 @@ export function useAddCustomerPayment() {
 
 // --- Supplier Queries & Mutations ---
 
-export function useSuppliers(filters: RequestFilters) {
+export function useSuppliers(filters: ContactFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.suppliers(filters),
     queryFn: () => contactsRepository.getSuppliers(filters),
@@ -1158,7 +1259,7 @@ export function useSupplier(id: string) {
   });
 }
 
-export function useSupplierStatement(filters: RequestFilters) {
+export function useSupplierStatement(filters: StatementFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.supplierStatement(filters),
     queryFn: () => contactsRepository.getSupplierStatement(filters),
@@ -1192,9 +1293,44 @@ export function useAddSupplierPayment() {
 }
 ````
 
+## File: src/features/contacts/pages/CustomersPage.tsx
+````typescript
+export function CustomersPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">CustomersPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
+## File: src/features/contacts/pages/SuppliersPage.tsx
+````typescript
+export function SuppliersPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">SuppliersPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
 ## File: src/features/contacts/schemas/contactSchemas.ts
 ````typescript
 import * as z from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface ContactFilters extends BaseFilters {
+  customerPhone?: string;
+}
+export interface StatementFilters extends BaseFilters {
+  startDate?: string;
+  endDate?: string;
+  customerId?: string;
+  supplierId?: string;
+}
 
 // --- Customers ---
 
@@ -1292,16 +1428,29 @@ export interface CustomerDebtHistoryResponse {
 }
 ````
 
+## File: src/features/dashboard/pages/DashboardPage.tsx
+````typescript
+export function DashboardPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">DashboardPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
 ## File: src/features/finance/api/FinanceApi.ts
 ````typescript
 import { apiClient } from "@/lib/axios";
 import { IFinanceRepository } from "@/core/repositories/IFinanceRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   OpenSessionRequest, DrawerSessionResponse, AddManualTransactionRequest,
   CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest,
   CreateExpenseCategoryRequest, ExpenseCategoryResponse,
-  CreateExpenseRequest, ExpenseResponse
+  CreateExpenseRequest, ExpenseResponse,
+  FinanceFilters
 } from "../schemas/financeSchemas";
 
 export class FinanceRepository implements IFinanceRepository {
@@ -1341,7 +1490,7 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async getSafeTransactions(safeId: string, filters: RequestFilters): Promise<PaginatedList<SafeTransactionResponse>> {
+  async getSafeTransactions(safeId: string, filters: FinanceFilters): Promise<PaginatedList<SafeTransactionResponse>> {
     // Backend doesn't have GetAllSafeTransactions endpoint in controller yet, mocking it for now or leaving it ready
     const { data } = await apiClient.get<PaginatedList<SafeTransactionResponse>>(`/Safe/${safeId}/transactions`, { params: filters });
     return data;
@@ -1358,7 +1507,7 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async getExpenses(filters: RequestFilters): Promise<PaginatedList<ExpenseResponse>> {
+  async getExpenses(filters: FinanceFilters): Promise<PaginatedList<ExpenseResponse>> {
     // Note: Ensure backend has a GET /expenses endpoint with pagination.
     const { data } = await apiClient.get<PaginatedList<ExpenseResponse>>('/expenses', { params: filters });
     return data;
@@ -1377,19 +1526,20 @@ export const financeRepository = new FinanceRepository();
 ````typescript
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { financeRepository } from "../api/FinanceApi";
-import { RequestFilters } from "@/shared/types/pagination";
+
 import { 
   OpenSessionRequest, AddManualTransactionRequest, CreateSafeRequest, 
-  ReceiveDrawerDepositRequest, CreateExpenseCategoryRequest, CreateExpenseRequest 
+  ReceiveDrawerDepositRequest, CreateExpenseCategoryRequest, CreateExpenseRequest,
+  FinanceFilters 
 } from "../schemas/financeSchemas";
 import { toast } from "sonner";
 
 export const FINANCE_KEYS = {
   activeDrawer: ["drawer", "active"] as const,
   safes: ["safes"] as const,
-  safeTransactions: (safeId: string, filters: RequestFilters) => ["safes", safeId, "transactions", filters] as const,
+  safeTransactions: (safeId: string, filters: FinanceFilters) => ["safes", safeId, "transactions", filters] as const,
   expenseCategories: ["expenseCategories"] as const,
-  expenses: (filters: RequestFilters) => ["expenses", filters] as const,
+  expenses: (filters: FinanceFilters) => ["expenses", filters] as const,
 };
 
 // --- Drawer ---
@@ -1508,9 +1658,51 @@ export function useCreateExpense() {
 }
 ````
 
+## File: src/features/finance/pages/DrawerPage.tsx
+````typescript
+export function DrawerPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">DrawerPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
+## File: src/features/finance/pages/ExpensesPage.tsx
+````typescript
+export function ExpensesPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">ExpensesPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
+## File: src/features/finance/pages/SafePage.tsx
+````typescript
+export function SafePage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">SafePage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
 ## File: src/features/finance/schemas/financeSchemas.ts
 ````typescript
-import * as z from "zod";
+import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface FinanceFilters extends BaseFilters {
+  startDate?: string;
+  endDate?: string;
+}
 
 // --- Enums ---
 export type DrawerTransactionType = 1 | 2; // Income = 1, Expense = 2
@@ -1627,17 +1819,18 @@ export interface ExpenseResponse {
 ````typescript
 import { apiClient } from "@/lib/axios";
 import { IInventoryRepository } from "@/core/repositories/IInventoryRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CategoryResponse, 
   CreateProductRequest, 
   DepartmentResponse, 
   ProductBatchResponse, 
-  ProductResponse 
+  ProductResponse,
+  ProductFilters
 } from "../schemas/inventorySchemas";
 
 export class InventoryRepository implements IInventoryRepository {
-  async getCategories(filters?: RequestFilters): Promise<PaginatedList<CategoryResponse>> {
+  async getCategories(filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>> {
     const { data } = await apiClient.get<PaginatedList<CategoryResponse>>('/categories', { params: filters });
     return data;
   }
@@ -1647,7 +1840,7 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async getDepartments(categoryId?: string, filters?: RequestFilters): Promise<PaginatedList<DepartmentResponse>> {
+  async getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>> {
     const params = { ...filters, categoryId };
     const { data } = await apiClient.get<PaginatedList<DepartmentResponse>>('/departments', { params });
     return data;
@@ -1658,7 +1851,7 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async getProducts(filters: RequestFilters): Promise<PaginatedList<ProductResponse>> {
+  async getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>> {
     const { data } = await apiClient.get<PaginatedList<ProductResponse>>('/products', { params: filters });
     return data;
   }
@@ -1717,7 +1910,7 @@ export class InventoryRepository implements IInventoryRepository {
     await apiClient.delete(`/products/${id}`);
   }
 
-  async getProductBatches(filters: RequestFilters): Promise<PaginatedList<ProductBatchResponse>> {
+  async getProductBatches(filters: ProductFilters): Promise<PaginatedList<ProductBatchResponse>> {
     const { data } = await apiClient.get<PaginatedList<ProductBatchResponse>>('/products/batches', { params: filters });
     return data;
   }
@@ -1730,15 +1923,17 @@ export const inventoryRepository = new InventoryRepository();
 ````typescript
 import { useForm, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from "zod";
 import { createProductSchema, CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { useDepartments } from '@/features/inventory/hooks/useInventory';
 import { tokens } from '@/shared/styles/tokens';
 import { Plus, Trash2 } from 'lucide-react';
 
+type ProductFormValues = z.infer<typeof createProductSchema>;
+
 interface AddProductFormProps {
   categories?: CategoryResponse[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onSubmit: (data: any) => void;
+  onSubmit: (data: ProductFormValues) => void;
   isSubmitting: boolean;
 }
 
@@ -2066,6 +2261,7 @@ export function ProductsTable({
             onClick={() => onViewBatches?.(row)}
             className="hover:text-blue-600 transition-colors"
             title="عرض الدفعات"
+            aria-label="عرض الدفعات"
           >
             <Eye size={18} />
           </button>
@@ -2073,6 +2269,7 @@ export function ProductsTable({
             onClick={() => onEdit?.(row)}
             className="hover:text-amber-500 transition-colors"
             title="تعديل"
+            aria-label="تعديل المنتج"
           >
             <Edit size={18} />
           </button>
@@ -2080,6 +2277,7 @@ export function ProductsTable({
             onClick={() => onDelete?.(row)}
             className="hover:text-red-500 transition-colors"
             title="حذف"
+            aria-label="حذف المنتج"
           >
             <Trash2 size={18} />
           </button>
@@ -2132,35 +2330,34 @@ export function ProductStatusBadge({ quantity, reorderLevel }: ProductStatusBadg
 ````typescript
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { inventoryRepository } from "../api/InventoryApi";
-import { RequestFilters } from "@/shared/types/pagination";
-import { CreateProductRequest } from "../schemas/inventorySchemas";
+import { ProductFilters, CreateProductRequest } from "../schemas/inventorySchemas";
 import { toast } from "sonner";
 
 export const INVENTORY_KEYS = {
   categories: ["categories"] as const,
   departments: (categoryId?: string) => ["departments", categoryId] as const,
-  products: (filters: RequestFilters) => ["products", filters] as const,
+  products: (filters: ProductFilters) => ["products", filters] as const,
   productDetails: (id: string) => ["products", id] as const,
-  batches: (filters: RequestFilters) => ["batches", filters] as const,
+  batches: (filters: ProductFilters) => ["batches", filters] as const,
 };
 
 // --- Queries ---
 
-export function useCategories(filters: RequestFilters = { pageNumber: 1, pageSize: 100 }) {
+export function useCategories(filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
   return useQuery({
     queryKey: [...INVENTORY_KEYS.categories, filters],
     queryFn: () => inventoryRepository.getCategories(filters),
   });
 }
 
-export function useDepartments(categoryId?: string, filters: RequestFilters = { pageNumber: 1, pageSize: 100 }) {
+export function useDepartments(categoryId?: string, filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
   return useQuery({
     queryKey: [...INVENTORY_KEYS.departments(categoryId), filters],
     queryFn: () => inventoryRepository.getDepartments(categoryId, filters),
   });
 }
 
-export function useProducts(filters: RequestFilters) {
+export function useProducts(filters: ProductFilters) {
   return useQuery({
     queryKey: INVENTORY_KEYS.products(filters),
     queryFn: () => inventoryRepository.getProducts(filters),
@@ -2175,7 +2372,7 @@ export function useProduct(id: string) {
   });
 }
 
-export function useProductBatches(filters: RequestFilters) {
+export function useProductBatches(filters: ProductFilters) {
   return useQuery({
     queryKey: INVENTORY_KEYS.batches(filters),
     queryFn: () => inventoryRepository.getProductBatches(filters),
@@ -2223,9 +2420,157 @@ export function useDeleteProduct() {
 }
 ````
 
+## File: src/features/inventory/pages/CategoriesPage.tsx
+````typescript
+export function CategoriesPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">CategoriesPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/pages/ProductsPage.tsx
+````typescript
+import { useState } from 'react';
+import * as z from 'zod';
+import { createProductSchema, CreateProductRequest } from '../schemas/inventorySchemas';
+import { useProducts, useCategories, useCreateProduct } from '@/features/inventory/hooks/useInventory';
+import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { ProductFilters } from '@/features/inventory/components/ProductFilters';
+import { ProductsTable } from '@/features/inventory/components/ProductsTable';
+import { AddProductForm } from '@/features/inventory/components/AddProductForm';
+import { tokens } from '@/shared/styles/tokens';
+
+/**
+ * ProductsPage — composes feature components only.
+ * No inline UI, no column definitions, no form markup lives here.
+ * Responsible only for: state management + data fetching + event wiring.
+ */
+export function ProductsPage() {
+  const [pageIndex, setPageIndex]         = useState(1);
+  const [searchTerm, setSearchTerm]       = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [isDrawerOpen, setIsDrawerOpen]   = useState(false);
+
+  const { data, isLoading }  = useProducts({
+    pageNumber: pageIndex,
+    pageSize: 10,
+    searchValue: searchTerm || undefined,
+    categoryId: categoryFilter || undefined,
+  });
+  const { data: categoriesData } = useCategories();
+  const categories = categoriesData?.items || [];
+  const createProduct        = useCreateProduct();
+
+  const closeDrawer = () => setIsDrawerOpen(false);
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setPageIndex(1);
+  };
+
+  const handleCategoryChange = (val: string) => {
+    setCategoryFilter(val);
+    setPageIndex(1);
+  };
+
+  const handleFormSubmit = (formData: z.infer<typeof createProductSchema>) => {
+    // We must send `CreateProductRequest` format (some fields differ from form schema)
+    const payload: CreateProductRequest = { 
+      name: formData.name,
+      departmentId: formData.departmentId,
+      categoryId: formData.categoryId,
+      minQuantityAlert: formData.minQuantityAlert,
+      barcode: formData.barcode,
+      storageLocation: formData.storageLocation,
+    };
+    
+    if (formData.image && formData.image.length > 0) {
+      payload.image = formData.image[0] as File; // extract File
+    }
+
+    // Convert propertiesList array to properties Record<string, string>
+    if (formData.propertiesList && formData.propertiesList.length > 0) {
+      payload.properties = {};
+      formData.propertiesList.forEach((p: { key: string; value: string }) => {
+        if (p.key && p.value) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          payload.properties![p.key] = p.value;
+        }
+      });
+    }
+
+    createProduct.mutate(payload, { onSuccess: closeDrawer });
+  };
+
+  const drawerFooter = (
+    <>
+      <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
+        إلغاء
+      </button>
+      <button
+        type="submit"
+        form="add-product-form"
+        disabled={createProduct.isPending}
+        className={tokens.btn.primary + " disabled:opacity-60"}
+      >
+        {createProduct.isPending ? 'جاري الحفظ...' : 'حفظ المنتج'}
+      </button>
+    </>
+  );
+
+  return (
+    <div className="space-y-4">
+
+      {/* Filter toolbar */}
+      <ProductFilters
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        categoryFilter={categoryFilter}
+        onCategoryChange={handleCategoryChange}
+        categories={categories}
+        onAddClick={() => setIsDrawerOpen(true)}
+      />
+
+      {/* Data table */}
+      <ProductsTable
+        data={data}
+        isLoading={isLoading}
+        pageIndex={pageIndex}
+        onNextPage={() => setPageIndex((p) => p + 1)}
+        onPrevPage={() => setPageIndex((p) => p - 1)}
+      />
+
+      {/* Add product drawer */}
+      <RightDrawer
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        title="إضافة منتج جديد"
+        footer={drawerFooter}
+      >
+        <AddProductForm
+          categories={categories}
+          onSubmit={handleFormSubmit}
+          isSubmitting={createProduct.isPending}
+        />
+      </RightDrawer>
+    </div>
+  );
+}
+````
+
 ## File: src/features/inventory/schemas/inventorySchemas.ts
 ````typescript
 import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface ProductFilters extends BaseFilters {
+  categoryId?: string;
+  departmentId?: string;
+}
 
 // Shared common filters
 export const baseFiltersSchema = z.object({
@@ -2254,8 +2599,7 @@ export const createProductSchema = z.object({
   name: z.string().min(1, "اسم المنتج مطلوب"),
   departmentId: z.string().min(1, "القسم الفرعي مطلوب"),
   categoryId: z.string().min(1, "القسم الرئيسي مطلوب"),
-  // Note: File validation in zod is tricky on the client, we'll type it as any for the form
-  image: z.any().optional(),
+  image: z.custom<FileList>((val) => val instanceof FileList, "يجب أن يكون ملفًا").optional().or(z.any()),
   minQuantityAlert: z.coerce.number().min(0, "يجب أن تكون 0 أو أكثر"),
   storageLocation: z.string().optional(),
   propertiesList: z.array(z.object({
@@ -2305,10 +2649,12 @@ export interface ProductBatchResponse {
 ````typescript
 import { apiClient } from "@/lib/axios";
 import { IInvoicesRepository } from "@/core/repositories/IInvoicesRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
-  CreateSalesInvoiceRequest, SalesInvoiceResponse,
-  CreatePurchaseInvoiceRequest, PurchaseInvoiceResponse
+  CreateSalesInvoiceRequest,  SalesInvoiceResponse, 
+  CreatePurchaseInvoiceRequest, 
+  PurchaseInvoiceResponse,
+  InvoiceFilters
 } from "../schemas/invoiceSchemas";
 import { CreateSupplierReturnRequest } from "../schemas/returnSchemas";
 
@@ -2316,7 +2662,7 @@ import { CreateCustomerReturnRequest } from '../schemas/returnSchemas';
 
 export class InvoicesRepository implements IInvoicesRepository {
   // --- Sales ---
-  async getSalesInvoices(filters: RequestFilters): Promise<PaginatedList<SalesInvoiceResponse>> {
+  async getSalesInvoices(filters: InvoiceFilters): Promise<PaginatedList<SalesInvoiceResponse>> {
     const { data } = await apiClient.get<PaginatedList<SalesInvoiceResponse>>('/sales-invoices', { params: filters });
     return data;
   }
@@ -2332,7 +2678,7 @@ export class InvoicesRepository implements IInvoicesRepository {
   }
 
   // --- Purchases ---
-  async getPurchaseInvoices(filters: RequestFilters): Promise<PaginatedList<PurchaseInvoiceResponse>> {
+  async getPurchaseInvoices(filters: InvoiceFilters): Promise<PaginatedList<PurchaseInvoiceResponse>> {
     const { data } = await apiClient.get<PaginatedList<PurchaseInvoiceResponse>>('/purchase-invoices', { params: filters });
     return data;
   }
@@ -2366,22 +2712,26 @@ export const invoicesRepository = new InvoicesRepository();
 ````typescript
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { invoicesRepository } from "../api/InvoicesApi";
-import { RequestFilters } from "@/shared/types/pagination";
-import { CreateSalesInvoiceRequest, CreatePurchaseInvoiceRequest } from "../schemas/invoiceSchemas";
+
+import { 
+  CreateSalesInvoiceRequest, 
+  CreatePurchaseInvoiceRequest,
+  InvoiceFilters
+} from "../schemas/invoiceSchemas";
 import { CreateSupplierReturnRequest } from "../schemas/returnSchemas";
 import { toast } from "sonner";
 
 export const INVOICE_KEYS = {
-  sales: (filters: RequestFilters) => ["salesInvoices", filters] as const,
+  sales: (filters: InvoiceFilters) => ["salesInvoices", filters] as const,
   salesDetails: (id: string) => ["salesInvoices", id] as const,
   
-  purchases: (filters: RequestFilters) => ["purchaseInvoices", filters] as const,
+  purchases: (filters: InvoiceFilters) => ["purchaseInvoices", filters] as const,
   purchaseDetails: (id: string) => ["purchaseInvoices", id] as const,
 };
 
 // --- Sales Invoices ---
 
-export function useSalesInvoices(filters: RequestFilters) {
+export function useSalesInvoices(filters: InvoiceFilters) {
   return useQuery({
     queryKey: INVOICE_KEYS.sales(filters),
     queryFn: () => invoicesRepository.getSalesInvoices(filters),
@@ -2410,7 +2760,7 @@ export function useCreateSalesInvoice() {
 
 // --- Purchase Invoices ---
 
-export function usePurchaseInvoices(filters: RequestFilters) {
+export function usePurchaseInvoices(filters: InvoiceFilters) {
   return useQuery({
     queryKey: INVOICE_KEYS.purchases(filters),
     queryFn: () => invoicesRepository.getPurchaseInvoices(filters),
@@ -2456,7 +2806,15 @@ export function useCreateSupplierReturn() {
 
 ## File: src/features/invoices/schemas/invoiceSchemas.ts
 ````typescript
-import * as z from "zod";
+import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface InvoiceFilters extends BaseFilters {
+  startDate?: string;
+  endDate?: string;
+  customerId?: string;
+  supplierId?: string;
+}
 
 // --- Enums ---
 export type SaleTypeDto = 1 | 2; // e.g. 1 = Retail, 2 = Wholesale
@@ -2638,6 +2996,42 @@ export interface ReturnRecordResponse {
 }
 ````
 
+## File: src/features/purchases/pages/PurchasesHistoryPage.tsx
+````typescript
+export function PurchasesHistoryPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">PurchasesHistoryPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
+## File: src/features/sales/pages/PosPage.tsx
+````typescript
+export function PosPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">PosPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
+## File: src/features/sales/pages/SalesHistoryPage.tsx
+````typescript
+export function SalesHistoryPage() {
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h1 className="text-2xl font-bold text-gray-800">SalesHistoryPage</h1>
+      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    </div>
+  );
+}
+````
+
 ## File: src/index.css
 ````css
 @import "tailwindcss";
@@ -2650,6 +3044,30 @@ export interface ReturnRecordResponse {
    ========================================= */
 
 @layer base {
+  :root {
+    /* Primary Colors */
+    --color-primary: #2563eb;       /* blue-600 */
+    --color-primary-hover: #1d4ed8; /* blue-700 */
+    
+    /* UI Backgrounds */
+    --color-page-bg: #f8fafc;
+    --color-surface: #ffffff;
+    
+    /* Text */
+    --color-text-main: #374151;
+    --color-text-muted: #6b7280;
+    
+    /* Sidebar */
+    --color-sidebar-bg: #0f172a;    /* slate-900 */
+    --color-sidebar-logo: #020617;  /* slate-950 */
+    --color-sidebar-border: #1e293b;/* slate-800 */
+    --color-sidebar-text: #cbd5e1;  /* slate-300 */
+    
+    /* States */
+    --color-border: #d1d5db;        /* gray-300 */
+    --color-danger: #ef4444;        /* red-500 */
+  }
+
   * {
     box-sizing: border-box;
   }
@@ -2730,10 +3148,15 @@ apiClient.interceptors.response.use(
 
 ## File: src/lib/storage.ts
 ````typescript
+// Token is now stored in memory to prevent XSS attacks.
+// Note: This means a full page refresh will require the user to log in again
+// until HttpOnly cookies are implemented on the backend.
+let memoryToken: string | null = null;
+
 export const storage = {
-  getToken: () => localStorage.getItem('token'),
-  setToken: (token: string) => localStorage.setItem('token', token),
-  clearToken: () => localStorage.removeItem('token'),
+  getToken: () => memoryToken,
+  setToken: (token: string) => { memoryToken = token; },
+  clearToken: () => { memoryToken = null; },
 };
 ````
 
@@ -2749,305 +3172,162 @@ export function cn(...inputs: ClassValue[]) {
 
 ## File: src/main.tsx
 ````typescript
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-// @ts-ignore
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { GlobalErrorBoundary } from "./shared/components/errors/GlobalErrorBoundary";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <GlobalErrorBoundary>
+      <App />
+    </GlobalErrorBoundary>
+  </StrictMode>
+);
 ````
 
-## File: src/pages/auth/LoginPage.tsx
+## File: src/setupTests.ts
 ````typescript
-import { LoginForm } from "@/features/auth/components/LoginForm";
+import '@testing-library/jest-dom';
+````
 
-/**
- * Login Page — full-screen centered layout matching design spec.
- * Background: #f8fafc (slate-50), card: white rounded-xl shadow-sm.
- */
-export function LoginPage() {
+## File: src/shared/components/errors/FeatureBoundaryLayout.tsx
+````typescript
+import { Outlet } from "react-router-dom";
+import { FeatureErrorBoundary } from "./FeatureErrorBoundary";
+
+interface Props {
+  featureName: string;
+}
+
+export function FeatureBoundaryLayout({ featureName }: Props) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] px-4">
-      <div className="w-full max-w-md">
+    <FeatureErrorBoundary featureName={featureName}>
+      <Outlet />
+    </FeatureErrorBoundary>
+  );
+}
+````
 
-        {/* Logo / Branding */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl shadow-lg mb-4">
-            <span className="text-white text-2xl font-bold">س</span>
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900">سنترالي</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            نظام إدارة الأعمال الذكية
-          </p>
+## File: src/shared/components/errors/FeatureErrorBoundary.tsx
+````typescript
+import { Component, ErrorInfo, ReactNode } from "react";
+import { AlertCircle } from "lucide-react";
+
+interface Props {
+  children: ReactNode;
+  featureName?: string;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class FeatureErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false,
+    error: null,
+  };
+
+  public static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error(`Feature Error (${this.props.featureName || 'Unknown'}):`, error, errorInfo);
+    // TODO: Send to monitoring service (e.g., Sentry)
+  }
+
+  private handleRetry = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  public render() {
+    if (this.state.hasError) {
+      return (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 my-4 w-full flex flex-col items-center text-center">
+          <AlertCircle className="text-red-500 mb-3" size={28} />
+          <h3 className="text-red-800 font-semibold mb-1">
+            فشل تحميل {this.props.featureName ? `قسم ${this.props.featureName}` : 'هذا القسم'}
+          </h3>
+          <p className="text-red-600 text-sm mb-4">حدث خطأ داخلي. يرجى المحاولة مرة أخرى.</p>
+          <button
+            onClick={this.handleRetry}
+            className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-md text-sm font-medium transition-colors"
+          >
+            إعادة المحاولة
+          </button>
         </div>
+      );
+    }
 
-        {/* Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-800">مرحباً بك</h2>
-            <p className="text-sm text-gray-500 mt-1">
-              قم بتسجيل الدخول للوصول إلى لوحة التحكم
+    return this.props.children;
+  }
+}
+````
+
+## File: src/shared/components/errors/GlobalErrorBoundary.tsx
+````typescript
+import { Component, ErrorInfo, ReactNode } from "react";
+import { AlertTriangle } from "lucide-react";
+import { tokens } from "../../styles/tokens";
+
+interface Props {
+  children: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class GlobalErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false,
+    error: null,
+  };
+
+  public static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Uncaught error:", error, errorInfo);
+    // TODO: Send to monitoring service (e.g., Sentry)
+    // Sentry.captureException(error, { extra: errorInfo });
+  }
+
+  private handleReload = () => {
+    window.location.reload();
+  };
+
+  public render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-[var(--color-page-bg)] p-4">
+          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-8 max-w-md w-full text-center shadow-sm">
+            <div className="mx-auto bg-red-50 text-[var(--color-danger)] w-16 h-16 rounded-full flex items-center justify-center mb-4">
+              <AlertTriangle size={32} />
+            </div>
+            <h1 className="text-xl font-bold text-[var(--color-text-main)] mb-2">عذرًا، حدث خطأ غير متوقع</h1>
+            <p className="text-[var(--color-text-muted)] text-sm mb-6">
+              واجه النظام مشكلة أثناء معالجة طلبك. لقد تم تسجيل الخطأ.
             </p>
+            <button
+              onClick={this.handleReload}
+              className={tokens.btn.primary + " w-full"}
+            >
+              إعادة تحميل الصفحة
+            </button>
           </div>
-
-          <LoginForm />
         </div>
-
-        {/* Footer note */}
-        <p className="text-center text-xs text-gray-400 mt-6">
-          © {new Date().getFullYear()} سنترالي — جميع الحقوق محفوظة
-        </p>
-      </div>
-    </div>
-  );
-}
-````
-
-## File: src/pages/contacts/CustomersPage.tsx
-````typescript
-export function CustomersPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">CustomersPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/contacts/SuppliersPage.tsx
-````typescript
-export function SuppliersPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">SuppliersPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/dashboard/DashboardPage.tsx
-````typescript
-export function DashboardPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">DashboardPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/finance/DrawerPage.tsx
-````typescript
-export function DrawerPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">DrawerPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/finance/ExpensesPage.tsx
-````typescript
-export function ExpensesPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">ExpensesPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/finance/SafePage.tsx
-````typescript
-export function SafePage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">SafePage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/inventory/CategoriesPage.tsx
-````typescript
-export function CategoriesPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">CategoriesPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/inventory/ProductsPage.tsx
-````typescript
-import { useState } from 'react';
-import { useProducts, useCategories, useCreateProduct } from '@/features/inventory/hooks/useInventory';
-import { RightDrawer } from '@/shared/components/ui/RightDrawer';
-import { ProductFilters } from '@/features/inventory/components/ProductFilters';
-import { ProductsTable } from '@/features/inventory/components/ProductsTable';
-import { AddProductForm } from '@/features/inventory/components/AddProductForm';
-import { tokens } from '@/shared/styles/tokens';
-
-/**
- * ProductsPage — composes feature components only.
- * No inline UI, no column definitions, no form markup lives here.
- * Responsible only for: state management + data fetching + event wiring.
- */
-export function ProductsPage() {
-  const [pageIndex, setPageIndex]         = useState(1);
-  const [searchTerm, setSearchTerm]       = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [isDrawerOpen, setIsDrawerOpen]   = useState(false);
-
-  const { data, isLoading }  = useProducts({
-    pageNumber: pageIndex,
-    pageSize: 10,
-    searchValue: searchTerm || undefined,
-    categoryId: categoryFilter || undefined,
-  });
-  const { data: categoriesData } = useCategories();
-  const categories = categoriesData?.items || [];
-  const createProduct        = useCreateProduct();
-
-  const closeDrawer = () => setIsDrawerOpen(false);
-
-  const handleSearchChange = (val: string) => {
-    setSearchTerm(val);
-    setPageIndex(1);
-  };
-
-  const handleCategoryChange = (val: string) => {
-    setCategoryFilter(val);
-    setPageIndex(1);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleFormSubmit = (formData: any) => {
-    // react-hook-form returns a FileList for file inputs
-    const finalData = { ...formData };
-    if (finalData.image && finalData.image.length > 0) {
-      finalData.image = finalData.image[0]; // extract File
-    } else {
-      delete finalData.image; // remove if empty
+      );
     }
 
-    // Convert propertiesList array to properties Record<string, string>
-    if (finalData.propertiesList && finalData.propertiesList.length > 0) {
-      finalData.properties = {};
-      finalData.propertiesList.forEach((p: { key: string; value: string }) => {
-        if (p.key && p.value) {
-          finalData.properties[p.key] = p.value;
-        }
-      });
-    }
-    delete finalData.propertiesList;
-
-    createProduct.mutate(finalData, { onSuccess: closeDrawer });
-  };
-
-  const drawerFooter = (
-    <>
-      <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
-        إلغاء
-      </button>
-      <button
-        type="submit"
-        form="add-product-form"
-        disabled={createProduct.isPending}
-        className={tokens.btn.primary + " disabled:opacity-60"}
-      >
-        {createProduct.isPending ? 'جاري الحفظ...' : 'حفظ المنتج'}
-      </button>
-    </>
-  );
-
-  return (
-    <div className="space-y-4">
-
-      {/* Filter toolbar */}
-      <ProductFilters
-        searchTerm={searchTerm}
-        onSearchChange={handleSearchChange}
-        categoryFilter={categoryFilter}
-        onCategoryChange={handleCategoryChange}
-        categories={categories}
-        onAddClick={() => setIsDrawerOpen(true)}
-      />
-
-      {/* Data table */}
-      <ProductsTable
-        data={data}
-        isLoading={isLoading}
-        pageIndex={pageIndex}
-        onNextPage={() => setPageIndex((p) => p + 1)}
-        onPrevPage={() => setPageIndex((p) => p - 1)}
-      />
-
-      {/* Add product drawer */}
-      <RightDrawer
-        isOpen={isDrawerOpen}
-        onClose={closeDrawer}
-        title="إضافة منتج جديد"
-        footer={drawerFooter}
-      >
-        <AddProductForm
-          categories={categories}
-          onSubmit={handleFormSubmit}
-          isSubmitting={createProduct.isPending}
-        />
-      </RightDrawer>
-    </div>
-  );
-}
-````
-
-## File: src/pages/purchases/PurchasesHistoryPage.tsx
-````typescript
-export function PurchasesHistoryPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">PurchasesHistoryPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/sales/PosPage.tsx
-````typescript
-export function PosPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">PosPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
-}
-````
-
-## File: src/pages/sales/SalesHistoryPage.tsx
-````typescript
-export function SalesHistoryPage() {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">SalesHistoryPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
-    </div>
-  );
+    return this.props.children;
+  }
 }
 ````
 
@@ -3136,6 +3416,7 @@ export function Header() {
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input 
             type="text" 
+            aria-label="بحث شامل"
             placeholder="ابحث عن فاتورة، عميل، منتج..." 
             className="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pr-10 pl-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
@@ -3144,7 +3425,10 @@ export function Header() {
 
       {/* Actions & Profile */}
       <div className="flex items-center gap-4">
-        <button className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+        <button 
+          className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
+          aria-label="التنبيهات"
+        >
           <Bell size={20} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
@@ -3300,6 +3584,44 @@ export function Sidebar() {
     </aside>
   );
 }
+````
+
+## File: src/shared/components/ui/__tests__/Button.test.tsx
+````typescript
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Button } from '../Button';
+
+describe('Button Component', () => {
+  it('renders children correctly', () => {
+    render(<Button>Click Me</Button>);
+    expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument();
+  });
+
+  it('handles click events', async () => {
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Click Me</Button>);
+    
+    const button = screen.getByRole('button');
+    await userEvent.click(button);
+    
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not fire click when disabled', async () => {
+    const handleClick = vi.fn();
+    render(<Button disabled onClick={handleClick}>Disabled</Button>);
+    
+    const button = screen.getByRole('button');
+    await userEvent.click(button);
+    
+    expect(handleClick).not.toHaveBeenCalled();
+    expect(button).toBeDisabled();
+  });
+
+  // Button component does not have an isLoading prop natively.
+  // It handles standard HTML button props.
+});
 ````
 
 ## File: src/shared/components/ui/Button.tsx
@@ -3503,6 +3825,22 @@ Label.displayName = LabelPrimitive.Root.displayName
 export { Label }
 ````
 
+## File: src/shared/components/ui/PageLoader.tsx
+````typescript
+import { Loader2 } from "lucide-react";
+
+export function PageLoader() {
+  return (
+    <div className="flex h-screen w-full items-center justify-center bg-gray-50/50">
+      <div className="flex flex-col items-center gap-2 text-gray-500">
+        <Loader2 className="animate-spin" size={32} />
+        <span className="text-sm text-gray-700">جاري التحميل...</span>
+      </div>
+    </div>
+  );
+}
+````
+
 ## File: src/shared/components/ui/RightDrawer.tsx
 ````typescript
 import React, { useEffect } from "react";
@@ -3535,12 +3873,19 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" dir="rtl">
+    <div 
+      className="fixed inset-0 z-50 flex justify-end" 
+      dir="rtl"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="drawer-title"
+    >
       {/* Semi-transparent overlay */}
       <div
         className="absolute inset-0"
         style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Drawer Panel — w-[450px] fixed, slides from right */}
@@ -3548,9 +3893,10 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
         
         {/* Drawer Header — h-16, bg-gray-50 */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">
-          <h2 className="text-lg font-bold text-gray-800">{title}</h2>
+          <h2 id="drawer-title" className="text-lg font-bold text-gray-800">{title}</h2>
           <button
             onClick={onClose}
+            aria-label="إغلاق"
             className="text-gray-400 hover:text-gray-600 hover:bg-gray-200 p-1.5 rounded-lg transition-colors"
           >
             <X size={20} />
@@ -3572,6 +3918,53 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
     </div>
   );
 }
+````
+
+## File: src/shared/hooks/__tests__/useDebounce.test.ts
+````typescript
+import { renderHook, act } from '@testing-library/react';
+import { useDebounce } from '../useDebounce';
+import { vi } from 'vitest';
+
+describe('useDebounce Hook', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should return initial value immediately', () => {
+    const { result } = renderHook(() => useDebounce('initial', 500));
+    expect(result.current).toBe('initial');
+  });
+
+  it('should debounce the value change', () => {
+    const { result, rerender } = renderHook(
+      ({ value, delay }) => useDebounce(value, delay),
+      { initialProps: { value: 'initial', delay: 500 } }
+    );
+
+    // Update the value
+    rerender({ value: 'updated', delay: 500 });
+    
+    // Value should not update immediately
+    expect(result.current).toBe('initial');
+
+    // Fast-forward half the delay
+    act(() => {
+      vi.advanceTimersByTime(250);
+    });
+    expect(result.current).toBe('initial');
+
+    // Fast-forward remaining delay
+    act(() => {
+      vi.advanceTimersByTime(250);
+    });
+    expect(result.current).toBe('updated');
+  });
+});
 ````
 
 ## File: src/shared/hooks/useDebounce.ts
@@ -3605,44 +3998,44 @@ export function useDebounce<T>(value: T, delay = 400): T {
 export const tokens = {
   // --- Typography ---
   font: {
-    label:      "text-sm font-semibold text-gray-700",
-    helperText: "text-xs text-gray-500",
-    muted:      "text-sm text-gray-500",
+    label:      "text-sm font-semibold text-[var(--color-text-main)]",
+    helperText: "text-xs text-[var(--color-text-muted)]",
+    muted:      "text-sm text-[var(--color-text-muted)]",
   },
 
   // --- Form Inputs ---
-  input: "w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none",
-  select: "w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white",
+  input: "w-full px-3 py-2 rounded-lg border border-[var(--color-border)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] outline-none",
+  select: "w-full px-3 py-2 rounded-lg border border-[var(--color-border)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] outline-none bg-white",
 
   // --- Buttons ---
   btn: {
-    primary:   "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors",
-    secondary: "px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium text-sm",
-    ghost:     "px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-200 transition-colors font-medium",
+    primary:   "bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors",
+    secondary: "px-4 py-2 border border-[var(--color-border)] rounded-lg text-[var(--color-text-main)] hover:bg-gray-100 font-medium text-sm",
+    ghost:     "px-4 py-2 bg-gray-100 border border-[var(--color-border)] rounded-lg text-sm text-[var(--color-text-main)] hover:bg-gray-200 transition-colors font-medium",
   },
 
   // --- Table ---
   table: {
-    header: "px-6 py-3 font-semibold text-gray-600 text-sm whitespace-nowrap",
+    header: "px-6 py-3 font-semibold text-[var(--color-text-main)] text-sm whitespace-nowrap",
     cell:   "px-6 py-4",
   },
 
   // --- Badge ---
   badge: {
-    indigo: "bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full text-xs font-medium",
+    indigo: "bg-indigo-50 text-[var(--color-primary)] px-2.5 py-1 rounded-full text-xs font-medium",
   },
 
   // --- Card / Surface ---
-  card: "bg-white rounded-xl shadow-sm border border-gray-200",
+  card: "bg-[var(--color-surface)] rounded-xl shadow-sm border border-[var(--color-border)]",
 
   // --- Sidebar ---
   sidebar: {
-    root:       "w-64 bg-slate-900 text-slate-300 flex flex-col h-screen fixed right-0 top-0 border-l border-slate-800",
-    logo:       "h-16 flex items-center justify-center border-b border-slate-800 bg-slate-950",
+    root:       "w-64 bg-[var(--color-sidebar-bg)] text-[var(--color-sidebar-text)] flex flex-col h-screen fixed right-0 top-0 border-l border-[var(--color-sidebar-border)]",
+    logo:       "h-16 flex items-center justify-center border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-logo)]",
     groupTitle: "px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2",
     link:       "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm font-medium",
-    activeLink: "bg-blue-600 text-white",
-    hoverLink:  "hover:bg-slate-800 hover:text-white",
+    activeLink: "bg-[var(--color-primary)] text-white",
+    hoverLink:  "hover:bg-[var(--color-sidebar-border)] hover:text-white",
   },
 } as const;
 ````
@@ -3651,21 +4044,12 @@ export const tokens = {
 ````typescript
 export type SortDirection = 0 | 1;
 
-export interface RequestFilters {
+export interface BaseFilters {
   pageNumber?: number;
   pageSize?: number;
   searchValue?: string;
   sortColumn?: string;
   sortDirection?: SortDirection;
-  
-  // Custom filters matching the backend RequestFilters.cs
-  categoryId?: string;
-  departmentId?: string;
-  supplierId?: string;
-  customerId?: string;
-  customerPhone?: string;
-  startDate?: string;
-  endDate?: string;
 }
 
 export interface PaginatedList<T> {
@@ -3709,7 +4093,8 @@ export interface PaginatedList<T> {
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["src"]
 }
@@ -3755,7 +4140,8 @@ export interface PaginatedList<T> {
 
 ## File: vite.config.ts
 ````typescript
-import { defineConfig } from 'vite'
+/// <reference types="vitest" />
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
@@ -3769,6 +4155,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts',
   },
 })
 ````

@@ -10,17 +10,66 @@ interface RightDrawerProps {
 }
 
 export function RightDrawer({ isOpen, onClose, title, children, footer }: RightDrawerProps) {
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+  const previousFocusRef = React.useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
     if (isOpen) {
-      window.addEventListener("keydown", handleEsc);
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      // Small timeout to ensure DOM is rendered before focusing
+      setTimeout(() => {
+        const focusableElements = drawerRef.current?.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        ) as NodeListOf<HTMLElement>;
+        
+        if (focusableElements && focusableElements.length > 0) {
+          focusableElements[0].focus();
+        }
+      }, 10);
+    } else {
+      if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab" && drawerRef.current) {
+        const focusableElements = drawerRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        ) as NodeListOf<HTMLElement>;
+        
+        if (focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     }
     return () => {
-      window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
   }, [isOpen, onClose]);
@@ -43,8 +92,11 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
         aria-hidden="true"
       />
 
-      {/* Drawer Panel — w-[450px] fixed, slides from right */}
-      <div className="relative w-[450px] bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300">
+      {/* Drawer Panel - w-[450px] fixed, slides from right */}
+      <div 
+        ref={drawerRef}
+        className="relative w-[450px] bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300"
+      >
         
         {/* Drawer Header — h-16, bg-gray-50 */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">

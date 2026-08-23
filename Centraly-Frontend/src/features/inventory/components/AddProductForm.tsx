@@ -19,6 +19,7 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createProductSchema),
@@ -187,7 +188,12 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
           accept="image/*"
           className={tokens.input}
           {...register('image')}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            setValue('image', file || undefined, { shouldValidate: true });
+          }}
         />
+        {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image.message as string}</p>}
       </div>
     </form>
   );

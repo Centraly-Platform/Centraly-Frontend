@@ -52,8 +52,8 @@ export function ProductsPage() {
       storageLocation: formData.storageLocation,
     };
     
-    if (formData.image && formData.image.length > 0) {
-      payload.image = formData.image[0] as File; // extract File
+    if (formData.image) {
+      payload.image = formData.image;
     }
 
     // Convert propertiesList array to properties Record<string, string>
