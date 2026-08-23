@@ -27,10 +27,24 @@ const queryClient = new QueryClient({
   },
 });
 
-// Guard: redirects to /login if not authenticated
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+// Guard: redirects to /login if not authenticated, and checks permissions
+function ProtectedRoute({ children, requiredPermissions = [] }: { children: React.ReactNode, requiredPermissions?: string[] }) {
+  const { isAuthenticated, hasPermission } = useAuth();
+  
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+
+  if (requiredPermissions.length > 0) {
+    const hasAll = requiredPermissions.every(p => hasPermission(p));
+    if (!hasAll) {
+      return (
+        <div className="flex h-screen items-center justify-center bg-gray-50 flex-col gap-4">
+          <h1 className="text-2xl font-bold text-gray-800">غير مصرح لك بالدخول</h1>
+          <p className="text-gray-500">لا تملك الصلاحيات الكافية للوصول إلى هذه الصفحة.</p>
+        </div>
+      );
+    }
+  }
+
   return <>{children}</>;
 }
 

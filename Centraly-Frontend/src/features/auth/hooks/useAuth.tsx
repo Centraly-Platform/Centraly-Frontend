@@ -7,22 +7,32 @@ import { storage } from "@/lib/storage";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  permissions: string[];
   logout: () => void;
+  hasPermission: (permission: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!storage.getToken());
+  // Mock permissions until backend sends them in the login response
+  const [permissions, setPermissions] = useState<string[]>(isAuthenticated ? ["inventory:read", "inventory:write", "sales:read"] : []);
 
   const logout = () => {
     storage.clearToken();
     setIsAuthenticated(false);
+    setPermissions([]);
     window.location.href = '/login';
   };
 
+  const hasPermission = (permission: string) => {
+    // Admin override or specific permission check
+    return permissions.includes("admin") || permissions.includes(permission);
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, permissions, logout, hasPermission }}>
       {children}
     </AuthContext.Provider>
   );
