@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./features/auth/hooks/useAuth";
 import { AppLayout } from "./shared/components/layout/AppLayout";
 import { PageLoader } from "./shared/components/ui/PageLoader";
+import { FeatureBoundaryLayout } from "./shared/components/errors/FeatureBoundaryLayout";
 
 // Lazy Loaded Pages
 const LoginPage = lazy(() => import("./features/auth/pages/LoginPage").then(module => ({ default: module.LoginPage })));
@@ -62,25 +63,35 @@ export default function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route path="/"                   element={<DashboardPage />} />
+                <Route path="/" element={<DashboardPage />} />
 
-                <Route path="/sales/pos"          element={<PosPage />} />
-                <Route path="/sales/history"      element={<SalesHistoryPage />} />
-                <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
+                <Route element={<FeatureBoundaryLayout featureName="المبيعات" />}>
+                  <Route path="/sales/pos"          element={<PosPage />} />
+                  <Route path="/sales/history"      element={<SalesHistoryPage />} />
+                  <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
+                </Route>
 
-                <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
-                <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
-                <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
+                <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
+                  <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
+                  <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
+                  <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
+                </Route>
 
-                <Route path="/inventory/products"   element={<ProductsPage />} />
-                <Route path="/inventory/categories" element={<CategoriesPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
+                  <Route path="/inventory/products"   element={<ProductsPage />} />
+                  <Route path="/inventory/categories" element={<CategoriesPage />} />
+                </Route>
 
-                <Route path="/contacts/customers" element={<CustomersPage />} />
-                <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="جهات الاتصال" />}>
+                  <Route path="/contacts/customers" element={<CustomersPage />} />
+                  <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                </Route>
 
-                <Route path="/finance/drawer"   element={<DrawerPage />} />
-                <Route path="/finance/safe"     element={<SafePage />} />
-                <Route path="/finance/expenses" element={<ExpensesPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="المالية" />}>
+                  <Route path="/finance/drawer"   element={<DrawerPage />} />
+                  <Route path="/finance/safe"     element={<SafePage />} />
+                  <Route path="/finance/expenses" element={<ExpensesPage />} />
+                </Route>
 
                 <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
               </Route>

@@ -1,12 +1,13 @@
-﻿import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-// @ts-ignore
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { GlobalErrorBoundary } from "./shared/components/errors/GlobalErrorBoundary";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
-
+    <GlobalErrorBoundary>
+      <App />
+    </GlobalErrorBoundary>
+  </StrictMode>
+);
