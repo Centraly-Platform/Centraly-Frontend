@@ -6,6 +6,17 @@ interface SupplierStatementCardProps {
   isLoading: boolean;
 }
 
+const translateTxType = (type: string) => {
+  const map: Record<string, string> = {
+    'PurchaseInvoice': 'فاتورة مشتريات (استلام بضاعة)',
+    'InvoicePayment': 'سداد من فاتورة',
+    'Payment': 'دفعة نقدية (سند صرف للمورد)',
+    'Return': 'مرتجع مشتريات (إرجاع بضاعة)',
+    'OpeningBalance': 'رصيد افتتاحي',
+  };
+  return map[type] || type;
+};
+
 export function SupplierStatementCard({ statement, isLoading }: SupplierStatementCardProps) {
   return (
     <div className={`${tokens.card} bg-white overflow-hidden`}>
@@ -17,19 +28,18 @@ export function SupplierStatementCard({ statement, isLoading }: SupplierStatemen
         <table className="w-full text-sm text-right">
           <thead className="bg-gray-50/50 text-gray-500 font-medium">
             <tr>
-              <th className="px-4 py-3">التاريخ</th>
-              <th className="px-4 py-3">نوع الحركة</th>
-              <th className="px-4 py-3">رقم المرجع</th>
-              <th className="px-4 py-3">مدين (لنا)</th>
-              <th className="px-4 py-3">دائن (له)</th>
-              <th className="px-4 py-3">الرصيد بعد</th>
+              <th className="px-4 py-3">تاريخ الحركة</th>
+              <th className="px-4 py-3">البيان (نوع الحركة)</th>
+              <th className="px-4 py-3">خُصم من حسابه (دفعنا له)</th>
+              <th className="px-4 py-3">أُضيف لحسابه (اشترينا منه)</th>
+              <th className="px-4 py-3">صافي الحساب (بعد الحركة)</th>
               <th className="px-4 py-3">ملاحظات</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 text-gray-700">
             {isLoading ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
                   جاري تحميل كشف الحساب...
                 </td>
               </tr>
@@ -41,10 +51,9 @@ export function SupplierStatementCard({ statement, isLoading }: SupplierStatemen
                   </td>
                   <td className="px-4 py-3">
                     <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">
-                      {item.transactionType}
+                      {translateTxType(item.transactionType)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs">{item.transactionId || '---'}</td>
                   <td className="px-4 py-3 font-bold text-red-600">
                     {item.debit > 0 ? new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.debit) : '-'}
                   </td>
@@ -59,7 +68,7 @@ export function SupplierStatementCard({ statement, isLoading }: SupplierStatemen
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
                   لا توجد حركات مسجلة لهذا المورد حتى الآن.
                 </td>
               </tr>
