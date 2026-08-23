@@ -11,14 +11,12 @@ interface ProductsTableProps {
   pageIndex: number;
   onNextPage: () => void;
   onPrevPage: () => void;
-  onEdit?: (product: ProductResponse) => void;
   onDelete?: (product: ProductResponse) => void;
   onRowClick?: (product: ProductResponse) => void;
 }
 
 /**
  * Products table — defines columns and delegates rendering to the shared DataTable.
- * All column definitions live here, NOT in the page.
  */
 export function ProductsTable({
   data,
@@ -31,31 +29,30 @@ export function ProductsTable({
 }: ProductsTableProps) {
   const columns = [
     {
-      header: 'المنتج',
+      header: 'الصورة',
       cell: (row: ProductResponse) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center">
           {row.imageUrl ? (
-            <img src={row.imageUrl} alt={row.name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+            <img src={row.imageUrl} alt={row.name} className="w-10 h-10 rounded-lg object-cover border border-gray-200" />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 text-gray-400 text-xs font-bold">
+            <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200 text-gray-400 text-xs font-bold">
               {row.name ? row.name.charAt(0).toUpperCase() : '?'}
             </div>
           )}
-          <div className="flex flex-col">
-            <span className="font-medium text-gray-900">{row.name}</span>
-            <span className="text-xs text-gray-500">{row.barcode || 'بدون باركود'}</span>
-          </div>
         </div>
       ),
     },
     {
-      header: 'سعر البيع',
-      cell: (row: ProductResponse) => {
-        // Get retail price from the latest/first batch if available
-        const latestBatch = row.batches?.[0];
-        const price = latestBatch ? latestBatch.retailPrice : 0;
-        return <span className="font-semibold text-emerald-600">{price.toFixed(2)} ج.م</span>;
-      },
+      header: 'اسم المنتج',
+      cell: (row: ProductResponse) => (
+        <span className="font-semibold text-gray-900">{row.name}</span>
+      ),
+    },
+    {
+      header: 'الباركود',
+      cell: (row: ProductResponse) => (
+        <span className="text-gray-600 font-mono text-sm">{row.barcode || '---'}</span>
+      ),
     },
     {
       header: 'القسم',
@@ -69,14 +66,21 @@ export function ProductsTable({
       ),
     },
     {
-      header: 'الكمية والمخزون',
+      header: 'الكمية',
       cell: (row: ProductResponse) => (
-        <div className="flex flex-col gap-1 items-start">
-          <ProductStatusBadge quantity={row.totalQuantity} reorderLevel={row.minQuantityAlert} />
-          {row.storageLocation && (
-            <span className="text-xs text-gray-400">المكان: {row.storageLocation}</span>
-          )}
-        </div>
+        <span className="font-semibold text-gray-800">{row.totalQuantity}</span>
+      ),
+    },
+    {
+      header: 'موقع التخزين',
+      cell: (row: ProductResponse) => (
+        <span className="text-gray-600 text-sm">{row.storageLocation || '---'}</span>
+      ),
+    },
+    {
+      header: 'حالة المخزون',
+      cell: (row: ProductResponse) => (
+        <ProductStatusBadge quantity={row.totalQuantity} reorderLevel={row.minQuantityAlert} />
       ),
     },
     {
@@ -88,7 +92,7 @@ export function ProductsTable({
               e.stopPropagation();
               onDelete?.(row);
             }}
-            className="hover:text-red-500 transition-colors"
+            className="hover:text-red-500 transition-colors p-1"
             title="حذف"
             aria-label="حذف المنتج"
           >
