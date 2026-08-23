@@ -8,6 +8,30 @@
    ========================================= */
 
 @layer base {
+  :root {
+    /* Primary Colors */
+    --color-primary: #2563eb;       /* blue-600 */
+    --color-primary-hover: #1d4ed8; /* blue-700 */
+    
+    /* UI Backgrounds */
+    --color-page-bg: #f8fafc;
+    --color-surface: #ffffff;
+    
+    /* Text */
+    --color-text-main: #374151;
+    --color-text-muted: #6b7280;
+    
+    /* Sidebar */
+    --color-sidebar-bg: #0f172a;    /* slate-900 */
+    --color-sidebar-logo: #020617;  /* slate-950 */
+    --color-sidebar-border: #1e293b;/* slate-800 */
+    --color-sidebar-text: #cbd5e1;  /* slate-300 */
+    
+    /* States */
+    --color-border: #d1d5db;        /* gray-300 */
+    --color-danger: #ef4444;        /* red-500 */
+  }
+
   * {
     box-sizing: border-box;
   }
