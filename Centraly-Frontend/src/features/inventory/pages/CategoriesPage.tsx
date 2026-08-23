@@ -145,12 +145,8 @@ export function CategoriesPage() {
   return (
     <div className="space-y-6">
       
-      {/* Header */}
-      <div className="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">الأقسام</h1>
-          <p className="text-gray-500 mt-1">إدارة الأقسام الرئيسية والفرعية</p>
-        </div>
+      {/* Actions */}
+      <div className="flex justify-end items-center bg-white p-6 rounded-xl shadow-sm border border-gray-200">
         <div className="flex gap-3">
           <button 
             onClick={() => openAddCategory()}

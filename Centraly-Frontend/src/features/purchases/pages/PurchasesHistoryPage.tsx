@@ -25,11 +25,7 @@ export function PurchasesHistoryPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">سجل فواتير المشتريات</h1>
-          <p className="text-gray-500 mt-1">عرض جميع الفواتير السابقة للموردين</p>
-        </div>
+      <div className="flex justify-end items-center">
         <button 
           onClick={() => navigate('/purchases/new')}
           className={`${tokens.btn.primary} flex items-center gap-2`}
