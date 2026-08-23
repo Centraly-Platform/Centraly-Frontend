@@ -1,64 +1,106 @@
 import { Search, Plus } from 'lucide-react';
-import { CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { tokens } from '@/shared/styles/tokens';
+import { useCategories, useDepartments } from '@/features/inventory/hooks/useInventory';
 
 interface ProductFiltersProps {
   searchTerm: string;
   onSearchChange: (val: string) => void;
+  departmentFilter: string;
+  onDepartmentChange: (val: string) => void;
   categoryFilter: string;
   onCategoryChange: (val: string) => void;
-  categories?: CategoryResponse[];
+  stockFilter: string;
+  onStockChange: (val: string) => void;
   onAddClick: () => void;
 }
 
-/**
- * Toolbar: search input + category dropdown + "Add Product" button.
- * Purely presentational — all state lives in the parent (ProductsPage).
- */
 export function ProductFilters({
   searchTerm,
   onSearchChange,
+  departmentFilter,
+  onDepartmentChange,
   categoryFilter,
   onCategoryChange,
-  categories,
+  stockFilter,
+  onStockChange,
   onAddClick,
 }: ProductFiltersProps) {
+  const { data: categoriesData } = useCategories();
+  const { data: departmentsData } = useDepartments();
+
+  const categories = categoriesData?.items || [];
+  const departments = departmentsData?.items || [];
+
   return (
-    <div className={`${tokens.card} p-4 flex flex-wrap gap-4 items-center justify-between bg-gray-50/50`}>
-      {/* Left side: Search + Category filter */}
+    <div className={`${tokens.card} p-4 flex flex-wrap gap-4 items-center justify-between bg-white shadow-sm`}>
+      {/* Left side: Filters */}
       <div className="flex items-center gap-3 flex-1 flex-wrap">
-        {/* Search — pr-10 for icon space (RTL) */}
-        <div className="relative max-w-sm flex-1 min-w-[200px]">
-          <Search
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-            size={16}
-          />
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px] max-w-[300px]">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
           <input
             type="text"
             placeholder="بحث بالاسم أو الباركود..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50"
           />
         </div>
 
-        {/* Category Select */}
-        <select
-          value={categoryFilter}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-        >
-          <option value="">جميع الأقسام</option>
-          {categories?.map((cat) => (
-            <option key={cat.categoryId} value={cat.categoryId}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
+        {/* Department Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={departmentFilter}
+            onChange={(e) => {
+              onDepartmentChange(e.target.value);
+              // Reset category when department changes if desired, but here we just leave it to backend logic or user
+            }}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+          >
+            <option value="">جميع الأقسام الرئيسية</option>
+            {departments.map((dep) => (
+              <option key={dep.departmentId} value={dep.departmentId}>
+                {dep.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={categoryFilter}
+            onChange={(e) => onCategoryChange(e.target.value)}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+          >
+            <option value="">جميع الأقسام الفرعية</option>
+            {categories
+              .filter(cat => !departmentFilter || cat.department.departmentId === departmentFilter)
+              .map((cat) => (
+              <option key={cat.categoryId} value={cat.categoryId}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Stock Status Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={stockFilter}
+            onChange={(e) => onStockChange(e.target.value)}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+          >
+            <option value="">حالة المخزون (الكل)</option>
+            <option value="InStock">متوفر</option>
+            <option value="LowStock">منخفض</option>
+            <option value="OutOfStock">نفد المخزون</option>
+          </select>
+        </div>
       </div>
 
       {/* Right side: Add Button */}
-      <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2"}>
+      <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2 whitespace-nowrap"}>
         <Plus size={16} />
         إضافة منتج جديد
       </button>

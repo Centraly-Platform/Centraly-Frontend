@@ -2,12 +2,14 @@ import { useState } from 'react';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { createProductSchema, CreateProductRequest } from '../schemas/inventorySchemas';
-import { useProducts, useCategories, useCreateProduct } from '@/features/inventory/hooks/useInventory';
+import { useProducts, useCategories, useCreateProduct, useDeleteProduct } from '@/features/inventory/hooks/useInventory';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
 import { ProductFilters } from '@/features/inventory/components/ProductFilters';
 import { ProductsTable } from '@/features/inventory/components/ProductsTable';
 import { AddProductForm } from '@/features/inventory/components/AddProductForm';
 import { tokens } from '@/shared/styles/tokens';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
 
 /**
  * ProductsPage – composes feature components only.
@@ -17,19 +19,27 @@ import { tokens } from '@/shared/styles/tokens';
 export function ProductsPage() {
   const [pageIndex, setPageIndex]         = useState(1);
   const [searchTerm, setSearchTerm]       = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [stockFilter, setStockFilter]       = useState('');
   const [isDrawerOpen, setIsDrawerOpen]   = useState(false);
+  
+  const [productToDelete, setProductToDelete] = useState<ProductResponse | null>(null);
+
   const navigate                          = useNavigate();
 
   const { data, isLoading }  = useProducts({
     pageNumber: pageIndex,
     pageSize: 10,
     searchValue: searchTerm || undefined,
+    departmentId: departmentFilter || undefined,
     categoryId: categoryFilter || undefined,
+    stockStatus: stockFilter || undefined,
   });
   const { data: categoriesData } = useCategories();
   const categories = categoriesData?.items || [];
   const createProduct        = useCreateProduct();
+  const deleteProduct        = useDeleteProduct();
 
   const closeDrawer = () => setIsDrawerOpen(false);
 
@@ -38,9 +48,27 @@ export function ProductsPage() {
     setPageIndex(1);
   };
 
+  const handleDepartmentChange = (val: string) => {
+    setDepartmentFilter(val);
+    setPageIndex(1);
+  };
+
   const handleCategoryChange = (val: string) => {
     setCategoryFilter(val);
     setPageIndex(1);
+  };
+
+  const handleStockChange = (val: string) => {
+    setStockFilter(val);
+    setPageIndex(1);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (productToDelete) {
+      deleteProduct.mutate(productToDelete.productId, {
+        onSuccess: () => setProductToDelete(null),
+      });
+    }
   };
 
   const handleFormSubmit = (formData: z.infer<typeof createProductSchema>) => {
@@ -95,9 +123,12 @@ export function ProductsPage() {
       <ProductFilters
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
+        departmentFilter={departmentFilter}
+        onDepartmentChange={handleDepartmentChange}
         categoryFilter={categoryFilter}
         onCategoryChange={handleCategoryChange}
-        categories={categories}
+        stockFilter={stockFilter}
+        onStockChange={handleStockChange}
         onAddClick={() => setIsDrawerOpen(true)}
       />
 
@@ -109,6 +140,22 @@ export function ProductsPage() {
         onNextPage={() => setPageIndex((p) => p + 1)}
         onPrevPage={() => setPageIndex((p) => p - 1)}
         onRowClick={(row) => navigate(`/inventory/products/${row.productId}`)}
+        onDelete={(row) => setProductToDelete(row)}
+      />
+
+      <ConfirmModal
+        isOpen={!!productToDelete}
+        title="تأكيد حذف المنتج"
+        message={
+          productToDelete
+            ? `هل أنت متأكد من حذف المنتج "${productToDelete.name}" نهائياً؟ لا يمكن التراجع عن هذه الخطوة.`
+            : ''
+        }
+        confirmText={deleteProduct.isPending ? 'جاري الحذف...' : 'نعم، احذف'}
+        cancelText="إلغاء"
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setProductToDelete(null)}
+        type="danger"
       />
 
       {/* Add product drawer */}

@@ -4,6 +4,7 @@ import { BaseFilters } from "@/shared/types/pagination";
 export interface ProductFilters extends BaseFilters {
   categoryId?: string;
   departmentId?: string;
+  stockStatus?: string;
 }
 
 // Shared common filters
