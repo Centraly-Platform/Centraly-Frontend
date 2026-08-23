@@ -9,16 +9,20 @@ export interface ProductFilters extends BaseFilters {
 // Shared common filters
 // Categories
 export interface CategoryResponse {
-  id: string;
+  categoryId: string;
   name: string;
-  description?: string;
+  department: DepartmentSummary;
+  productsCount: number;
+  createdAt: string;
 }
 
 // Departments
 export interface DepartmentResponse {
-  id: string;
-  categoryId: string;
+  departmentId: string;
   name: string;
+  categoriesCount: number;
+  productsCount: number;
+  createdAt: string;
 }
 
 // Products
@@ -40,34 +44,40 @@ export type CreateProductRequest = z.infer<typeof createProductSchema> & {
   properties?: Record<string, string>;
 };
 
-export interface ProductResponse {
-  id: string;
-  barcode: string;
-  name: string;
+export interface DepartmentSummary {
   departmentId: string;
-  departmentName: string;
-  categoryId: string;
-  categoryName: string;
-  minQuantityAlert: number;
-  totalQuantity: number;
-  averageUnitCost: number;
-  storageLocation: string;
-  imageUrl?: string;
-  properties?: Record<string, string>;
+  name: string;
 }
 
-// Batches
+export interface CategorySummary {
+  categoryId: string;
+  name: string;
+}
+
 export interface ProductBatchResponse {
-  id: string;
-  productId: string;
-  productName: string;
+  batchId: string;
   supplierId?: string;
   supplierName?: string;
-  purchaseInvoiceId?: string;
-  quantity: number;
-  unitCost: number;
-  retailPrice: number;
+  availableQuantity: number;
+  purchasePrice: number;
   wholesalePrice: number;
-  expiryDate?: string;
-  receivedAt: string;
+  retailPrice: number;
+  dateReceived: string;
+}
+
+export interface ProductResponse {
+  productId: string;
+  barcode?: string;
+  name?: string;
+  department: DepartmentSummary;
+  category: CategorySummary;
+  totalQuantity: number;
+  imageUrl?: string;
+  minQuantityAlert: number;
+  storageLocation?: string;
+  isOutOfStock: boolean;
+  isLowStock: boolean;
+  createdAt: string;
+  properties: Record<string, string>;
+  batches: ProductBatchResponse[];
 }

@@ -201,6 +201,8 @@ npx lint-staged
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "oxlint",
     "preview": "vite preview",
     "prepare": "husky"
@@ -1942,6 +1944,7 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createProductSchema),
@@ -2110,7 +2113,12 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
           accept="image/*"
           className={tokens.input}
           {...register('image')}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            setValue('image', file || undefined, { shouldValidate: true });
+          }}
         />
+        {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image.message as string}</p>}
       </div>
     </form>
   );
@@ -2488,8 +2496,8 @@ export function ProductsPage() {
       storageLocation: formData.storageLocation,
     };
     
-    if (formData.image && formData.image.length > 0) {
-      payload.image = formData.image[0] as File; // extract File
+    if (formData.image) {
+      payload.image = formData.image;
     }
 
     // Convert propertiesList array to properties Record<string, string>
@@ -2573,12 +2581,6 @@ export interface ProductFilters extends BaseFilters {
 }
 
 // Shared common filters
-export const baseFiltersSchema = z.object({
-  pageNumber: z.coerce.number().min(1).optional(),
-  pageSize: z.coerce.number().min(1).max(100).optional(),
-  searchValue: z.string().optional(),
-});
-
 // Categories
 export interface CategoryResponse {
   id: string;
@@ -2599,7 +2601,7 @@ export const createProductSchema = z.object({
   name: z.string().min(1, "اسم المنتج مطلوب"),
   departmentId: z.string().min(1, "القسم الفرعي مطلوب"),
   categoryId: z.string().min(1, "القسم الرئيسي مطلوب"),
-  image: z.custom<FileList>((val) => val instanceof FileList, "يجب أن يكون ملفًا").optional().or(z.any()),
+  image: z.instanceof(File, { message: "يجب أن يكون ملفًا" }).optional(),
   minQuantityAlert: z.coerce.number().min(0, "يجب أن تكون 0 أو أكثر"),
   storageLocation: z.string().optional(),
   propertiesList: z.array(z.object({
@@ -3148,15 +3150,10 @@ apiClient.interceptors.response.use(
 
 ## File: src/lib/storage.ts
 ````typescript
-// Token is now stored in memory to prevent XSS attacks.
-// Note: This means a full page refresh will require the user to log in again
-// until HttpOnly cookies are implemented on the backend.
-let memoryToken: string | null = null;
-
 export const storage = {
-  getToken: () => memoryToken,
-  setToken: (token: string) => { memoryToken = token; },
-  clearToken: () => { memoryToken = null; },
+  getToken: () => localStorage.getItem('token'),
+  setToken: (token: string) => localStorage.setItem('token', token),
+  clearToken: () => localStorage.removeItem('token'),
 };
 ````
 
@@ -3855,17 +3852,66 @@ interface RightDrawerProps {
 }
 
 export function RightDrawer({ isOpen, onClose, title, children, footer }: RightDrawerProps) {
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+  const previousFocusRef = React.useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
     if (isOpen) {
-      window.addEventListener("keydown", handleEsc);
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      // Small timeout to ensure DOM is rendered before focusing
+      setTimeout(() => {
+        const focusableElements = drawerRef.current?.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        ) as NodeListOf<HTMLElement>;
+        
+        if (focusableElements && focusableElements.length > 0) {
+          focusableElements[0].focus();
+        }
+      }, 10);
+    } else {
+      if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (e.key === "Tab" && drawerRef.current) {
+        const focusableElements = drawerRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        ) as NodeListOf<HTMLElement>;
+        
+        if (focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     }
     return () => {
-      window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
   }, [isOpen, onClose]);
@@ -3888,8 +3934,11 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
         aria-hidden="true"
       />
 
-      {/* Drawer Panel — w-[450px] fixed, slides from right */}
-      <div className="relative w-[450px] bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300">
+      {/* Drawer Panel - w-[450px] fixed, slides from right */}
+      <div 
+        ref={drawerRef}
+        className="relative w-[450px] bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300"
+      >
         
         {/* Drawer Header — h-16, bg-gray-50 */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">

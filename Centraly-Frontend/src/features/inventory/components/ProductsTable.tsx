@@ -46,7 +46,7 @@ export function ProductsTable({
     {
       header: 'القسم',
       cell: (row: ProductResponse) => (
-        <span className={tokens.badge.indigo}>{row.categoryName || '---'}</span>
+        <span className={tokens.badge.indigo}>{row.category?.name || '---'}</span>
       ),
     },
     {

@@ -75,28 +75,24 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
         <label className={tokens.font.label + " block mb-1.5"}>
           القسم الرئيسي <span className="text-red-500">*</span>
         </label>
-        <select {...register('categoryId')} className={tokens.select}>
-          <option value="">اختر القسم</option>
+        <select className={tokens.input} {...register('categoryId')}>
+          <option value="">اختر القسم الرئيسي...</option>
           {categories?.map((cat) => (
-            <option key={cat.id} value={cat.id}>
+            <option key={cat.categoryId} value={cat.categoryId}>
               {cat.name}
             </option>
           ))}
         </select>
-        {errors.categoryId && (
-          <p className="text-red-500 text-xs mt-1">{String(errors.categoryId.message)}</p>
-        )}
+        {errors.categoryId && <p className="text-red-500 text-xs mt-1">{errors.categoryId.message as string}</p>}
       </div>
 
-      {/* Department */}
+      {/* Department Select */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>
-          القسم الفرعي <span className="text-red-500">*</span>
-        </label>
-        <select {...register('departmentId')} className={tokens.select} disabled={!selectedCategoryId}>
-          <option value="">اختر القسم الفرعي</option>
+        <label className={tokens.font.label + " block mb-1.5"}>القسم الفرعي</label>
+        <select className={tokens.input} {...register('departmentId')} disabled={!selectedCategoryId}>
+          <option value="">اختر القسم الفرعي...</option>
           {departments?.map((dep) => (
-            <option key={dep.id} value={dep.id}>
+            <option key={dep.departmentId} value={dep.departmentId}>
               {dep.name}
             </option>
           ))}
