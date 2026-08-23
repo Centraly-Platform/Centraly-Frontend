@@ -17,6 +17,7 @@ const PosPage = lazy(() => import("./features/sales/pages/PosPage").then(module 
 const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryPage").then(module => ({ default: module.SalesHistoryPage })));
 const PurchasesHistoryPage = lazy(() => import("./features/purchases/pages/PurchasesHistoryPage").then(module => ({ default: module.PurchasesHistoryPage })));
 const NewPurchasePage = lazy(() => import("./features/purchases/pages/NewPurchasePage").then(module => ({ default: module.NewPurchasePage })));
+const PurchaseInvoiceDetailsPage = lazy(() => import("./features/purchases/pages/PurchaseInvoiceDetailsPage").then(module => ({ default: module.PurchaseInvoiceDetailsPage })));
 const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
 const SuppliersPage = lazy(() => import("./features/suppliers/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
 const SupplierDetailsPage = lazy(() => import("./features/suppliers/pages/SupplierDetailsPage").then(module => ({ default: module.SupplierDetailsPage })));
@@ -91,6 +92,7 @@ export default function App() {
                 <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
                   <Route path="/purchases/new"      element={<NewPurchasePage />} />
                   <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
+                  <Route path="/purchases/:id"      element={<PurchaseInvoiceDetailsPage />} />
                   <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات المشتريات" />} />
                 </Route>
 

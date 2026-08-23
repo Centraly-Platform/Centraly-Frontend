@@ -35,16 +35,18 @@ export interface PurchaseInvoiceItemResponse {
 }
 
 export interface PurchaseInvoiceResponse {
-  invoiceId: string;
+  purchaseInvoiceId: string;
   invoiceNumber: string;
   invoiceDate: string;
-  supplierId: string;
-  supplierName: string;
+  supplier: {
+    id: string;
+    name: string;
+    phone?: string;
+  };
   totalAmount: number;
   paidAmount: number;
   remainingAmount: number;
   notes?: string;
-  createdByName?: string;
   items: PurchaseInvoiceItemResponse[];
 }
 

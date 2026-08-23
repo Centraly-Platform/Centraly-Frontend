@@ -11,12 +11,16 @@ export function PurchasesHistoryPage() {
   const [pageIndex, setPageIndex] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [supplierId, setSupplierId] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const { data, isLoading } = usePurchases({
     pageNumber: pageIndex,
     pageSize: 10,
     searchValue: searchTerm || undefined,
     supplierId: supplierId || undefined,
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
   });
 
   return (
@@ -38,6 +42,7 @@ export function PurchasesHistoryPage() {
       <PurchasesFilters 
         onSearch={(t) => { setSearchTerm(t); setPageIndex(1); }}
         onSupplierChange={(s) => { setSupplierId(s); setPageIndex(1); }}
+        onDateChange={(start, end) => { setStartDate(start); setEndDate(end); setPageIndex(1); }}
       />
 
       <PurchasesTable
@@ -47,8 +52,7 @@ export function PurchasesHistoryPage() {
         onNextPage={() => setPageIndex(p => p + 1)}
         onPrevPage={() => setPageIndex(p => p - 1)}
         onRowClick={(invoice) => {
-          // Future: navigate to invoice details
-          console.log(invoice);
+          navigate(`/purchases/${invoice.purchaseInvoiceId}`);
         }}
       />
     </div>

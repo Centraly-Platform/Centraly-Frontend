@@ -38,7 +38,7 @@ export function PurchasesTable({
     {
       header: 'المورد',
       cell: (row: PurchaseInvoiceResponse) => (
-        <span className="font-bold text-gray-900">{row.supplierName}</span>
+        <span className="font-bold text-gray-900">{row.supplier?.name || '-'}</span>
       ),
     },
     {
