@@ -25,6 +25,19 @@ export interface DepartmentResponse {
   createdAt: string;
 }
 
+export const createDepartmentSchema = z.object({
+  name: z.string().min(1, "اسم القسم الرئيسي مطلوب"),
+});
+
+export type CreateDepartmentRequest = z.infer<typeof createDepartmentSchema>;
+
+export const createCategorySchema = z.object({
+  name: z.string().min(1, "اسم القسم الفرعي مطلوب"),
+  departmentId: z.string().min(1, "يجب اختيار القسم الرئيسي"),
+});
+
+export type CreateCategoryRequest = z.infer<typeof createCategorySchema>;
+
 // Products
 export const createProductSchema = z.object({
   barcode: z.string().optional(),

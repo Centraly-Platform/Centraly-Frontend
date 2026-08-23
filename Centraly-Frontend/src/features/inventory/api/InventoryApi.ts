@@ -16,9 +16,17 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async createCategory(name: string, description?: string): Promise<string> {
-    const { data } = await apiClient.post<string>('/categories', { name, description });
+  async createCategory(reqData: { name: string; departmentId: string }): Promise<string> {
+    const { data } = await apiClient.post<string>('/categories', reqData);
     return data;
+  }
+
+  async updateCategory(id: string, reqData: { name: string; departmentId: string }): Promise<void> {
+    await apiClient.put(`/categories/${id}`, reqData);
+  }
+
+  async deleteCategory(id: string): Promise<void> {
+    await apiClient.delete(`/categories/${id}`);
   }
 
   async getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>> {
@@ -27,9 +35,17 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async createDepartment(categoryId: string, name: string): Promise<string> {
-    const { data } = await apiClient.post<string>('/departments', { categoryId, name });
+  async createDepartment(reqData: { name: string }): Promise<string> {
+    const { data } = await apiClient.post<string>('/departments', reqData);
     return data;
+  }
+
+  async updateDepartment(id: string, reqData: { name: string }): Promise<void> {
+    await apiClient.put(`/departments/${id}`, reqData);
+  }
+
+  async deleteDepartment(id: string): Promise<void> {
+    await apiClient.delete(`/departments/${id}`);
   }
 
   async getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>> {

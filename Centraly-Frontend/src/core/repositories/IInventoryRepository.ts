@@ -11,11 +11,15 @@ import {
 export interface IInventoryRepository {
   // Categories
   getCategories(filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>>;
-  createCategory(name: string, description?: string): Promise<string>;
+  createCategory(reqData: { name: string; departmentId: string }): Promise<string>;
+  updateCategory(id: string, reqData: { name: string; departmentId: string }): Promise<void>;
+  deleteCategory(id: string): Promise<void>;
   
   // Departments
   getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>>;
-  createDepartment(categoryId: string, name: string): Promise<string>;
+  createDepartment(reqData: { name: string }): Promise<string>;
+  updateDepartment(id: string, reqData: { name: string }): Promise<void>;
+  deleteDepartment(id: string): Promise<void>;
 
   // Products
   getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>>;

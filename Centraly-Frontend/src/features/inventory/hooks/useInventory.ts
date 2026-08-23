@@ -88,3 +88,81 @@ export function useDeleteProduct() {
     onError: () => toast.error("حدث خطأ أثناء حذف المنتج"),
   });
 }
+
+// --- Categories Mutations ---
+
+export function useCreateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; departmentId: string }) => inventoryRepository.createCategory(data),
+    onSuccess: () => {
+      toast.success("تم إضافة القسم الفرعي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
+    },
+    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الفرعي"),
+  });
+}
+
+export function useUpdateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { name: string; departmentId: string } }) => 
+      inventoryRepository.updateCategory(id, data),
+    onSuccess: () => {
+      toast.success("تم تعديل القسم الفرعي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الفرعي"),
+  });
+}
+
+export function useDeleteCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => inventoryRepository.deleteCategory(id),
+    onSuccess: () => {
+      toast.success("تم حذف القسم الفرعي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف القسم الفرعي"),
+  });
+}
+
+// --- Departments Mutations ---
+
+export function useCreateDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string }) => inventoryRepository.createDepartment(data),
+    onSuccess: () => {
+      toast.success("تم إضافة القسم الرئيسي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+    },
+    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الرئيسي"),
+  });
+}
+
+export function useUpdateDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { name: string } }) => 
+      inventoryRepository.updateDepartment(id, data),
+    onSuccess: () => {
+      toast.success("تم تعديل القسم الرئيسي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الرئيسي"),
+  });
+}
+
+export function useDeleteDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => inventoryRepository.deleteDepartment(id),
+    onSuccess: () => {
+      toast.success("تم حذف القسم الرئيسي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف القسم الرئيسي"),
+  });
+}
