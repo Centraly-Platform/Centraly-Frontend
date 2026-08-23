@@ -2,29 +2,21 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./features/auth/hooks/useAuth";
-import { LoginPage } from "./pages/auth/LoginPage";
 import { AppLayout } from "./shared/components/layout/AppLayout";
 
-// Pages — Inventory
-import { DashboardPage } from "./pages/dashboard/DashboardPage";
-import { ProductsPage } from "./pages/inventory/ProductsPage";
-import { CategoriesPage } from "./pages/inventory/CategoriesPage";
-
-// Pages — Sales
-import { PosPage } from "./pages/sales/PosPage";
-import { SalesHistoryPage } from "./pages/sales/SalesHistoryPage";
-
-// Pages — Purchases
-import { PurchasesHistoryPage } from "./pages/purchases/PurchasesHistoryPage";
-
-// Pages — Contacts
-import { CustomersPage } from "./pages/contacts/CustomersPage";
-import { SuppliersPage } from "./pages/contacts/SuppliersPage";
-
-// Pages — Finance
-import { DrawerPage } from "./pages/finance/DrawerPage";
-import { SafePage } from "./pages/finance/SafePage";
-import { ExpensesPage } from "./pages/finance/ExpensesPage";
+// Pages
+import { LoginPage } from "./features/auth/pages/LoginPage";
+import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
+import { ProductsPage } from "./features/inventory/pages/ProductsPage";
+import { CategoriesPage } from "./features/inventory/pages/CategoriesPage";
+import { PosPage } from "./features/sales/pages/PosPage";
+import { SalesHistoryPage } from "./features/sales/pages/SalesHistoryPage";
+import { PurchasesHistoryPage } from "./features/purchases/pages/PurchasesHistoryPage";
+import { CustomersPage } from "./features/contacts/pages/CustomersPage";
+import { SuppliersPage } from "./features/contacts/pages/SuppliersPage";
+import { DrawerPage } from "./features/finance/pages/DrawerPage";
+import { SafePage } from "./features/finance/pages/SafePage";
+import { ExpensesPage } from "./features/finance/pages/ExpensesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
