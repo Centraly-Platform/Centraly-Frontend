@@ -1,8 +1,56 @@
+import { useState } from 'react';
+import { usePurchases } from '../hooks/usePurchases';
+import { PurchasesTable } from '../components/PurchasesTable';
+import { PurchasesFilters } from '../components/PurchasesFilters';
+import { tokens } from '@/shared/styles/tokens';
+import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
+
 export function PurchasesHistoryPage() {
+  const navigate = useNavigate();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [supplierId, setSupplierId] = useState('');
+
+  const { data, isLoading } = usePurchases({
+    pageNumber: pageIndex,
+    pageSize: 10,
+    searchValue: searchTerm || undefined,
+    supplierId: supplierId || undefined,
+  });
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">PurchasesHistoryPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">سجل فواتير المشتريات</h1>
+          <p className="text-gray-500 mt-1">عرض جميع الفواتير السابقة للموردين</p>
+        </div>
+        <button 
+          onClick={() => navigate('/purchases/new')}
+          className={`${tokens.btn.primary} flex items-center gap-2`}
+        >
+          <Plus size={18} />
+          <span>فاتورة مشتريات جديدة</span>
+        </button>
+      </div>
+
+      <PurchasesFilters 
+        onSearch={(t) => { setSearchTerm(t); setPageIndex(1); }}
+        onSupplierChange={(s) => { setSupplierId(s); setPageIndex(1); }}
+      />
+
+      <PurchasesTable
+        data={data}
+        isLoading={isLoading}
+        pageIndex={pageIndex}
+        onNextPage={() => setPageIndex(p => p + 1)}
+        onPrevPage={() => setPageIndex(p => p - 1)}
+        onRowClick={(invoice) => {
+          // Future: navigate to invoice details
+          console.log(invoice);
+        }}
+      />
     </div>
   );
 }
