@@ -1,6 +1,5 @@
 import { Edit, Package } from 'lucide-react';
 import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
-import { BackButton } from '@/shared/components/ui/BackButton';
 
 interface ProductDetailsHeaderProps {
   product: ProductResponse;
@@ -40,7 +39,6 @@ export function ProductDetailsHeader({ product, onEditClick }: ProductDetailsHea
       </div>
 
       <div className="pt-2 shrink-0 flex items-center gap-2">
-        <BackButton />
         <button 
           onClick={onEditClick}
           className="flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm"

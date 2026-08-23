@@ -1,8 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
+import { useHeaderStore } from "../../hooks/useHeaderStore";
+import { BackButton } from "../ui/BackButton";
+import { useEffect } from "react";
 
-// Map routes to page titles
-const pageTitles: Record<string, string> = {
+// Map routes to default page titles
+const defaultPageTitles: Record<string, string> = {
   "/": "لوحة القيادة",
   "/sales/pos": "نقطة البيع (POS)",
   "/sales/history": "سجل المبيعات",
@@ -10,8 +13,8 @@ const pageTitles: Record<string, string> = {
   "/purchases/new": "فاتورة مشتريات جديدة",
   "/purchases/history": "سجل المشتريات",
   "/purchases/returns": "مرتجعات الموردين",
-  "/inventory/products": "إدارة المنتجات",
-  "/inventory/categories": "إدارة الأقسام",
+  "/inventory/products": "المنتجات",
+  "/inventory/categories": "الأقسام",
   "/contacts/customers": "العملاء",
   "/contacts/suppliers": "الموردين",
   "/finance/drawer": "الدرج والوردية",
@@ -22,7 +25,16 @@ const pageTitles: Record<string, string> = {
 
 export function AppLayout() {
   const location = useLocation();
-  const pageTitle = pageTitles[location.pathname] || "سنترالي";
+  const { title, showBackButton, backPath, setTitle, setBackButton } = useHeaderStore();
+
+  // Set default title based on route if available, and reset back button
+  useEffect(() => {
+    const defaultTitle = defaultPageTitles[location.pathname];
+    if (defaultTitle) {
+      setTitle(defaultTitle);
+      setBackButton(false);
+    }
+  }, [location.pathname, setTitle, setBackButton]);
 
   return (
     <div className="flex h-screen bg-gray-50 font-sans" dir="rtl">
@@ -34,7 +46,10 @@ export function AppLayout() {
 
         {/* Page Header */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-10">
-          <h1 className="text-xl font-bold text-gray-800">{pageTitle}</h1>
+          <div className="flex items-center gap-3">
+            {showBackButton && <BackButton to={backPath} />}
+            <h1 className="text-xl font-bold text-gray-800">{title}</h1>
+          </div>
 
           <div className="flex items-center gap-4">
             <button className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors">

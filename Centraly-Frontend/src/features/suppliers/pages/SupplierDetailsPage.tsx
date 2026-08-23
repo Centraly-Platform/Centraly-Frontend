@@ -4,12 +4,20 @@ import { SupplierOverviewCard } from '../components/SupplierOverviewCard';
 import { SupplierStatementCard } from '../components/SupplierStatementCard';
 import { PageLoader } from '@/shared/components/ui/PageLoader';
 import { BackButton } from '@/shared/components/ui/BackButton';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useEffect } from 'react';
 
 export function SupplierDetailsPage() {
   const { id } = useParams<{ id: string }>();
+  const { setTitle, setBackButton } = useHeaderStore();
 
   const { data: supplier, isLoading: isLoadingSupplier, isError } = useSupplierDetails(id!);
   const { data: statement, isLoading: isLoadingStatement } = useSupplierStatement(id!);
+
+  useEffect(() => {
+    setTitle("تفاصيل المورد");
+    setBackButton(true, "/contacts/suppliers");
+  }, [setTitle, setBackButton]);
 
   if (isLoadingSupplier) {
     return <PageLoader />;
@@ -26,11 +34,7 @@ export function SupplierDetailsPage() {
 
   return (
     <div className="space-y-4 max-w-full overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <BackButton to="/contacts/suppliers" />
-        <h1 className="text-2xl font-bold text-gray-800">تفاصيل المورد</h1>
-      </div>
+
 
       <div className="grid grid-cols-1 gap-4">
         {/* Overview */}

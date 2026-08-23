@@ -3,13 +3,24 @@ import { usePurchaseInvoice } from '../hooks/usePurchases';
 import { Printer, AlertCircle } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
-import { BackButton } from '@/shared/components/ui/BackButton';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useEffect } from 'react';
 
 export function PurchaseInvoiceDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { setTitle, setBackButton } = useHeaderStore();
 
   const { data: invoice, isLoading, error } = usePurchaseInvoice(id!);
+
+  useEffect(() => {
+    if (invoice) {
+      setTitle(`فاتورة مشتريات #${invoice.invoiceNumber}`);
+    } else {
+      setTitle('تفاصيل الفاتورة');
+    }
+    setBackButton(true, "/purchases/history");
+  }, [invoice, setTitle, setBackButton]);
 
   if (isLoading) {
     return <div className="p-8 text-center text-gray-500">جاري التحميل...</div>;
@@ -29,19 +40,11 @@ export function PurchaseInvoiceDetailsPage() {
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      {/* Header */}
+      {/* Actions */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <BackButton to="/purchases/history" />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              فاتورة مشتريات #{invoice.invoiceNumber}
-            </h1>
-            <p className="text-gray-500 mt-1">
-              {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(invoice.invoiceDate))}
-            </p>
-          </div>
-        </div>
+        <p className="text-gray-500 font-medium">
+          بتاريخ: {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(invoice.invoiceDate))}
+        </p>
         <button className={`${tokens.btn.secondary} flex items-center gap-2`} onClick={() => window.print()}>
           <Printer size={18} />
           <span>طباعة</span>

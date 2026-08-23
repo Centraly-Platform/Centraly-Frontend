@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as z from 'zod';
 import { useProduct, useUpdateProduct, useCategories } from '@/features/inventory/hooks/useInventory';
@@ -11,15 +11,26 @@ import { ProductBatchesCard } from '@/features/inventory/components/ProductBatch
 import { ProductPropertiesCard } from '@/features/inventory/components/ProductPropertiesCard';
 import { ProductOverviewCard } from '@/features/inventory/components/ProductOverviewCard';
 import { ProductNotesCard } from '@/features/inventory/components/ProductNotesCard';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { setTitle, setBackButton } = useHeaderStore();
 
   const { data: product, isLoading, error } = useProduct(id!);
   const updateProduct = useUpdateProduct();
   const { data: categoriesData } = useCategories();
   const categories = categoriesData?.items || [];
+
+  useEffect(() => {
+    if (product) {
+      setTitle(`تفاصيل المنتج: ${product.name}`);
+    } else {
+      setTitle('تفاصيل المنتج');
+    }
+    setBackButton(true, "/inventory/products");
+  }, [product, setTitle, setBackButton]);
 
   if (isLoading) return <div className="p-8 text-center text-gray-500">جاري تحميل تفاصيل المنتج...</div>;
   if (error || !product) return <div className="p-8 text-center text-red-500">حدث خطأ أثناء تحميل تفاصيل المنتج.</div>;
