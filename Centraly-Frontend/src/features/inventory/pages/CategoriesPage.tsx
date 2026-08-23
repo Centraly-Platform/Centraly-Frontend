@@ -1,8 +1,13 @@
 import { useState, useMemo } from 'react';
-import { useCategories, useDepartments, useCreateCategory, useCreateDepartment, useDeleteCategory, useDeleteDepartment } from '@/features/inventory/hooks/useInventory';
+import { 
+  useCategories, useDepartments, 
+  useCreateCategory, useCreateDepartment, 
+  useUpdateCategory, useUpdateDepartment,
+  useDeleteCategory, useDeleteDepartment 
+} from '@/features/inventory/hooks/useInventory';
 import { CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { tokens } from '@/shared/styles/tokens';
-import { Plus, Trash2, Layers, Tag, ChevronDown, ChevronRight, Package } from 'lucide-react';
+import { Plus, Trash2, Layers, Tag, ChevronDown, ChevronRight, Package, Edit } from 'lucide-react';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -20,6 +25,7 @@ const createCategorySchema = z.object({
 export function CategoriesPage() {
   const [expandedDeps, setExpandedDeps] = useState<Record<string, boolean>>({});
   const [drawerMode, setDrawerMode] = useState<'department' | 'category'>('department');
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Queries
@@ -28,8 +34,11 @@ export function CategoriesPage() {
 
   // Mutations
   const createDepartment = useCreateDepartment();
-  const createCategory = useCreateCategory();
+  const updateDepartment = useUpdateDepartment();
   const deleteDepartment = useDeleteDepartment();
+  
+  const createCategory = useCreateCategory();
+  const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
 
   // Group Categories by Department
@@ -58,32 +67,60 @@ export function CategoriesPage() {
 
   const closeDrawer = () => {
     setIsDrawerOpen(false);
-    depForm.reset();
-    catForm.reset();
+    setEditingId(null);
+    depForm.reset({ name: '' });
+    catForm.reset({ name: '', departmentId: '' });
   };
 
   const openAddDepartment = () => {
     setDrawerMode('department');
+    setEditingId(null);
+    depForm.reset({ name: '' });
+    setIsDrawerOpen(true);
+  };
+
+  const openEditDepartment = (id: string, name: string) => {
+    setDrawerMode('department');
+    setEditingId(id);
+    depForm.reset({ name });
     setIsDrawerOpen(true);
   };
 
   const openAddCategory = (departmentId?: string) => {
     setDrawerMode('category');
+    setEditingId(null);
     catForm.reset({ departmentId: departmentId || '', name: '' });
     setIsDrawerOpen(true);
   };
 
+  const openEditCategory = (id: string, name: string, departmentId: string) => {
+    setDrawerMode('category');
+    setEditingId(id);
+    catForm.reset({ name, departmentId });
+    setIsDrawerOpen(true);
+  };
+
   const onDepSubmit = (data: z.infer<typeof createDepartmentSchema>) => {
-    createDepartment.mutate(data, { onSuccess: closeDrawer });
+    if (editingId) {
+      updateDepartment.mutate({ id: editingId, data }, { onSuccess: closeDrawer });
+    } else {
+      createDepartment.mutate(data, { onSuccess: closeDrawer });
+    }
   };
 
   const onCatSubmit = (data: z.infer<typeof createCategorySchema>) => {
-    createCategory.mutate(data, { onSuccess: closeDrawer });
+    if (editingId) {
+      updateCategory.mutate({ id: editingId, data }, { onSuccess: closeDrawer });
+    } else {
+      createCategory.mutate(data, { onSuccess: closeDrawer });
+    }
   };
 
   const toggleDep = (id: string) => {
     setExpandedDeps(prev => ({ ...prev, [id]: !prev[id] }));
   };
+
+  const isSaving = createDepartment.isPending || updateDepartment.isPending || createCategory.isPending || updateCategory.isPending;
 
   const drawerFooter = (
     <>
@@ -93,13 +130,18 @@ export function CategoriesPage() {
       <button
         type="submit"
         form={drawerMode === 'department' ? 'dep-form' : 'cat-form'}
-        disabled={drawerMode === 'department' ? createDepartment.isPending : createCategory.isPending}
+        disabled={isSaving}
         className={tokens.btn.primary + " disabled:opacity-60"}
       >
-        حفظ
+        {isSaving ? 'جاري الحفظ...' : 'حفظ'}
       </button>
     </>
   );
+
+  const drawerTitle = () => {
+    if (drawerMode === 'department') return editingId ? 'تعديل القسم الرئيسي' : 'إضافة قسم رئيسي';
+    return editingId ? 'تعديل القسم الفرعي' : 'إضافة قسم فرعي';
+  };
 
   return (
     <div className="space-y-6">
@@ -162,15 +204,25 @@ export function CategoriesPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       openAddCategory(dep.departmentId);
                     }}
-                    className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg flex items-center gap-1"
+                    className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg flex items-center gap-1 mr-2"
                   >
                     <Plus size={16} /> إضافة قسم فرعي
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEditDepartment(dep.departmentId, dep.name);
+                    }}
+                    className="text-gray-400 hover:text-blue-500 transition-colors p-2"
+                    title="تعديل القسم"
+                  >
+                    <Edit size={18} />
                   </button>
                   <button
                     onClick={(e) => {
@@ -203,16 +255,26 @@ export function CategoriesPage() {
                               <p className="text-xs text-gray-500">{cat.productsCount} منتج</p>
                             </div>
                           </div>
-                          <button
-                            onClick={() => {
-                              if (confirm(`هل أنت متأكد من حذف القسم الفرعي "${cat.name}"؟`)) {
-                                deleteCategory.mutate(cat.categoryId);
-                              }
-                            }}
-                            className="text-gray-300 hover:text-red-500 transition-colors"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                          <div className="flex gap-1">
+                            <button
+                              onClick={() => openEditCategory(cat.categoryId, cat.name, cat.department.departmentId)}
+                              className="text-gray-300 hover:text-blue-500 transition-colors p-1"
+                              title="تعديل"
+                            >
+                              <Edit size={16} />
+                            </button>
+                            <button
+                              onClick={() => {
+                                if (confirm(`هل أنت متأكد من حذف القسم الفرعي "${cat.name}"؟`)) {
+                                  deleteCategory.mutate(cat.categoryId);
+                                }
+                              }}
+                              className="text-gray-300 hover:text-red-500 transition-colors p-1"
+                              title="حذف"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -254,11 +316,11 @@ export function CategoriesPage() {
         )}
       </div>
 
-      {/* Create Drawer */}
+      {/* Create / Edit Drawer */}
       <RightDrawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
-        title={drawerMode === 'department' ? 'إضافة قسم رئيسي' : 'إضافة قسم فرعي'}
+        title={drawerTitle()}
         footer={drawerFooter}
       >
         {drawerMode === 'department' ? (
