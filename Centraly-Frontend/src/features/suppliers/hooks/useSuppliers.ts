@@ -6,12 +6,29 @@ import { toast } from "sonner";
 export const SUPPLIER_KEYS = {
   suppliers: (filters: SupplierFilters) => ["suppliers", filters] as const,
   supplierDetails: (id: string) => ["suppliers", id] as const,
+  supplierStatement: (id: string, filters: SupplierFilters) => ["suppliers", id, "statement", filters] as const,
 };
 
 export function useSuppliers(filters: SupplierFilters) {
   return useQuery({
     queryKey: SUPPLIER_KEYS.suppliers(filters),
     queryFn: () => supplierRepository.getSuppliers(filters),
+  });
+}
+
+export function useSupplierDetails(id: string) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.supplierDetails(id),
+    queryFn: () => supplierRepository.getSupplier(id),
+    enabled: !!id,
+  });
+}
+
+export function useSupplierStatement(id: string, filters: SupplierFilters = { pageNumber: 1, pageSize: 100 }) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.supplierStatement(id, filters),
+    queryFn: () => supplierRepository.getSupplierStatement(id, filters),
+    enabled: !!id,
   });
 }
 

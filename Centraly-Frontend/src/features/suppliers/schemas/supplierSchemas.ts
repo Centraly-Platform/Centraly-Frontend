@@ -17,6 +17,16 @@ export interface SupplierResponse {
   createdAt: string;
 }
 
+export interface SupplierStatementItemResponse {
+  date: string;
+  transactionType: string;
+  transactionId: string;
+  debit: number;
+  credit: number;
+  balanceAfter: number;
+  notes?: string;
+}
+
 export const createSupplierSchema = z.object({
   name: z.string().min(1, "اسم المورد مطلوب"),
   type: z.string().optional(),

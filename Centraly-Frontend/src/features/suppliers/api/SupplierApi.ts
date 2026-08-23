@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/axios";
 import { PaginatedList } from "@/shared/types/pagination";
-import { SupplierResponse, CreateSupplierRequest, UpdateSupplierRequest, SupplierFilters } from "../schemas/supplierSchemas";
+import { SupplierResponse, CreateSupplierRequest, UpdateSupplierRequest, SupplierFilters, SupplierStatementItemResponse } from "../schemas/supplierSchemas";
 
 export const supplierRepository = {
   getSuppliers: async (filters: SupplierFilters): Promise<PaginatedList<SupplierResponse>> => {
@@ -25,5 +25,10 @@ export const supplierRepository = {
   
   deleteSupplier: async (id: string): Promise<void> => {
     await apiClient.delete(`/suppliers/${id}`);
+  },
+
+  getSupplierStatement: async (id: string, filters: SupplierFilters): Promise<SupplierStatementItemResponse[]> => {
+    const response = await apiClient.get<SupplierStatementItemResponse[]>(`/suppliers/${id}/statement`, { params: filters });
+    return response.data;
   },
 };

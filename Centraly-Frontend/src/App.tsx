@@ -18,6 +18,7 @@ const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryP
 const PurchasesHistoryPage = lazy(() => import("./features/purchases/pages/PurchasesHistoryPage").then(module => ({ default: module.PurchasesHistoryPage })));
 const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
 const SuppliersPage = lazy(() => import("./features/suppliers/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
+const SupplierDetailsPage = lazy(() => import("./features/suppliers/pages/SupplierDetailsPage").then(module => ({ default: module.SupplierDetailsPage })));
 const DrawerPage = lazy(() => import("./features/finance/pages/DrawerPage").then(module => ({ default: module.DrawerPage })));
 const SafePage = lazy(() => import("./features/finance/pages/SafePage").then(module => ({ default: module.SafePage })));
 const ExpensesPage = lazy(() => import("./features/finance/pages/ExpensesPage").then(module => ({ default: module.ExpensesPage })));
@@ -98,9 +99,10 @@ export default function App() {
                   <Route path="/inventory/categories" element={<CategoriesPage />} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="جهات الاتصال" />}>
+                <Route element={<FeatureBoundaryLayout featureName="إدارة جهات الاتصال" />}>
                   <Route path="/contacts/customers" element={<CustomersPage />} />
                   <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                  <Route path="/contacts/suppliers/:id" element={<SupplierDetailsPage />} />
                 </Route>
 
                 <Route element={<FeatureBoundaryLayout featureName="المالية" />}>

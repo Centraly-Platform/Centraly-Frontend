@@ -1,0 +1,72 @@
+import { tokens } from '@/shared/styles/tokens';
+import { SupplierStatementItemResponse } from '../schemas/supplierSchemas';
+
+interface SupplierStatementCardProps {
+  statement?: SupplierStatementItemResponse[];
+  isLoading: boolean;
+}
+
+export function SupplierStatementCard({ statement, isLoading }: SupplierStatementCardProps) {
+  return (
+    <div className={`${tokens.card} bg-white overflow-hidden`}>
+      <div className="p-4 border-b border-gray-100">
+        <h3 className="text-lg font-bold text-gray-800">كشف الحساب (حركة المورد)</h3>
+      </div>
+      
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-right">
+          <thead className="bg-gray-50/50 text-gray-500 font-medium">
+            <tr>
+              <th className="px-4 py-3">التاريخ</th>
+              <th className="px-4 py-3">نوع الحركة</th>
+              <th className="px-4 py-3">رقم المرجع</th>
+              <th className="px-4 py-3">مدين (لنا)</th>
+              <th className="px-4 py-3">دائن (له)</th>
+              <th className="px-4 py-3">الرصيد بعد</th>
+              <th className="px-4 py-3">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 text-gray-700">
+            {isLoading ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                  جاري تحميل كشف الحساب...
+                </td>
+              </tr>
+            ) : statement && statement.length > 0 ? (
+              statement.map((item, idx) => (
+                <tr key={idx} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-4 py-3" dir="ltr">
+                    {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(item.date))}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">
+                      {item.transactionType}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-mono text-xs">{item.transactionId || '---'}</td>
+                  <td className="px-4 py-3 font-bold text-red-600">
+                    {item.debit > 0 ? new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.debit) : '-'}
+                  </td>
+                  <td className="px-4 py-3 font-bold text-green-600">
+                    {item.credit > 0 ? new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.credit) : '-'}
+                  </td>
+                  <td className="px-4 py-3 font-bold" dir="ltr">
+                    {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.balanceAfter)}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-gray-500">{item.notes || '---'}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-gray-400">
+                  لا توجد حركات مسجلة لهذا المورد حتى الآن.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

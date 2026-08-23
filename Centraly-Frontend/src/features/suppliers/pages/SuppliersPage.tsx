@@ -10,7 +10,10 @@ import { tokens } from '@/shared/styles/tokens';
 import * as z from 'zod';
 import { createSupplierSchema } from '../schemas/supplierSchemas';
 
+import { useNavigate } from 'react-router-dom';
+
 export function SuppliersPage() {
+  const navigate = useNavigate();
   const [pageIndex, setPageIndex] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -113,6 +116,7 @@ export function SuppliersPage() {
         onPrevPage={() => setPageIndex((p) => p - 1)}
         onEdit={openEditDrawer}
         onDelete={(supplier) => setSupplierToDelete(supplier)}
+        onRowClick={(supplier) => navigate(`/contacts/suppliers/${supplier.supplierId}`)}
       />
 
       {/* Delete Confirmation Modal */}
