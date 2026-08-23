@@ -1,9 +1,8 @@
-import { Trash2 } from 'lucide-react';
+import { Trash2, Package } from 'lucide-react';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { ProductStatusBadge } from './ProductStatusBadge';
 import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { PaginatedList } from '@/shared/types/pagination';
-import { tokens } from '@/shared/styles/tokens';
 
 interface ProductsTableProps {
   data?: PaginatedList<ProductResponse>;
@@ -15,9 +14,6 @@ interface ProductsTableProps {
   onRowClick?: (product: ProductResponse) => void;
 }
 
-/**
- * Products table — defines columns and delegates rendering to the shared DataTable.
- */
 export function ProductsTable({
   data,
   isLoading,
@@ -33,9 +29,9 @@ export function ProductsTable({
       cell: (row: ProductResponse) => (
         <div className="flex items-center">
           {row.imageUrl ? (
-            <img src={row.imageUrl} alt={row.name} className="w-10 h-10 rounded-lg object-cover border border-gray-200" />
+            <img src={row.imageUrl} alt={row.name} className="w-12 h-12 rounded-lg object-cover border border-gray-200 shadow-sm" />
           ) : (
-            <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200 text-gray-400 text-xs font-bold">
+            <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-200 text-gray-400 text-sm font-bold shadow-sm">
               {row.name ? row.name.charAt(0).toUpperCase() : '?'}
             </div>
           )}
@@ -45,36 +41,51 @@ export function ProductsTable({
     {
       header: 'اسم المنتج',
       cell: (row: ProductResponse) => (
-        <span className="font-semibold text-gray-900">{row.name}</span>
+        <span className="text-base font-bold text-gray-900">{row.name}</span>
       ),
     },
     {
       header: 'الباركود',
       cell: (row: ProductResponse) => (
-        <span className="text-gray-600 font-mono text-sm">{row.barcode || '---'}</span>
+        <span className="text-sm font-semibold text-gray-600 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-100">
+          {row.barcode || '---'}
+        </span>
       ),
     },
     {
       header: 'القسم',
       cell: (row: ProductResponse) => (
-        <div className="flex flex-col gap-1 items-start">
-          <span className={tokens.badge.indigo}>{row.category?.name || '---'}</span>
+        <div className="flex flex-col gap-1.5 items-start">
           {row.department?.name && (
-            <span className="text-xs text-gray-500">{row.department.name}</span>
+            <span className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-bold border border-blue-100">
+              {row.department.name}
+            </span>
           )}
+          <span className="bg-gray-50 text-gray-700 px-2.5 py-1 rounded-md text-xs font-semibold border border-gray-200">
+            {row.category?.name || '---'}
+          </span>
         </div>
       ),
     },
     {
       header: 'الكمية',
       cell: (row: ProductResponse) => (
-        <span className="font-semibold text-gray-800">{row.totalQuantity}</span>
+        <span className="text-base font-bold text-gray-800">{row.totalQuantity}</span>
+      ),
+    },
+    {
+      header: 'الدفعات',
+      cell: (row: ProductResponse) => (
+        <div className="flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md border border-indigo-100 w-fit">
+          <Package size={14} />
+          <span className="text-sm font-bold">{row.batches?.length || 0}</span>
+        </div>
       ),
     },
     {
       header: 'موقع التخزين',
       cell: (row: ProductResponse) => (
-        <span className="text-gray-600 text-sm">{row.storageLocation || '---'}</span>
+        <span className="text-sm font-semibold text-gray-700">{row.storageLocation || '---'}</span>
       ),
     },
     {
@@ -92,7 +103,7 @@ export function ProductsTable({
               e.stopPropagation();
               onDelete?.(row);
             }}
-            className="hover:text-red-500 transition-colors p-1"
+            className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
             title="حذف"
             aria-label="حذف المنتج"
           >
