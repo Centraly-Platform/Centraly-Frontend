@@ -14,11 +14,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DepartmentCard } from '@/features/inventory/components/DepartmentCard';
 import { DepartmentForm, CategoryForm, createDepartmentSchema, createCategorySchema } from '@/features/inventory/components/CategoryForms';
+import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
 
 export function CategoriesPage() {
   const [drawerMode, setDrawerMode] = useState<'department' | 'category'>('department');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [deleteInfo, setDeleteInfo] = useState<{ id: string, name: string, type: 'department' | 'category' } | null>(null);
 
   // Queries
   const { data: departmentsData, isLoading: isLoadingDeps } = useDepartments();
@@ -108,6 +110,15 @@ export function CategoriesPage() {
     }
   };
 
+  const handleConfirmDelete = () => {
+    if (!deleteInfo) return;
+    if (deleteInfo.type === 'department') {
+      deleteDepartment.mutate(deleteInfo.id, { onSuccess: () => setDeleteInfo(null) });
+    } else {
+      deleteCategory.mutate(deleteInfo.id, { onSuccess: () => setDeleteInfo(null) });
+    }
+  };
+
   const isSaving = createDepartment.isPending || updateDepartment.isPending || createCategory.isPending || updateCategory.isPending;
 
   const drawerFooter = (
@@ -172,17 +183,9 @@ export function CategoriesPage() {
             categories={categoriesByDep[dep.departmentId] || []}
             onAddCategory={openAddCategory}
             onEditDepartment={openEditDepartment}
-            onDeleteDepartment={(id, name) => {
-              if (confirm(`هل أنت متأكد من حذف القسم الرئيسي "${name}"؟`)) {
-                deleteDepartment.mutate(id);
-              }
-            }}
+            onDeleteDepartment={(id, name) => setDeleteInfo({ id, name, type: 'department' })}
             onEditCategory={openEditCategory}
-            onDeleteCategory={(id, name) => {
-              if (confirm(`هل أنت متأكد من حذف القسم الفرعي "${name}"؟`)) {
-                deleteCategory.mutate(id);
-              }
-            }}
+            onDeleteCategory={(id, name) => setDeleteInfo({ id, name, type: 'category' })}
           />
         ))}
 
@@ -222,6 +225,23 @@ export function CategoriesPage() {
         )}
       </RightDrawer>
 
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deleteInfo}
+        onClose={() => setDeleteInfo(null)}
+        onConfirm={handleConfirmDelete}
+        title={deleteInfo?.type === 'department' ? 'حذف قسم رئيسي' : 'حذف قسم فرعي'}
+        message={
+          <>
+            هل أنت متأكد من رغبتك في حذف <strong>{deleteInfo?.name}</strong>؟<br />
+            لا يمكن التراجع عن هذا الإجراء بعد تنفيذه.
+          </>
+        }
+        confirmText="نعم، احذف"
+        cancelText="إلغاء"
+        type="danger"
+        isLoading={deleteDepartment.isPending || deleteCategory.isPending}
+      />
     </div>
   );
 }
