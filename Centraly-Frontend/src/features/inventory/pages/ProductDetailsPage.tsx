@@ -9,6 +9,7 @@ import { AddProductForm } from '@/features/inventory/components/AddProductForm';
 import { ProductDetailsHeader } from '@/features/inventory/components/ProductDetailsHeader';
 import { ProductInfoCard } from '@/features/inventory/components/ProductInfoCard';
 import { ProductInventoryCard } from '@/features/inventory/components/ProductInventoryCard';
+import { ProductBatchesCard } from '@/features/inventory/components/ProductBatchesCard';
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ export function ProductDetailsPage() {
   const { data: categoriesData } = useCategories();
   const categories = categoriesData?.items || [];
 
-  if (isLoading) return <div className="p-8 text-center text-gray-500">جاري تحميل التفاصيل...</div>;
+  if (isLoading) return <div className="p-8 text-center text-gray-500">جاري تحميل تفاصيل المنتج...</div>;
   if (error || !product) return <div className="p-8 text-center text-red-500">حدث خطأ أثناء تحميل تفاصيل المنتج.</div>;
 
   const closeDrawer = () => setIsDrawerOpen(false);
@@ -67,8 +68,11 @@ export function ProductDetailsPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto pb-10">
       <ProductDetailsHeader product={product} onEditClick={() => setIsDrawerOpen(true)} />
+
+      {/* Batches are now prominently displayed first */}
+      <ProductBatchesCard product={product} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <ProductInfoCard product={product} />
