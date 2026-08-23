@@ -11,6 +11,7 @@ import { FeatureBoundaryLayout } from "./shared/components/errors/FeatureBoundar
 const LoginPage = lazy(() => import("./features/auth/pages/LoginPage").then(module => ({ default: module.LoginPage })));
 const DashboardPage = lazy(() => import("./features/dashboard/pages/DashboardPage").then(module => ({ default: module.DashboardPage })));
 const ProductsPage = lazy(() => import("./features/inventory/pages/ProductsPage").then(module => ({ default: module.ProductsPage })));
+const ProductDetailsPage = lazy(() => import("./features/inventory/pages/ProductDetailsPage").then(module => ({ default: module.ProductDetailsPage })));
 const CategoriesPage = lazy(() => import("./features/inventory/pages/CategoriesPage").then(module => ({ default: module.CategoriesPage })));
 const PosPage = lazy(() => import("./features/sales/pages/PosPage").then(module => ({ default: module.PosPage })));
 const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryPage").then(module => ({ default: module.SalesHistoryPage })));
@@ -93,6 +94,7 @@ export default function App() {
 
                 <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
                   <Route path="/inventory/products"   element={<ProductsPage />} />
+                  <Route path="/inventory/products/:id" element={<ProductDetailsPage />} />
                   <Route path="/inventory/categories" element={<CategoriesPage />} />
                 </Route>
 
