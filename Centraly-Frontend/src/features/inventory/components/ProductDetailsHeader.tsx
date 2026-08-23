@@ -1,4 +1,5 @@
-import { Edit, Package } from 'lucide-react';
+import { Edit, Package, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
 
 interface ProductDetailsHeaderProps {
@@ -7,6 +8,8 @@ interface ProductDetailsHeaderProps {
 }
 
 export function ProductDetailsHeader({ product, onEditClick }: ProductDetailsHeaderProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex justify-between items-start relative z-20 h-20">
       <div className="flex items-start gap-6 relative w-full">
@@ -37,7 +40,14 @@ export function ProductDetailsHeader({ product, onEditClick }: ProductDetailsHea
         </div>
       </div>
 
-      <div className="pt-2 shrink-0">
+      <div className="pt-2 shrink-0 flex items-center gap-2">
+        <button 
+          onClick={() => navigate(-1)} 
+          className="flex items-center justify-center w-10 h-10 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 rounded-lg transition-colors shadow-sm"
+          title="رجوع"
+        >
+          <ArrowRight size={18} />
+        </button>
         <button 
           onClick={onEditClick}
           className="flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm"
