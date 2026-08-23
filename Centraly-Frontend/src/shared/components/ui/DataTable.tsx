@@ -17,6 +17,7 @@ interface DataTableProps<T> {
   pageSize: number;
   onNextPage: () => void;
   onPrevPage: () => void;
+  onRowClick?: (row: T) => void;
 }
 
 export function DataTable<T>({
@@ -29,6 +30,7 @@ export function DataTable<T>({
   pageSize,
   onNextPage,
   onPrevPage,
+  onRowClick,
 }: DataTableProps<T>) {
   const from = totalCount === 0 ? 0 : (pageIndex - 1) * pageSize + 1;
   const to = Math.min(pageIndex * pageSize, totalCount);
@@ -67,7 +69,11 @@ export function DataTable<T>({
               </tr>
             ) : (
               data.map((row, ri) => (
-                <tr key={ri} className="hover:bg-gray-50 transition-colors">
+                <tr 
+                  key={ri} 
+                  className={`transition-colors ${onRowClick ? 'hover:bg-gray-50 cursor-pointer' : 'hover:bg-gray-50'}`}
+                  onClick={() => onRowClick?.(row)}
+                >
                   {columns.map((col, ci) => (
                     <td key={ci} className="px-6 py-4">
                       {col.cell

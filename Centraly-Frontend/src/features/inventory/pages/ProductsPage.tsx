@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import * as z from 'zod';
+import { useNavigate } from 'react-router-dom';
 import { createProductSchema, CreateProductRequest } from '../schemas/inventorySchemas';
 import { useProducts, useCategories, useCreateProduct } from '@/features/inventory/hooks/useInventory';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
@@ -9,7 +10,7 @@ import { AddProductForm } from '@/features/inventory/components/AddProductForm';
 import { tokens } from '@/shared/styles/tokens';
 
 /**
- * ProductsPage — composes feature components only.
+ * ProductsPage – composes feature components only.
  * No inline UI, no column definitions, no form markup lives here.
  * Responsible only for: state management + data fetching + event wiring.
  */
@@ -18,6 +19,7 @@ export function ProductsPage() {
   const [searchTerm, setSearchTerm]       = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [isDrawerOpen, setIsDrawerOpen]   = useState(false);
+  const navigate                          = useNavigate();
 
   const { data, isLoading }  = useProducts({
     pageNumber: pageIndex,
@@ -106,6 +108,7 @@ export function ProductsPage() {
         pageIndex={pageIndex}
         onNextPage={() => setPageIndex((p) => p + 1)}
         onPrevPage={() => setPageIndex((p) => p - 1)}
+        onRowClick={(row) => navigate(`/inventory/products/${row.productId}`)}
       />
 
       {/* Add product drawer */}

@@ -1,10 +1,10 @@
 import { useForm, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from "zod";
-import { createProductSchema, CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { useDepartments } from '@/features/inventory/hooks/useInventory';
 import { tokens } from '@/shared/styles/tokens';
 import { Plus, Trash2 } from 'lucide-react';
+import { ProductResponse, CategoryResponse, createProductSchema } from '../schemas/inventorySchemas';
 
 type ProductFormValues = z.infer<typeof createProductSchema>;
 
@@ -12,9 +12,10 @@ interface AddProductFormProps {
   categories?: CategoryResponse[];
   onSubmit: (data: ProductFormValues) => void;
   isSubmitting: boolean;
+  initialData?: ProductResponse;
 }
 
-export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddProductFormProps) {
+export function AddProductForm({ categories, onSubmit, initialData, isSubmitting: _ }: AddProductFormProps) {
   const {
     register,
     handleSubmit,
@@ -23,7 +24,15 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createProductSchema),
-    defaultValues: { minQuantityAlert: 5, categoryId: '', departmentId: '', propertiesList: [] },
+    defaultValues: initialData ? {
+      name: initialData.name,
+      barcode: initialData.barcode || '',
+      categoryId: initialData.category?.categoryId || '',
+      departmentId: initialData.department?.departmentId || '',
+      minQuantityAlert: initialData.minQuantityAlert,
+      storageLocation: initialData.storageLocation || '',
+      propertiesList: Object.entries(initialData.properties || {}).map(([key, value]) => ({ key, value: value as string }))
+    } : { minQuantityAlert: 5, categoryId: '', departmentId: '', propertiesList: [] },
   });
 
   const { fields, append, remove } = useFieldArray({

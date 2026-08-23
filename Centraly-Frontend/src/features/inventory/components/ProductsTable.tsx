@@ -1,4 +1,4 @@
-import { Edit, Eye, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { ProductStatusBadge } from './ProductStatusBadge';
 import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
@@ -13,7 +13,7 @@ interface ProductsTableProps {
   onPrevPage: () => void;
   onEdit?: (product: ProductResponse) => void;
   onDelete?: (product: ProductResponse) => void;
-  onViewBatches?: (product: ProductResponse) => void;
+  onRowClick?: (product: ProductResponse) => void;
 }
 
 /**
@@ -26,9 +26,8 @@ export function ProductsTable({
   pageIndex,
   onNextPage,
   onPrevPage,
-  onEdit,
   onDelete,
-  onViewBatches,
+  onRowClick,
 }: ProductsTableProps) {
   const columns = [
     {
@@ -85,23 +84,10 @@ export function ProductsTable({
       cell: (row: ProductResponse) => (
         <div className="flex justify-center gap-3 text-gray-400">
           <button
-            onClick={() => onViewBatches?.(row)}
-            className="hover:text-blue-600 transition-colors"
-            title="عرض الدفعات"
-            aria-label="عرض الدفعات"
-          >
-            <Eye size={18} />
-          </button>
-          <button
-            onClick={() => onEdit?.(row)}
-            className="hover:text-amber-500 transition-colors"
-            title="تعديل"
-            aria-label="تعديل المنتج"
-          >
-            <Edit size={18} />
-          </button>
-          <button
-            onClick={() => onDelete?.(row)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete?.(row);
+            }}
             className="hover:text-red-500 transition-colors"
             title="حذف"
             aria-label="حذف المنتج"
@@ -124,6 +110,7 @@ export function ProductsTable({
       pageSize={10}
       onNextPage={onNextPage}
       onPrevPage={onPrevPage}
+      onRowClick={onRowClick}
     />
   );
 }
