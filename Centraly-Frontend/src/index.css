@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* =========================================
+   CENTRALY DESIGN SYSTEM
+   Based on Design Spec v1.0
+   Font: Cairo (400, 600, 700) from Google Fonts
+   Direction: RTL
+   ========================================= */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #f8fafc; /* slate-50 */
+    color: #374151; /* gray-700 */
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
