@@ -183,7 +183,7 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
           type="file"
           accept="image/*"
           className={tokens.input}
-          {...register('image')}
+          name="image"
           onChange={(e) => {
             const file = e.target.files?.[0];
             setValue('image', file || undefined, { shouldValidate: true });
