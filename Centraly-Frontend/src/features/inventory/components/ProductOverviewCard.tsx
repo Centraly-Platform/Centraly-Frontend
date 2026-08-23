@@ -10,21 +10,21 @@ export function ProductOverviewCard({ product }: ProductOverviewCardProps) {
   const isLowStock = !isOutOfStock && product.totalQuantity <= product.minQuantityAlert;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative z-10">
+      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
         <div className="flex items-center justify-end gap-3 w-full">
           <div className="text-right">
-            <h2 className="text-xl font-bold text-gray-900">المعلومات الأساسية</h2>
-            <p className="text-sm text-gray-500 mt-1">المعلومات الرئيسية للمنتج</p>
+            <h2 className="text-lg font-bold text-gray-900">المعلومات الأساسية</h2>
+            <p className="text-xs text-gray-500 mt-0.5">المعلومات الرئيسية للمنتج</p>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-            <Info size={24} />
+          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shadow-sm">
+            <Info size={20} />
           </div>
         </div>
       </div>
       
-      <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           
           {/* Col 1 */}
           <div className="space-y-4">
@@ -104,14 +104,14 @@ export function ProductOverviewCard({ product }: ProductOverviewCardProps) {
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) {
   return (
-    <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between hover:bg-gray-100 transition-colors">
-      <div className="flex items-center gap-4">
-        <div className="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 shadow-sm">
+    <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between hover:bg-gray-100 transition-colors">
+      <div className="flex items-center gap-3">
+        <div className="w-9 h-9 bg-white rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 shadow-sm">
           {icon}
         </div>
         <span className="text-sm font-semibold text-gray-600">{label}</span>
       </div>
-      <div className="font-bold text-gray-900 text-lg text-left" dir="ltr">
+      <div className="font-bold text-gray-900 text-base text-left" dir="ltr">
         {value}
       </div>
     </div>

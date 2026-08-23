@@ -69,7 +69,7 @@ export function ProductDetailsPage() {
   );
 
   return (
-    <div className="space-y-8 w-full pb-10">
+    <div className="space-y-4 w-full pb-10 pt-4">
       <ProductDetailsHeader product={product} onEditClick={() => setIsDrawerOpen(true)} />
       
       <ProductBatchesCard product={product} />
