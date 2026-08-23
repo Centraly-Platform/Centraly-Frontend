@@ -1,22 +1,24 @@
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./features/auth/hooks/useAuth";
 import { AppLayout } from "./shared/components/layout/AppLayout";
+import { PageLoader } from "./shared/components/ui/PageLoader";
 
-// Pages
-import { LoginPage } from "./features/auth/pages/LoginPage";
-import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
-import { ProductsPage } from "./features/inventory/pages/ProductsPage";
-import { CategoriesPage } from "./features/inventory/pages/CategoriesPage";
-import { PosPage } from "./features/sales/pages/PosPage";
-import { SalesHistoryPage } from "./features/sales/pages/SalesHistoryPage";
-import { PurchasesHistoryPage } from "./features/purchases/pages/PurchasesHistoryPage";
-import { CustomersPage } from "./features/contacts/pages/CustomersPage";
-import { SuppliersPage } from "./features/contacts/pages/SuppliersPage";
-import { DrawerPage } from "./features/finance/pages/DrawerPage";
-import { SafePage } from "./features/finance/pages/SafePage";
-import { ExpensesPage } from "./features/finance/pages/ExpensesPage";
+// Lazy Loaded Pages
+const LoginPage = lazy(() => import("./features/auth/pages/LoginPage").then(module => ({ default: module.LoginPage })));
+const DashboardPage = lazy(() => import("./features/dashboard/pages/DashboardPage").then(module => ({ default: module.DashboardPage })));
+const ProductsPage = lazy(() => import("./features/inventory/pages/ProductsPage").then(module => ({ default: module.ProductsPage })));
+const CategoriesPage = lazy(() => import("./features/inventory/pages/CategoriesPage").then(module => ({ default: module.CategoriesPage })));
+const PosPage = lazy(() => import("./features/sales/pages/PosPage").then(module => ({ default: module.PosPage })));
+const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryPage").then(module => ({ default: module.SalesHistoryPage })));
+const PurchasesHistoryPage = lazy(() => import("./features/purchases/pages/PurchasesHistoryPage").then(module => ({ default: module.PurchasesHistoryPage })));
+const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
+const SuppliersPage = lazy(() => import("./features/contacts/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
+const DrawerPage = lazy(() => import("./features/finance/pages/DrawerPage").then(module => ({ default: module.DrawerPage })));
+const SafePage = lazy(() => import("./features/finance/pages/SafePage").then(module => ({ default: module.SafePage })));
+const ExpensesPage = lazy(() => import("./features/finance/pages/ExpensesPage").then(module => ({ default: module.ExpensesPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,44 +48,47 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Toaster position="top-center" richColors />
-          <Routes>
-            {/* Public */}
-            <Route path="/login" element={<LoginPage />} />
+          
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Public */}
+              <Route path="/login" element={<LoginPage />} />
 
-            {/* Protected — wrapped in AppLayout */}
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route path="/"                   element={<DashboardPage />} />
+              {/* Protected — wrapped in AppLayout */}
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="/"                   element={<DashboardPage />} />
 
-              <Route path="/sales/pos"          element={<PosPage />} />
-              <Route path="/sales/history"      element={<SalesHistoryPage />} />
-              <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
+                <Route path="/sales/pos"          element={<PosPage />} />
+                <Route path="/sales/history"      element={<SalesHistoryPage />} />
+                <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
 
-              <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
-              <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
-              <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
+                <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
+                <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
+                <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
 
-              <Route path="/inventory/products"   element={<ProductsPage />} />
-              <Route path="/inventory/categories" element={<CategoriesPage />} />
+                <Route path="/inventory/products"   element={<ProductsPage />} />
+                <Route path="/inventory/categories" element={<CategoriesPage />} />
 
-              <Route path="/contacts/customers" element={<CustomersPage />} />
-              <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                <Route path="/contacts/customers" element={<CustomersPage />} />
+                <Route path="/contacts/suppliers" element={<SuppliersPage />} />
 
-              <Route path="/finance/drawer"   element={<DrawerPage />} />
-              <Route path="/finance/safe"     element={<SafePage />} />
-              <Route path="/finance/expenses" element={<ExpensesPage />} />
+                <Route path="/finance/drawer"   element={<DrawerPage />} />
+                <Route path="/finance/safe"     element={<SafePage />} />
+                <Route path="/finance/expenses" element={<ExpensesPage />} />
 
-              <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
-            </Route>
+                <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
+              </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
