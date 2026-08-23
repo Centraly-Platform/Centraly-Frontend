@@ -47,7 +47,7 @@ export function AppLayout() {
         {/* Page Header */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            {showBackButton && <BackButton to={backPath} />}
+            <BackButton to={backPath} />
             <h1 className="text-xl font-bold text-gray-800">{title}</h1>
           </div>
 
