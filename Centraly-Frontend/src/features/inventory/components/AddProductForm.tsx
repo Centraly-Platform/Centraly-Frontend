@@ -1,14 +1,16 @@
 import { useForm, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from "zod";
 import { createProductSchema, CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { useDepartments } from '@/features/inventory/hooks/useInventory';
 import { tokens } from '@/shared/styles/tokens';
 import { Plus, Trash2 } from 'lucide-react';
 
+type ProductFormValues = z.infer<typeof createProductSchema>;
+
 interface AddProductFormProps {
   categories?: CategoryResponse[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onSubmit: (data: any) => void;
+  onSubmit: (data: ProductFormValues) => void;
   isSubmitting: boolean;
 }
 

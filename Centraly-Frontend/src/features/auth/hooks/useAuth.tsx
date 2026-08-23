@@ -44,8 +44,9 @@ export function useLogin() {
       storage.setToken(data.token);
       window.location.href = '/';
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || "فشل تسجيل الدخول. تحقق من البيانات.";
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { message?: string } } };
+      const message = err.response?.data?.message || "فشل تسجيل الدخول. تحقق من البيانات.";
       toast.error(message);
     },
   });

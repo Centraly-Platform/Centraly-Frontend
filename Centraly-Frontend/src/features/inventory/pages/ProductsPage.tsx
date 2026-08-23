@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import * as z from 'zod';
+import { createProductSchema, CreateProductRequest } from '../schemas/inventorySchemas';
 import { useProducts, useCategories, useCreateProduct } from '@/features/inventory/hooks/useInventory';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
 import { ProductFilters } from '@/features/inventory/components/ProductFilters';
@@ -39,28 +41,33 @@ export function ProductsPage() {
     setPageIndex(1);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleFormSubmit = (formData: any) => {
-    // react-hook-form returns a FileList for file inputs
-    const finalData = { ...formData };
-    if (finalData.image && finalData.image.length > 0) {
-      finalData.image = finalData.image[0]; // extract File
-    } else {
-      delete finalData.image; // remove if empty
+  const handleFormSubmit = (formData: z.infer<typeof createProductSchema>) => {
+    // We must send `CreateProductRequest` format (some fields differ from form schema)
+    const payload: CreateProductRequest = { 
+      name: formData.name,
+      departmentId: formData.departmentId,
+      categoryId: formData.categoryId,
+      minQuantityAlert: formData.minQuantityAlert,
+      barcode: formData.barcode,
+      storageLocation: formData.storageLocation,
+    };
+    
+    if (formData.image && formData.image.length > 0) {
+      payload.image = formData.image[0] as File; // extract File
     }
 
     // Convert propertiesList array to properties Record<string, string>
-    if (finalData.propertiesList && finalData.propertiesList.length > 0) {
-      finalData.properties = {};
-      finalData.propertiesList.forEach((p: { key: string; value: string }) => {
+    if (formData.propertiesList && formData.propertiesList.length > 0) {
+      payload.properties = {};
+      formData.propertiesList.forEach((p: { key: string; value: string }) => {
         if (p.key && p.value) {
-          finalData.properties[p.key] = p.value;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          payload.properties![p.key] = p.value;
         }
       });
     }
-    delete finalData.propertiesList;
 
-    createProduct.mutate(finalData, { onSuccess: closeDrawer });
+    createProduct.mutate(payload, { onSuccess: closeDrawer });
   };
 
   const drawerFooter = (

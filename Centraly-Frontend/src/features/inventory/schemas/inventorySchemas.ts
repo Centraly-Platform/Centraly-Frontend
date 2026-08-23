@@ -33,8 +33,7 @@ export const createProductSchema = z.object({
   name: z.string().min(1, "اسم المنتج مطلوب"),
   departmentId: z.string().min(1, "القسم الفرعي مطلوب"),
   categoryId: z.string().min(1, "القسم الرئيسي مطلوب"),
-  // Note: File validation in zod is tricky on the client, we'll type it as any for the form
-  image: z.any().optional(),
+  image: z.custom<FileList>((val) => val instanceof FileList, "يجب أن يكون ملفًا").optional().or(z.any()),
   minQuantityAlert: z.coerce.number().min(0, "يجب أن تكون 0 أو أكثر"),
   storageLocation: z.string().optional(),
   propertiesList: z.array(z.object({
