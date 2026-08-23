@@ -7,9 +7,10 @@ import { tokens } from '@/shared/styles/tokens';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
 import { AddProductForm } from '@/features/inventory/components/AddProductForm';
 import { ProductDetailsHeader } from '@/features/inventory/components/ProductDetailsHeader';
-import { ProductInfoCard } from '@/features/inventory/components/ProductInfoCard';
-import { ProductInventoryCard } from '@/features/inventory/components/ProductInventoryCard';
 import { ProductBatchesCard } from '@/features/inventory/components/ProductBatchesCard';
+import { ProductPropertiesCard } from '@/features/inventory/components/ProductPropertiesCard';
+import { ProductOverviewCard } from '@/features/inventory/components/ProductOverviewCard';
+import { ProductNotesCard } from '@/features/inventory/components/ProductNotesCard';
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,16 +69,16 @@ export function ProductDetailsPage() {
   );
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-10">
+    <div className="space-y-8 w-full pb-10">
       <ProductDetailsHeader product={product} onEditClick={() => setIsDrawerOpen(true)} />
-
-      {/* Batches are now prominently displayed first */}
+      
       <ProductBatchesCard product={product} />
+      
+      <ProductPropertiesCard product={product} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <ProductInfoCard product={product} />
-        <ProductInventoryCard product={product} />
-      </div>
+      <ProductOverviewCard product={product} />
+
+      <ProductNotesCard />
 
       <RightDrawer
         isOpen={isDrawerOpen}
