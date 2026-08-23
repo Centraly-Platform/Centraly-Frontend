@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePurchaseInvoice } from '../hooks/usePurchases';
-import { ArrowRight, Printer, AlertCircle } from 'lucide-react';
+import { Printer, AlertCircle } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
+import { BackButton } from '@/shared/components/ui/BackButton';
 
 export function PurchaseInvoiceDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -31,13 +32,7 @@ export function PurchaseInvoiceDetailsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => navigate('/purchases/history')}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            title="رجوع"
-          >
-            <ArrowRight size={20} className="text-gray-600" />
-          </button>
+          <BackButton to="/purchases/history" />
           <div>
             <h1 className="text-2xl font-bold text-gray-800">
               فاتورة مشتريات #{invoice.invoiceNumber}

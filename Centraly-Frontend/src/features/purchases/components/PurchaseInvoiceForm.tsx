@@ -190,8 +190,15 @@ export function PurchaseInvoiceForm({ onSubmit, isSubmitting }: PurchaseInvoiceF
                         <input
                           type="number"
                           min="1"
-                          className={`${tokens.input} py-1 px-2 text-center`}
+                          step="1"
+                          className={`${tokens.input} py-1 px-2 text-center w-20`}
                           {...register(`items.${index}.quantity`, { valueAsNumber: true })}
+                          onFocus={(e) => e.target.select()}
+                          onBlur={(e) => {
+                            if (!e.target.value || Number(e.target.value) < 1) {
+                              setValue(`items.${index}.quantity`, 1, { shouldValidate: true });
+                            }
+                          }}
                         />
                       </td>
                       <td className="px-4 py-3">

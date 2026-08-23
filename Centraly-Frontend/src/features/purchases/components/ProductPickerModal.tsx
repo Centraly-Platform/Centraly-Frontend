@@ -197,9 +197,9 @@ export function ProductPickerModal({
         </div>
 
         <div className="px-6 py-3 border-b border-[var(--color-border)] shrink-0 bg-gray-50/50">
-          <div className="flex flex-wrap gap-3 items-center">
+          <div className="grid grid-cols-3 gap-3 items-center">
             {/* Search */}
-            <div className="relative flex-1 min-w-[220px]">
+            <div className="relative">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input
                 type="text"
@@ -214,7 +214,7 @@ export function ProductPickerModal({
               />
             </div>
 
-            {/* Filters side by side */}
+            {/* Main category filter */}
             <select
               value={departmentId}
               onChange={(e) => {
@@ -222,7 +222,7 @@ export function ProductPickerModal({
                 setCategoryId('');
                 setPageIndex(1);
               }}
-              className={`${tokens.select} min-w-[150px] flex-none`}
+              className={tokens.select}
             >
               <option value="">الأقسام الرئيسية</option>
               {departments.map((dep) => (
@@ -232,13 +232,14 @@ export function ProductPickerModal({
               ))}
             </select>
 
+            {/* Sub category filter */}
             <select
               value={categoryId}
               onChange={(e) => {
                 setCategoryId(e.target.value);
                 setPageIndex(1);
               }}
-              className={`${tokens.select} min-w-[150px] flex-none`}
+              className={tokens.select}
             >
               <option value="">الأقسام الفرعية</option>
               {categories
