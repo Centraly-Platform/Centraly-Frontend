@@ -34,31 +34,50 @@ export function ProductsTable({
     {
       header: 'المنتج',
       cell: (row: ProductResponse) => (
-        <span className="font-medium text-gray-900">{row.name}</span>
+        <div className="flex items-center gap-3">
+          {row.imageUrl ? (
+            <img src={row.imageUrl} alt={row.name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 text-gray-400 text-xs font-bold">
+              {row.name ? row.name.charAt(0).toUpperCase() : '?'}
+            </div>
+          )}
+          <div className="flex flex-col">
+            <span className="font-medium text-gray-900">{row.name}</span>
+            <span className="text-xs text-gray-500">{row.barcode || 'بدون باركود'}</span>
+          </div>
+        </div>
       ),
     },
     {
-      header: 'الباركود',
-      cell: (row: ProductResponse) => (
-        <span className={tokens.font.muted}>{row.barcode || '---'}</span>
-      ),
+      header: 'سعر البيع',
+      cell: (row: ProductResponse) => {
+        // Get retail price from the latest/first batch if available
+        const latestBatch = row.batches?.[0];
+        const price = latestBatch ? latestBatch.retailPrice : 0;
+        return <span className="font-semibold text-emerald-600">{price.toFixed(2)} ج.م</span>;
+      },
     },
     {
       header: 'القسم',
       cell: (row: ProductResponse) => (
-        <span className={tokens.badge.indigo}>{row.category?.name || '---'}</span>
+        <div className="flex flex-col gap-1 items-start">
+          <span className={tokens.badge.indigo}>{row.category?.name || '---'}</span>
+          {row.department?.name && (
+            <span className="text-xs text-gray-500">{row.department.name}</span>
+          )}
+        </div>
       ),
     },
     {
-      header: 'الكمية المتوفرة',
+      header: 'الكمية والمخزون',
       cell: (row: ProductResponse) => (
-        <ProductStatusBadge quantity={row.totalQuantity} reorderLevel={row.minQuantityAlert} />
-      ),
-    },
-    {
-      header: 'حد الطلب',
-      cell: (row: ProductResponse) => (
-        <span className={tokens.font.muted}>{row.minQuantityAlert}</span>
+        <div className="flex flex-col gap-1 items-start">
+          <ProductStatusBadge quantity={row.totalQuantity} reorderLevel={row.minQuantityAlert} />
+          {row.storageLocation && (
+            <span className="text-xs text-gray-400">المكان: {row.storageLocation}</span>
+          )}
+        </div>
       ),
     },
     {
