@@ -28,12 +28,19 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end" dir="rtl">
+    <div 
+      className="fixed inset-0 z-50 flex justify-end" 
+      dir="rtl"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="drawer-title"
+    >
       {/* Semi-transparent overlay */}
       <div
         className="absolute inset-0"
         style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Drawer Panel — w-[450px] fixed, slides from right */}
@@ -41,9 +48,10 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
         
         {/* Drawer Header — h-16, bg-gray-50 */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">
-          <h2 className="text-lg font-bold text-gray-800">{title}</h2>
+          <h2 id="drawer-title" className="text-lg font-bold text-gray-800">{title}</h2>
           <button
             onClick={onClose}
+            aria-label="إغلاق"
             className="text-gray-400 hover:text-gray-600 hover:bg-gray-200 p-1.5 rounded-lg transition-colors"
           >
             <X size={20} />

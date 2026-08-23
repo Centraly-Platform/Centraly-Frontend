@@ -69,6 +69,7 @@ export function ProductsTable({
             onClick={() => onViewBatches?.(row)}
             className="hover:text-blue-600 transition-colors"
             title="عرض الدفعات"
+            aria-label="عرض الدفعات"
           >
             <Eye size={18} />
           </button>
@@ -76,6 +77,7 @@ export function ProductsTable({
             onClick={() => onEdit?.(row)}
             className="hover:text-amber-500 transition-colors"
             title="تعديل"
+            aria-label="تعديل المنتج"
           >
             <Edit size={18} />
           </button>
@@ -83,6 +85,7 @@ export function ProductsTable({
             onClick={() => onDelete?.(row)}
             className="hover:text-red-500 transition-colors"
             title="حذف"
+            aria-label="حذف المنتج"
           >
             <Trash2 size={18} />
           </button>
