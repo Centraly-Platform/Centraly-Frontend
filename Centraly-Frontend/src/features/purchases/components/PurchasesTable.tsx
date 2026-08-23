@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/shared/utils/currency';
 import { PurchaseInvoiceResponse } from '../schemas/purchaseSchemas';
 import { PaginatedList } from '@/shared/types/pagination';
 import { DataTable } from '@/shared/components/ui/DataTable';
@@ -44,7 +45,7 @@ export function PurchasesTable({
       header: 'الإجمالي',
       cell: (row: PurchaseInvoiceResponse) => (
         <span className="font-bold text-gray-900">
-          {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(row.totalAmount)}
+          {formatCurrency(row.totalAmount)}
         </span>
       ),
     },
@@ -52,7 +53,7 @@ export function PurchasesTable({
       header: 'المدفوع',
       cell: (row: PurchaseInvoiceResponse) => (
         <span className="text-green-600 font-bold">
-          {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(row.paidAmount)}
+          {formatCurrency(row.paidAmount)}
         </span>
       ),
     },
@@ -60,7 +61,7 @@ export function PurchasesTable({
       header: 'المتبقي',
       cell: (row: PurchaseInvoiceResponse) => (
         <span className={`${row.remainingAmount > 0 ? 'text-red-600' : 'text-gray-900'} font-bold`}>
-          {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(row.remainingAmount)}
+          {formatCurrency(row.remainingAmount)}
         </span>
       ),
     },

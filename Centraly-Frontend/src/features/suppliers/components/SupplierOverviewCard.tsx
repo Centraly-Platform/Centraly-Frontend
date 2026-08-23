@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/shared/utils/currency';
 import { tokens } from '@/shared/styles/tokens';
 import { SupplierResponse } from '../schemas/supplierSchemas';
 import { Phone, MapPin, Tag } from 'lucide-react';
@@ -53,7 +54,7 @@ export function SupplierOverviewCard({ supplier }: SupplierOverviewCardProps) {
         <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex flex-col items-center justify-center text-center">
           <span className="text-sm text-gray-500 font-medium mb-1">الرصيد الحالي للمورد</span>
           <span className={`text-2xl font-bold ${isOwedByUs ? 'text-red-600' : isOwedToUs ? 'text-green-600' : 'text-gray-900'}`}>
-            {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(Math.abs(supplier.debtBalance))}
+            {formatCurrency(Math.abs(supplier.debtBalance))}
           </span>
           <span className="text-xs text-gray-500 mt-1 font-medium">
             {isOwedByUs ? '(مطلوب سداده للمورد)' : isOwedToUs ? '(دفعنا بزيادة - لنا عند المورد)' : '(الحساب خالص ومُصَفَّر)'}

@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/shared/utils/currency';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createPurchaseInvoiceSchema, CreatePurchaseInvoiceRequest } from '../schemas/purchaseSchemas';
@@ -164,7 +165,7 @@ export function PurchaseInvoiceForm({ onSubmit, isSubmitting }: PurchaseInvoiceF
                       />
                     </td>
                     <td className="px-4 py-3 font-bold text-gray-900" dir="ltr">
-                      {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(total)}
+                      {formatCurrency(total)}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <button
@@ -219,20 +220,20 @@ export function PurchaseInvoiceForm({ onSubmit, isSubmitting }: PurchaseInvoiceF
             <div className="flex justify-between items-center text-lg">
               <span className="text-gray-600">إجمالي الفاتورة:</span>
               <span className="font-bold text-gray-900">
-                {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(totalInvoice)}
+                {formatCurrency(totalInvoice)}
               </span>
             </div>
             <div className="flex justify-between items-center text-lg text-green-700">
               <span>المدفوع:</span>
               <span className="font-bold">
-                {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(watchPaidAmount || 0)}
+                {formatCurrency(watchPaidAmount || 0)}
               </span>
             </div>
             <div className="h-px bg-gray-300 w-full" />
             <div className="flex justify-between items-center text-xl">
               <span className="text-gray-800 font-bold">المتبقي للمورد:</span>
               <span className={`font-bold ${remaining > 0 ? 'text-red-600' : 'text-gray-900'}`}>
-                {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(remaining)}
+                {formatCurrency(remaining)}
               </span>
             </div>
             

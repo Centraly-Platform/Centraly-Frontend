@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/shared/utils/currency';
 import { Trash2, Edit } from 'lucide-react';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { SupplierResponse } from '../schemas/supplierSchemas';
@@ -43,7 +44,7 @@ export function SuppliersTable({
       header: 'الرصيد المستحق',
       cell: (row: SupplierResponse) => (
         <span className={`text-base font-bold ${row.debtBalance > 0 ? 'text-red-600' : row.debtBalance < 0 ? 'text-green-600' : 'text-gray-900'}`}>
-          {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(row.debtBalance)}
+          {formatCurrency(row.debtBalance)}
         </span>
       ),
     },

@@ -1,3 +1,4 @@
+import { formatCurrency } from '@/shared/utils/currency';
 import { tokens } from '@/shared/styles/tokens';
 import { SupplierStatementItemResponse } from '../schemas/supplierSchemas';
 
@@ -55,13 +56,13 @@ export function SupplierStatementCard({ statement, isLoading }: SupplierStatemen
                     </span>
                   </td>
                   <td className="px-4 py-3 font-bold text-red-600">
-                    {item.debit > 0 ? new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.debit) : '-'}
+                    {item.debit > 0 ? formatCurrency(item.debit) : '-'}
                   </td>
                   <td className="px-4 py-3 font-bold text-green-600">
-                    {item.credit > 0 ? new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.credit) : '-'}
+                    {item.credit > 0 ? formatCurrency(item.credit) : '-'}
                   </td>
                   <td className="px-4 py-3 font-bold" dir="ltr">
-                    {new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP' }).format(item.balanceAfter)}
+                    {formatCurrency(item.balanceAfter)}
                   </td>
                   <td className="px-4 py-3 text-xs text-gray-500">{item.notes || '---'}</td>
                 </tr>
