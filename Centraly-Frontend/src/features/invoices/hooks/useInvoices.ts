@@ -1,21 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { invoicesRepository } from "../api/InvoicesApi";
-import { RequestFilters } from "@/shared/types/pagination";
-import { CreateSalesInvoiceRequest, CreatePurchaseInvoiceRequest } from "../schemas/invoiceSchemas";
+
+import { 
+  CreateSalesInvoiceRequest, 
+  CreatePurchaseInvoiceRequest,
+  InvoiceFilters
+} from "../schemas/invoiceSchemas";
 import { CreateSupplierReturnRequest } from "../schemas/returnSchemas";
 import { toast } from "sonner";
 
 export const INVOICE_KEYS = {
-  sales: (filters: RequestFilters) => ["salesInvoices", filters] as const,
+  sales: (filters: InvoiceFilters) => ["salesInvoices", filters] as const,
   salesDetails: (id: string) => ["salesInvoices", id] as const,
   
-  purchases: (filters: RequestFilters) => ["purchaseInvoices", filters] as const,
+  purchases: (filters: InvoiceFilters) => ["purchaseInvoices", filters] as const,
   purchaseDetails: (id: string) => ["purchaseInvoices", id] as const,
 };
 
 // --- Sales Invoices ---
 
-export function useSalesInvoices(filters: RequestFilters) {
+export function useSalesInvoices(filters: InvoiceFilters) {
   return useQuery({
     queryKey: INVOICE_KEYS.sales(filters),
     queryFn: () => invoicesRepository.getSalesInvoices(filters),
@@ -44,7 +48,7 @@ export function useCreateSalesInvoice() {
 
 // --- Purchase Invoices ---
 
-export function usePurchaseInvoices(filters: RequestFilters) {
+export function usePurchaseInvoices(filters: InvoiceFilters) {
   return useQuery({
     queryKey: INVOICE_KEYS.purchases(filters),
     queryFn: () => invoicesRepository.getPurchaseInvoices(filters),

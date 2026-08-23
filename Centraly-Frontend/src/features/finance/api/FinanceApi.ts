@@ -1,11 +1,12 @@
 import { apiClient } from "@/lib/axios";
 import { IFinanceRepository } from "@/core/repositories/IFinanceRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   OpenSessionRequest, DrawerSessionResponse, AddManualTransactionRequest,
   CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest,
   CreateExpenseCategoryRequest, ExpenseCategoryResponse,
-  CreateExpenseRequest, ExpenseResponse
+  CreateExpenseRequest, ExpenseResponse,
+  FinanceFilters
 } from "../schemas/financeSchemas";
 
 export class FinanceRepository implements IFinanceRepository {
@@ -45,7 +46,7 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async getSafeTransactions(safeId: string, filters: RequestFilters): Promise<PaginatedList<SafeTransactionResponse>> {
+  async getSafeTransactions(safeId: string, filters: FinanceFilters): Promise<PaginatedList<SafeTransactionResponse>> {
     // Backend doesn't have GetAllSafeTransactions endpoint in controller yet, mocking it for now or leaving it ready
     const { data } = await apiClient.get<PaginatedList<SafeTransactionResponse>>(`/Safe/${safeId}/transactions`, { params: filters });
     return data;
@@ -62,7 +63,7 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async getExpenses(filters: RequestFilters): Promise<PaginatedList<ExpenseResponse>> {
+  async getExpenses(filters: FinanceFilters): Promise<PaginatedList<ExpenseResponse>> {
     // Note: Ensure backend has a GET /expenses endpoint with pagination.
     const { data } = await apiClient.get<PaginatedList<ExpenseResponse>>('/expenses', { params: filters });
     return data;

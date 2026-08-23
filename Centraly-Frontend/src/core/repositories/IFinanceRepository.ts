@@ -1,9 +1,10 @@
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   OpenSessionRequest, DrawerSessionResponse, AddManualTransactionRequest,
   CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest,
   CreateExpenseCategoryRequest, ExpenseCategoryResponse,
-  CreateExpenseRequest, ExpenseResponse
+  CreateExpenseRequest, ExpenseResponse,
+  FinanceFilters
 } from "@/features/finance/schemas/financeSchemas";
 
 export interface IFinanceRepository {
@@ -16,12 +17,12 @@ export interface IFinanceRepository {
   // Safe
   getSafes(): Promise<SafeResponse[]>;
   createSafe(data: CreateSafeRequest): Promise<string>;
-  getSafeTransactions(safeId: string, filters: RequestFilters): Promise<PaginatedList<SafeTransactionResponse>>;
+  getSafeTransactions(safeId: string, filters: FinanceFilters): Promise<PaginatedList<SafeTransactionResponse>>;
   receiveDrawerDeposit(safeId: string, data: ReceiveDrawerDepositRequest): Promise<string>;
 
   // Expenses
   getExpenseCategories(): Promise<ExpenseCategoryResponse[]>;
   createExpenseCategory(data: CreateExpenseCategoryRequest): Promise<string>;
-  getExpenses(filters: RequestFilters): Promise<PaginatedList<ExpenseResponse>>;
+  getExpenses(filters: FinanceFilters): Promise<PaginatedList<ExpenseResponse>>;
   createExpense(data: CreateExpenseRequest): Promise<string>;
 }

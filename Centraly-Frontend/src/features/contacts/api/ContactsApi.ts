@@ -1,17 +1,19 @@
-﻿import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/axios";
 import { IContactsRepository } from "@/core/repositories/IContactsRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CreateCustomerRequest, CustomerResponse, CustomerStatementResponse, 
   CreateSupplierRequest, SupplierResponse, SupplierStatementItemResponse, 
-  CreatePaymentRequest 
+  CreatePaymentRequest,
+  ContactFilters,
+  StatementFilters
 } from "../schemas/contactSchemas";
 
 import { CustomerDebtHistoryResponse } from '../schemas/contactSchemas';
 
 export class ContactsRepository implements IContactsRepository {
   // --- Customers ---
-  async getCustomers(filters: RequestFilters): Promise<PaginatedList<CustomerResponse>> {
+  async getCustomers(filters: ContactFilters): Promise<PaginatedList<CustomerResponse>> {
     const { data } = await apiClient.get<PaginatedList<CustomerResponse>>('/customers', { params: filters });
     return data;
   }
@@ -39,7 +41,7 @@ export class ContactsRepository implements IContactsRepository {
     await apiClient.delete(`/customers/${id}`);
   }
 
-  async getCustomerStatement(filters: RequestFilters): Promise<PaginatedList<CustomerStatementResponse>> {
+  async getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>> {
     if (!filters.customerId) throw new Error("customerId is required for statement");
     const { data } = await apiClient.get<PaginatedList<CustomerStatementResponse>>(`/customers/${filters.customerId}/transactions/statement`, { params: filters });
     return data;
@@ -51,7 +53,7 @@ export class ContactsRepository implements IContactsRepository {
   }
 
   // --- Suppliers ---
-  async getSuppliers(filters: RequestFilters): Promise<PaginatedList<SupplierResponse>> {
+  async getSuppliers(filters: ContactFilters): Promise<PaginatedList<SupplierResponse>> {
     const { data } = await apiClient.get<PaginatedList<SupplierResponse>>('/suppliers', { params: filters });
     return data;
   }
@@ -74,7 +76,7 @@ export class ContactsRepository implements IContactsRepository {
     await apiClient.delete(`/suppliers/${id}`);
   }
 
-  async getSupplierStatement(filters: RequestFilters): Promise<PaginatedList<SupplierStatementItemResponse>> {
+  async getSupplierStatement(filters: StatementFilters): Promise<PaginatedList<SupplierStatementItemResponse>> {
     if (!filters.supplierId) throw new Error("supplierId is required for statement");
     const { data } = await apiClient.get<PaginatedList<SupplierStatementItemResponse>>(`/suppliers/${filters.supplierId}/statement`, { params: filters });
     return data;

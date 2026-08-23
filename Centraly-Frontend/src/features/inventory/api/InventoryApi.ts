@@ -1,16 +1,17 @@
 import { apiClient } from "@/lib/axios";
 import { IInventoryRepository } from "@/core/repositories/IInventoryRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CategoryResponse, 
   CreateProductRequest, 
   DepartmentResponse, 
   ProductBatchResponse, 
-  ProductResponse 
+  ProductResponse,
+  ProductFilters
 } from "../schemas/inventorySchemas";
 
 export class InventoryRepository implements IInventoryRepository {
-  async getCategories(filters?: RequestFilters): Promise<PaginatedList<CategoryResponse>> {
+  async getCategories(filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>> {
     const { data } = await apiClient.get<PaginatedList<CategoryResponse>>('/categories', { params: filters });
     return data;
   }
@@ -20,7 +21,7 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async getDepartments(categoryId?: string, filters?: RequestFilters): Promise<PaginatedList<DepartmentResponse>> {
+  async getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>> {
     const params = { ...filters, categoryId };
     const { data } = await apiClient.get<PaginatedList<DepartmentResponse>>('/departments', { params });
     return data;
@@ -31,7 +32,7 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async getProducts(filters: RequestFilters): Promise<PaginatedList<ProductResponse>> {
+  async getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>> {
     const { data } = await apiClient.get<PaginatedList<ProductResponse>>('/products', { params: filters });
     return data;
   }
@@ -90,7 +91,7 @@ export class InventoryRepository implements IInventoryRepository {
     await apiClient.delete(`/products/${id}`);
   }
 
-  async getProductBatches(filters: RequestFilters): Promise<PaginatedList<ProductBatchResponse>> {
+  async getProductBatches(filters: ProductFilters): Promise<PaginatedList<ProductBatchResponse>> {
     const { data } = await apiClient.get<PaginatedList<ProductBatchResponse>>('/products/batches', { params: filters });
     return data;
   }

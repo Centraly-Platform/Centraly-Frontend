@@ -1,9 +1,11 @@
-﻿import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/axios";
 import { IInvoicesRepository } from "@/core/repositories/IInvoicesRepository";
-import { PaginatedList, RequestFilters } from "@/shared/types/pagination";
+import { PaginatedList } from "@/shared/types/pagination";
 import { 
-  CreateSalesInvoiceRequest, SalesInvoiceResponse,
-  CreatePurchaseInvoiceRequest, PurchaseInvoiceResponse
+  CreateSalesInvoiceRequest,  SalesInvoiceResponse, 
+  CreatePurchaseInvoiceRequest, 
+  PurchaseInvoiceResponse,
+  InvoiceFilters
 } from "../schemas/invoiceSchemas";
 import { CreateSupplierReturnRequest } from "../schemas/returnSchemas";
 
@@ -11,7 +13,7 @@ import { CreateCustomerReturnRequest } from '../schemas/returnSchemas';
 
 export class InvoicesRepository implements IInvoicesRepository {
   // --- Sales ---
-  async getSalesInvoices(filters: RequestFilters): Promise<PaginatedList<SalesInvoiceResponse>> {
+  async getSalesInvoices(filters: InvoiceFilters): Promise<PaginatedList<SalesInvoiceResponse>> {
     const { data } = await apiClient.get<PaginatedList<SalesInvoiceResponse>>('/sales-invoices', { params: filters });
     return data;
   }
@@ -27,7 +29,7 @@ export class InvoicesRepository implements IInvoicesRepository {
   }
 
   // --- Purchases ---
-  async getPurchaseInvoices(filters: RequestFilters): Promise<PaginatedList<PurchaseInvoiceResponse>> {
+  async getPurchaseInvoices(filters: InvoiceFilters): Promise<PaginatedList<PurchaseInvoiceResponse>> {
     const { data } = await apiClient.get<PaginatedList<PurchaseInvoiceResponse>>('/purchase-invoices', { params: filters });
     return data;
   }

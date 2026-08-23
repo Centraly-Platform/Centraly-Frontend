@@ -1,4 +1,10 @@
 import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface ProductFilters extends BaseFilters {
+  categoryId?: string;
+  departmentId?: string;
+}
 
 // Shared common filters
 export const baseFiltersSchema = z.object({

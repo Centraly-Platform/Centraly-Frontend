@@ -1,4 +1,10 @@
-import * as z from "zod";
+import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface FinanceFilters extends BaseFilters {
+  startDate?: string;
+  endDate?: string;
+}
 
 // --- Enums ---
 export type DrawerTransactionType = 1 | 2; // Income = 1, Expense = 2

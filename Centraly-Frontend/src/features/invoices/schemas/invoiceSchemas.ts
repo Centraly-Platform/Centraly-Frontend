@@ -1,4 +1,12 @@
-import * as z from "zod";
+import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface InvoiceFilters extends BaseFilters {
+  startDate?: string;
+  endDate?: string;
+  customerId?: string;
+  supplierId?: string;
+}
 
 // --- Enums ---
 export type SaleTypeDto = 1 | 2; // e.g. 1 = Retail, 2 = Wholesale

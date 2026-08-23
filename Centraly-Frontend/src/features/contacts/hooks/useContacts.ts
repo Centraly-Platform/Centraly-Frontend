@@ -1,22 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { contactsRepository } from "../api/ContactsApi";
-import { RequestFilters } from "@/shared/types/pagination";
-import { CreateCustomerRequest, CreateSupplierRequest, CreatePaymentRequest } from "../schemas/contactSchemas";
+
+import { 
+  CreateCustomerRequest, CreateSupplierRequest, CreatePaymentRequest,
+  ContactFilters, StatementFilters 
+} from "../schemas/contactSchemas";
 import { toast } from "sonner";
 
 export const CONTACT_KEYS = {
-  customers: (filters: RequestFilters) => ["customers", filters] as const,
+  customers: (filters: ContactFilters) => ["customers", filters] as const,
   customerDetails: (id: string) => ["customers", id] as const,
-  customerStatement: (filters: RequestFilters) => ["customers", "statement", filters] as const,
+  customerStatement: (filters: StatementFilters) => ["customers", "statement", filters] as const,
   
-  suppliers: (filters: RequestFilters) => ["suppliers", filters] as const,
+  suppliers: (filters: ContactFilters) => ["suppliers", filters] as const,
   supplierDetails: (id: string) => ["suppliers", id] as const,
-  supplierStatement: (filters: RequestFilters) => ["suppliers", "statement", filters] as const,
+  supplierStatement: (filters: StatementFilters) => ["suppliers", "statement", filters] as const,
 };
 
 // --- Customer Queries & Mutations ---
 
-export function useCustomers(filters: RequestFilters) {
+export function useCustomers(filters: ContactFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.customers(filters),
     queryFn: () => contactsRepository.getCustomers(filters),
@@ -31,7 +34,7 @@ export function useCustomer(id: string) {
   });
 }
 
-export function useCustomerStatement(filters: RequestFilters) {
+export function useCustomerStatement(filters: StatementFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.customerStatement(filters),
     queryFn: () => contactsRepository.getCustomerStatement(filters),
@@ -66,7 +69,7 @@ export function useAddCustomerPayment() {
 
 // --- Supplier Queries & Mutations ---
 
-export function useSuppliers(filters: RequestFilters) {
+export function useSuppliers(filters: ContactFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.suppliers(filters),
     queryFn: () => contactsRepository.getSuppliers(filters),
@@ -81,7 +84,7 @@ export function useSupplier(id: string) {
   });
 }
 
-export function useSupplierStatement(filters: RequestFilters) {
+export function useSupplierStatement(filters: StatementFilters) {
   return useQuery({
     queryKey: CONTACT_KEYS.supplierStatement(filters),
     queryFn: () => contactsRepository.getSupplierStatement(filters),

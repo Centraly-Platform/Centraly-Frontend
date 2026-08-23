@@ -1,18 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { financeRepository } from "../api/FinanceApi";
-import { RequestFilters } from "@/shared/types/pagination";
+
 import { 
   OpenSessionRequest, AddManualTransactionRequest, CreateSafeRequest, 
-  ReceiveDrawerDepositRequest, CreateExpenseCategoryRequest, CreateExpenseRequest 
+  ReceiveDrawerDepositRequest, CreateExpenseCategoryRequest, CreateExpenseRequest,
+  FinanceFilters 
 } from "../schemas/financeSchemas";
 import { toast } from "sonner";
 
 export const FINANCE_KEYS = {
   activeDrawer: ["drawer", "active"] as const,
   safes: ["safes"] as const,
-  safeTransactions: (safeId: string, filters: RequestFilters) => ["safes", safeId, "transactions", filters] as const,
+  safeTransactions: (safeId: string, filters: FinanceFilters) => ["safes", safeId, "transactions", filters] as const,
   expenseCategories: ["expenseCategories"] as const,
-  expenses: (filters: RequestFilters) => ["expenses", filters] as const,
+  expenses: (filters: FinanceFilters) => ["expenses", filters] as const,
 };
 
 // --- Drawer ---

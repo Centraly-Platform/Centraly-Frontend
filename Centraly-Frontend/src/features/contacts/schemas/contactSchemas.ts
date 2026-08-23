@@ -1,4 +1,15 @@
-﻿import * as z from "zod";
+import * as z from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface ContactFilters extends BaseFilters {
+  customerPhone?: string;
+}
+export interface StatementFilters extends BaseFilters {
+  startDate?: string;
+  endDate?: string;
+  customerId?: string;
+  supplierId?: string;
+}
 
 // --- Customers ---
 
