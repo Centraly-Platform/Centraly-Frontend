@@ -18,6 +18,8 @@ const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryP
 const PurchasesHistoryPage = lazy(() => import("./features/purchases/pages/PurchasesHistoryPage").then(module => ({ default: module.PurchasesHistoryPage })));
 const NewPurchasePage = lazy(() => import("./features/purchases/pages/NewPurchasePage").then(module => ({ default: module.NewPurchasePage })));
 const PurchaseInvoiceDetailsPage = lazy(() => import("./features/purchases/pages/PurchaseInvoiceDetailsPage").then(module => ({ default: module.PurchaseInvoiceDetailsPage })));
+const SupplierReturnsPage = lazy(() => import("./features/purchases/pages/SupplierReturnsPage").then(module => ({ default: module.SupplierReturnsPage })));
+const SupplierReturnDetailsPage = lazy(() => import("./features/purchases/pages/SupplierReturnDetailsPage").then(module => ({ default: module.SupplierReturnDetailsPage })));
 const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
 const SuppliersPage = lazy(() => import("./features/suppliers/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
 const SupplierDetailsPage = lazy(() => import("./features/suppliers/pages/SupplierDetailsPage").then(module => ({ default: module.SupplierDetailsPage })));
@@ -92,8 +94,9 @@ export default function App() {
                 <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
                   <Route path="/purchases/new"      element={<NewPurchasePage />} />
                   <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
+                  <Route path="/purchases/returns"  element={<SupplierReturnsPage />} />
+                  <Route path="/purchases/returns/:id" element={<SupplierReturnDetailsPage />} />
                   <Route path="/purchases/:id"      element={<PurchaseInvoiceDetailsPage />} />
-                  <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات المشتريات" />} />
                 </Route>
 
                 <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
