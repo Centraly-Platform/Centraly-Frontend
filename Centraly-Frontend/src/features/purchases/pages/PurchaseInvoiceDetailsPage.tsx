@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePurchaseInvoice } from '../hooks/usePurchases';
-import { Printer, AlertCircle, Package, ShoppingCart, CheckCircle, Clock } from 'lucide-react';
+import { Printer, AlertCircle, Package, ShoppingCart, CheckCircle, Clock, Building2, ChevronLeft } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
@@ -76,13 +76,27 @@ export function PurchaseInvoiceDetailsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {/* Supplier */}
-        <div className={`${tokens.card} p-4 md:col-span-1`}>
-          <p className="text-xs text-gray-500 mb-1">المورد</p>
-          <p className="text-base font-bold text-gray-900">{invoice.supplier?.name || '-'}</p>
-          {invoice.supplier?.phone && (
-            <p className="text-xs text-gray-400 mt-0.5 dir-ltr">{invoice.supplier.phone}</p>
-          )}
+        {/* Supplier - clickable */}
+        <div
+          className={`${tokens.card} p-4 md:col-span-1 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
+          onClick={() => invoice.supplier?.id && navigate(`/contacts/suppliers/${invoice.supplier.id}`)}
+        >
+          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <div className="flex items-center gap-3">
+            {/* Avatar */}
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
+              <Building2 size={20} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                {invoice.supplier?.name || '-'}
+              </p>
+              {invoice.supplier?.phone && (
+                <p className="text-xs text-gray-400 mt-0.5">{invoice.supplier.phone}</p>
+              )}
+            </div>
+            <ChevronLeft size={14} className="text-gray-300 group-hover:text-blue-400 transition-colors flex-shrink-0" />
+          </div>
         </div>
 
         {/* Total */}
@@ -130,6 +144,7 @@ export function PurchaseInvoiceDetailsPage() {
                 <th className="px-5 py-3 font-semibold">الصنف</th>
                 <th className="px-5 py-3 font-semibold text-center">الكمية</th>
                 <th className="px-5 py-3 font-semibold text-center">سعر الشراء (للوحدة)</th>
+                <th className="px-5 py-3 font-semibold text-center">سعر الجملة</th>
                 <th className="px-5 py-3 font-semibold text-center">سعر التجزئة</th>
                 <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
               </tr>
@@ -173,6 +188,11 @@ export function PurchaseInvoiceDetailsPage() {
                     {formatCurrency(item.unitCost)}
                   </td>
 
+                  {/* Wholesale price */}
+                  <td className="px-5 py-4 text-center text-gray-500">
+                    {item.product?.wholesalePrice != null ? formatCurrency(item.product.wholesalePrice) : '—'}
+                  </td>
+
                   {/* Retail price */}
                   <td className="px-5 py-4 text-center text-gray-500">
                     {item.product?.retailPrice != null ? formatCurrency(item.product.retailPrice) : '—'}
@@ -189,7 +209,7 @@ export function PurchaseInvoiceDetailsPage() {
             {/* Footer row */}
             <tfoot className="bg-gray-50 border-t border-gray-200">
               <tr>
-                <td colSpan={4} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
+                <td colSpan={5} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
                   الإجمالي الكلي للفاتورة
                 </td>
                 <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
