@@ -144,8 +144,6 @@ export function PurchaseInvoiceDetailsPage() {
                 <th className="px-5 py-3 font-semibold">الصنف</th>
                 <th className="px-5 py-3 font-semibold text-center">الكمية</th>
                 <th className="px-5 py-3 font-semibold text-center">سعر الشراء (للوحدة)</th>
-                <th className="px-5 py-3 font-semibold text-center">سعر الجملة</th>
-                <th className="px-5 py-3 font-semibold text-center">سعر التجزئة</th>
                 <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
               </tr>
             </thead>
@@ -188,16 +186,6 @@ export function PurchaseInvoiceDetailsPage() {
                     {formatCurrency(item.unitCost)}
                   </td>
 
-                  {/* Wholesale price */}
-                  <td className="px-5 py-4 text-center text-gray-500">
-                    {item.product?.wholesalePrice != null ? formatCurrency(item.product.wholesalePrice) : '—'}
-                  </td>
-
-                  {/* Retail price */}
-                  <td className="px-5 py-4 text-center text-gray-500">
-                    {item.product?.retailPrice != null ? formatCurrency(item.product.retailPrice) : '—'}
-                  </td>
-
                   {/* Line total */}
                   <td className="px-5 py-4 text-left font-bold text-gray-900">
                     {formatCurrency(item.lineTotal)}
@@ -209,7 +197,7 @@ export function PurchaseInvoiceDetailsPage() {
             {/* Footer row */}
             <tfoot className="bg-gray-50 border-t border-gray-200">
               <tr>
-                <td colSpan={5} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
+                <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
                   الإجمالي الكلي للفاتورة
                 </td>
                 <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
