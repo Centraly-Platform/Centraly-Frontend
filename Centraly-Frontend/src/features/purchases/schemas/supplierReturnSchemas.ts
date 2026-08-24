@@ -55,6 +55,8 @@ export const createSupplierReturnItemSchema = z.object({
   returnPrice: z.number().min(0, 'سعر الإرجاع غير صالح'),
 });
 
+export type CreateSupplierReturnItemRequest = z.infer<typeof createSupplierReturnItemSchema>;
+
 export const createSupplierReturnSchema = z.object({
   supplierId: z.string().min(1, 'يجب اختيار مورد'),
   reason: z.union([z.literal(1), z.literal(2), z.literal(3)]),

@@ -20,6 +20,7 @@ const NewPurchasePage = lazy(() => import("./features/purchases/pages/NewPurchas
 const PurchaseInvoiceDetailsPage = lazy(() => import("./features/purchases/pages/PurchaseInvoiceDetailsPage").then(module => ({ default: module.PurchaseInvoiceDetailsPage })));
 const SupplierReturnsPage = lazy(() => import("./features/purchases/pages/SupplierReturnsPage").then(module => ({ default: module.SupplierReturnsPage })));
 const SupplierReturnDetailsPage = lazy(() => import("./features/purchases/pages/SupplierReturnDetailsPage").then(module => ({ default: module.SupplierReturnDetailsPage })));
+const NewSupplierReturnPage = lazy(() => import("./features/purchases/pages/NewSupplierReturnPage").then(module => ({ default: module.NewSupplierReturnPage })));
 const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
 const SuppliersPage = lazy(() => import("./features/suppliers/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
 const SupplierDetailsPage = lazy(() => import("./features/suppliers/pages/SupplierDetailsPage").then(module => ({ default: module.SupplierDetailsPage })));
@@ -95,6 +96,7 @@ export default function App() {
                   <Route path="/purchases/new"      element={<NewPurchasePage />} />
                   <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
                   <Route path="/purchases/returns"  element={<SupplierReturnsPage />} />
+                  <Route path="/purchases/returns/new" element={<NewSupplierReturnPage />} />
                   <Route path="/purchases/returns/:id" element={<SupplierReturnDetailsPage />} />
                   <Route path="/purchases/:id"      element={<PurchaseInvoiceDetailsPage />} />
                 </Route>
