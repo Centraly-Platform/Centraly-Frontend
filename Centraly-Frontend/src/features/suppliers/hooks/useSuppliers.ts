@@ -7,6 +7,7 @@ export const SUPPLIER_KEYS = {
   suppliers: (filters: SupplierFilters) => ["suppliers", filters] as const,
   supplierDetails: (id: string) => ["suppliers", id] as const,
   supplierStatement: (id: string, filters: SupplierFilters) => ["suppliers", id, "statement", filters] as const,
+  supplierBatches: (id: string) => ["suppliers", id, "batches"] as const,
 };
 
 export function useSuppliers(filters: SupplierFilters) {
@@ -28,6 +29,14 @@ export function useSupplierStatement(id: string, filters: SupplierFilters = { pa
   return useQuery({
     queryKey: SUPPLIER_KEYS.supplierStatement(id, filters),
     queryFn: () => supplierRepository.getSupplierStatement(id, filters),
+    enabled: !!id,
+  });
+}
+
+export function useSupplierBatches(id: string) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.supplierBatches(id),
+    queryFn: () => supplierRepository.getSupplierBatches(id),
     enabled: !!id,
   });
 }

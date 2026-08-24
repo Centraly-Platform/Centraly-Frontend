@@ -36,3 +36,13 @@ export const createSupplierSchema = z.object({
 
 export type CreateSupplierRequest = z.infer<typeof createSupplierSchema>;
 export type UpdateSupplierRequest = CreateSupplierRequest;
+
+export interface SupplierBatchResponse {
+  batchId: string;
+  productId: string;
+  productName?: string;
+  barcode?: string;
+  availableQuantity: number;
+  purchasePrice: number;
+  dateReceived: string;
+}

@@ -4,9 +4,11 @@ import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { useCreateSupplierReturn } from '../hooks/useSupplierReturns';
 import { tokens } from '@/shared/styles/tokens';
 import { useSuppliers } from '@/features/suppliers/hooks/useSuppliers';
-import { Package, Trash2, Plus, AlertCircle } from 'lucide-react';
+import { Package, Trash2, AlertCircle, ShoppingCart } from 'lucide-react';
 import { CreateSupplierReturnItemRequest } from '../schemas/supplierReturnSchemas';
 import { formatCurrency } from '@/shared/utils/currency';
+import { SupplierBatchPickerModal } from '../components/SupplierBatchPickerModal';
+import { SupplierBatchResponse } from '@/features/suppliers/schemas/supplierSchemas';
 
 export function NewSupplierReturnPage() {
   const navigate = useNavigate();
@@ -19,14 +21,36 @@ export function NewSupplierReturnPage() {
   const [notes, setNotes] = useState('');
   const [items, setItems] = useState<CreateSupplierReturnItemRequest[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setTitle('مرتجع مورد جديد');
     setBackButton(true, '/purchases/returns');
   }, [setTitle, setBackButton]);
 
-  const handleAddItem = () => {
-    setItems([...items, { productId: '', batchId: '', quantity: 1, returnPrice: 0 }]);
+  const handleOpenModal = () => {
+    if (!supplierId) {
+      setError('يرجى اختيار المورد أولاً قبل إضافة الأصناف');
+      return;
+    }
+    setError(null);
+    setIsModalOpen(true);
+  };
+
+  const handleSelectBatch = (batch: SupplierBatchResponse) => {
+    // Check if already added
+    if (items.some(i => i.batchId === batch.batchId)) {
+      alert('تم إضافة هذا الصنف مسبقاً');
+      return;
+    }
+
+    setItems([...items, { 
+      productId: batch.productId, 
+      batchId: batch.batchId, 
+      quantity: 1, 
+      returnPrice: batch.purchasePrice 
+    }]);
+    setIsModalOpen(false);
   };
 
   const handleUpdateItem = (index: number, field: keyof CreateSupplierReturnItemRequest, value: string | number) => {
@@ -120,13 +144,15 @@ export function NewSupplierReturnPage() {
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <h2 className="text-lg font-bold text-gray-800">الأصناف المرتجعة <span className="text-red-500">*</span></h2>
-            <button
-              type="button"
-              onClick={handleAddItem}
-              className="text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors"
-            >
-              <Plus size={16} /> إضافة صنف يدويًا
-            </button>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleOpenModal}
+                className="text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors"
+              >
+                <ShoppingCart size={16} /> اختيار صنف من المورد
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -146,8 +172,8 @@ export function NewSupplierReturnPage() {
                   <input
                     type="text"
                     value={item.productId}
-                    onChange={(e) => handleUpdateItem(index, 'productId', e.target.value)}
-                    className={tokens.input + ' py-2 text-sm'}
+                    readOnly
+                    className={tokens.input + ' py-2 text-sm bg-gray-100 text-gray-500 cursor-not-allowed'}
                     placeholder="Product ID..."
                   />
                 </div>
@@ -157,8 +183,8 @@ export function NewSupplierReturnPage() {
                   <input
                     type="text"
                     value={item.batchId}
-                    onChange={(e) => handleUpdateItem(index, 'batchId', e.target.value)}
-                    className={tokens.input + ' py-2 text-sm'}
+                    readOnly
+                    className={tokens.input + ' py-2 text-sm bg-gray-100 text-gray-500 cursor-not-allowed'}
                     placeholder="Batch ID..."
                   />
                 </div>
@@ -222,6 +248,13 @@ export function NewSupplierReturnPage() {
           </button>
         </div>
       </div>
+
+      <SupplierBatchPickerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        supplierId={supplierId}
+        onSelectBatch={handleSelectBatch}
+      />
     </div>
   );
 }
