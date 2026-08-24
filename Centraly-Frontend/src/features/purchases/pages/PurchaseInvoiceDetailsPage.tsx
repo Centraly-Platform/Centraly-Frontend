@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePurchaseInvoice } from '../hooks/usePurchases';
-import { Printer, AlertCircle } from 'lucide-react';
+import { Printer, AlertCircle, Package, ShoppingCart, CheckCircle, Clock } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
@@ -23,51 +23,84 @@ export function PurchaseInvoiceDetailsPage() {
   }, [invoice, setTitle, setBackButton]);
 
   if (isLoading) {
-    return <div className="p-8 text-center text-gray-500">جاري التحميل...</div>;
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-gray-500">جاري تحميل تفاصيل الفاتورة...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error || !invoice) {
     return (
-      <div className="p-8 text-center text-red-500 flex flex-col items-center">
-        <AlertCircle size={48} className="mb-4" />
-        <p>حدث خطأ أثناء تحميل تفاصيل الفاتورة أو الفاتورة غير موجودة.</p>
-        <button className={`${tokens.btn.primary} mt-4`} onClick={() => navigate('/purchases/history')}>
-          العودة לסجل المشتريات
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <AlertCircle size={48} className="text-red-400" />
+        <p className="text-gray-500">الفاتورة غير موجودة أو حدث خطأ أثناء التحميل.</p>
+        <button className={tokens.btn.primary} onClick={() => navigate('/purchases/history')}>
+          العودة لسجل المشتريات
         </button>
       </div>
     );
   }
 
+  const isPaid = invoice.remainingAmount <= 0;
+
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      {/* Actions */}
-      <div className="flex items-center justify-between">
-        <p className="text-gray-500 font-medium">
-          بتاريخ: {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(invoice.invoiceDate))}
-        </p>
-        <button className={`${tokens.btn.secondary} flex items-center gap-2`} onClick={() => window.print()}>
-          <Printer size={18} />
+    <div className="space-y-5 max-w-5xl mx-auto">
+
+      {/* Top bar: date + status + print */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-gray-500 text-sm">
+            {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(invoice.invoiceDate))}
+          </span>
+          <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${
+            isPaid ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+          }`}>
+            {isPaid
+              ? <><CheckCircle size={13} /> مدفوعة بالكامل</>
+              : <><Clock size={13} /> متبقي دفع</>
+            }
+          </span>
+        </div>
+        <button
+          className={`${tokens.btn.secondary} flex items-center gap-2`}
+          onClick={() => window.print()}
+        >
+          <Printer size={16} />
           <span>طباعة</span>
         </button>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className={`${tokens.card} p-4`}>
-          <p className={tokens.font.muted}>المورد</p>
-          <p className="text-lg font-bold text-gray-900 mt-1">{invoice.supplier?.name || '-'}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Supplier */}
+        <div className={`${tokens.card} p-4 md:col-span-1`}>
+          <p className="text-xs text-gray-500 mb-1">المورد</p>
+          <p className="text-base font-bold text-gray-900">{invoice.supplier?.name || '-'}</p>
+          {invoice.supplier?.phone && (
+            <p className="text-xs text-gray-400 mt-0.5 dir-ltr">{invoice.supplier.phone}</p>
+          )}
         </div>
+
+        {/* Total */}
         <div className={`${tokens.card} p-4`}>
-          <p className={tokens.font.muted}>الإجمالي</p>
-          <p className="text-lg font-bold text-gray-900 mt-1">{formatCurrency(invoice.totalAmount)}</p>
+          <p className="text-xs text-gray-500 mb-1">إجمالي الفاتورة</p>
+          <p className="text-base font-bold text-gray-900">{formatCurrency(invoice.totalAmount)}</p>
         </div>
+
+        {/* Paid */}
         <div className={`${tokens.card} p-4`}>
-          <p className={tokens.font.muted}>المدفوع</p>
-          <p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(invoice.paidAmount)}</p>
+          <p className="text-xs text-gray-500 mb-1">المبلغ المدفوع</p>
+          <p className="text-base font-bold text-green-600">{formatCurrency(invoice.paidAmount)}</p>
         </div>
+
+        {/* Remaining */}
         <div className={`${tokens.card} p-4`}>
-          <p className={tokens.font.muted}>المتبقي</p>
-          <p className={`text-lg font-bold mt-1 ${invoice.remainingAmount > 0 ? 'text-red-600' : 'text-gray-900'}`}>
+          <p className="text-xs text-gray-500 mb-1">المتبقي للمورد</p>
+          <p className={`text-base font-bold ${invoice.remainingAmount > 0 ? 'text-red-600' : 'text-gray-400'}`}>
             {formatCurrency(invoice.remainingAmount)}
           </p>
         </div>
@@ -75,40 +108,99 @@ export function PurchaseInvoiceDetailsPage() {
 
       {/* Notes */}
       {invoice.notes && (
-        <div className={`${tokens.card} p-4 bg-gray-50`}>
-          <p className={tokens.font.muted}>ملاحظات الفاتورة</p>
-          <p className="text-gray-800 mt-1">{invoice.notes}</p>
+        <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
+          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات الفاتورة</p>
+          <p className="text-gray-700 text-sm">{invoice.notes}</p>
         </div>
       )}
 
       {/* Items Table */}
       <div className={tokens.card}>
-        <div className="p-4 border-b border-gray-200">
-          <h2 className="font-bold text-gray-800">الأصناف ({invoice.items?.length || 0})</h2>
+        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+          <h2 className="font-bold text-gray-800">
+            الأصناف
+            <span className="mr-2 text-sm font-normal text-gray-400">({invoice.items?.length || 0} صنف)</span>
+          </h2>
         </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-right text-sm">
-            <thead className="bg-gray-50 text-gray-600 border-b border-gray-200">
-              <tr>
-                <th className="px-4 py-3 font-semibold">الصنف</th>
-                <th className="px-4 py-3 font-semibold">الكمية</th>
-                <th className="px-4 py-3 font-semibold">سعر الوحدة</th>
-                <th className="px-4 py-3 font-semibold">الإجمالي</th>
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
+                <th className="px-5 py-3 font-semibold">الصنف</th>
+                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
+                <th className="px-5 py-3 font-semibold text-center">سعر الشراء (للوحدة)</th>
+                <th className="px-5 py-3 font-semibold text-center">سعر التجزئة</th>
+                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {invoice.items?.map((item) => (
-                <tr key={item.invoiceItemId} className="hover:bg-gray-50">
-                  <td className="px-4 py-4 font-medium text-gray-900">{item.productName}</td>
-                  <td className="px-4 py-4">{item.quantity}</td>
-                  <td className="px-4 py-4">{formatCurrency(item.unitCost)}</td>
-                  <td className="px-4 py-4 font-bold">{formatCurrency(item.totalCost)}</td>
+            <tbody className="divide-y divide-gray-50">
+              {invoice.items?.map((item, index) => (
+                <tr key={item.purchaseInvoiceItemId ?? index} className="hover:bg-gray-50 transition-colors">
+                  {/* Product info */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      {item.product?.imageUrl ? (
+                        <img
+                          src={item.product.imageUrl}
+                          alt={item.product.name ?? ''}
+                          className="w-10 h-10 rounded-lg object-cover border border-gray-100"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
+                          <Package size={18} />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-gray-800">{item.product?.name || '—'}</p>
+                        {item.product?.barcode && (
+                          <p className="text-xs text-gray-400 dir-ltr mt-0.5">{item.product.barcode}</p>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Quantity */}
+                  <td className="px-5 py-4 text-center">
+                    <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 font-bold text-sm px-2.5 py-0.5 rounded-full">
+                      <ShoppingCart size={12} />
+                      {item.quantity}
+                    </span>
+                  </td>
+
+                  {/* Unit cost (purchase price) */}
+                  <td className="px-5 py-4 text-center text-gray-700 font-medium">
+                    {formatCurrency(item.unitCost)}
+                  </td>
+
+                  {/* Retail price */}
+                  <td className="px-5 py-4 text-center text-gray-500">
+                    {item.product?.retailPrice != null ? formatCurrency(item.product.retailPrice) : '—'}
+                  </td>
+
+                  {/* Line total */}
+                  <td className="px-5 py-4 text-left font-bold text-gray-900">
+                    {formatCurrency(item.lineTotal)}
+                  </td>
                 </tr>
               ))}
             </tbody>
+
+            {/* Footer row */}
+            <tfoot className="bg-gray-50 border-t border-gray-200">
+              <tr>
+                <td colSpan={4} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
+                  الإجمالي الكلي للفاتورة
+                </td>
+                <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
+                  {formatCurrency(invoice.totalAmount)}
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
+
     </div>
   );
 }

@@ -23,15 +23,22 @@ export const createPurchaseInvoiceSchema = z.object({
 export type CreatePurchaseInvoiceRequest = z.infer<typeof createPurchaseInvoiceSchema>;
 
 // Responses
-export interface PurchaseInvoiceItemResponse {
-  invoiceItemId: string;
-  invoiceId: string;
+export interface ProductSummary {
   productId: string;
-  productName: string;
+  name?: string;
+  barcode?: string;
+  imageUrl?: string;
+  retailPrice: number;
+  wholesalePrice?: number;
+  quantity: number;
+}
+
+export interface PurchaseInvoiceItemResponse {
+  purchaseInvoiceItemId: string;
+  product: ProductSummary;
   quantity: number;
   unitCost: number;
-  totalCost: number;
-  batchId?: string;
+  lineTotal: number;
 }
 
 export interface PurchaseInvoiceResponse {

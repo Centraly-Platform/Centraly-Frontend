@@ -25,7 +25,7 @@ const defaultPageTitles: Record<string, string> = {
 
 export function AppLayout() {
   const location = useLocation();
-  const { title, showBackButton, backPath, setTitle, setBackButton } = useHeaderStore();
+  const { title, backPath, setTitle, setBackButton } = useHeaderStore();
 
   // Set default title based on route if available, and reset back button
   useEffect(() => {
