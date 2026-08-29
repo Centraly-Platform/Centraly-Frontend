@@ -41,9 +41,9 @@ export class ContactsRepository implements IContactsRepository {
     await apiClient.delete(`/customers/${id}`);
   }
 
-  async getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>> {
-    if (!filters.customerId) throw new Error("customerId is required for statement");
-    const { data } = await apiClient.get<PaginatedList<CustomerStatementResponse>>(`/customers/${filters.customerId}/transactions/statement`, { params: filters });
+  async getCustomerStatement(customerId: string): Promise<CustomerStatementResponse[]> {
+    if (!customerId) throw new Error("customerId is required for statement");
+    const { data } = await apiClient.get<CustomerStatementResponse[]>(`/customers/${customerId}/transactions/statement`);
     return data;
   }
 

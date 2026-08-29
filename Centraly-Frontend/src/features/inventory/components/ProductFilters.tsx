@@ -1,6 +1,8 @@
 import { Search, Plus } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 import { useCategories, useDepartments } from '@/features/inventory/hooks/useInventory';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
 
 interface ProductFiltersProps {
   searchTerm: string;
@@ -43,7 +45,7 @@ export function ProductFilters({
             placeholder="بحث بالاسم أو الباركود..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50"
+            className={`${tokens.input} bg-gray-50`}
           />
         </div>
 
@@ -55,7 +57,7 @@ export function ProductFilters({
               onDepartmentChange(e.target.value);
               // Reset category when department changes if desired, but here we just leave it to backend logic or user
             }}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+            className={`${tokens.select} bg-gray-50 min-w-[140px]`}
           >
             <option value="">جميع الأقسام الرئيسية</option>
             {departments.map((dep) => (
@@ -71,7 +73,7 @@ export function ProductFilters({
           <select
             value={categoryFilter}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+            className={`${tokens.select} bg-gray-50 min-w-[140px]`}
           >
             <option value="">جميع الأقسام الفرعية</option>
             {categories
@@ -89,7 +91,7 @@ export function ProductFilters({
           <select
             value={stockFilter}
             onChange={(e) => onStockChange(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+            className={`${tokens.select} bg-gray-50 min-w-[140px]`}
           >
             <option value="">حالة المخزون (الكل)</option>
             <option value="InStock">متوفر</option>
@@ -100,10 +102,12 @@ export function ProductFilters({
       </div>
 
       {/* Right side: Add Button */}
-      <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2 whitespace-nowrap"}>
-        <Plus size={16} />
-        إضافة منتج جديد
-      </button>
+      <HasPermission permission={Permissions.InventoryWrite}>
+        <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2 whitespace-nowrap"}>
+          <Plus size={16} />
+          إضافة منتج جديد
+        </button>
+      </HasPermission>
     </div>
   );
 }

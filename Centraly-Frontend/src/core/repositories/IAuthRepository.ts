@@ -2,7 +2,8 @@ import { LoginFormData } from "@/features/auth/schemas/loginSchema";
 
 export interface AuthResponse {
   token: string;
-  user: {
+  permissions?: string[];
+  user?: {
     id: string;
     email: string;
     name: string;

@@ -14,22 +14,17 @@ export interface StatementFilters extends BaseFilters {
 // --- Customers ---
 
 export const createCustomerSchema = z.object({
-  name: z.string().min(1, "Ø§Ù„Ø§Ø³Ù… Ù…Ø·Ù„ÙˆØ¨"),
+  name: z.string().min(1, "اسم العميل مطلوب"),
   phone: z.string().optional(),
-  email: z.string().email("Ø¨Ø±ÙŠØ¯ ØºÙŠØ± ØµØ§Ù„Ø­").optional().or(z.literal("")),
-  address: z.string().optional(),
-  notes: z.string().optional(),
 });
 export type CreateCustomerRequest = z.infer<typeof createCustomerSchema>;
 
 export interface CustomerResponse {
-  id: string;
+  customerId: string;
   name: string;
   phone?: string;
-  email?: string;
-  address?: string;
-  notes?: string;
-  balance: number;
+  debtBalance: number;
+  invoicesCount: number;
   createdAt: string;
 }
 
@@ -80,8 +75,10 @@ export interface SupplierStatementItemResponse {
 // --- Payments ---
 
 export const createPaymentSchema = z.object({
-  amount: z.number().min(0.01, "Ø§Ù„Ù…Ø¨Ù„Øº ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ø£ÙƒØ¨Ø± Ù…Ù† ØµÙØ±"),
+  amount: z.number().min(0.01, "المبلغ يجب أن يكون أكبر من صفر"),
   notes: z.string().optional(),
+  paymentSource: z.number().optional(),
+  isRefund: z.boolean().default(false),
 });
 export type CreatePaymentRequest = z.infer<typeof createPaymentSchema>;
 

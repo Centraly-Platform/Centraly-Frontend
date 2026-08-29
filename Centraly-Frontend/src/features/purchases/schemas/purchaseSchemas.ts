@@ -16,6 +16,7 @@ export type CreatePurchaseInvoiceItemRequest = z.infer<typeof purchaseInvoiceIte
 export const createPurchaseInvoiceSchema = z.object({
   supplierId: z.string().min(1, "يجب اختيار مورد"),
   paidAmount: z.number().min(0, "المبلغ المدفوع غير صالح"),
+  paymentSource: z.number().optional(),
   notes: z.string().optional(),
   items: z.array(purchaseInvoiceItemSchema).min(1, "يجب إضافة منتج واحد على الأقل"),
 });

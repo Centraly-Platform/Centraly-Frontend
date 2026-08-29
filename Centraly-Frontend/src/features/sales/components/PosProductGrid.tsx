@@ -1,0 +1,226 @@
+import { tokens } from '@/shared/styles/tokens';
+import { Search, Package, ShoppingCart, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ProductResponse, CategorySummary } from '@/features/inventory/schemas/inventorySchemas';
+import { useCategories, useDepartments } from '@/features/inventory/hooks/useInventory';
+import { Spinner } from '@/shared/components/ui/Spinner';
+
+interface PosProductGridProps {
+  products: ProductResponse[];
+  isLoading: boolean;
+  onProductClick: (product: ProductResponse) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  selectedDepartmentId: string;
+  setSelectedDepartmentId: (id: string) => void;
+  selectedCategoryId: string;
+  setSelectedCategoryId: (id: string) => void;
+  pageNumber: number;
+  setPageNumber: (page: number) => void;
+  totalPages: number;
+}
+
+export function PosProductGrid({
+  products,
+  isLoading,
+  onProductClick,
+  searchTerm,
+  setSearchTerm,
+  selectedDepartmentId,
+  setSelectedDepartmentId,
+  selectedCategoryId,
+  setSelectedCategoryId,
+  pageNumber,
+  setPageNumber,
+  totalPages
+}: PosProductGridProps) {
+  
+  const { data: departmentsData } = useDepartments();
+  const { data: categoriesData } = useCategories(selectedDepartmentId || undefined, { pageNumber: 1, pageSize: 50 });
+  const departments = departmentsData?.items || [];
+  const categories = categoriesData?.items || [];
+
+  return (
+    <div className="flex flex-col h-full bg-white border-l border-gray-100">
+      {/* Top Bar: Search and Filters */}
+      <div className="p-5 bg-white z-10 flex flex-col gap-5 border-b border-gray-100">
+        
+        {/* Search & Department row */}
+        <div className="flex gap-4 items-center">
+          {/* Search (Right side in RTL) */}
+          <div className="relative flex-1 h-12">
+            <input
+              type="text"
+              placeholder="ابحث عن منتج بالاسم أو امسح الباركود"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`${tokens.input} pl-12 h-full`}
+              autoFocus
+            />
+            {/* Search Icon on the left side of input in RTL */}
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          </div>
+
+          {/* Department Select (Left side in RTL) */}
+          <div className="relative w-[300px] h-12">
+            <select
+              value={selectedDepartmentId}
+              onChange={(e) => {
+                setSelectedDepartmentId(e.target.value);
+                setSelectedCategoryId(''); // Reset category when department changes
+              }}
+              className={`${tokens.select} h-full cursor-pointer`}
+            >
+              <option value="">اختر القسم الرئيسي</option>
+              {departments.map((dept) => (
+                <option key={dept.departmentId} value={dept.departmentId}>
+                  {dept.name}
+                </option>
+              ))}
+            </select>
+            {/* Custom Chevron (as in design, drop down arrow on the left) */}
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1.5L6 6.5L11 1.5" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        {/* Categories Chips — only show when a department is selected */}
+        {selectedDepartmentId && (
+          <div className="flex items-center gap-3 overflow-x-auto pb-1 custom-scrollbar">
+            <button
+              onClick={() => setSelectedCategoryId('')}
+              className={`whitespace-nowrap px-8 py-2.5 rounded-xl text-sm font-bold transition-colors border ${
+                selectedCategoryId === '' 
+                  ? 'bg-[#0f8e4c] text-white border-[#0f8e4c] shadow-sm' 
+                  : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+              }`}
+            >
+              الكل
+            </button>
+            {categories.map((cat: CategorySummary) => (
+              <button
+                key={cat.categoryId}
+                onClick={() => setSelectedCategoryId(cat.categoryId)}
+                className={`whitespace-nowrap px-8 py-2.5 rounded-xl text-sm font-bold transition-colors border ${
+                  selectedCategoryId === cat.categoryId 
+                    ? 'bg-[#0f8e4c] text-white border-[#0f8e4c] shadow-sm' 
+                    : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Grid */}
+      <div className="flex-1 flex flex-col overflow-hidden bg-gray-50/50">
+        <div className="flex-1 p-5 overflow-y-auto custom-scrollbar">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <Spinner size={40} />
+            </div>
+          ) : products.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400">
+              <Package size={64} className="text-gray-300 mb-4" />
+              <p className="text-xl font-semibold">لا توجد منتجات</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 h-full content-start">
+              {products.map(product => {
+                const hasStock = product.totalQuantity > 0;
+                const isLowStock = product.isLowStock;
+                
+                let statusLabel = 'متوفر';
+                let statusClass = 'bg-[#e6f4ed] text-[#0f8e4c]'; // Light green bg, dark green text
+                if (!hasStock) {
+                  statusLabel = 'نفد المخزون';
+                  statusClass = 'bg-[#fce8e6] text-[#c5221f]'; // Light red bg, dark red text
+                } else if (isLowStock) {
+                  statusLabel = 'مخزون منخفض';
+                  statusClass = 'bg-[#fef7e0] text-[#ea8600]'; // Light orange bg, dark orange text
+                }
+
+                const imageSrc = product.imageUrl ? (product.imageUrl.startsWith('http') ? product.imageUrl : `http://localhost:5033${product.imageUrl}`) : null;
+
+                return (
+                  <div
+                    key={product.productId}
+                    className="bg-white rounded-2xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all overflow-hidden flex flex-col p-3 relative"
+                  >
+                    <span className={`absolute top-3 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-md ${statusClass}`}>
+                      {statusLabel}
+                    </span>
+
+                    <div className="h-32 flex items-center justify-center mb-2 mt-2">
+                      {imageSrc ? (
+                        <img src={imageSrc} alt={product.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
+                      ) : (
+                        <Package size={48} className="text-gray-200" />
+                      )}
+                    </div>
+                    
+                    <div className="flex flex-col flex-1 items-center text-center">
+                      <h3 className="font-bold text-gray-900 text-sm mb-1 line-clamp-1 leading-snug">
+                        {product.name}
+                      </h3>
+                      
+                      <p className="text-[11px] text-gray-400 line-clamp-1 mb-2">
+                        {product.properties && Object.keys(product.properties).length > 0 
+                          ? Object.values(product.properties).join(' - ') 
+                          : product.category.name}
+                      </p>
+                      
+                      <div className="mt-auto mb-3 font-bold text-[12px] text-[#0f8e4c]">
+                        المخزون: {product.totalQuantity}
+                      </div>
+
+                      <button
+                        onClick={() => hasStock && onProductClick(product)}
+                        disabled={!hasStock}
+                        className={`w-full py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all ${
+                          hasStock 
+                            ? 'bg-[#0f8e4c] hover:bg-[#0c7a40] text-white shadow-sm' 
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        }`}
+                      >
+                        <ShoppingCart size={14} />
+                        إضافة
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="border-t border-gray-100 p-4 bg-white flex items-center justify-center gap-4">
+            <button
+              disabled={pageNumber === 1}
+              onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
+              className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+            <span className="font-semibold text-gray-700 text-sm">
+              صفحة {pageNumber} من {totalPages}
+            </span>
+            <button
+              disabled={pageNumber === totalPages}
+              onClick={() => setPageNumber(Math.min(totalPages, pageNumber + 1))}
+              className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

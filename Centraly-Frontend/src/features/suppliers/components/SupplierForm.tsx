@@ -58,7 +58,7 @@ export function SupplierForm({ initialData, onSubmit }: SupplierFormProps) {
           {...register('name')}
           type="text"
           placeholder="مثال: شركة سامسونج"
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          className={tokens.input}
         />
         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
       </div>
@@ -70,7 +70,7 @@ export function SupplierForm({ initialData, onSubmit }: SupplierFormProps) {
           {...register('type')}
           type="text"
           placeholder="مثال: إلكترونيات، شاشات..."
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          className={tokens.input}
         />
         {errors.type && <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>}
       </div>
@@ -83,7 +83,7 @@ export function SupplierForm({ initialData, onSubmit }: SupplierFormProps) {
           type="text"
           dir="ltr"
           placeholder="01xxxxxxxxx"
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-left"
+          className={`${tokens.input} text-left`}
         />
         {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
       </div>
@@ -95,7 +95,7 @@ export function SupplierForm({ initialData, onSubmit }: SupplierFormProps) {
           {...register('address')}
           placeholder="عنوان المورد بالتفصيل..."
           rows={3}
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+          className={`${tokens.input} resize-none`}
         />
         {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>}
       </div>

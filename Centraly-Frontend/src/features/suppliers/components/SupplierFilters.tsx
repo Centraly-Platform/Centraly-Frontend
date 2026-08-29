@@ -23,7 +23,7 @@ export function SupplierFilters({
             placeholder="بحث بالاسم أو الهاتف..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50"
+            className={`${tokens.input} bg-gray-50`}
           />
         </div>
       </div>

@@ -34,10 +34,11 @@ export function useCustomer(id: string) {
   });
 }
 
-export function useCustomerStatement(filters: StatementFilters) {
+export function useCustomerStatement(customerId: string) {
   return useQuery({
-    queryKey: CONTACT_KEYS.customerStatement(filters),
-    queryFn: () => contactsRepository.getCustomerStatement(filters),
+    queryKey: ['customers', 'statement', customerId],
+    queryFn: () => contactsRepository.getCustomerStatement(customerId),
+    enabled: !!customerId,
   });
 }
 
@@ -50,6 +51,32 @@ export function useCreateCustomer() {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
     },
     onError: () => toast.error("حدث خطأ أثناء إضافة العميل"),
+  });
+}
+
+export function useUpdateCustomer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: CreateCustomerRequest }) => 
+      contactsRepository.updateCustomer(id, data),
+    onSuccess: (_, { id }) => {
+      toast.success("تم تحديث بيانات العميل بنجاح");
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      queryClient.invalidateQueries({ queryKey: CONTACT_KEYS.customerDetails(id) });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تحديث العميل"),
+  });
+}
+
+export function useDeleteCustomer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => contactsRepository.deleteCustomer(id),
+    onSuccess: () => {
+      toast.success("تم حذف العميل بنجاح");
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف العميل، قد يكون مرتبطاً بفواتير"),
   });
 }
 

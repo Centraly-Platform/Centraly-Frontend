@@ -1,8 +1,147 @@
+import { useState, useEffect } from 'react';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useProducts } from '@/features/inventory/hooks/useInventory';
+import { ProductResponse, ProductBatchResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { PosProductGrid } from '../components/PosProductGrid';
+import { PosCart } from '../components/PosCart';
+import { BatchSelectionModal } from '../components/BatchSelectionModal';
+import { CheckoutModal } from '../components/CheckoutModal';
+import { useCreateSalesInvoice } from '../hooks/useSales';
+import { usePosCart } from '../hooks/usePosCart';
+import { SaleType, PaymentMethod } from '../schemas/salesSchemas';
+
 export function PosPage() {
+  const { setTitle, setBackButton } = useHeaderStore();
+  const cart = usePosCart();
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const [selectedProduct, setSelectedProduct] = useState<ProductResponse | null>(null);
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
+  const [checkoutMethod, setCheckoutMethod] = useState<PaymentMethod | null>(null);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+
+  const { data: productsData, isLoading: isLoadingProducts } = useProducts({
+    pageNumber: pageNumber,
+    pageSize: 8,
+    searchValue: searchTerm || undefined,
+    categoryId: selectedCategoryId || undefined,
+    departmentId: selectedDepartmentId || undefined,
+  });
+
+  const createInvoiceMutation = useCreateSalesInvoice();
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [searchTerm, selectedDepartmentId, selectedCategoryId]);
+
+  useEffect(() => {
+    setTitle('نقطة البيع (POS)');
+    setBackButton(false);
+  }, [setTitle, setBackButton]);
+
+  const handleProductClick = (product: ProductResponse) => {
+    setSelectedProduct(product);
+    setIsBatchModalOpen(true);
+  };
+
+  const handleSelectBatch = (batch: ProductBatchResponse, selectedPrice: number) => {
+    if (!selectedProduct) return;
+
+    cart.addItem({
+      id: `${selectedProduct.productId}_${batch.batchId}_${selectedPrice}`,
+      productId: selectedProduct.productId,
+      productName: selectedProduct.name || 'منتج غير معروف',
+      batchId: batch.batchId,
+      batchName: batch.supplierName || 'شركة غير معروفة',
+      imageUrl: selectedProduct.imageUrl,
+      properties: selectedProduct.properties,
+      price: selectedPrice,
+      quantity: 1,
+      maxQuantity: batch.availableQuantity,
+    });
+
+    setIsBatchModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleCheckoutClick = (method: PaymentMethod) => {
+    setCheckoutMethod(method);
+    setIsCheckoutModalOpen(true);
+  };
+
+  const handleConfirmCheckout = (customerName: string, customerPhone: string, paidAmount: number, paymentSource?: number) => {
+    if (!checkoutMethod) return;
+
+    createInvoiceMutation.mutate({
+      customerName: customerName.trim() || undefined,
+      customerPhone: customerPhone.trim() || undefined,
+      saleType: SaleType.Retail,
+      paymentMethod: checkoutMethod,
+      paidAmount: paidAmount,
+      paymentSource: paymentSource,
+      items: cart.items.map((item) => ({
+        productId: item.productId,
+        batchId: item.batchId,
+        quantity: item.quantity,
+        sellingPrice: item.price,
+      })),
+    }, {
+      onSuccess: () => {
+        cart.clear();
+        setIsCheckoutModalOpen(false);
+        setCheckoutMethod(null);
+      },
+    });
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">PosPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="-m-6 w-[calc(100%+3rem)] h-[calc(100vh-theme(spacing.16))] bg-gray-50 overflow-hidden flex">
+      <div className="flex-1 overflow-hidden relative">
+        <PosProductGrid
+          products={productsData?.items || []}
+          isLoading={isLoadingProducts}
+          onProductClick={handleProductClick}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedDepartmentId={selectedDepartmentId}
+          setSelectedDepartmentId={setSelectedDepartmentId}
+          selectedCategoryId={selectedCategoryId}
+          setSelectedCategoryId={setSelectedCategoryId}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+          totalPages={productsData?.totalPages || 1}
+        />
+      </div>
+
+      <div className="w-[380px] shrink-0 h-full border-r border-gray-200">
+        <PosCart
+          items={cart.items}
+          onUpdateQuantity={cart.updateQuantity}
+          onRemoveItem={cart.removeItem}
+          onClearCart={cart.clear}
+          onCheckout={handleCheckoutClick}
+        />
+      </div>
+
+      <BatchSelectionModal
+        isOpen={isBatchModalOpen}
+        onClose={() => setIsBatchModalOpen(false)}
+        product={selectedProduct}
+        onSelectBatch={handleSelectBatch}
+      />
+
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        totalAmount={cart.totalAmount}
+        paymentMethod={checkoutMethod}
+        onConfirm={handleConfirmCheckout}
+        isSubmitting={createInvoiceMutation.isPending}
+      />
     </div>
   );
 }

@@ -4,6 +4,8 @@ import { Printer, AlertCircle, Package, ShoppingCart, CheckCircle, Clock, Buildi
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { BackButton } from '@/shared/components/ui/BackButton';
+import { Spinner } from '@/shared/components/ui/Spinner';
 import { useEffect } from 'react';
 
 export function PurchaseInvoiceDetailsPage() {
@@ -24,10 +26,13 @@ export function PurchaseInvoiceDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-          <p className="text-gray-500">جاري تحميل تفاصيل الفاتورة...</p>
+      <div className="p-6 h-screen bg-gray-50">
+        <BackButton to="/purchases/history" label="رجوع للسجل" />
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <Spinner size={40} className="mx-auto mb-3" />
+            <p className="text-gray-500">جاري تحميل تفاصيل الفاتورة...</p>
+          </div>
         </div>
       </div>
     );

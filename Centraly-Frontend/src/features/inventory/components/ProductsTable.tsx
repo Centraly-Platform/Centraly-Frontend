@@ -3,6 +3,8 @@ import { DataTable } from '@/shared/components/ui/DataTable';
 import { ProductStatusBadge } from './ProductStatusBadge';
 import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { PaginatedList } from '@/shared/types/pagination';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
 
 interface ProductsTableProps {
   data?: PaginatedList<ProductResponse>;
@@ -98,17 +100,19 @@ export function ProductsTable({
       header: 'الإجراءات',
       cell: (row: ProductResponse) => (
         <div className="flex justify-center gap-3 text-gray-400">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete?.(row);
-            }}
-            className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
-            title="حذف"
-            aria-label="حذف المنتج"
-          >
-            <Trash2 size={18} />
-          </button>
+          <HasPermission permission={Permissions.InventoryWrite}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(row);
+              }}
+              className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
+              title="حذف"
+              aria-label="حذف المنتج"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
         </div>
       ),
     },

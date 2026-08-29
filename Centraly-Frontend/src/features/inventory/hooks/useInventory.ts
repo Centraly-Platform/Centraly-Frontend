@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 export const INVENTORY_KEYS = {
   categories: ["categories"] as const,
-  departments: (categoryId?: string) => ["departments", categoryId] as const,
+  departments: () => ["departments"] as const,
   products: (filters: ProductFilters) => ["products", filters] as const,
   productDetails: (id: string) => ["products", id] as const,
   batches: (filters: ProductFilters) => ["batches", filters] as const,
@@ -13,17 +13,17 @@ export const INVENTORY_KEYS = {
 
 // --- Queries ---
 
-export function useCategories(filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
+export function useCategories(departmentId?: string, filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
   return useQuery({
-    queryKey: [...INVENTORY_KEYS.categories, filters],
-    queryFn: () => inventoryRepository.getCategories(filters),
+    queryKey: [...INVENTORY_KEYS.categories, departmentId, filters],
+    queryFn: () => inventoryRepository.getCategories(departmentId, filters),
   });
 }
 
-export function useDepartments(categoryId?: string, filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
+export function useDepartments(filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
   return useQuery({
-    queryKey: [...INVENTORY_KEYS.departments(categoryId), filters],
-    queryFn: () => inventoryRepository.getDepartments(categoryId, filters),
+    queryKey: [...INVENTORY_KEYS.departments(), filters],
+    queryFn: () => inventoryRepository.getDepartments(filters),
   });
 }
 

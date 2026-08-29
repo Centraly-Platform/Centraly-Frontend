@@ -3,7 +3,7 @@ import { IFinanceRepository } from "@/core/repositories/IFinanceRepository";
 import { PaginatedList } from "@/shared/types/pagination";
 import { 
   OpenSessionRequest, DrawerSessionResponse, AddManualTransactionRequest,
-  CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest,
+  CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest, AddManualSafeTransactionRequest,
   CreateExpenseCategoryRequest, ExpenseCategoryResponse,
   CreateExpenseRequest, ExpenseResponse,
   FinanceFilters
@@ -30,6 +30,16 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
+  async getDrawerHistory(filters: FinanceFilters): Promise<PaginatedList<DrawerSessionResponse>> {
+    const { data } = await apiClient.get<PaginatedList<DrawerSessionResponse>>('/drawers/history', { params: filters });
+    return data;
+  }
+
+  async getDrawerSessionById(id: string): Promise<DrawerSessionResponse> {
+    const { data } = await apiClient.get<DrawerSessionResponse>(`/drawers/history/${id}`);
+    return data;
+  }
+
   // --- Safe ---
   async getSafes(): Promise<SafeResponse[]> {
     const { data } = await apiClient.get<SafeResponse[]>('/Safe'); // Route is 'Safe' uppercase in backend controller
@@ -41,14 +51,20 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async receiveDrawerDeposit(safeId: string, reqData: ReceiveDrawerDepositRequest): Promise<string> {
-    const { data } = await apiClient.post<string>(`/Safe/${safeId}/deposit`, reqData);
+  async depositFromDrawer(safeId: string, reqData: ReceiveDrawerDepositRequest): Promise<SafeTransactionResponse> {
+    const { data } = await apiClient.post<SafeTransactionResponse>(`/Safe/${safeId}/deposit`, reqData);
     return data;
   }
 
-  async getSafeTransactions(safeId: string, filters: FinanceFilters): Promise<PaginatedList<SafeTransactionResponse>> {
-    // Backend doesn't have GetAllSafeTransactions endpoint in controller yet, mocking it for now or leaving it ready
-    const { data } = await apiClient.get<PaginatedList<SafeTransactionResponse>>(`/Safe/${safeId}/transactions`, { params: filters });
+  async addManualSafeTransaction(safeId: string, reqData: AddManualSafeTransactionRequest): Promise<SafeTransactionResponse> {
+    const { data } = await apiClient.post<SafeTransactionResponse>(`/Safe/${safeId}/manual-transaction`, null, {
+      params: reqData
+    });
+    return data;
+  }
+
+  async getSafeTransactions(safeId: string, filters?: FinanceFilters): Promise<SafeTransactionResponse[]> {
+    const { data } = await apiClient.get<SafeTransactionResponse[]>(`/Safe/${safeId}/transactions`, { params: filters });
     return data;
   }
 
@@ -58,19 +74,18 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async createExpenseCategory(reqData: CreateExpenseCategoryRequest): Promise<string> {
-    const { data } = await apiClient.post<string>('/expenses/categories', reqData);
+  async createExpenseCategory(reqData: CreateExpenseCategoryRequest): Promise<ExpenseCategoryResponse> {
+    const { data } = await apiClient.post<ExpenseCategoryResponse>('/expenses/categories', reqData);
     return data;
   }
 
-  async getExpenses(filters: FinanceFilters): Promise<PaginatedList<ExpenseResponse>> {
-    // Note: Ensure backend has a GET /expenses endpoint with pagination.
-    const { data } = await apiClient.get<PaginatedList<ExpenseResponse>>('/expenses', { params: filters });
+  async getExpenses(filters?: FinanceFilters): Promise<ExpenseResponse[]> {
+    const { data } = await apiClient.get<ExpenseResponse[]>('/expenses', { params: filters });
     return data;
   }
 
-  async createExpense(reqData: CreateExpenseRequest): Promise<string> {
-    const { data } = await apiClient.post<string>('/expenses', reqData);
+  async recordExpense(reqData: CreateExpenseRequest): Promise<ExpenseResponse> {
+    const { data } = await apiClient.post<ExpenseResponse>('/expenses', reqData);
     return data;
   }
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { Spinner } from "./Spinner";
 
-interface Column<T> {
+export interface Column<T> {
   header: string;
   accessorKey?: keyof T;
   cell?: (row: T) => React.ReactNode;
@@ -56,7 +57,7 @@ export function DataTable<T>({
               <tr>
                 <td colSpan={columns.length} className="px-6 py-10 text-center text-gray-400 text-sm">
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                    <Spinner size={16} />
                     جاري تحميل البيانات...
                   </div>
                 </td>

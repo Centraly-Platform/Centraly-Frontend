@@ -11,4 +11,6 @@ Always enforce the architectural rules laid out in `docs/ARCHITECTURE.md` and `d
 5. **Forms**: Use `react-hook-form` + `zod`. Keep validation schemas strictly in `src/features/*/schemas/`.
 6. **Error Handling**: Do not let errors crash the app. Assume `FeatureErrorBoundary` is wrapping your page. Use `sonner` for toast notifications.
 
-Before writing code, analyze existing shared components (e.g., `Button`, `RightDrawer`, `Table`) and re-use them instead of building from scratch.
+Before writing code, analyze existing shared components (e.g., `Button`, `RightDrawer`, `BaseModal`, `PickerModal`, `DataTable`, `Spinner`) and re-use them instead of building from scratch.
+
+Any overlay/dialog MUST use `BaseModal` or `RightDrawer` so a11y (role, aria-modal, focus trap, Escape) is guaranteed.

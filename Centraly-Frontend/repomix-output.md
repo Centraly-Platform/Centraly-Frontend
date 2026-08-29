@@ -35,10 +35,15 @@ The content is organized as follows:
 
 # Directory Structure
 ```
+.cursorrules
 .env.example
 .gitignore
 .husky/pre-commit
 .oxlintrc.json
+docs/AI_GUIDELINES.md
+docs/ARCHITECTURE.md
+docs/PERMISSIONS.md
+eslint.config.js
 index.html
 package.json
 public/favicon.svg
@@ -61,10 +66,14 @@ src/features/auth/components/LoginForm.tsx
 src/features/auth/hooks/useAuth.tsx
 src/features/auth/pages/LoginPage.tsx
 src/features/auth/schemas/loginSchema.ts
+src/features/auth/schemas/permissions.ts
 src/features/contacts/api/ContactsApi.ts
+src/features/contacts/components/CustomerForm.tsx
+src/features/contacts/components/CustomersFilters.tsx
+src/features/contacts/components/CustomersTable.tsx
 src/features/contacts/hooks/useContacts.ts
+src/features/contacts/pages/CustomerDetailsPage.tsx
 src/features/contacts/pages/CustomersPage.tsx
-src/features/contacts/pages/SuppliersPage.tsx
 src/features/contacts/schemas/contactSchemas.ts
 src/features/dashboard/pages/DashboardPage.tsx
 src/features/finance/api/FinanceApi.ts
@@ -75,20 +84,75 @@ src/features/finance/pages/SafePage.tsx
 src/features/finance/schemas/financeSchemas.ts
 src/features/inventory/api/InventoryApi.ts
 src/features/inventory/components/AddProductForm.tsx
+src/features/inventory/components/CategoryForms.tsx
+src/features/inventory/components/DepartmentCard.tsx
+src/features/inventory/components/ProductBatchesCard.tsx
+src/features/inventory/components/ProductDetailsHeader.tsx
 src/features/inventory/components/ProductFilters.tsx
+src/features/inventory/components/ProductNotesCard.tsx
+src/features/inventory/components/ProductOverviewCard.tsx
+src/features/inventory/components/ProductPropertiesCard.tsx
 src/features/inventory/components/ProductsTable.tsx
 src/features/inventory/components/ProductStatusBadge.tsx
 src/features/inventory/hooks/useInventory.ts
 src/features/inventory/pages/CategoriesPage.tsx
+src/features/inventory/pages/ProductDetailsPage.tsx
 src/features/inventory/pages/ProductsPage.tsx
 src/features/inventory/schemas/inventorySchemas.ts
 src/features/invoices/api/InvoicesApi.ts
 src/features/invoices/hooks/useInvoices.ts
 src/features/invoices/schemas/invoiceSchemas.ts
 src/features/invoices/schemas/returnSchemas.ts
+src/features/purchases/api/PurchaseApi.ts
+src/features/purchases/api/SupplierReturnApi.ts
+src/features/purchases/components/ProductPickerModal.tsx
+src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceHeader.tsx
+src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceItemsTable.tsx
+src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceSummary.tsx
+src/features/purchases/components/PurchaseInvoiceForm.tsx
+src/features/purchases/components/PurchasesFilters.tsx
+src/features/purchases/components/PurchasesTable.tsx
+src/features/purchases/components/SupplierBatchPickerModal.tsx
+src/features/purchases/components/SupplierReturnsFilters.tsx
+src/features/purchases/components/SupplierReturnsTable.tsx
+src/features/purchases/hooks/usePurchases.ts
+src/features/purchases/hooks/useSupplierReturns.ts
+src/features/purchases/pages/NewPurchasePage.tsx
+src/features/purchases/pages/NewSupplierReturnPage.tsx
+src/features/purchases/pages/PurchaseInvoiceDetailsPage.tsx
 src/features/purchases/pages/PurchasesHistoryPage.tsx
+src/features/purchases/pages/SupplierReturnDetailsPage.tsx
+src/features/purchases/pages/SupplierReturnsPage.tsx
+src/features/purchases/schemas/__tests__/purchaseSchemas.test.ts
+src/features/purchases/schemas/purchaseSchemas.ts
+src/features/purchases/schemas/supplierReturnSchemas.ts
+src/features/sales/api/salesApi.ts
+src/features/sales/components/BatchSelectionModal.tsx
+src/features/sales/components/CheckoutModal.tsx
+src/features/sales/components/InvoiceDetailsModal.tsx
+src/features/sales/components/PosCart.tsx
+src/features/sales/components/PosProductGrid.tsx
+src/features/sales/hooks/usePosCart.ts
+src/features/sales/hooks/useSales.ts
+src/features/sales/pages/NewSalesReturnPage.tsx
 src/features/sales/pages/PosPage.tsx
 src/features/sales/pages/SalesHistoryPage.tsx
+src/features/sales/pages/SalesReturnsPage.tsx
+src/features/sales/schemas/salesSchemas.ts
+src/features/sales/utils/__tests__/cartLogic.test.ts
+src/features/sales/utils/__tests__/posUtils.test.ts
+src/features/sales/utils/cartLogic.ts
+src/features/sales/utils/posUtils.ts
+src/features/suppliers/api/SupplierApi.ts
+src/features/suppliers/components/SupplierFilters.tsx
+src/features/suppliers/components/SupplierForm.tsx
+src/features/suppliers/components/SupplierOverviewCard.tsx
+src/features/suppliers/components/SuppliersTable.tsx
+src/features/suppliers/components/SupplierStatementCard.tsx
+src/features/suppliers/hooks/useSuppliers.ts
+src/features/suppliers/pages/SupplierDetailsPage.tsx
+src/features/suppliers/pages/SuppliersPage.tsx
+src/features/suppliers/schemas/supplierSchemas.ts
 src/index.css
 src/lib/axios.ts
 src/lib/storage.ts
@@ -100,18 +164,35 @@ src/shared/components/errors/FeatureErrorBoundary.tsx
 src/shared/components/errors/GlobalErrorBoundary.tsx
 src/shared/components/layout/AppLayout.tsx
 src/shared/components/layout/Header.tsx
+src/shared/components/layout/ProtectedRoute.tsx
 src/shared/components/layout/Sidebar.tsx
 src/shared/components/ui/__tests__/Button.test.tsx
+src/shared/components/ui/BackButton.tsx
+src/shared/components/ui/BaseModal.tsx
 src/shared/components/ui/Button.tsx
+src/shared/components/ui/ClearablePriceInput.tsx
+src/shared/components/ui/ConfirmModal.tsx
 src/shared/components/ui/DataTable.tsx
 src/shared/components/ui/Input.tsx
 src/shared/components/ui/Label.tsx
 src/shared/components/ui/PageLoader.tsx
+src/shared/components/ui/PickerModal.tsx
 src/shared/components/ui/RightDrawer.tsx
+src/shared/components/ui/Spinner.tsx
 src/shared/hooks/__tests__/useDebounce.test.ts
+src/shared/hooks/__tests__/useFocusTrap.test.ts
 src/shared/hooks/useDebounce.ts
+src/shared/hooks/useFocusTrap.ts
+src/shared/hooks/useHeaderStore.ts
+src/shared/hooks/useModalBehavior.ts
+src/shared/hooks/useSidebarStore.ts
 src/shared/styles/tokens.ts
 src/shared/types/pagination.ts
+src/shared/utils/__tests__/apiError.test.ts
+src/shared/utils/__tests__/currency.test.ts
+src/shared/utils/apiError.ts
+src/shared/utils/currency.ts
+src/shared/utils/date.ts
 src/vite-env.d.ts
 tsconfig.app.json
 tsconfig.json
@@ -120,6 +201,26 @@ vite.config.ts
 ```
 
 # Files
+
+## File: .cursorrules
+````
+# AI Context & Instructions for Centraly Frontend
+
+You are an expert React TypeScript developer working on the Centraly Frontend project.
+Always enforce the architectural rules laid out in `docs/ARCHITECTURE.md` and `docs/AI_GUIDELINES.md`.
+
+## Critical Directives
+1. **Never use `any`**. Use `unknown` or write proper TS interfaces.
+2. **Strict Structure**: Features live in `src/features/[name]/{api,components,hooks,pages,schemas}`. Never mix domain logic into `shared/`.
+3. **Styling**: Always use CSS variables mapped via `src/shared/styles/tokens.ts`. No hardcoded hex values or raw tailwind colors (like `text-blue-500`) unless explicitly mapped in `tokens.ts`.
+4. **Data Fetching**: ONLY use `TanStack Query` (React Query) in custom hooks. Never fetch directly in components.
+5. **Forms**: Use `react-hook-form` + `zod`. Keep validation schemas strictly in `src/features/*/schemas/`.
+6. **Error Handling**: Do not let errors crash the app. Assume `FeatureErrorBoundary` is wrapping your page. Use `sonner` for toast notifications.
+
+Before writing code, analyze existing shared components (e.g., `Button`, `RightDrawer`, `BaseModal`, `PickerModal`, `DataTable`, `Spinner`) and re-use them instead of building from scratch.
+
+Any overlay/dialog MUST use `BaseModal` or `RightDrawer` so a11y (role, aria-modal, focus trap, Escape) is guaranteed.
+````
 
 ## File: .env.example
 ````
@@ -163,12 +264,172 @@ npx lint-staged
 ````json
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
+  "plugins": ["react", "typescript", "oxc", "jsx-a11y"],
   "rules": {
+    "typescript/no-explicit-any": "error",
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    "react/only-export-components": ["warn", { "allowConstantExport": true }],
+    "jsx-a11y/aria-role": "error",
+    "jsx-a11y/role-has-required-aria-props": "error"
   }
 }
+````
+
+## File: docs/AI_GUIDELINES.md
+````markdown
+# قواعد وتوجيهات الذكاء الاصطناعي (AI Coding Guidelines)
+## مشروع سنترالي (Centraly Frontend)
+
+أنت الآن تعمل كمساعد برمجي ذكي في مشروع "سنترالي". لضمان الحفاظ على جودة الكود، **يجب** عليك قراءة هذه القواعد واتباعها حرفياً قبل كتابة أي كود أو اقتراح أي تعديلات.
+
+### 1. الالتزام بالمعمارية (Architecture & Folder Structure)
+المشروع مبني على معمارية **Feature-Based** (مستوحاة من Feature-Sliced Design).
+- **لا تضع كوداً في المكان الخطأ.** كل ميزة (Feature) يجب أن تكون مستقلة في مجلدها داخل `src/features/`.
+- هيكل الميزة الواحدة يجب أن يكون كالتالي:
+  - `api/`: ملفات الاتصال بالباك-إند (Axios + Repositories).
+  - `components/`: مكونات الـ UI الخاصة بهذه الميزة فقط.
+  - `hooks/`: الـ Custom Hooks (مثل React Query `useQuery` و `useMutation`).
+  - `schemas/`: ملفات التحقق `Zod schemas` والـ `Types/Interfaces`.
+  - `pages/`: الصفحات الرئيسية التي تجمع المكونات معاً.
+- **الأشياء المشتركة (Shared):** إذا كان المكون أو الـ Hook يُستخدم في أكثر من Feature، يجب وضعه في `src/shared/`.
+
+### 2. التوحيد اللوني والتصميم (Styling & Theming)
+- **ممنوع منعاً باتاً استخدام أكواد ألوان صريحة (Hardcoded Colors)** مثل `#FF0000` أو `text-blue-500` في الكود الأساسي إلا للضرورة القصوى.
+- يجب استخدام الـ Design Tokens الموجودة في `src/shared/styles/tokens.ts`.
+- يتم تعريف الألوان في المتغيرات `CSS Variables` داخل `src/index.css`، ويتم استدعاؤها عبر `tokens.ts`.
+- مثال صحيح: `<div className={tokens.font.muted}>` أو `bg-[var(--color-primary)]`.
+- حافظ على الـ Layout موحداً. استخدم المكونات المشتركة مثل `<AppLayout>` للصفحات، و `<RightDrawer>` للنوافذ الجانبية، و `<BaseModal>` / `<PickerModal>` لأي نافذة منبثقة بدلاً من اختراع مودال من الصفر.
+
+### 3. كتابة كود نظيف وآمن (Clean Code & Type Safety)
+- **ممنوع استخدام `any`.** استخدم `unknown` إذا كنت لا تعرف النوع، أو قم بكتابة الـ Interface الصحيح. استخرج رسالة الخطأ من الـ API عبر `getApiErrorMessage`.
+- تعامل مع الأخطاء دائماً بطريقة الـ Error Boundaries ولا تدع الـ App ينهار.
+- النماذج (Forms) تُبنى حصراً باستخدام `react-hook-form` مع `zodResolver` لربطها بـ `Zod` schemas.
+- لا تضع منطق الـ API داخل مكونات الـ UI (`Components`). المكونات يجب أن تستدعي `Custom Hooks` فقط.
+- استخدم `<Spinner>` / `<PageLoader>` بدلاً من إعادة كتابة دائرة تحميل. استخدم `<Input>` أو `tokens.input` لحقول الإدخال.
+- أي منطق حساب مالي (سلة POS، فاتورة، مرتجع) يجب أن يرافقه اختبار unit.
+
+### 4. الوصولية (Accessibility - a11y)
+- أي زر يحتوي على أيقونة فقط يجب أن يمتلك `aria-label`.
+- النوافذ المنبثقة **يجب** أن تُبنى على `BaseModal` أو `RightDrawer` لتوفير `role="dialog"`, `aria-modal="true"`, Escape، و Focus Trap تلقائياً.
+
+### 5. التعليمات الخاصة بالـ Commits
+- اجعل الـ Commits صغيرة، ذرية (Atomic)، وتعبر عن تغيير واحد (Feature, Fix, Refactor).
+- تأكد من تشغيل `npm run build` لتجنب كسر المشروع.
+````
+
+## File: docs/ARCHITECTURE.md
+````markdown
+# البنية المعمارية لمشروع سنترالي (Centraly Frontend Architecture)
+
+تم بناء مشروع **سنترالي** ليكون قابلاً للتوسع (Scalable)، وسهل الصيانة، ومستعداً لبيئة الـ Enterprise. يعتمد المشروع بشكل أساسي على معمارية **Feature-Based**.
+
+## 1. الهيكل العام (Folder Structure)
+
+```text
+src/
+├── core/             # الأساسيات التقنية التي لا تعتمد على ميزات معينة
+│   ├── api/          # إعدادات Axios و Interceptors الأساسية
+│   └── repositories/ # Interfaces عامة مثل IRepository
+├── features/         # الميزات (Features) مقسمة بشكل منطقي
+│   ├── auth/         # المصادقة (تسجيل الدخول، الصلاحيات)
+│   ├── inventory/    # المخزون (المنتجات، الأقسام)
+│   ├── sales/        # المبيعات و POS والمرتجعات
+│   ├── purchases/    # فواتير المشتريات ومرتجعات الموردين
+│   ├── suppliers/    # الموردين
+│   ├── contacts/     # العملاء
+│   └── finance/      # المالية (الخزينة، المصروفات، الدرج)
+├── shared/           # المكونات المشتركة بين عدة ميزات
+│   ├── components/   # مكونات UI العامة (Button, Table, BaseModal, PickerModal)
+│   ├── hooks/        # Hooks عامة (useDebounce, useFocusTrap, useModalBehavior)
+│   ├── styles/       # Design Tokens و CSS Variables
+│   └── types/        # الأنواع العامة (Pagination, Common enums)
+└── App.tsx           # الموجه الرئيسي وربط الـ Routes
+```
+
+## 2. هيكل الميزة الواحدة (Feature Structure)
+كل ميزة تعتبر "صندوق أسود" يحتوي على كل ما تحتاجه لتعمل:
+- `api/`: يحتوي على الكلاس الذي يطبق واجهة التواصل مع الباك-إند (مثال: `InventoryApi.ts`).
+- `hooks/`: يغلف نداءات الـ API باستخدام `React Query` (مثال: `useProducts()`, `useCreateProduct()`).
+- `components/`: أجزاء الواجهة الخاصة بالميزة (مثال: `ProductsTable.tsx`, `AddProductForm.tsx`).
+- `schemas/`: ملفات `Zod` للتحقق من المدخلات، بالإضافة إلى أنواع الـ TypeScript (`Types / Interfaces`) الخاصة بالنماذج والمسترجعات.
+- `pages/`: الصفحات التي تجمع المكونات وتُستدعى في الـ Router.
+
+## 3. إدارة الحالة (State Management)
+- **حالة السيرفر (Server State):** يتم إدارتها بالكامل عبر `TanStack Query (React Query)`. لا نستخدم `useEffect` لجلب البيانات.
+- **حالة الفورم (Form State):** تُدار عبر `react-hook-form`.
+- **الحالة العامة (Global UI State):** تُدار عبر `React Context` البسيطة (مثل `AuthContext`).
+
+## 4. نظام التصميم والـ Theming
+- يعتمد المشروع على **CSS Variables** معرفة في `src/index.css` لتسهيل تغيير السمة (White-labeling أو Dark Mode).
+- يتم استدعاء الألوان والمسافات والخطوط حصرياً عبر `src/shared/styles/tokens.ts`.
+- مكونات الـ UI مبنية فوق `TailwindCSS` ومجمعة في `shared/components/ui/` لضمان التوحيد (Consistency).
+
+## 5. الحماية ومعالجة الأخطاء (Security & Error Handling)
+- **Token Storage:** يتم تخزين الـ JWT حالياً في `localStorage` عبر `src/lib/storage.ts` لأن الباك-إند لا يوفّر refresh token بعد. الخطة المستقبلية: الانتقال إلى HttpOnly Cookies عند دعم الـ refresh endpoint.
+- **RBAC:** صلاحيات موحدة في `src/features/auth/schemas/permissions.ts`. `ProtectedRoute` يحمي الصفحات، و`HasPermission` يخفي أزرار UI الحساسة. حتى يرسل الباك permissions في login تُستخدم مجموعة صلاحيات مؤقتة كاملة للمستخدم المسجّل.
+- **Error Boundaries:** المشروع محمي بـ `GlobalErrorBoundary` و `FeatureErrorBoundary` لضمان عدم انهيار التطبيق بالكامل عند حدوث خطأ في مكون فرعي.
+````
+
+## File: docs/PERMISSIONS.md
+````markdown
+# صلاحيات سنترالي (RBAC)
+
+المصدر الموحد للكود: `src/features/auth/schemas/permissions.ts`
+
+| الصلاحية | الاستخدام |
+|----------|-----------|
+| `inventory:read` | عرض المنتجات والأقسام |
+| `inventory:write` | إضافة / تعديل / حذف منتج |
+| `sales:read` | سجل المبيعات والمرتجعات |
+| `sales:write` | POS وإنشاء فاتورة/مرتجع |
+| `purchases:read` | سجل المشتريات ومرتجعات المورد |
+| `purchases:write` | إنشاء فاتورة مشتريات أو مرتجع |
+| `contacts:read` | العملاء والموردين |
+| `contacts:write` | إضافة/تعديل جهات الاتصال |
+| `finance:read` | الدرج / الخزينة / المصروفات |
+| `finance:write` | عمليات مالية |
+| `admin` | يتجاوز كل الفحوصات |
+
+## الحالة الحالية
+الـ login لا يُرجع permissions بعد. المستخدم المسجّل يحصل مؤقتاً على `DEFAULT_AUTHENTICATED_PERMISSIONS`.
+
+عند جاهزية الباك: اقرأ المصفوفة من استجابة تسجيل الدخول واستبدل المجموعة المؤقتة.
+````
+
+## File: eslint.config.js
+````javascript
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+      'jsx-a11y': jsxA11y,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      '@typescript-eslint/no-explicit-any': 'error',
+      ...jsxA11y.configs.recommended.rules,
+    },
+  }
+);
 ````
 
 ## File: index.html
@@ -204,6 +465,7 @@ npx lint-staged
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "oxlint",
+    "lint:all": "oxlint && eslint .",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -223,7 +485,8 @@ npx lint-staged
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.1",
@@ -232,18 +495,27 @@ npx lint-staged
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.68.0",
+    "@typescript-eslint/parser": "^8.68.0",
     "@vitejs/plugin-react": "^6.0.4",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.4",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.3.0",
     "oxlint": "^1.75.0",
     "typescript": "~6.0.2",
+    "typescript-eslint": "^8.68.0",
     "vite": "^8.2.0",
     "vitest": "^4.1.11"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "oxlint",
+      "eslint --fix",
       "vitest related --run",
       "tsc --noEmit"
     ]
@@ -537,17 +809,28 @@ import { AuthProvider, useAuth } from "./features/auth/hooks/useAuth";
 import { AppLayout } from "./shared/components/layout/AppLayout";
 import { PageLoader } from "./shared/components/ui/PageLoader";
 import { FeatureBoundaryLayout } from "./shared/components/errors/FeatureBoundaryLayout";
+import { Permissions } from "./features/auth/schemas/permissions";
 
 // Lazy Loaded Pages
 const LoginPage = lazy(() => import("./features/auth/pages/LoginPage").then(module => ({ default: module.LoginPage })));
 const DashboardPage = lazy(() => import("./features/dashboard/pages/DashboardPage").then(module => ({ default: module.DashboardPage })));
 const ProductsPage = lazy(() => import("./features/inventory/pages/ProductsPage").then(module => ({ default: module.ProductsPage })));
+const ProductDetailsPage = lazy(() => import("./features/inventory/pages/ProductDetailsPage").then(module => ({ default: module.ProductDetailsPage })));
 const CategoriesPage = lazy(() => import("./features/inventory/pages/CategoriesPage").then(module => ({ default: module.CategoriesPage })));
 const PosPage = lazy(() => import("./features/sales/pages/PosPage").then(module => ({ default: module.PosPage })));
 const SalesHistoryPage = lazy(() => import("./features/sales/pages/SalesHistoryPage").then(module => ({ default: module.SalesHistoryPage })));
+const SalesReturnsPage = lazy(() => import("./features/sales/pages/SalesReturnsPage").then(module => ({ default: module.SalesReturnsPage })));
+const NewSalesReturnPage = lazy(() => import("./features/sales/pages/NewSalesReturnPage").then(module => ({ default: module.NewSalesReturnPage })));
 const PurchasesHistoryPage = lazy(() => import("./features/purchases/pages/PurchasesHistoryPage").then(module => ({ default: module.PurchasesHistoryPage })));
+const NewPurchasePage = lazy(() => import("./features/purchases/pages/NewPurchasePage").then(module => ({ default: module.NewPurchasePage })));
+const PurchaseInvoiceDetailsPage = lazy(() => import("./features/purchases/pages/PurchaseInvoiceDetailsPage").then(module => ({ default: module.PurchaseInvoiceDetailsPage })));
+const SupplierReturnsPage = lazy(() => import("./features/purchases/pages/SupplierReturnsPage").then(module => ({ default: module.SupplierReturnsPage })));
+const SupplierReturnDetailsPage = lazy(() => import("./features/purchases/pages/SupplierReturnDetailsPage").then(module => ({ default: module.SupplierReturnDetailsPage })));
+const NewSupplierReturnPage = lazy(() => import("./features/purchases/pages/NewSupplierReturnPage").then(module => ({ default: module.NewSupplierReturnPage })));
 const CustomersPage = lazy(() => import("./features/contacts/pages/CustomersPage").then(module => ({ default: module.CustomersPage })));
-const SuppliersPage = lazy(() => import("./features/contacts/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
+const CustomerDetailsPage = lazy(() => import("./features/contacts/pages/CustomerDetailsPage").then(module => ({ default: module.CustomerDetailsPage })));
+const SuppliersPage = lazy(() => import("./features/suppliers/pages/SuppliersPage").then(module => ({ default: module.SuppliersPage })));
+const SupplierDetailsPage = lazy(() => import("./features/suppliers/pages/SupplierDetailsPage").then(module => ({ default: module.SupplierDetailsPage })));
 const DrawerPage = lazy(() => import("./features/finance/pages/DrawerPage").then(module => ({ default: module.DrawerPage })));
 const SafePage = lazy(() => import("./features/finance/pages/SafePage").then(module => ({ default: module.SafePage })));
 const ExpensesPage = lazy(() => import("./features/finance/pages/ExpensesPage").then(module => ({ default: module.ExpensesPage })));
@@ -611,31 +894,38 @@ export default function App() {
                 <Route path="/" element={<DashboardPage />} />
 
                 <Route element={<FeatureBoundaryLayout featureName="المبيعات" />}>
-                  <Route path="/sales/pos"          element={<PosPage />} />
-                  <Route path="/sales/history"      element={<SalesHistoryPage />} />
-                  <Route path="/sales/returns"      element={<ComingSoon label="مرتجعات المبيعات" />} />
+                  <Route path="/sales/pos"          element={<ProtectedRoute requiredPermissions={[Permissions.SalesWrite]}><PosPage /></ProtectedRoute>} />
+                  <Route path="/sales/history"      element={<ProtectedRoute requiredPermissions={[Permissions.SalesRead]}><SalesHistoryPage /></ProtectedRoute>} />
+                  <Route path="/sales/returns"      element={<ProtectedRoute requiredPermissions={[Permissions.SalesRead]}><SalesReturnsPage /></ProtectedRoute>} />
+                  <Route path="/sales/returns/new"  element={<ProtectedRoute requiredPermissions={[Permissions.SalesWrite]}><NewSalesReturnPage /></ProtectedRoute>} />
                 </Route>
 
                 <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
-                  <Route path="/purchases/new"      element={<ComingSoon label="فاتورة مشتريات جديدة" />} />
-                  <Route path="/purchases/history"  element={<PurchasesHistoryPage />} />
-                  <Route path="/purchases/returns"  element={<ComingSoon label="مرتجعات الموردين" />} />
+                  <Route path="/purchases/new"      element={<ProtectedRoute requiredPermissions={[Permissions.PurchasesWrite]}><NewPurchasePage /></ProtectedRoute>} />
+                  <Route path="/purchases/history"  element={<ProtectedRoute requiredPermissions={[Permissions.PurchasesRead]}><PurchasesHistoryPage /></ProtectedRoute>} />
+                  <Route path="/purchases/returns"  element={<ProtectedRoute requiredPermissions={[Permissions.PurchasesRead]}><SupplierReturnsPage /></ProtectedRoute>} />
+                  <Route path="/purchases/returns/new" element={<ProtectedRoute requiredPermissions={[Permissions.PurchasesWrite]}><NewSupplierReturnPage /></ProtectedRoute>} />
+                  <Route path="/purchases/returns/:id" element={<ProtectedRoute requiredPermissions={[Permissions.PurchasesRead]}><SupplierReturnDetailsPage /></ProtectedRoute>} />
+                  <Route path="/purchases/:id"      element={<ProtectedRoute requiredPermissions={[Permissions.PurchasesRead]}><PurchaseInvoiceDetailsPage /></ProtectedRoute>} />
                 </Route>
 
                 <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
-                  <Route path="/inventory/products"   element={<ProductsPage />} />
-                  <Route path="/inventory/categories" element={<CategoriesPage />} />
+                  <Route path="/inventory/products"   element={<ProtectedRoute requiredPermissions={[Permissions.InventoryRead]}><ProductsPage /></ProtectedRoute>} />
+                  <Route path="/inventory/products/:id" element={<ProtectedRoute requiredPermissions={[Permissions.InventoryRead]}><ProductDetailsPage /></ProtectedRoute>} />
+                  <Route path="/inventory/categories" element={<ProtectedRoute requiredPermissions={[Permissions.InventoryRead]}><CategoriesPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="جهات الاتصال" />}>
-                  <Route path="/contacts/customers" element={<CustomersPage />} />
-                  <Route path="/contacts/suppliers" element={<SuppliersPage />} />
+                <Route element={<FeatureBoundaryLayout featureName="إدارة جهات الاتصال" />}>
+                  <Route path="/contacts/customers" element={<ProtectedRoute requiredPermissions={[Permissions.ContactsRead]}><CustomersPage /></ProtectedRoute>} />
+                  <Route path="/contacts/customers/:id" element={<ProtectedRoute requiredPermissions={[Permissions.ContactsRead]}><CustomerDetailsPage /></ProtectedRoute>} />
+                  <Route path="/contacts/suppliers" element={<ProtectedRoute requiredPermissions={[Permissions.ContactsRead]}><SuppliersPage /></ProtectedRoute>} />
+                  <Route path="/contacts/suppliers/:id" element={<ProtectedRoute requiredPermissions={[Permissions.ContactsRead]}><SupplierDetailsPage /></ProtectedRoute>} />
                 </Route>
 
                 <Route element={<FeatureBoundaryLayout featureName="المالية" />}>
-                  <Route path="/finance/drawer"   element={<DrawerPage />} />
-                  <Route path="/finance/safe"     element={<SafePage />} />
-                  <Route path="/finance/expenses" element={<ExpensesPage />} />
+                  <Route path="/finance/drawer"   element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><DrawerPage /></ProtectedRoute>} />
+                  <Route path="/finance/safe"     element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><SafePage /></ProtectedRoute>} />
+                  <Route path="/finance/expenses" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><ExpensesPage /></ProtectedRoute>} />
                 </Route>
 
                 <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
@@ -668,7 +958,8 @@ import { LoginFormData } from "@/features/auth/schemas/loginSchema";
 
 export interface AuthResponse {
   token: string;
-  user: {
+  permissions?: string[];
+  user?: {
     id: string;
     email: string;
     name: string;
@@ -705,7 +996,7 @@ export interface IContactsRepository {
   deleteCustomer(id: string): Promise<void>;
   
   // Customer Transactions
-  getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>>;
+  getCustomerStatement(customerId: string): Promise<CustomerStatementResponse[]>;
   addCustomerPayment(customerId: string, data: CreatePaymentRequest): Promise<string>;
 
   // Suppliers
@@ -768,11 +1059,15 @@ import {
 export interface IInventoryRepository {
   // Categories
   getCategories(filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>>;
-  createCategory(name: string, description?: string): Promise<string>;
+  createCategory(reqData: { name: string; departmentId: string }): Promise<string>;
+  updateCategory(id: string, reqData: { name: string; departmentId: string }): Promise<void>;
+  deleteCategory(id: string): Promise<void>;
   
   // Departments
   getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>>;
-  createDepartment(categoryId: string, name: string): Promise<string>;
+  createDepartment(reqData: { name: string }): Promise<string>;
+  updateDepartment(id: string, reqData: { name: string }): Promise<void>;
+  deleteDepartment(id: string): Promise<void>;
 
   // Products
   getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>>;
@@ -959,6 +1254,7 @@ import { authRepository } from "../api/AuthApi";
 import { LoginFormData } from "../schemas/loginSchema";
 import { toast } from "sonner";
 import { storage } from "@/lib/storage";
+import { getApiErrorMessage } from "@/shared/utils/apiError";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -971,11 +1267,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!storage.getToken());
-  // Mock permissions until backend sends them in the login response
-  const [permissions, setPermissions] = useState<string[]>(isAuthenticated ? ["inventory:read", "inventory:write", "sales:read"] : []);
+  const [permissions, setPermissions] = useState<string[]>(
+    isAuthenticated ? storage.getPermissions() : []
+  );
 
   const logout = () => {
     storage.clearToken();
+    storage.clearPermissions();
     setIsAuthenticated(false);
     setPermissions([]);
     window.location.href = '/login';
@@ -1007,12 +1305,13 @@ export function useLogin() {
     onSuccess: (data) => {
       toast.success("تم تسجيل الدخول بنجاح!");
       storage.setToken(data.token);
+      // Ensure we have permissions array, default to empty if not returned by old backend
+      const perms = data.permissions || [];
+      storage.setPermissions(perms);
       window.location.href = '/';
     },
     onError: (error: unknown) => {
-      const err = error as { response?: { data?: { message?: string } } };
-      const message = err.response?.data?.message || "فشل تسجيل الدخول. تحقق من البيانات.";
-      toast.error(message);
+      toast.error(getApiErrorMessage(error, "فشل تسجيل الدخول. تحقق من البيانات."));
     },
   });
 }
@@ -1077,6 +1376,39 @@ export const loginSchema = z.object({
 export type LoginFormData = z.infer<typeof loginSchema>;
 ````
 
+## File: src/features/auth/schemas/permissions.ts
+````typescript
+export const Permissions = {
+  InventoryRead: 'inventory:read',
+  InventoryWrite: 'inventory:write',
+  SalesRead: 'sales:read',
+  SalesWrite: 'sales:write',
+  PurchasesRead: 'purchases:read',
+  PurchasesWrite: 'purchases:write',
+  ContactsRead: 'contacts:read',
+  ContactsWrite: 'contacts:write',
+  FinanceRead: 'finance:read',
+  FinanceWrite: 'finance:write',
+  Admin: 'admin',
+} as const;
+
+export type Permission = (typeof Permissions)[keyof typeof Permissions];
+
+/** Temporary full set until login response includes permissions. */
+export const DEFAULT_AUTHENTICATED_PERMISSIONS: Permission[] = [
+  Permissions.InventoryRead,
+  Permissions.InventoryWrite,
+  Permissions.SalesRead,
+  Permissions.SalesWrite,
+  Permissions.PurchasesRead,
+  Permissions.PurchasesWrite,
+  Permissions.ContactsRead,
+  Permissions.ContactsWrite,
+  Permissions.FinanceRead,
+  Permissions.FinanceWrite,
+];
+````
+
 ## File: src/features/contacts/api/ContactsApi.ts
 ````typescript
 import { apiClient } from "@/lib/axios";
@@ -1122,9 +1454,9 @@ export class ContactsRepository implements IContactsRepository {
     await apiClient.delete(`/customers/${id}`);
   }
 
-  async getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>> {
-    if (!filters.customerId) throw new Error("customerId is required for statement");
-    const { data } = await apiClient.get<PaginatedList<CustomerStatementResponse>>(`/customers/${filters.customerId}/transactions/statement`, { params: filters });
+  async getCustomerStatement(customerId: string): Promise<CustomerStatementResponse[]> {
+    if (!customerId) throw new Error("customerId is required for statement");
+    const { data } = await apiClient.get<CustomerStatementResponse[]>(`/customers/${customerId}/transactions/statement`);
     return data;
   }
 
@@ -1173,6 +1505,228 @@ export class ContactsRepository implements IContactsRepository {
 export const contactsRepository = new ContactsRepository();
 ````
 
+## File: src/features/contacts/components/CustomerForm.tsx
+````typescript
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createCustomerSchema, CreateCustomerRequest, CustomerResponse } from '../schemas/contactSchemas';
+import { tokens } from '@/shared/styles/tokens';
+import { useEffect } from 'react';
+
+interface CustomerFormProps {
+  initialData?: CustomerResponse;
+  onSubmit: (data: CreateCustomerRequest) => void;
+}
+
+export function CustomerForm({ initialData, onSubmit }: CustomerFormProps) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CreateCustomerRequest>({
+    resolver: zodResolver(createCustomerSchema),
+    defaultValues: {
+      name: '',
+      phone: '',
+    },
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.name,
+        phone: initialData.phone || '',
+      });
+    } else {
+      reset({
+        name: '',
+        phone: '',
+      });
+    }
+  }, [initialData, reset]);
+
+  return (
+    <form id="customer-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div>
+        <label className={tokens.font.label + " mb-2 block"}>اسم العميل <span className="text-red-500">*</span></label>
+        <input
+          type="text"
+          {...register('name')}
+          className={tokens.input}
+          placeholder="مثال: أحمد محمد"
+        />
+        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+      </div>
+
+      <div>
+        <label className={tokens.font.label + " mb-2 block"}>رقم الهاتف</label>
+        <input
+          type="text"
+          {...register('phone')}
+          className={tokens.input}
+          placeholder="مثال: 010xxxxxxxx"
+          dir="ltr"
+        />
+        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+      </div>
+    </form>
+  );
+}
+````
+
+## File: src/features/contacts/components/CustomersFilters.tsx
+````typescript
+import { SearchIcon, PlusIcon } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+import { useDebounce } from '@/shared/hooks/useDebounce';
+import { useState, useEffect } from 'react';
+
+interface CustomersFiltersProps {
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+  onAddClick: () => void;
+}
+
+export function CustomersFilters({ searchTerm, onSearchChange, onAddClick }: CustomersFiltersProps) {
+  const [localSearch, setLocalSearch] = useState(searchTerm);
+  const debouncedSearch = useDebounce(localSearch, 300);
+
+  useEffect(() => {
+    onSearchChange(debouncedSearch);
+  }, [debouncedSearch, onSearchChange]);
+
+  return (
+    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col sm:flex-row gap-4 items-center justify-between">
+      <div className="relative w-full sm:w-96">
+        <input
+          type="text"
+          placeholder="ابحث عن عميل بالاسم أو رقم الهاتف..."
+          className={tokens.input + ' pl-10'}
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
+        />
+        <SearchIcon size={18} className="text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+      </div>
+      <button onClick={onAddClick} className={tokens.btn.primary + ' w-full sm:w-auto shrink-0 flex items-center justify-center gap-2'}>
+        <PlusIcon size={18} />
+        إضافة عميل
+      </button>
+    </div>
+  );
+}
+````
+
+## File: src/features/contacts/components/CustomersTable.tsx
+````typescript
+import { CustomerResponse } from '../schemas/contactSchemas';
+import { PaginatedList } from '@/shared/types/pagination';
+import { DataTable } from '@/shared/components/ui/DataTable';
+import { formatCurrency } from '@/shared/utils/currency';
+import { Edit2, Trash2, Eye } from 'lucide-react';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
+
+interface CustomersTableProps {
+  data?: PaginatedList<CustomerResponse>;
+  isLoading: boolean;
+  pageIndex: number;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  onEdit: (customer: CustomerResponse) => void;
+  onDelete: (customer: CustomerResponse) => void;
+  onRowClick: (customer: CustomerResponse) => void;
+}
+
+export function CustomersTable({
+  data,
+  isLoading,
+  pageIndex,
+  onNextPage,
+  onPrevPage,
+  onEdit,
+  onDelete,
+  onRowClick
+}: CustomersTableProps) {
+  const columns = [
+    {
+      header: 'اسم العميل',
+      cell: (row: CustomerResponse) => (
+        <span className="font-bold text-gray-800">{row.name}</span>
+      ),
+    },
+    {
+      header: 'رقم الهاتف',
+      cell: (row: CustomerResponse) => row.phone || <span className="text-gray-400">-</span>,
+    },
+    {
+      header: 'المديونية (الرصيد)',
+      cell: (row: CustomerResponse) => {
+        const balance = row.debtBalance || 0;
+        if (balance === 0) return <span className="text-gray-500 font-medium">0 ج.م</span>;
+        if (balance > 0) return <span className="text-red-600 font-bold" dir="ltr">{formatCurrency(balance)}</span>; // owes us
+        return <span className="text-green-600 font-bold" dir="ltr">{formatCurrency(Math.abs(balance))} (مقدم)</span>; // we owe them
+      },
+    },
+    {
+      header: 'تاريخ الإضافة',
+      cell: (row: CustomerResponse) => new Date(row.createdAt).toLocaleDateString('ar-EG'),
+    },
+    {
+      header: 'إجراءات',
+      cell: (row: CustomerResponse) => (
+        <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={() => onRowClick(row)}
+            className="p-1.5 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+            title="كشف حساب / التفاصيل"
+            aria-label="تفاصيل العميل"
+          >
+            <Eye size={18} />
+          </button>
+          <HasPermission permission={Permissions.ContactsWrite}>
+            <button
+              type="button"
+              onClick={() => onEdit(row)}
+              className="p-1.5 text-orange-500 hover:bg-orange-50 rounded-lg transition-colors"
+              title="تعديل"
+              aria-label="تعديل العميل"
+            >
+              <Edit2 size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => onDelete(row)}
+              className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              title="حذف"
+              aria-label="حذف العميل"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <DataTable
+      columns={columns}
+      data={data?.items || []}
+      isLoading={isLoading}
+      pageIndex={pageIndex}
+      totalPages={data?.totalPages || 1}
+      totalCount={data?.totalCount || 0}
+      pageSize={data?.pageSize || 10}
+      onNextPage={onNextPage}
+      onPrevPage={onPrevPage}
+      onRowClick={onRowClick}
+    />
+  );
+}
+````
+
 ## File: src/features/contacts/hooks/useContacts.ts
 ````typescript
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -1211,10 +1765,11 @@ export function useCustomer(id: string) {
   });
 }
 
-export function useCustomerStatement(filters: StatementFilters) {
+export function useCustomerStatement(customerId: string) {
   return useQuery({
-    queryKey: CONTACT_KEYS.customerStatement(filters),
-    queryFn: () => contactsRepository.getCustomerStatement(filters),
+    queryKey: ['customers', 'statement', customerId],
+    queryFn: () => contactsRepository.getCustomerStatement(customerId),
+    enabled: !!customerId,
   });
 }
 
@@ -1227,6 +1782,32 @@ export function useCreateCustomer() {
       queryClient.invalidateQueries({ queryKey: ["customers"] });
     },
     onError: () => toast.error("حدث خطأ أثناء إضافة العميل"),
+  });
+}
+
+export function useUpdateCustomer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: CreateCustomerRequest }) => 
+      contactsRepository.updateCustomer(id, data),
+    onSuccess: (_, { id }) => {
+      toast.success("تم تحديث بيانات العميل بنجاح");
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      queryClient.invalidateQueries({ queryKey: CONTACT_KEYS.customerDetails(id) });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تحديث العميل"),
+  });
+}
+
+export function useDeleteCustomer() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => contactsRepository.deleteCustomer(id),
+    onSuccess: () => {
+      toast.success("تم حذف العميل بنجاح");
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف العميل، قد يكون مرتبطاً بفواتير"),
   });
 }
 
@@ -1295,25 +1876,432 @@ export function useAddSupplierPayment() {
 }
 ````
 
-## File: src/features/contacts/pages/CustomersPage.tsx
+## File: src/features/contacts/pages/CustomerDetailsPage.tsx
 ````typescript
-export function CustomersPage() {
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useCustomer, useCustomerStatement, useAddCustomerPayment } from '../hooks/useContacts';
+import { formatCurrency } from '@/shared/utils/currency';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { DataTable } from '@/shared/components/ui/DataTable';
+import { InvoiceDetailsModal } from '@/features/sales/components/InvoiceDetailsModal';
+import { ArrowDownLeft, ArrowUpRight, Wallet, ReceiptText, Calendar } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+import { toast } from 'sonner';
+import { CustomerStatementResponse } from '../schemas/contactSchemas';
+
+export function CustomerDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const { setTitle, setBackButton } = useHeaderStore();
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState('');
+  const [paymentNotes, setPaymentNotes] = useState('');
+  const [filterType, setFilterType] = useState('الكل');
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
+
+  const { data: customer, isLoading: isLoadingCustomer } = useCustomer(id!);
+  const { data: statementData, isLoading: isLoadingStatement } = useCustomerStatement(id!);
+  const addPayment = useAddCustomerPayment();
+
+  // Client-side pagination and filtering for statement array
+  const rawStatementArray = statementData || [];
+  const statementArray = rawStatementArray.filter(item => {
+    if (filterType === 'الكل') return true;
+    if (filterType === 'فاتورة') return item.transactionType === 'Invoice' || item.transactionType === 'فاتورة';
+    if (filterType === 'مرتجع') return item.transactionType === 'Return' || item.transactionType === 'مرتجع';
+    if (filterType === 'سداد مديونية') return item.transactionType === 'Payment' || item.transactionType === 'دفعة';
+    return true;
+  });
+  const pageSize = 10;
+  const totalCount = statementArray.length;
+  const totalPages = Math.ceil(totalCount / pageSize) || 1;
+  const paginatedStatement = statementArray.slice((pageIndex - 1) * pageSize, pageIndex * pageSize);
+
+  useEffect(() => {
+    if (customer) {
+      setTitle(`كشف حساب: ${customer.name}`);
+      setBackButton(true, '/contacts/customers');
+    }
+  }, [customer, setTitle, setBackButton]);
+
+  if (isLoadingCustomer) {
+    return <div className="p-8 text-center text-gray-500">جاري تحميل بيانات العميل...</div>;
+  }
+
+  if (!customer) {
+    return <div className="p-8 text-center text-red-500">العميل غير موجود.</div>;
+  }
+
+  const handlePaymentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = Number(paymentAmount);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error('المبلغ غير صحيح');
+      return;
+    }
+    
+    addPayment.mutate(
+      { id: id!, data: { amount, notes: paymentNotes } },
+      {
+        onSuccess: () => {
+          setIsPaymentDrawerOpen(false);
+          setPaymentAmount('');
+          setPaymentNotes('');
+        }
+      }
+    );
+  };
+
+  const columns = [
+    {
+      header: 'التاريخ',
+      cell: (row: CustomerStatementResponse) => (
+        <div className="flex items-center gap-2 text-gray-600">
+          <Calendar size={16} />
+          {new Date(row.date).toLocaleDateString('ar-EG', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </div>
+      ),
+    },
+    {
+      header: 'نوع العملية',
+      cell: (row: CustomerStatementResponse) => {
+        const isInvoice = row.transactionType.includes('Invoice') || row.transactionType === 'فاتورة';
+        const isPayment = row.transactionType.includes('Payment') || row.transactionType === 'دفعة';
+        const isReturn = row.transactionType.includes('Return') || row.transactionType === 'مرتجع';
+        
+        if (isInvoice) return (
+          <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 cursor-pointer hover:bg-orange-200 transition-colors">
+            فاتورة مبيعات
+            <ReceiptText size={12} className="opacity-70" />
+          </span>
+        );
+        if (isPayment) return <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold">سداد مديونية</span>;
+        if (isReturn) return <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-bold">مرتجع مبيعات</span>;
+        
+        return <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-bold">{row.transactionType}</span>;
+      },
+    },
+    {
+      header: 'البيان',
+      cell: (row: CustomerStatementResponse) => (
+        <span className="text-gray-600 max-w-[200px] truncate block" title={row.notes || '-'}>
+          {row.notes || '-'}
+        </span>
+      ),
+    },
+    {
+      header: 'مدين (عليه)',
+      cell: (row: CustomerStatementResponse) => row.debit > 0 ? (
+        <span className="text-red-600 font-bold flex items-center gap-1" dir="ltr">
+          <ArrowUpRight size={16} /> {formatCurrency(row.debit)}
+        </span>
+      ) : <span className="text-gray-400">-</span>,
+    },
+    {
+      header: 'دائن (له)',
+      cell: (row: CustomerStatementResponse) => row.credit > 0 ? (
+        <span className="text-green-600 font-bold flex items-center gap-1" dir="ltr">
+          <ArrowDownLeft size={16} /> {formatCurrency(row.credit)}
+        </span>
+      ) : <span className="text-gray-400">-</span>,
+    },
+    {
+      header: 'الرصيد بعد العملية',
+      cell: (row: CustomerStatementResponse) => {
+        if (row.balanceAfter === 0) return <span className="text-gray-500 font-bold">0 ج.م</span>;
+        if (row.balanceAfter > 0) return <span className="text-red-600 font-bold" dir="ltr">{formatCurrency(row.balanceAfter)}</span>;
+        return <span className="text-green-600 font-bold" dir="ltr">{formatCurrency(Math.abs(row.balanceAfter))} (مقدم)</span>;
+      },
+    }
+  ];
+
+  const currentBalance = customer.debtBalance || 0;
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">CustomersPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="space-y-6">
+      
+      {/* Customer Summary Card */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{customer.name}</h2>
+          <div className="flex items-center gap-4 text-gray-600 text-sm">
+            {customer.phone && <p>الهاتف: <span className="font-semibold">{customer.phone}</span></p>}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <div>
+            <p className="text-sm font-semibold text-gray-500 mb-1">الرصيد الحالي</p>
+            <div className="text-2xl font-bold" dir="ltr">
+              {currentBalance === 0 ? (
+                <span className="text-gray-600">0.00 ج.م</span>
+              ) : currentBalance > 0 ? (
+                <span className="text-red-600">عليه {formatCurrency(currentBalance)}</span>
+              ) : (
+                <span className="text-green-600">له {formatCurrency(Math.abs(currentBalance))}</span>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={() => setIsPaymentDrawerOpen(true)}
+            className="flex items-center gap-2 bg-[#0f8e4c] hover:bg-[#0c7a40] text-white px-5 py-3 rounded-xl font-bold transition-all shadow-lg shadow-green-500/20"
+          >
+            <Wallet size={20} />
+            تسديد دفعة
+          </button>
+        </div>
+      </div>
+
+      {/* Statement Table */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+          <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+            <ReceiptText className="text-gray-500" />
+            حركة الحساب (كشف الحساب)
+          </h3>
+          <select
+            value={filterType}
+            onChange={(e) => {
+              setFilterType(e.target.value);
+              setPageIndex(1);
+            }}
+            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          >
+            <option value="الكل">جميع العمليات</option>
+            <option value="فاتورة">فاتورة مبيعات</option>
+            <option value="مرتجع">مرتجع مبيعات</option>
+            <option value="سداد مديونية">سداد مديونية</option>
+          </select>
+        </div>
+        
+        <div className="p-5">
+          <DataTable
+            columns={columns}
+            data={paginatedStatement}
+            isLoading={isLoadingStatement}
+            pageIndex={pageIndex}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            onNextPage={() => setPageIndex(p => Math.min(p + 1, totalPages))}
+            onPrevPage={() => setPageIndex(p => Math.max(p - 1, 1))}
+            onRowClick={(row) => {
+              if (row.transactionType === 'Invoice' || row.transactionType === 'فاتورة') {
+                setSelectedInvoiceId(row.transactionId);
+              }
+            }}
+          />
+        </div>
+      </div>
+
+      <InvoiceDetailsModal
+        isOpen={!!selectedInvoiceId}
+        onClose={() => setSelectedInvoiceId(null)}
+        invoiceId={selectedInvoiceId}
+      />
+
+      {/* Add Payment Drawer */}
+      <RightDrawer
+        isOpen={isPaymentDrawerOpen}
+        onClose={() => setIsPaymentDrawerOpen(false)}
+        title="استلام دفعة من العميل"
+        footer={
+          <>
+            <button type="button" onClick={() => setIsPaymentDrawerOpen(false)} className={tokens.btn.secondary}>
+              إلغاء
+            </button>
+            <button
+              type="submit"
+              form="payment-form"
+              disabled={addPayment.isPending}
+              className="bg-[#0f8e4c] hover:bg-[#0c7a40] text-white px-6 py-2.5 rounded-lg font-bold transition-colors disabled:opacity-60 shadow-md"
+            >
+              {addPayment.isPending ? 'جاري الحفظ...' : 'حفظ واستلام'}
+            </button>
+          </>
+        }
+      >
+        <form id="payment-form" onSubmit={handlePaymentSubmit} className="space-y-6">
+          <div className="bg-orange-50 p-4 rounded-xl border border-orange-100">
+            <p className="text-sm font-semibold text-orange-800 mb-1">المديونية الحالية</p>
+            <p className="text-2xl font-bold text-orange-900" dir="ltr">{formatCurrency(currentBalance)}</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              المبلغ المستلم <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                min="0.01"
+                step="0.01"
+                value={paymentAmount}
+                onChange={(e) => setPaymentAmount(e.target.value)}
+                className={tokens.input + ' pl-12 py-3 text-lg font-bold text-left'}
+                placeholder="0.00"
+                required
+                dir="ltr"
+              />
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">ج.م</span>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              البيان / ملاحظات
+            </label>
+            <textarea
+              value={paymentNotes}
+              onChange={(e) => setPaymentNotes(e.target.value)}
+              className={tokens.input + ' py-3'}
+              rows={3}
+              placeholder="مثال: دفعة نقدية من الحساب"
+            />
+          </div>
+        </form>
+      </RightDrawer>
+
     </div>
   );
 }
 ````
 
-## File: src/features/contacts/pages/SuppliersPage.tsx
+## File: src/features/contacts/pages/CustomersPage.tsx
 ````typescript
-export function SuppliersPage() {
+import { useState } from 'react';
+import { useCustomers, useCreateCustomer, useUpdateCustomer, useDeleteCustomer } from '../hooks/useContacts';
+import { CustomerResponse, CreateCustomerRequest } from '../schemas/contactSchemas';
+import { CustomersFilters } from '../components/CustomersFilters';
+import { CustomersTable } from '../components/CustomersTable';
+import { CustomerForm } from '../components/CustomerForm';
+import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
+import { tokens } from '@/shared/styles/tokens';
+import { useNavigate } from 'react-router-dom';
+
+export function CustomersPage() {
+  const navigate = useNavigate();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [customerToEdit, setCustomerToEdit] = useState<CustomerResponse | undefined>(undefined);
+
+  const [customerToDelete, setCustomerToDelete] = useState<CustomerResponse | null>(null);
+
+  const { data, isLoading } = useCustomers({
+    pageNumber: pageIndex,
+    pageSize: 10,
+    customerPhone: searchTerm || undefined, // Backend might need search string in phone or general search
+  });
+
+  const createCustomer = useCreateCustomer();
+  const updateCustomer = useUpdateCustomer();
+  const deleteCustomer = useDeleteCustomer();
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setPageIndex(1);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    setCustomerToEdit(undefined);
+  };
+
+  const isSubmitting = createCustomer.isPending || updateCustomer.isPending;
+
+  const handleFormSubmit = (formData: CreateCustomerRequest) => {
+    if (customerToEdit) {
+      updateCustomer.mutate({ id: customerToEdit.customerId, data: formData }, { onSuccess: closeDrawer });
+    } else {
+      createCustomer.mutate(formData, { onSuccess: closeDrawer });
+    }
+  };
+
+  const drawerFooter = (
+    <>
+      <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
+        إلغاء
+      </button>
+      <button
+        type="submit"
+        form="customer-form"
+        disabled={isSubmitting}
+        className={tokens.btn.primary + " disabled:opacity-60"}
+      >
+        {isSubmitting ? 'جاري الحفظ...' : (customerToEdit ? 'حفظ التعديلات' : 'إضافة العميل')}
+      </button>
+    </>
+  );
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">SuppliersPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="space-y-4">
+      <CustomersFilters
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        onAddClick={() => {
+          setCustomerToEdit(undefined);
+          setIsDrawerOpen(true);
+        }}
+      />
+
+      <CustomersTable 
+        data={data} 
+        isLoading={isLoading}
+        pageIndex={pageIndex}
+        onNextPage={() => setPageIndex((p) => p + 1)}
+        onPrevPage={() => setPageIndex((p) => p - 1)}
+        onEdit={(customer) => {
+          setCustomerToEdit(customer);
+          setIsDrawerOpen(true);
+        }}
+        onDelete={(customer) => setCustomerToDelete(customer)}
+        onRowClick={(customer) => navigate(`/contacts/customers/${customer.customerId}`)}
+      />
+
+      <RightDrawer
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        title={customerToEdit ? "تعديل بيانات العميل" : "إضافة عميل جديد"}
+        footer={drawerFooter}
+      >
+        <CustomerForm
+          initialData={customerToEdit}
+          onSubmit={handleFormSubmit}
+        />
+      </RightDrawer>
+
+      <ConfirmModal
+        isOpen={!!customerToDelete}
+        title="تأكيد حذف العميل"
+        message={
+          customerToDelete
+            ? `هل أنت متأكد من حذف العميل "${customerToDelete.name}"؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف جميع بياناته.`
+            : ''
+        }
+        confirmText={deleteCustomer.isPending ? 'جاري الحذف...' : 'نعم، احذف'}
+        cancelText="إلغاء"
+        onConfirm={() => {
+          if (customerToDelete) {
+            deleteCustomer.mutate(customerToDelete.customerId, {
+              onSuccess: () => setCustomerToDelete(null)
+            });
+          }
+        }}
+        onClose={() => setCustomerToDelete(null)}
+        type="danger"
+      />
     </div>
   );
 }
@@ -1337,22 +2325,17 @@ export interface StatementFilters extends BaseFilters {
 // --- Customers ---
 
 export const createCustomerSchema = z.object({
-  name: z.string().min(1, "Ø§Ù„Ø§Ø³Ù… Ù…Ø·Ù„ÙˆØ¨"),
+  name: z.string().min(1, "اسم العميل مطلوب"),
   phone: z.string().optional(),
-  email: z.string().email("Ø¨Ø±ÙŠØ¯ ØºÙŠØ± ØµØ§Ù„Ø­").optional().or(z.literal("")),
-  address: z.string().optional(),
-  notes: z.string().optional(),
 });
 export type CreateCustomerRequest = z.infer<typeof createCustomerSchema>;
 
 export interface CustomerResponse {
-  id: string;
+  customerId: string;
   name: string;
   phone?: string;
-  email?: string;
-  address?: string;
-  notes?: string;
-  balance: number;
+  debtBalance: number;
+  invoicesCount: number;
   createdAt: string;
 }
 
@@ -1837,9 +2820,17 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async createCategory(name: string, description?: string): Promise<string> {
-    const { data } = await apiClient.post<string>('/categories', { name, description });
+  async createCategory(reqData: { name: string; departmentId: string }): Promise<string> {
+    const { data } = await apiClient.post<string>('/categories', reqData);
     return data;
+  }
+
+  async updateCategory(id: string, reqData: { name: string; departmentId: string }): Promise<void> {
+    await apiClient.put(`/categories/${id}`, reqData);
+  }
+
+  async deleteCategory(id: string): Promise<void> {
+    await apiClient.delete(`/categories/${id}`);
   }
 
   async getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>> {
@@ -1848,9 +2839,17 @@ export class InventoryRepository implements IInventoryRepository {
     return data;
   }
 
-  async createDepartment(categoryId: string, name: string): Promise<string> {
-    const { data } = await apiClient.post<string>('/departments', { categoryId, name });
+  async createDepartment(reqData: { name: string }): Promise<string> {
+    const { data } = await apiClient.post<string>('/departments', reqData);
     return data;
+  }
+
+  async updateDepartment(id: string, reqData: { name: string }): Promise<void> {
+    await apiClient.put(`/departments/${id}`, reqData);
+  }
+
+  async deleteDepartment(id: string): Promise<void> {
+    await apiClient.delete(`/departments/${id}`);
   }
 
   async getProducts(filters: ProductFilters): Promise<PaginatedList<ProductResponse>> {
@@ -1926,10 +2925,10 @@ export const inventoryRepository = new InventoryRepository();
 import { useForm, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from "zod";
-import { createProductSchema, CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { useDepartments } from '@/features/inventory/hooks/useInventory';
 import { tokens } from '@/shared/styles/tokens';
 import { Plus, Trash2 } from 'lucide-react';
+import { ProductResponse, CategoryResponse, createProductSchema } from '../schemas/inventorySchemas';
 
 type ProductFormValues = z.infer<typeof createProductSchema>;
 
@@ -1937,9 +2936,10 @@ interface AddProductFormProps {
   categories?: CategoryResponse[];
   onSubmit: (data: ProductFormValues) => void;
   isSubmitting: boolean;
+  initialData?: ProductResponse;
 }
 
-export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddProductFormProps) {
+export function AddProductForm({ categories, onSubmit, initialData, isSubmitting: _ }: AddProductFormProps) {
   const {
     register,
     handleSubmit,
@@ -1948,7 +2948,15 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createProductSchema),
-    defaultValues: { minQuantityAlert: 5, categoryId: '', departmentId: '', propertiesList: [] },
+    defaultValues: initialData ? {
+      name: initialData.name,
+      barcode: initialData.barcode || '',
+      categoryId: initialData.category?.categoryId || '',
+      departmentId: initialData.department?.departmentId || '',
+      minQuantityAlert: initialData.minQuantityAlert,
+      storageLocation: initialData.storageLocation || '',
+      propertiesList: Object.entries(initialData.properties || {}).map(([key, value]) => ({ key, value: value as string }))
+    } : { minQuantityAlert: 5, categoryId: '', departmentId: '', propertiesList: [] },
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -2000,28 +3008,24 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
         <label className={tokens.font.label + " block mb-1.5"}>
           القسم الرئيسي <span className="text-red-500">*</span>
         </label>
-        <select {...register('categoryId')} className={tokens.select}>
-          <option value="">اختر القسم</option>
+        <select className={tokens.input} {...register('categoryId')}>
+          <option value="">اختر القسم الرئيسي...</option>
           {categories?.map((cat) => (
-            <option key={cat.id} value={cat.id}>
+            <option key={cat.categoryId} value={cat.categoryId}>
               {cat.name}
             </option>
           ))}
         </select>
-        {errors.categoryId && (
-          <p className="text-red-500 text-xs mt-1">{String(errors.categoryId.message)}</p>
-        )}
+        {errors.categoryId && <p className="text-red-500 text-xs mt-1">{errors.categoryId.message as string}</p>}
       </div>
 
-      {/* Department */}
+      {/* Department Select */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>
-          القسم الفرعي <span className="text-red-500">*</span>
-        </label>
-        <select {...register('departmentId')} className={tokens.select} disabled={!selectedCategoryId}>
-          <option value="">اختر القسم الفرعي</option>
+        <label className={tokens.font.label + " block mb-1.5"}>القسم الفرعي</label>
+        <select className={tokens.input} {...register('departmentId')} disabled={!selectedCategoryId}>
+          <option value="">اختر القسم الفرعي...</option>
           {departments?.map((dep) => (
-            <option key={dep.id} value={dep.id}>
+            <option key={dep.departmentId} value={dep.departmentId}>
               {dep.name}
             </option>
           ))}
@@ -2112,7 +3116,7 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
           type="file"
           accept="image/*"
           className={tokens.input}
-          {...register('image')}
+          name="image"
           onChange={(e) => {
             const file = e.target.files?.[0];
             setValue('image', file || undefined, { shouldValidate: true });
@@ -2125,72 +3129,707 @@ export function AddProductForm({ categories, onSubmit, isSubmitting: _ }: AddPro
 }
 ````
 
+## File: src/features/inventory/components/CategoryForms.tsx
+````typescript
+import { UseFormReturn } from 'react-hook-form';
+import { z } from 'zod';
+import { tokens } from '@/shared/styles/tokens';
+import { DepartmentResponse } from '@/features/inventory/schemas/inventorySchemas';
+
+export const createDepartmentSchema = z.object({
+  name: z.string().min(1, "اسم القسم مطلوب"),
+});
+
+export const createCategorySchema = z.object({
+  name: z.string().min(1, "اسم القسم الفرعي مطلوب"),
+  departmentId: z.string().min(1, "القسم الرئيسي مطلوب"),
+});
+
+interface DepartmentFormProps {
+  form: UseFormReturn<z.infer<typeof createDepartmentSchema>>;
+  onSubmit: (data: z.infer<typeof createDepartmentSchema>) => void;
+}
+
+export function DepartmentForm({ form, onSubmit }: DepartmentFormProps) {
+  return (
+    <form id="dep-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <label className={tokens.font.label}>اسم القسم الرئيسي <span className="text-red-500">*</span></label>
+        <input
+          type="text"
+          {...form.register('name')}
+          className={`mt-1 block w-full rounded-lg border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ${form.formState.errors.name ? 'border-red-500' : 'border-gray-300'}`}
+        />
+        {form.formState.errors.name && <p className="text-red-500 text-xs mt-1">{form.formState.errors.name.message}</p>}
+      </div>
+    </form>
+  );
+}
+
+interface CategoryFormProps {
+  form: UseFormReturn<z.infer<typeof createCategorySchema>>;
+  departments: DepartmentResponse[];
+  onSubmit: (data: z.infer<typeof createCategorySchema>) => void;
+}
+
+export function CategoryForm({ form, departments, onSubmit }: CategoryFormProps) {
+  return (
+    <form id="cat-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <label className={tokens.font.label}>القسم الرئيسي <span className="text-red-500">*</span></label>
+        <select
+          {...form.register('departmentId')}
+          className={`mt-1 block w-full rounded-lg border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white ${form.formState.errors.departmentId ? 'border-red-500' : 'border-gray-300'}`}
+        >
+          <option value="">-- اختر القسم الرئيسي --</option>
+          {departments.map(d => (
+            <option key={d.departmentId} value={d.departmentId}>{d.name}</option>
+          ))}
+        </select>
+        {form.formState.errors.departmentId && <p className="text-red-500 text-xs mt-1">{form.formState.errors.departmentId.message}</p>}
+      </div>
+      <div>
+        <label className={tokens.font.label}>اسم القسم الفرعي <span className="text-red-500">*</span></label>
+        <input
+          type="text"
+          {...form.register('name')}
+          className={`mt-1 block w-full rounded-lg border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ${form.formState.errors.name ? 'border-red-500' : 'border-gray-300'}`}
+        />
+        {form.formState.errors.name && <p className="text-red-500 text-xs mt-1">{form.formState.errors.name.message}</p>}
+      </div>
+    </form>
+  );
+}
+````
+
+## File: src/features/inventory/components/DepartmentCard.tsx
+````typescript
+import { useState } from 'react';
+import { DepartmentResponse, CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { Layers, Tag, Package, Plus, Edit, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
+
+interface DepartmentCardProps {
+  department: DepartmentResponse;
+  categories: CategoryResponse[];
+  onAddCategory: (depId: string) => void;
+  onEditDepartment: (id: string, name: string) => void;
+  onDeleteDepartment: (id: string, name: string) => void;
+  onEditCategory: (id: string, name: string, depId: string) => void;
+  onDeleteCategory: (id: string, name: string) => void;
+}
+
+export function DepartmentCard({ 
+  department, 
+  categories, 
+  onAddCategory, 
+  onEditDepartment, 
+  onDeleteDepartment, 
+  onEditCategory, 
+  onDeleteCategory 
+}: DepartmentCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Department Header */}
+      <div 
+        className={`p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors ${isExpanded ? 'border-b border-gray-100 bg-gray-50' : ''}`}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex items-center gap-3">
+          <button className="text-gray-400 hover:text-blue-600 transition-colors">
+            {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+          </button>
+          <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+            <Layers size={20} />
+          </div>
+          <div>
+            <h3 className="font-bold text-gray-800 text-lg">{department.name}</h3>
+            <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
+              <span className="flex items-center gap-1"><Tag size={12}/> {department.categoriesCount} أقسام فرعية</span>
+              <span className="flex items-center gap-1"><Package size={12}/> {department.productsCount} منتجات</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <HasPermission permission={Permissions.InventoryWrite}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddCategory(department.departmentId);
+              }}
+              className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg flex items-center gap-1 mr-2"
+            >
+              <Plus size={16} /> إضافة قسم فرعي
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditDepartment(department.departmentId, department.name);
+              }}
+              className="text-gray-400 hover:text-blue-500 transition-colors p-2"
+              title="تعديل القسم"
+              aria-label="تعديل القسم"
+            >
+              <Edit size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteDepartment(department.departmentId, department.name);
+              }}
+              className="text-gray-400 hover:text-red-500 transition-colors p-2"
+              title="حذف القسم"
+              aria-label="حذف القسم"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
+        </div>
+      </div>
+
+      {/* Categories List (Expanded) */}
+      {isExpanded && (
+        <div className="p-4 bg-gray-50/50">
+          {categories.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {categories.map(cat => (
+                <div key={cat.categoryId} className="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                      <Tag size={14} />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">{cat.name}</p>
+                      <p className="text-xs text-gray-500">{cat.productsCount} منتج</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-1">
+                    <HasPermission permission={Permissions.InventoryWrite}>
+                      <button
+                        type="button"
+                        onClick={() => onEditCategory(cat.categoryId, cat.name, cat.department.departmentId)}
+                        className="text-gray-300 hover:text-blue-500 transition-colors p-1"
+                        title="تعديل"
+                        aria-label="تعديل القسم الفرعي"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onDeleteCategory(cat.categoryId, cat.name)}
+                        className="text-gray-300 hover:text-red-500 transition-colors p-1"
+                        title="حذف"
+                        aria-label="حذف القسم الفرعي"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </HasPermission>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <div className="inline-flex w-12 h-12 rounded-full bg-gray-100 items-center justify-center text-gray-400 mb-3">
+                <Tag size={20} />
+              </div>
+              <p className="text-gray-500 font-medium">لا يوجد أقسام فرعية بعد</p>
+              <HasPermission permission={Permissions.InventoryWrite}>
+                <button
+                  type="button"
+                  onClick={() => onAddCategory(department.departmentId)}
+                  className="text-blue-600 text-sm mt-2 font-semibold hover:underline"
+                >
+                  إضافة قسم فرعي جديد
+                </button>
+              </HasPermission>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/components/ProductBatchesCard.tsx
+````typescript
+import { Calendar, Truck, Package, Plus, MoreHorizontal } from 'lucide-react';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
+
+interface ProductBatchesCardProps {
+  product: ProductResponse;
+}
+
+export function ProductBatchesCard({ product }: ProductBatchesCardProps) {
+  const batches = product.batches || [];
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative z-10">
+      {/* Added pr-40 to avoid overlapping with the absolute positioned image from the header */}
+      <div className="p-4 pr-40 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-sm">
+            <Package size={20} />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">الدفعات (Batches)</h2>
+            <p className="text-xs text-gray-500 mt-0.5">تفاصيل الكميات والأسعار من الموردين</p>
+          </div>
+        </div>
+        <div className="bg-white px-3 py-1.5 rounded-lg border border-gray-200 text-sm font-bold text-gray-700 shadow-sm">
+          إجمالي الدفعات: {batches.length}
+        </div>
+      </div>
+      
+      <div className="p-0 overflow-x-auto">
+        <table className="w-full text-right border-collapse min-w-[800px]">
+          <thead>
+            <tr className="bg-white border-b border-gray-100 text-gray-500 text-xs uppercase tracking-wider">
+              <th className="px-4 py-3 font-bold w-1/4">المورد</th>
+              <th className="px-4 py-3 font-bold">تاريخ الاستلام</th>
+              <th className="px-4 py-3 font-bold text-center">الكمية المتاحة</th>
+              <th className="px-4 py-3 font-bold text-left">سعر الشراء</th>
+              <th className="px-4 py-3 font-bold text-left">سعر الجملة</th>
+              <th className="px-4 py-3 font-bold text-left">سعر التجزئة</th>
+              <th className="px-4 py-3 font-bold text-center">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {batches.length > 0 ? (
+              batches.map((batch) => (
+                <tr key={batch.batchId} className="hover:bg-blue-50/30 transition-colors">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <Truck size={16} className="text-gray-400" />
+                      <span className="font-bold text-gray-900 text-sm">{batch.supplierName || '---'}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Calendar size={14} className="text-gray-400" />
+                      <span className="font-semibold text-gray-800 text-sm">
+                        {new Date(batch.dateReceived).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <span className="inline-flex items-center justify-center bg-emerald-50 text-emerald-700 font-bold px-2.5 py-0.5 rounded-full border border-emerald-100 text-xs">
+                      {batch.availableQuantity}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-left font-mono font-bold text-gray-800 text-sm">
+                    {batch.purchasePrice.toLocaleString()} <span className="text-gray-400 text-xs">$</span>
+                  </td>
+                  <td className="px-4 py-3 text-left font-mono font-bold text-amber-600 text-sm">
+                    {batch.wholesalePrice.toLocaleString()} <span className="text-amber-400 text-xs">$</span>
+                  </td>
+                  <td className="px-4 py-3 text-left font-mono font-bold text-emerald-600 text-base">
+                    {batch.retailPrice.toLocaleString()} <span className="text-emerald-400 text-xs">$</span>
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <button className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors border border-transparent hover:border-gray-200">
+                      <MoreHorizontal size={16} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} className="text-center py-8 text-gray-500 text-sm">
+                  لا يوجد دفعات مسجلة
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="p-3 bg-gray-50/50 border-t border-gray-100">
+        <button className="w-full py-2.5 flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 hover:bg-blue-100 rounded-lg font-bold text-sm transition-colors border border-blue-200/50">
+          <Plus size={16} />
+          إضافة دفعة جديدة
+        </button>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/components/ProductDetailsHeader.tsx
+````typescript
+import { Edit, Package } from 'lucide-react';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
+
+interface ProductDetailsHeaderProps {
+  product: ProductResponse;
+  onEditClick: () => void;
+}
+
+export function ProductDetailsHeader({ product, onEditClick }: ProductDetailsHeaderProps) {
+
+  return (
+    <div className="flex justify-between items-start relative z-20 h-20">
+      <div className="flex items-start gap-6 relative w-full">
+        {/* Overlapping Image Card */}
+        <div className="w-36 absolute right-0 top-0 z-30">
+          <div className="bg-white p-2 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center gap-2 transition-transform hover:-translate-y-1">
+            {product.imageUrl ? (
+              <img 
+                src={product.imageUrl} 
+                alt={product.name} 
+                className="w-full h-32 object-contain rounded-xl"
+              />
+            ) : (
+              <div className="w-full h-32 bg-gray-50 flex items-center justify-center rounded-xl text-gray-300">
+                <Package size={48} strokeWidth={1.5} />
+              </div>
+            )}
+            <div className="bg-gray-100 text-gray-600 font-mono text-[11px] font-bold px-2 py-1 rounded-lg w-full text-center border border-gray-200 truncate">
+              # {product.barcode || '---'}
+            </div>
+          </div>
+        </div>
+
+        {/* Product Title */}
+        <div className="pr-40 pt-2">
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight">{product.name}</h1>
+          <p className="text-gray-500 mt-1 font-mono text-sm font-semibold"># {product.barcode || 'بدون باركود'}</p>
+        </div>
+      </div>
+
+      <div className="pt-2 shrink-0 flex items-center gap-2">
+        <button 
+          onClick={onEditClick}
+          className="flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm"
+          title="تعديل بيانات المنتج"
+        >
+          <Edit size={18} />
+        </button>
+      </div>
+    </div>
+  );
+}
+````
+
 ## File: src/features/inventory/components/ProductFilters.tsx
 ````typescript
 import { Search, Plus } from 'lucide-react';
-import { CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { tokens } from '@/shared/styles/tokens';
+import { useCategories, useDepartments } from '@/features/inventory/hooks/useInventory';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
 
 interface ProductFiltersProps {
   searchTerm: string;
   onSearchChange: (val: string) => void;
+  departmentFilter: string;
+  onDepartmentChange: (val: string) => void;
   categoryFilter: string;
   onCategoryChange: (val: string) => void;
-  categories?: CategoryResponse[];
+  stockFilter: string;
+  onStockChange: (val: string) => void;
   onAddClick: () => void;
 }
 
-/**
- * Toolbar: search input + category dropdown + "Add Product" button.
- * Purely presentational — all state lives in the parent (ProductsPage).
- */
 export function ProductFilters({
   searchTerm,
   onSearchChange,
+  departmentFilter,
+  onDepartmentChange,
   categoryFilter,
   onCategoryChange,
-  categories,
+  stockFilter,
+  onStockChange,
   onAddClick,
 }: ProductFiltersProps) {
+  const { data: categoriesData } = useCategories();
+  const { data: departmentsData } = useDepartments();
+
+  const categories = categoriesData?.items || [];
+  const departments = departmentsData?.items || [];
+
   return (
-    <div className={`${tokens.card} p-4 flex flex-wrap gap-4 items-center justify-between bg-gray-50/50`}>
-      {/* Left side: Search + Category filter */}
+    <div className={`${tokens.card} p-4 flex flex-wrap gap-4 items-center justify-between bg-white shadow-sm`}>
+      {/* Left side: Filters */}
       <div className="flex items-center gap-3 flex-1 flex-wrap">
-        {/* Search — pr-10 for icon space (RTL) */}
-        <div className="relative max-w-sm flex-1 min-w-[200px]">
-          <Search
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-            size={16}
-          />
+        {/* Search */}
+        <div className="relative flex-1 min-w-[200px] max-w-[300px]">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
           <input
             type="text"
             placeholder="بحث بالاسم أو الباركود..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50"
           />
         </div>
 
-        {/* Category Select */}
-        <select
-          value={categoryFilter}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-        >
-          <option value="">جميع الأقسام</option>
-          {categories?.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
+        {/* Department Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={departmentFilter}
+            onChange={(e) => {
+              onDepartmentChange(e.target.value);
+              // Reset category when department changes if desired, but here we just leave it to backend logic or user
+            }}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+          >
+            <option value="">جميع الأقسام الرئيسية</option>
+            {departments.map((dep) => (
+              <option key={dep.departmentId} value={dep.departmentId}>
+                {dep.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={categoryFilter}
+            onChange={(e) => onCategoryChange(e.target.value)}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+          >
+            <option value="">جميع الأقسام الفرعية</option>
+            {categories
+              .filter(cat => !departmentFilter || cat.department.departmentId === departmentFilter)
+              .map((cat) => (
+              <option key={cat.categoryId} value={cat.categoryId}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Stock Status Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={stockFilter}
+            onChange={(e) => onStockChange(e.target.value)}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50 min-w-[140px]"
+          >
+            <option value="">حالة المخزون (الكل)</option>
+            <option value="InStock">متوفر</option>
+            <option value="LowStock">منخفض</option>
+            <option value="OutOfStock">نفد المخزون</option>
+          </select>
+        </div>
       </div>
 
       {/* Right side: Add Button */}
-      <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2"}>
-        <Plus size={16} />
-        إضافة منتج جديد
-      </button>
+      <HasPermission permission={Permissions.InventoryWrite}>
+        <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2 whitespace-nowrap"}>
+          <Plus size={16} />
+          إضافة منتج جديد
+        </button>
+      </HasPermission>
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/components/ProductNotesCard.tsx
+````typescript
+import { FileText } from 'lucide-react';
+
+export function ProductNotesCard() {
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative z-10">
+      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="flex items-center justify-end gap-3 w-full">
+          <h2 className="text-lg font-bold text-gray-900">ملاحظات</h2>
+          <div className="text-blue-500">
+            <FileText size={20} />
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-8 text-center flex flex-col items-center justify-center">
+        <div className="w-16 h-16 bg-gray-50 rounded-2xl border border-gray-200 flex items-center justify-center text-gray-400 mb-4">
+          <FileText size={32} />
+        </div>
+        <h3 className="text-lg font-bold text-gray-700">لا توجد ملاحظات على هذا المنتج</h3>
+        <p className="text-gray-500 mt-1">يمكنك إضافة ملاحظات داخلية هنا</p>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/components/ProductOverviewCard.tsx
+````typescript
+import { Info, Package, Archive, Hash, Calendar, CheckCircle2, Layers, Tag, BellRing } from 'lucide-react';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
+
+interface ProductOverviewCardProps {
+  product: ProductResponse;
+}
+
+export function ProductOverviewCard({ product }: ProductOverviewCardProps) {
+  const isOutOfStock = product.totalQuantity === 0;
+  const isLowStock = !isOutOfStock && product.totalQuantity <= product.minQuantityAlert;
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative z-10">
+      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="flex items-center justify-end gap-3 w-full">
+          <div className="text-right">
+            <h2 className="text-lg font-bold text-gray-900">المعلومات الأساسية</h2>
+            <p className="text-xs text-gray-500 mt-0.5">المعلومات الرئيسية للمنتج</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shadow-sm">
+            <Info size={20} />
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          
+          {/* Col 1 */}
+          <div className="space-y-4">
+            <InfoRow 
+              icon={<Package size={18} />} 
+              label="الكمية الإجمالية" 
+              value={<span className="text-emerald-700 font-bold">{product.totalQuantity}</span>} 
+            />
+            <InfoRow 
+              icon={<Archive size={18} />} 
+              label="موقع التخزين" 
+              value={product.storageLocation || '---'} 
+            />
+            <InfoRow 
+              icon={<Hash size={18} />} 
+              label="الباركود" 
+              value={product.barcode || '---'} 
+            />
+            <InfoRow 
+              icon={<Calendar size={18} />} 
+              label="تاريخ الإنشاء" 
+              value={new Date(product.createdAt).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })} 
+            />
+            <InfoRow 
+              icon={<CheckCircle2 size={18} className={isOutOfStock ? 'text-red-500' : 'text-emerald-500'} />} 
+              label="حالة المخزون" 
+              value={
+                <span className={isOutOfStock ? 'text-red-600' : 'text-emerald-600'}>
+                  {isOutOfStock ? 'نفد' : 'سليم'}
+                </span>
+              } 
+            />
+          </div>
+
+          {/* Col 2 */}
+          <div className="space-y-4">
+            <InfoRow 
+              icon={<Layers size={18} className="text-blue-500" />} 
+              label="القسم الرئيسي" 
+              value={
+                <div className="flex flex-col text-left">
+                  <span>{product.department?.name || '---'}</span>
+                </div>
+              } 
+            />
+            <InfoRow 
+              icon={<Tag size={18} className="text-blue-500" />} 
+              label="القسم الفرعي" 
+              value={<span className="text-gray-900">{product.category?.name || '---'}</span>} 
+            />
+            <InfoRow 
+              icon={<Calendar size={18} />} 
+              label="تاريخ الإضافة" 
+              value={new Date(product.createdAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })} 
+            />
+            <InfoRow 
+              icon={<CheckCircle2 size={18} className={isLowStock ? 'text-amber-500' : 'text-emerald-500'} />} 
+              label="حالة المخزون" 
+              value={
+                <span className={isLowStock ? 'text-amber-600' : 'text-emerald-600'}>
+                  {isOutOfStock ? 'نفد المخزون' : isLowStock ? 'منخفض' : 'متوفر'}
+                </span>
+              } 
+            />
+            <InfoRow 
+              icon={<BellRing size={18} className="text-amber-500" />} 
+              label="الحد الأدنى للتنبيه" 
+              value={<span className="text-gray-900">{product.minQuantityAlert}</span>} 
+            />
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) {
+  return (
+    <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 flex items-center justify-between hover:bg-gray-100 transition-colors">
+      <div className="flex items-center gap-3">
+        <div className="w-9 h-9 bg-white rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 shadow-sm">
+          {icon}
+        </div>
+        <span className="text-sm font-semibold text-gray-600">{label}</span>
+      </div>
+      <div className="font-bold text-gray-900 text-base text-left" dir="ltr">
+        {value}
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/components/ProductPropertiesCard.tsx
+````typescript
+import { Tag, Layers } from 'lucide-react';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
+
+interface ProductPropertiesCardProps {
+  product: ProductResponse;
+}
+
+export function ProductPropertiesCard({ product }: ProductPropertiesCardProps) {
+  if (!product.properties || Object.keys(product.properties).length === 0) {
+    return null; // Don't show section if no properties
+  }
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative z-10">
+      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="flex items-center justify-end gap-3 w-full">
+          <div className="text-right">
+            <h2 className="text-lg font-bold text-gray-900">الخصائص</h2>
+            <p className="text-xs text-gray-500 mt-0.5">المواصفات والخصائص الإضافية للمنتج</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-sm">
+            <Tag size={20} />
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Object.entries(product.properties).map(([key, value]) => (
+            <div key={key} className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-gray-500 mb-1">{key}</p>
+                <p className="text-lg font-bold text-gray-900">{value as string}</p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center">
+                <Layers size={18} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -2198,12 +3837,13 @@ export function ProductFilters({
 
 ## File: src/features/inventory/components/ProductsTable.tsx
 ````typescript
-import { Edit, Eye, Trash2 } from 'lucide-react';
+import { Trash2, Package } from 'lucide-react';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { ProductStatusBadge } from './ProductStatusBadge';
 import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { PaginatedList } from '@/shared/types/pagination';
-import { tokens } from '@/shared/styles/tokens';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
 
 interface ProductsTableProps {
   data?: PaginatedList<ProductResponse>;
@@ -2211,84 +3851,107 @@ interface ProductsTableProps {
   pageIndex: number;
   onNextPage: () => void;
   onPrevPage: () => void;
-  onEdit?: (product: ProductResponse) => void;
   onDelete?: (product: ProductResponse) => void;
-  onViewBatches?: (product: ProductResponse) => void;
+  onRowClick?: (product: ProductResponse) => void;
 }
 
-/**
- * Products table — defines columns and delegates rendering to the shared DataTable.
- * All column definitions live here, NOT in the page.
- */
 export function ProductsTable({
   data,
   isLoading,
   pageIndex,
   onNextPage,
   onPrevPage,
-  onEdit,
   onDelete,
-  onViewBatches,
+  onRowClick,
 }: ProductsTableProps) {
   const columns = [
     {
-      header: 'المنتج',
+      header: 'الصورة',
       cell: (row: ProductResponse) => (
-        <span className="font-medium text-gray-900">{row.name}</span>
+        <div className="flex items-center">
+          {row.imageUrl ? (
+            <img src={row.imageUrl} alt={row.name} className="w-12 h-12 rounded-lg object-cover border border-gray-200 shadow-sm" />
+          ) : (
+            <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-200 text-gray-400 text-sm font-bold shadow-sm">
+              {row.name ? row.name.charAt(0).toUpperCase() : '?'}
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      header: 'اسم المنتج',
+      cell: (row: ProductResponse) => (
+        <span className="text-base font-bold text-gray-900">{row.name}</span>
       ),
     },
     {
       header: 'الباركود',
       cell: (row: ProductResponse) => (
-        <span className={tokens.font.muted}>{row.barcode || '---'}</span>
+        <span className="text-sm font-semibold text-gray-600 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-100">
+          {row.barcode || '---'}
+        </span>
       ),
     },
     {
       header: 'القسم',
       cell: (row: ProductResponse) => (
-        <span className={tokens.badge.indigo}>{row.categoryName || '---'}</span>
+        <div className="flex flex-col gap-1.5 items-start">
+          {row.department?.name && (
+            <span className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md text-xs font-bold border border-blue-100">
+              {row.department.name}
+            </span>
+          )}
+          <span className="bg-gray-50 text-gray-700 px-2.5 py-1 rounded-md text-xs font-semibold border border-gray-200">
+            {row.category?.name || '---'}
+          </span>
+        </div>
       ),
     },
     {
-      header: 'الكمية المتوفرة',
+      header: 'الكمية',
+      cell: (row: ProductResponse) => (
+        <span className="text-base font-bold text-gray-800">{row.totalQuantity}</span>
+      ),
+    },
+    {
+      header: 'الدفعات',
+      cell: (row: ProductResponse) => (
+        <div className="flex items-center gap-1.5 bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-md border border-indigo-100 w-fit">
+          <Package size={14} />
+          <span className="text-sm font-bold">{row.batches?.length || 0}</span>
+        </div>
+      ),
+    },
+    {
+      header: 'موقع التخزين',
+      cell: (row: ProductResponse) => (
+        <span className="text-sm font-semibold text-gray-700">{row.storageLocation || '---'}</span>
+      ),
+    },
+    {
+      header: 'حالة المخزون',
       cell: (row: ProductResponse) => (
         <ProductStatusBadge quantity={row.totalQuantity} reorderLevel={row.minQuantityAlert} />
-      ),
-    },
-    {
-      header: 'حد الطلب',
-      cell: (row: ProductResponse) => (
-        <span className={tokens.font.muted}>{row.minQuantityAlert}</span>
       ),
     },
     {
       header: 'الإجراءات',
       cell: (row: ProductResponse) => (
         <div className="flex justify-center gap-3 text-gray-400">
-          <button
-            onClick={() => onViewBatches?.(row)}
-            className="hover:text-blue-600 transition-colors"
-            title="عرض الدفعات"
-            aria-label="عرض الدفعات"
-          >
-            <Eye size={18} />
-          </button>
-          <button
-            onClick={() => onEdit?.(row)}
-            className="hover:text-amber-500 transition-colors"
-            title="تعديل"
-            aria-label="تعديل المنتج"
-          >
-            <Edit size={18} />
-          </button>
-          <button
-            onClick={() => onDelete?.(row)}
-            className="hover:text-red-500 transition-colors"
-            title="حذف"
-            aria-label="حذف المنتج"
-          >
-            <Trash2 size={18} />
-          </button>
+          <HasPermission permission={Permissions.InventoryWrite}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(row);
+              }}
+              className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
+              title="حذف"
+              aria-label="حذف المنتج"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
         </div>
       ),
     },
@@ -2305,6 +3968,7 @@ export function ProductsTable({
       pageSize={10}
       onNextPage={onNextPage}
       onPrevPage={onPrevPage}
+      onRowClick={onRowClick}
     />
   );
 }
@@ -2312,22 +3976,36 @@ export function ProductsTable({
 
 ## File: src/features/inventory/components/ProductStatusBadge.tsx
 ````typescript
+import { AlertTriangle } from 'lucide-react';
+
 interface ProductStatusBadgeProps {
   quantity: number;
   reorderLevel: number;
 }
 
 /**
- * Shows a colored dot + quantity text.
- * Green dot = stock OK, Red dot = low stock (below reorder level).
+ * Shows a colored dot/icon + quantity text.
+ * Green dot = stock OK, Red warning icon = low stock (below reorder level).
  */
 export function ProductStatusBadge({ quantity, reorderLevel }: ProductStatusBadgeProps) {
   const isLow = quantity <= reorderLevel;
+  
+  if (isLow) {
+    return (
+      <div className="flex items-center gap-1.5 bg-red-50 text-red-700 px-2.5 py-1 rounded-md border border-red-100 w-fit">
+        <AlertTriangle size={14} className="text-red-600" />
+        <span className="text-sm font-bold">
+          {quantity === 0 ? 'نفد المخزون' : 'مخزون منخفض'}
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center gap-2">
-      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${isLow ? 'bg-red-500' : 'bg-green-500'}`} />
-      <span className={isLow ? 'text-red-600 font-medium' : ''}>
-        {quantity} قطعة
+    <div className="flex items-center gap-1.5 bg-green-50 text-green-700 px-2.5 py-1 rounded-md border border-green-100 w-fit">
+      <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+      <span className="text-sm font-bold">
+        متوفر
       </span>
     </div>
   );
@@ -2426,15 +4104,441 @@ export function useDeleteProduct() {
     onError: () => toast.error("حدث خطأ أثناء حذف المنتج"),
   });
 }
+
+// --- Categories Mutations ---
+
+export function useCreateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; departmentId: string }) => inventoryRepository.createCategory(data),
+    onSuccess: () => {
+      toast.success("تم إضافة القسم الفرعي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
+    },
+    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الفرعي"),
+  });
+}
+
+export function useUpdateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { name: string; departmentId: string } }) => 
+      inventoryRepository.updateCategory(id, data),
+    onSuccess: () => {
+      toast.success("تم تعديل القسم الفرعي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الفرعي"),
+  });
+}
+
+export function useDeleteCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => inventoryRepository.deleteCategory(id),
+    onSuccess: () => {
+      toast.success("تم حذف القسم الفرعي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف القسم الفرعي"),
+  });
+}
+
+// --- Departments Mutations ---
+
+export function useCreateDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string }) => inventoryRepository.createDepartment(data),
+    onSuccess: () => {
+      toast.success("تم إضافة القسم الرئيسي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+    },
+    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الرئيسي"),
+  });
+}
+
+export function useUpdateDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { name: string } }) => 
+      inventoryRepository.updateDepartment(id, data),
+    onSuccess: () => {
+      toast.success("تم تعديل القسم الرئيسي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الرئيسي"),
+  });
+}
+
+export function useDeleteDepartment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => inventoryRepository.deleteDepartment(id),
+    onSuccess: () => {
+      toast.success("تم حذف القسم الرئيسي بنجاح!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف القسم الرئيسي"),
+  });
+}
 ````
 
 ## File: src/features/inventory/pages/CategoriesPage.tsx
 ````typescript
+import { useState, useMemo } from 'react';
+import { 
+  useCategories, useDepartments, 
+  useCreateCategory, useCreateDepartment, 
+  useUpdateCategory, useUpdateDepartment,
+  useDeleteCategory, useDeleteDepartment 
+} from '@/features/inventory/hooks/useInventory';
+import { CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { tokens } from '@/shared/styles/tokens';
+import { Layers, Tag, Plus } from 'lucide-react';
+import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { DepartmentCard } from '@/features/inventory/components/DepartmentCard';
+import { DepartmentForm, CategoryForm, createDepartmentSchema, createCategorySchema } from '@/features/inventory/components/CategoryForms';
+import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
+
 export function CategoriesPage() {
+  const [drawerMode, setDrawerMode] = useState<'department' | 'category'>('department');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [deleteInfo, setDeleteInfo] = useState<{ id: string, name: string, type: 'department' | 'category' } | null>(null);
+
+  // Queries
+  const { data: departmentsData, isLoading: isLoadingDeps } = useDepartments();
+  const { data: categoriesData, isLoading: isLoadingCats } = useCategories();
+
+  // Mutations
+  const createDepartment = useCreateDepartment();
+  const updateDepartment = useUpdateDepartment();
+  const deleteDepartment = useDeleteDepartment();
+  
+  const createCategory = useCreateCategory();
+  const updateCategory = useUpdateCategory();
+  const deleteCategory = useDeleteCategory();
+
+  // Group Categories by Department
+  const categoriesByDep = useMemo(() => {
+    const map: Record<string, CategoryResponse[]> = {};
+    if (categoriesData?.items) {
+      categoriesData.items.forEach(c => {
+        const depId = c.department.departmentId;
+        if (!map[depId]) map[depId] = [];
+        map[depId].push(c);
+      });
+    }
+    return map;
+  }, [categoriesData]);
+
+  // Forms
+  const depForm = useForm({
+    resolver: zodResolver(createDepartmentSchema),
+    defaultValues: { name: '' }
+  });
+
+  const catForm = useForm({
+    resolver: zodResolver(createCategorySchema),
+    defaultValues: { name: '', departmentId: '' }
+  });
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    setEditingId(null);
+    depForm.reset({ name: '' });
+    catForm.reset({ name: '', departmentId: '' });
+  };
+
+  const openAddDepartment = () => {
+    setDrawerMode('department');
+    setEditingId(null);
+    depForm.reset({ name: '' });
+    setIsDrawerOpen(true);
+  };
+
+  const openEditDepartment = (id: string, name: string) => {
+    setDrawerMode('department');
+    setEditingId(id);
+    depForm.reset({ name });
+    setIsDrawerOpen(true);
+  };
+
+  const openAddCategory = (departmentId?: string) => {
+    setDrawerMode('category');
+    setEditingId(null);
+    catForm.reset({ departmentId: departmentId || '', name: '' });
+    setIsDrawerOpen(true);
+  };
+
+  const openEditCategory = (id: string, name: string, departmentId: string) => {
+    setDrawerMode('category');
+    setEditingId(id);
+    catForm.reset({ name, departmentId });
+    setIsDrawerOpen(true);
+  };
+
+  const onDepSubmit = (data: z.infer<typeof createDepartmentSchema>) => {
+    if (editingId) {
+      updateDepartment.mutate({ id: editingId, data }, { onSuccess: closeDrawer });
+    } else {
+      createDepartment.mutate(data, { onSuccess: closeDrawer });
+    }
+  };
+
+  const onCatSubmit = (data: z.infer<typeof createCategorySchema>) => {
+    if (editingId) {
+      updateCategory.mutate({ id: editingId, data }, { onSuccess: closeDrawer });
+    } else {
+      createCategory.mutate(data, { onSuccess: closeDrawer });
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteInfo) return;
+    if (deleteInfo.type === 'department') {
+      deleteDepartment.mutate(deleteInfo.id, { onSuccess: () => setDeleteInfo(null) });
+    } else {
+      deleteCategory.mutate(deleteInfo.id, { onSuccess: () => setDeleteInfo(null) });
+    }
+  };
+
+  const isSaving = createDepartment.isPending || updateDepartment.isPending || createCategory.isPending || updateCategory.isPending;
+
+  const drawerFooter = (
+    <>
+      <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
+        إلغاء
+      </button>
+      <button
+        type="submit"
+        form={drawerMode === 'department' ? 'dep-form' : 'cat-form'}
+        disabled={isSaving}
+        className={tokens.btn.primary + " disabled:opacity-60"}
+      >
+        {isSaving ? 'جاري الحفظ...' : 'حفظ'}
+      </button>
+    </>
+  );
+
+  const drawerTitle = () => {
+    if (drawerMode === 'department') return editingId ? 'تعديل القسم الرئيسي' : 'إضافة قسم رئيسي';
+    return editingId ? 'تعديل القسم الفرعي' : 'إضافة قسم فرعي';
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">CategoriesPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="space-y-6">
+      
+      {/* Actions */}
+      <div className="flex justify-end items-center bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className="flex gap-3">
+          <button 
+            onClick={() => openAddCategory()}
+            className={tokens.btn.secondary + " flex items-center gap-2"}
+          >
+            <Tag size={18} />
+            قسم فرعي جديد
+          </button>
+          <button 
+            onClick={openAddDepartment}
+            className={tokens.btn.primary + " flex items-center gap-2"}
+          >
+            <Layers size={18} />
+            قسم رئيسي جديد
+          </button>
+        </div>
+      </div>
+
+      {/* Loading State */}
+      {(isLoadingDeps || isLoadingCats) && (
+        <div className="p-8 text-center text-gray-500">جاري تحميل الأقسام...</div>
+      )}
+
+      {/* Departments List */}
+      <div className="space-y-4">
+        {departmentsData?.items.map((dep) => (
+          <DepartmentCard
+            key={dep.departmentId}
+            department={dep}
+            categories={categoriesByDep[dep.departmentId] || []}
+            onAddCategory={openAddCategory}
+            onEditDepartment={openEditDepartment}
+            onDeleteDepartment={(id, name) => setDeleteInfo({ id, name, type: 'department' })}
+            onEditCategory={openEditCategory}
+            onDeleteCategory={(id, name) => setDeleteInfo({ id, name, type: 'category' })}
+          />
+        ))}
+
+        {departmentsData?.items && departmentsData.items.length === 0 && (
+          <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="inline-flex w-16 h-16 rounded-full bg-blue-50 items-center justify-center text-blue-500 mb-4">
+              <Layers size={32} />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-1">لا يوجد أي أقسام رئيسية</h3>
+            <p className="text-gray-500 mb-4">ابدأ بإضافة قسم رئيسي لتتمكن من تنظيم منتجاتك</p>
+            <button 
+              onClick={openAddDepartment}
+              className={tokens.btn.primary + " inline-flex items-center gap-2"}
+            >
+              <Plus size={18} />
+              إضافة قسم رئيسي
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Create / Edit Drawer */}
+      <RightDrawer
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        title={drawerTitle()}
+        footer={drawerFooter}
+      >
+        {drawerMode === 'department' ? (
+          <DepartmentForm form={depForm} onSubmit={onDepSubmit} />
+        ) : (
+          <CategoryForm 
+            form={catForm} 
+            departments={departmentsData?.items || []} 
+            onSubmit={onCatSubmit} 
+          />
+        )}
+      </RightDrawer>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!deleteInfo}
+        onClose={() => setDeleteInfo(null)}
+        onConfirm={handleConfirmDelete}
+        title={deleteInfo?.type === 'department' ? 'حذف قسم رئيسي' : 'حذف قسم فرعي'}
+        message={
+          <>
+            هل أنت متأكد من رغبتك في حذف <strong>{deleteInfo?.name}</strong>؟<br />
+            لا يمكن التراجع عن هذا الإجراء بعد تنفيذه.
+          </>
+        }
+        confirmText="نعم، احذف"
+        cancelText="إلغاء"
+        type="danger"
+        isLoading={deleteDepartment.isPending || deleteCategory.isPending}
+      />
+    </div>
+  );
+}
+````
+
+## File: src/features/inventory/pages/ProductDetailsPage.tsx
+````typescript
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import * as z from 'zod';
+import { useProduct, useUpdateProduct, useCategories } from '@/features/inventory/hooks/useInventory';
+import { createProductSchema, CreateProductRequest } from '@/features/inventory/schemas/inventorySchemas';
+import { tokens } from '@/shared/styles/tokens';
+import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { AddProductForm } from '@/features/inventory/components/AddProductForm';
+import { ProductDetailsHeader } from '@/features/inventory/components/ProductDetailsHeader';
+import { ProductBatchesCard } from '@/features/inventory/components/ProductBatchesCard';
+import { ProductPropertiesCard } from '@/features/inventory/components/ProductPropertiesCard';
+import { ProductOverviewCard } from '@/features/inventory/components/ProductOverviewCard';
+import { ProductNotesCard } from '@/features/inventory/components/ProductNotesCard';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+
+export function ProductDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { setTitle, setBackButton } = useHeaderStore();
+
+  const { data: product, isLoading, error } = useProduct(id!);
+  const updateProduct = useUpdateProduct();
+  const { data: categoriesData } = useCategories();
+  const categories = categoriesData?.items || [];
+
+  useEffect(() => {
+    if (product) {
+      setTitle(`تفاصيل المنتج: ${product.name}`);
+    } else {
+      setTitle('تفاصيل المنتج');
+    }
+    setBackButton(true, "/inventory/products");
+  }, [product, setTitle, setBackButton]);
+
+  if (isLoading) return <div className="p-8 text-center text-gray-500">جاري تحميل تفاصيل المنتج...</div>;
+  if (error || !product) return <div className="p-8 text-center text-red-500">حدث خطأ أثناء تحميل تفاصيل المنتج.</div>;
+
+  const closeDrawer = () => setIsDrawerOpen(false);
+
+  const handleFormSubmit = (formData: z.infer<typeof createProductSchema>) => {
+    const payload: CreateProductRequest = { 
+      name: formData.name,
+      departmentId: formData.departmentId,
+      categoryId: formData.categoryId,
+      minQuantityAlert: formData.minQuantityAlert,
+      barcode: formData.barcode,
+      storageLocation: formData.storageLocation,
+    };
+    
+    if (formData.image) {
+      payload.image = formData.image;
+    }
+
+    if (formData.propertiesList && formData.propertiesList.length > 0) {
+      payload.properties = {};
+      formData.propertiesList.forEach((p: { key: string; value: string }) => {
+        if (p.key && p.value) {
+          payload.properties![p.key] = p.value;
+        }
+      });
+    }
+
+    updateProduct.mutate({ id: id!, data: payload }, { onSuccess: closeDrawer });
+  };
+
+  const drawerFooter = (
+    <>
+      <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
+        إلغاء
+      </button>
+      <button
+        type="submit"
+        form="add-product-form"
+        disabled={updateProduct.isPending}
+        className={tokens.btn.primary + " disabled:opacity-60"}
+      >
+        {updateProduct.isPending ? 'جاري الحفظ...' : 'حفظ التعديلات'}
+      </button>
+    </>
+  );
+
+  return (
+    <div className="space-y-4 w-full pb-10 pt-4">
+      <ProductDetailsHeader product={product} onEditClick={() => setIsDrawerOpen(true)} />
+      
+      <ProductBatchesCard product={product} />
+      
+      <ProductPropertiesCard product={product} />
+
+      <ProductOverviewCard product={product} />
+
+      <ProductNotesCard />
+
+      <RightDrawer
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        title="تعديل بيانات المنتج"
+        footer={drawerFooter}
+      >
+        <AddProductForm
+          categories={categories}
+          onSubmit={handleFormSubmit}
+          isSubmitting={updateProduct.isPending}
+          initialData={product}
+        />
+      </RightDrawer>
     </div>
   );
 }
@@ -2444,34 +4548,46 @@ export function CategoriesPage() {
 ````typescript
 import { useState } from 'react';
 import * as z from 'zod';
+import { useNavigate } from 'react-router-dom';
 import { createProductSchema, CreateProductRequest } from '../schemas/inventorySchemas';
-import { useProducts, useCategories, useCreateProduct } from '@/features/inventory/hooks/useInventory';
+import { useProducts, useCategories, useCreateProduct, useDeleteProduct } from '@/features/inventory/hooks/useInventory';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
 import { ProductFilters } from '@/features/inventory/components/ProductFilters';
 import { ProductsTable } from '@/features/inventory/components/ProductsTable';
 import { AddProductForm } from '@/features/inventory/components/AddProductForm';
 import { tokens } from '@/shared/styles/tokens';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
 
 /**
- * ProductsPage — composes feature components only.
+ * ProductsPage – composes feature components only.
  * No inline UI, no column definitions, no form markup lives here.
  * Responsible only for: state management + data fetching + event wiring.
  */
 export function ProductsPage() {
   const [pageIndex, setPageIndex]         = useState(1);
   const [searchTerm, setSearchTerm]       = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [stockFilter, setStockFilter]       = useState('');
   const [isDrawerOpen, setIsDrawerOpen]   = useState(false);
+  
+  const [productToDelete, setProductToDelete] = useState<ProductResponse | null>(null);
+
+  const navigate                          = useNavigate();
 
   const { data, isLoading }  = useProducts({
     pageNumber: pageIndex,
     pageSize: 10,
     searchValue: searchTerm || undefined,
+    departmentId: departmentFilter || undefined,
     categoryId: categoryFilter || undefined,
+    stockStatus: stockFilter || undefined,
   });
   const { data: categoriesData } = useCategories();
   const categories = categoriesData?.items || [];
   const createProduct        = useCreateProduct();
+  const deleteProduct        = useDeleteProduct();
 
   const closeDrawer = () => setIsDrawerOpen(false);
 
@@ -2480,9 +4596,27 @@ export function ProductsPage() {
     setPageIndex(1);
   };
 
+  const handleDepartmentChange = (val: string) => {
+    setDepartmentFilter(val);
+    setPageIndex(1);
+  };
+
   const handleCategoryChange = (val: string) => {
     setCategoryFilter(val);
     setPageIndex(1);
+  };
+
+  const handleStockChange = (val: string) => {
+    setStockFilter(val);
+    setPageIndex(1);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (productToDelete) {
+      deleteProduct.mutate(productToDelete.productId, {
+        onSuccess: () => setProductToDelete(null),
+      });
+    }
   };
 
   const handleFormSubmit = (formData: z.infer<typeof createProductSchema>) => {
@@ -2537,9 +4671,12 @@ export function ProductsPage() {
       <ProductFilters
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
+        departmentFilter={departmentFilter}
+        onDepartmentChange={handleDepartmentChange}
         categoryFilter={categoryFilter}
         onCategoryChange={handleCategoryChange}
-        categories={categories}
+        stockFilter={stockFilter}
+        onStockChange={handleStockChange}
         onAddClick={() => setIsDrawerOpen(true)}
       />
 
@@ -2550,6 +4687,23 @@ export function ProductsPage() {
         pageIndex={pageIndex}
         onNextPage={() => setPageIndex((p) => p + 1)}
         onPrevPage={() => setPageIndex((p) => p - 1)}
+        onRowClick={(row) => navigate(`/inventory/products/${row.productId}`)}
+        onDelete={(row) => setProductToDelete(row)}
+      />
+
+      <ConfirmModal
+        isOpen={!!productToDelete}
+        title="تأكيد حذف المنتج"
+        message={
+          productToDelete
+            ? `هل أنت متأكد من حذف المنتج "${productToDelete.name}" نهائياً؟ لا يمكن التراجع عن هذه الخطوة.`
+            : ''
+        }
+        confirmText={deleteProduct.isPending ? 'جاري الحذف...' : 'نعم، احذف'}
+        cancelText="إلغاء"
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setProductToDelete(null)}
+        type="danger"
       />
 
       {/* Add product drawer */}
@@ -2578,22 +4732,40 @@ import { BaseFilters } from "@/shared/types/pagination";
 export interface ProductFilters extends BaseFilters {
   categoryId?: string;
   departmentId?: string;
+  stockStatus?: string;
 }
 
 // Shared common filters
 // Categories
 export interface CategoryResponse {
-  id: string;
+  categoryId: string;
   name: string;
-  description?: string;
+  department: DepartmentSummary;
+  productsCount: number;
+  createdAt: string;
 }
 
 // Departments
 export interface DepartmentResponse {
-  id: string;
-  categoryId: string;
+  departmentId: string;
   name: string;
+  categoriesCount: number;
+  productsCount: number;
+  createdAt: string;
 }
+
+export const createDepartmentSchema = z.object({
+  name: z.string().min(1, "اسم القسم الرئيسي مطلوب"),
+});
+
+export type CreateDepartmentRequest = z.infer<typeof createDepartmentSchema>;
+
+export const createCategorySchema = z.object({
+  name: z.string().min(1, "اسم القسم الفرعي مطلوب"),
+  departmentId: z.string().min(1, "يجب اختيار القسم الرئيسي"),
+});
+
+export type CreateCategoryRequest = z.infer<typeof createCategorySchema>;
 
 // Products
 export const createProductSchema = z.object({
@@ -2614,36 +4786,42 @@ export type CreateProductRequest = z.infer<typeof createProductSchema> & {
   properties?: Record<string, string>;
 };
 
-export interface ProductResponse {
-  id: string;
-  barcode: string;
-  name: string;
+export interface DepartmentSummary {
   departmentId: string;
-  departmentName: string;
-  categoryId: string;
-  categoryName: string;
-  minQuantityAlert: number;
-  totalQuantity: number;
-  averageUnitCost: number;
-  storageLocation: string;
-  imageUrl?: string;
-  properties?: Record<string, string>;
+  name: string;
 }
 
-// Batches
+export interface CategorySummary {
+  categoryId: string;
+  name: string;
+}
+
 export interface ProductBatchResponse {
-  id: string;
-  productId: string;
-  productName: string;
+  batchId: string;
   supplierId?: string;
   supplierName?: string;
-  purchaseInvoiceId?: string;
-  quantity: number;
-  unitCost: number;
-  retailPrice: number;
+  availableQuantity: number;
+  purchasePrice: number;
   wholesalePrice: number;
-  expiryDate?: string;
-  receivedAt: string;
+  retailPrice: number;
+  dateReceived: string;
+}
+
+export interface ProductResponse {
+  productId: string;
+  barcode?: string;
+  name?: string;
+  department: DepartmentSummary;
+  category: CategorySummary;
+  totalQuantity: number;
+  imageUrl?: string;
+  minQuantityAlert: number;
+  storageLocation?: string;
+  isOutOfStock: boolean;
+  isLowStock: boolean;
+  createdAt: string;
+  properties: Record<string, string>;
+  batches: ProductBatchResponse[];
 }
 ````
 
@@ -2998,25 +5176,3315 @@ export interface ReturnRecordResponse {
 }
 ````
 
-## File: src/features/purchases/pages/PurchasesHistoryPage.tsx
+## File: src/features/purchases/api/PurchaseApi.ts
 ````typescript
-export function PurchasesHistoryPage() {
+import { apiClient } from "@/lib/axios";
+import { PaginatedList } from "@/shared/types/pagination";
+import { 
+  PurchaseInvoiceResponse, 
+  CreatePurchaseInvoiceRequest, 
+  PurchaseFilters 
+} from "../schemas/purchaseSchemas";
+
+export const purchaseRepository = {
+  getPurchases: async (filters: PurchaseFilters): Promise<PaginatedList<PurchaseInvoiceResponse>> => {
+    const response = await apiClient.get<PaginatedList<PurchaseInvoiceResponse>>('/purchase-invoices', { params: filters });
+    return response.data;
+  },
+  
+  getPurchaseInvoice: async (id: string): Promise<PurchaseInvoiceResponse> => {
+    const response = await apiClient.get<PurchaseInvoiceResponse>(`/purchase-invoices/${id}`);
+    return response.data;
+  },
+  
+  createPurchaseInvoice: async (data: CreatePurchaseInvoiceRequest): Promise<PurchaseInvoiceResponse> => {
+    const response = await apiClient.post<PurchaseInvoiceResponse>('/purchase-invoices', data);
+    return response.data;
+  },
+};
+````
+
+## File: src/features/purchases/api/SupplierReturnApi.ts
+````typescript
+import { apiClient } from '@/lib/axios';
+import { PaginatedList } from '@/shared/types/pagination';
+import { SupplierReturnResponse, CreateSupplierReturnRequest, SupplierReturnFilters } from '../schemas/supplierReturnSchemas';
+
+export const supplierReturnRepository = {
+  getReturns: async (filters: SupplierReturnFilters): Promise<PaginatedList<SupplierReturnResponse>> => {
+    const response = await apiClient.get<PaginatedList<SupplierReturnResponse>>('/supplier-transactions/returns', { params: filters });
+    return response.data;
+  },
+
+  getReturn: async (id: string): Promise<SupplierReturnResponse> => {
+    const response = await apiClient.get<SupplierReturnResponse>(`/supplier-transactions/returns/${id}`);
+    return response.data;
+  },
+
+  createReturn: async (data: CreateSupplierReturnRequest): Promise<SupplierReturnResponse> => {
+    const response = await apiClient.post<SupplierReturnResponse>('/supplier-transactions/returns', data);
+    return response.data;
+  },
+};
+````
+
+## File: src/features/purchases/components/ProductPickerModal.tsx
+````typescript
+import { useEffect, useState } from 'react';
+import { tokens } from '@/shared/styles/tokens';
+import { Column } from '@/shared/components/ui/DataTable';
+import { PickerModal } from '@/shared/components/ui/PickerModal';
+import { useDebounce } from '@/shared/hooks/useDebounce';
+import { useProducts, useCategories, useDepartments } from '@/features/inventory/hooks/useInventory';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
+
+interface ProductPickerModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (products: ProductResponse[]) => void;
+  excludeProductIds?: string[];
+}
+
+const PAGE_SIZE = 10;
+
+export function ProductPickerModal({
+  isOpen,
+  onClose,
+  onAdd,
+  excludeProductIds = [],
+}: ProductPickerModalProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [departmentId, setDepartmentId] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [pageIndex, setPageIndex] = useState(1);
+  const [selectedMap, setSelectedMap] = useState<Map<string, ProductResponse>>(new Map());
+
+  const debouncedSearch = useDebounce(searchTerm, 400);
+  const excludedSet = new Set(excludeProductIds);
+
+  const { data, isLoading } = useProducts({
+    pageNumber: pageIndex,
+    pageSize: PAGE_SIZE,
+    searchValue: debouncedSearch || undefined,
+    departmentId: departmentId || undefined,
+    categoryId: categoryId || undefined,
+  });
+
+  const { data: departmentsData } = useDepartments();
+  const { data: categoriesData } = useCategories();
+
+  const products = data?.items ?? [];
+  const departments = departmentsData?.items ?? [];
+  const categories = categoriesData?.items ?? [];
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setSearchTerm('');
+    setDepartmentId('');
+    setCategoryId('');
+    setPageIndex(1);
+    setSelectedMap(new Map());
+  }, [isOpen]);
+
+  const toggleProduct = (product: ProductResponse) => {
+    if (excludedSet.has(product.productId)) return;
+    setSelectedMap((prev) => {
+      const next = new Map(prev);
+      if (next.has(product.productId)) next.delete(product.productId);
+      else next.set(product.productId, product);
+      return next;
+    });
+  };
+
+  const handleAdd = () => {
+    const selected = Array.from(selectedMap.values()).filter((p) => !excludedSet.has(p.productId));
+    if (selected.length === 0) return;
+    onAdd(selected);
+    onClose();
+  };
+
+  const columns: Column<ProductResponse>[] = [
+    {
+      header: '',
+      cell: (row) => {
+        const alreadyOnInvoice = excludedSet.has(row.productId);
+        const checked = alreadyOnInvoice || selectedMap.has(row.productId);
+        return (
+          <input
+            type="checkbox"
+            checked={checked}
+            disabled={alreadyOnInvoice}
+            onChange={() => toggleProduct(row)}
+            onClick={(e) => e.stopPropagation()}
+            className="w-4 h-4 accent-[var(--color-primary)] cursor-pointer disabled:cursor-not-allowed"
+            aria-label={`اختيار ${row.name}`}
+          />
+        );
+      },
+    },
+    {
+      header: 'المنتج',
+      cell: (row) => (
+        <div>
+          <p className="font-semibold text-[var(--color-text-main)]">{row.name}</p>
+          {excludedSet.has(row.productId) && (
+            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">مضاف مسبقاً للفاتورة</p>
+          )}
+        </div>
+      ),
+    },
+    {
+      header: 'الباركود',
+      cell: (row) => <span className="text-[var(--color-text-muted)]">{row.barcode || '—'}</span>,
+    },
+    {
+      header: 'القسم الرئيسي',
+      cell: (row) => row.department?.name || '—',
+    },
+    {
+      header: 'القسم الفرعي',
+      cell: (row) => row.category?.name || '—',
+    },
+  ];
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">PurchasesHistoryPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <PickerModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="إضافة منتجات للفاتورة"
+      subtitle="ابحث أو فلتر ثم حدد المنتجات المطلوبة"
+      searchPlaceholder="ابحث باسم المنتج أو الباركود..."
+      searchValue={searchTerm}
+      onSearchChange={(value) => {
+        setSearchTerm(value);
+        setPageIndex(1);
+      }}
+      filters={
+        <>
+          <select
+            value={departmentId}
+            onChange={(e) => {
+              setDepartmentId(e.target.value);
+              setCategoryId('');
+              setPageIndex(1);
+            }}
+            className={tokens.select}
+          >
+            <option value="">الأقسام الرئيسية</option>
+            {departments.map((dep) => (
+              <option key={dep.departmentId} value={dep.departmentId}>
+                {dep.name}
+              </option>
+            ))}
+          </select>
+          <select
+            value={categoryId}
+            onChange={(e) => {
+              setCategoryId(e.target.value);
+              setPageIndex(1);
+            }}
+            className={tokens.select}
+          >
+            <option value="">الأقسام الفرعية</option>
+            {categories
+              .filter((cat) => !departmentId || cat.department.departmentId === departmentId)
+              .map((cat) => (
+                <option key={cat.categoryId} value={cat.categoryId}>
+                  {cat.name}
+                </option>
+              ))}
+          </select>
+        </>
+      }
+      columns={columns}
+      data={products}
+      isLoading={isLoading}
+      pagination={{
+        pageIndex,
+        totalPages: data?.totalPages ?? 1,
+        totalCount: data?.totalCount ?? 0,
+        pageSize: PAGE_SIZE,
+        onNextPage: () => setPageIndex((p) => p + 1),
+        onPrevPage: () => setPageIndex((p) => Math.max(1, p - 1)),
+      }}
+      onRowClick={toggleProduct}
+      selectedCount={selectedMap.size}
+      onConfirm={handleAdd}
+    />
+  );
+}
+````
+
+## File: src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceHeader.tsx
+````typescript
+import { useFormContext } from 'react-hook-form';
+import { tokens } from '@/shared/styles/tokens';
+import { CreatePurchaseInvoiceRequest } from '../../schemas/purchaseSchemas';
+import { useSuppliers } from '@/features/suppliers/hooks/useSuppliers';
+
+export function PurchaseInvoiceHeader() {
+  const { register, formState: { errors } } = useFormContext<CreatePurchaseInvoiceRequest>();
+  const { data: suppliersData, isLoading: isLoadingSuppliers } = useSuppliers({ pageNumber: 1, pageSize: 500 });
+  const suppliers = suppliersData?.items || [];
+
+  return (
+    <div className={`${tokens.card} p-6 bg-white space-y-4`}>
+      <h3 className="text-lg font-bold text-[var(--color-text-main)] border-b border-[var(--color-border)] pb-2">
+        البيانات الأساسية
+      </h3>
+
+      <div>
+        <label className={`${tokens.font.label} mb-2 block`}>
+          المورد <span className="text-red-500">*</span>
+        </label>
+        <select
+          {...register('supplierId')}
+          className={`${tokens.select} max-w-md`}
+          disabled={isLoadingSuppliers}
+        >
+          <option value="">-- اختر المورد --</option>
+          {suppliers.map((s) => (
+            <option key={s.supplierId} value={s.supplierId}>
+              {s.name}
+            </option>
+          ))}
+        </select>
+        {errors.supplierId && (
+          <p className="text-red-500 text-xs mt-1 font-semibold">{errors.supplierId.message}</p>
+        )}
+      </div>
     </div>
   );
 }
 ````
 
+## File: src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceItemsTable.tsx
+````typescript
+import { useFormContext, useFieldArray } from 'react-hook-form';
+import { useState } from 'react';
+import { Plus, Trash2 } from 'lucide-react';
+import { formatCurrency } from '@/shared/utils/currency';
+import { tokens } from '@/shared/styles/tokens';
+import { CreatePurchaseInvoiceRequest } from '../../schemas/purchaseSchemas';
+import { ProductPickerModal } from '../ProductPickerModal';
+import { ProductResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { ClearablePriceInput } from '@/shared/components/ui/ClearablePriceInput';
+
+export function PurchaseInvoiceItemsTable() {
+  const { register, control, watch, setValue, formState: { errors } } = useFormContext<CreatePurchaseInvoiceRequest>();
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'items',
+  });
+
+  const watchItems = watch('items');
+
+  const handleAddProducts = (products: ProductResponse[]) => {
+    const existingIds = new Set(fields.map((f) => f.productId));
+
+    products.forEach((product) => {
+      if (existingIds.has(product.productId)) return;
+      append({
+        productId: product.productId,
+        productName: product.name,
+        quantity: 1,
+        unitCost: 0,
+        wholesalePrice: 0,
+        retailPrice: 0,
+      });
+    });
+  };
+
+  return (
+    <>
+      <div className={`${tokens.card} bg-white overflow-hidden`}>
+        <div className="p-4 border-b border-[var(--color-border)] flex flex-wrap justify-between items-center gap-3 bg-gray-50/50">
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg font-bold text-[var(--color-text-main)]">أصناف الفاتورة</h3>
+            <span className={`${tokens.badge.indigo}`}>
+              عدد الأصناف: {fields.length}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsPickerOpen(true)}
+            className={`${tokens.btn.primary} flex items-center gap-2`}
+          >
+            <Plus size={16} />
+            إضافة منتجات
+          </button>
+        </div>
+
+        {errors.items?.message && (
+          <div className="p-4 text-red-500 text-sm font-bold bg-red-50">
+            {errors.items.message}
+          </div>
+        )}
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-right">
+            <thead className="bg-white border-b border-[var(--color-border)] text-[var(--color-text-muted)]">
+              <tr>
+                <th className="px-4 py-3">المنتج</th>
+                <th className="px-4 py-3 w-32">الكمية</th>
+                <th className="px-4 py-3 w-36">تكلفة الوحدة (الشراء)</th>
+                <th className="px-4 py-3 w-36">سعر الجملة الجديد</th>
+                <th className="px-4 py-3 w-36">سعر التجزئة الجديد</th>
+                <th className="px-4 py-3 w-32">الإجمالي</th>
+                <th className="px-4 py-3 w-16 text-center">حذف</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {fields.map((field, index) => {
+                const itemQty = watchItems[index]?.quantity || 0;
+                const itemCost = watchItems[index]?.unitCost || 0;
+                const total = itemQty * itemCost;
+
+                return (
+                  <tr key={field.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 font-bold text-[var(--color-text-main)]">
+                      {field.productName}
+                      <input type="hidden" {...register(`items.${index}.productId`)} />
+                    </td>
+                    <td className="px-4 py-3">
+                      <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        className={`${tokens.input} py-1 px-2 text-center w-20`}
+                        {...register(`items.${index}.quantity`, { valueAsNumber: true })}
+                        onFocus={(e) => e.target.select()}
+                        onBlur={(e) => {
+                          if (!e.target.value || Number(e.target.value) < 1) {
+                            setValue(`items.${index}.quantity`, 1, { shouldValidate: true });
+                          }
+                        }}
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <ClearablePriceInput
+                        registration={register(`items.${index}.unitCost`, { valueAsNumber: true })}
+                        setValue={setValue}
+                        name={`items.${index}.unitCost`}
+                        currentValue={watchItems[index]?.unitCost}
+                        className={`${tokens.input} py-1 px-2 text-center text-red-600 font-bold`}
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <ClearablePriceInput
+                        registration={register(`items.${index}.wholesalePrice`, { valueAsNumber: true })}
+                        setValue={setValue}
+                        name={`items.${index}.wholesalePrice`}
+                        currentValue={watchItems[index]?.wholesalePrice}
+                        className={`${tokens.input} py-1 px-2 text-center`}
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <ClearablePriceInput
+                        registration={register(`items.${index}.retailPrice`, { valueAsNumber: true })}
+                        setValue={setValue}
+                        name={`items.${index}.retailPrice`}
+                        currentValue={watchItems[index]?.retailPrice}
+                        className={`${tokens.input} py-1 px-2 text-center`}
+                      />
+                    </td>
+                    <td className="px-4 py-3 font-bold text-[var(--color-text-main)]" dir="ltr">
+                      {formatCurrency(total)}
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        type="button"
+                        onClick={() => remove(index)}
+                        className="text-red-400 hover:text-red-600 p-1"
+                        aria-label={`حذف ${field.productName}`}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {fields.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-8 text-center text-[var(--color-text-muted)] font-medium">
+                    اضغط «إضافة منتجات» لاختيار أصناف الفاتورة
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {isPickerOpen && (
+        <ProductPickerModal
+          isOpen={isPickerOpen}
+          onClose={() => setIsPickerOpen(false)}
+          onAdd={handleAddProducts}
+          excludeProductIds={fields.map((f) => f.productId)}
+        />
+      )}
+    </>
+  );
+}
+````
+
+## File: src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceSummary.tsx
+````typescript
+import { useFormContext } from 'react-hook-form';
+import { formatCurrency } from '@/shared/utils/currency';
+import { tokens } from '@/shared/styles/tokens';
+import { CreatePurchaseInvoiceRequest } from '../../schemas/purchaseSchemas';
+import { ClearablePriceInput } from '@/shared/components/ui/ClearablePriceInput';
+
+interface PurchaseInvoiceSummaryProps {
+  isSubmitting?: boolean;
+}
+
+export function PurchaseInvoiceSummary({ isSubmitting }: PurchaseInvoiceSummaryProps) {
+  const { register, watch, setValue } = useFormContext<CreatePurchaseInvoiceRequest>();
+  
+  const watchItems = watch('items');
+  const watchPaidAmount = watch('paidAmount');
+
+  const totalInvoice = (watchItems || []).reduce(
+    (acc, item) => acc + ((item.quantity || 0) * (item.unitCost || 0)),
+    0
+  );
+  const remaining = totalInvoice - (watchPaidAmount || 0);
+  const hasItems = watchItems && watchItems.length > 0;
+
+  return (
+    <div className={`${tokens.card} p-6 bg-white`}>
+      <div className="flex flex-col md:flex-row gap-6 justify-between items-start">
+        <div className="w-full md:w-1/2 space-y-4">
+          <div>
+            <label className={`${tokens.font.label} mb-2 block`}>ملاحظات الفاتورة</label>
+            <textarea
+              {...register('notes')}
+              rows={3}
+              className={tokens.input}
+              placeholder="أي ملاحظات إضافية على الفاتورة..."
+            />
+          </div>
+          <div>
+            <label className={`${tokens.font.label} mb-2 block`}>
+              المبلغ المدفوع (سداد نقدي من الخزينة)
+            </label>
+            <ClearablePriceInput
+              registration={register('paidAmount', { valueAsNumber: true })}
+              setValue={setValue}
+              name="paidAmount"
+              currentValue={watchPaidAmount}
+              className={`${tokens.input} text-xl font-bold text-green-700`}
+            />
+            <p className={`${tokens.font.helperText} mt-1`}>
+              اتركه 0 إذا كانت الفاتورة آجلة بالكامل.
+            </p>
+          </div>
+        </div>
+
+        <div className="w-full md:w-1/3 bg-gray-50 p-6 rounded-xl border border-[var(--color-border)] flex flex-col gap-4">
+          <div className="flex justify-between items-center text-lg">
+            <span className="text-[var(--color-text-muted)]">إجمالي الفاتورة:</span>
+            <span className="font-bold text-[var(--color-text-main)]">
+              {formatCurrency(totalInvoice)}
+            </span>
+          </div>
+          <div className="flex justify-between items-center text-lg text-green-700">
+            <span>المدفوع:</span>
+            <span className="font-bold">{formatCurrency(watchPaidAmount || 0)}</span>
+          </div>
+          <div className="h-px bg-gray-300 w-full" />
+          <div className="flex justify-between items-center text-xl">
+            <span className="text-[var(--color-text-main)] font-bold">المتبقي للمورد:</span>
+            <span className={`font-bold ${remaining > 0 ? 'text-red-600' : 'text-[var(--color-text-main)]'}`}>
+              {formatCurrency(remaining)}
+            </span>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting || !hasItems}
+            className={`${tokens.btn.primary} w-full py-3 mt-2 text-lg disabled:opacity-50`}
+          >
+            {isSubmitting ? 'جاري الحفظ...' : 'حفظ الفاتورة'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/components/PurchaseInvoiceForm.tsx
+````typescript
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createPurchaseInvoiceSchema, CreatePurchaseInvoiceRequest } from '../schemas/purchaseSchemas';
+import { PurchaseInvoiceHeader } from './purchase-invoice-form/PurchaseInvoiceHeader';
+import { PurchaseInvoiceItemsTable } from './purchase-invoice-form/PurchaseInvoiceItemsTable';
+import { PurchaseInvoiceSummary } from './purchase-invoice-form/PurchaseInvoiceSummary';
+
+interface PurchaseInvoiceFormProps {
+  onSubmit: (data: CreatePurchaseInvoiceRequest) => void;
+  isSubmitting?: boolean;
+}
+
+export function PurchaseInvoiceForm({ onSubmit, isSubmitting }: PurchaseInvoiceFormProps) {
+  const methods = useForm<CreatePurchaseInvoiceRequest>({
+    resolver: zodResolver(createPurchaseInvoiceSchema),
+    defaultValues: {
+      supplierId: '',
+      paidAmount: 0,
+      notes: '',
+      items: [],
+    },
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
+        <PurchaseInvoiceHeader />
+        <PurchaseInvoiceItemsTable />
+        <PurchaseInvoiceSummary isSubmitting={isSubmitting} />
+      </form>
+    </FormProvider>
+  );
+}
+````
+
+## File: src/features/purchases/components/PurchasesFilters.tsx
+````typescript
+import { tokens } from '@/shared/styles/tokens';
+import { Search } from 'lucide-react';
+import { useState } from 'react';
+import { useSuppliers } from '@/features/suppliers/hooks/useSuppliers';
+
+interface PurchasesFiltersProps {
+  onSearch: (searchTerm: string) => void;
+  onSupplierChange: (supplierId: string) => void;
+  onDateChange: (startDate: string, endDate: string) => void;
+}
+
+export function PurchasesFilters({ onSearch, onSupplierChange, onDateChange }: PurchasesFiltersProps) {
+  const [term, setTerm] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  
+  const { data: suppliersData } = useSuppliers({ pageNumber: 1, pageSize: 500 });
+  const suppliers = suppliersData?.items || [];
+
+  const handleDateChange = (start: string, end: string) => {
+    setStartDate(start);
+    setEndDate(end);
+    onDateChange(start, end);
+  };
+
+  return (
+    <div className={`${tokens.card} p-4 bg-white flex flex-col lg:flex-row gap-4 justify-between items-center mb-6`}>
+      <div className="relative w-full lg:w-96">
+        <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+        <input
+          type="text"
+          placeholder="ابحث برقم الفاتورة..."
+          className={`${tokens.input} pl-3 pr-10`}
+          value={term}
+          onChange={(e) => {
+            setTerm(e.target.value);
+            onSearch(e.target.value);
+          }}
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row w-full lg:w-auto gap-4">
+        <select
+          className={tokens.input}
+          onChange={(e) => onSupplierChange(e.target.value)}
+        >
+          <option value="">كل الموردين</option>
+          {suppliers.map(s => (
+            <option key={s.supplierId} value={s.supplierId}>{s.name}</option>
+          ))}
+        </select>
+
+        <div className="flex items-center gap-2">
+          <input 
+            type="date" 
+            className={tokens.input} 
+            value={startDate}
+            onChange={(e) => handleDateChange(e.target.value, endDate)}
+            title="من تاريخ"
+          />
+          <span className="text-gray-500">-</span>
+          <input 
+            type="date" 
+            className={tokens.input} 
+            value={endDate}
+            onChange={(e) => handleDateChange(startDate, e.target.value)}
+            title="إلى تاريخ"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/components/PurchasesTable.tsx
+````typescript
+import { formatCurrency } from '@/shared/utils/currency';
+import { PurchaseInvoiceResponse } from '../schemas/purchaseSchemas';
+import { PaginatedList } from '@/shared/types/pagination';
+import { DataTable } from '@/shared/components/ui/DataTable';
+
+interface PurchasesTableProps {
+  data?: PaginatedList<PurchaseInvoiceResponse>;
+  isLoading: boolean;
+  pageIndex: number;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  onRowClick?: (invoice: PurchaseInvoiceResponse) => void;
+}
+
+export function PurchasesTable({
+  data,
+  isLoading,
+  pageIndex,
+  onNextPage,
+  onPrevPage,
+  onRowClick,
+}: PurchasesTableProps) {
+  const columns = [
+    {
+      header: 'رقم الفاتورة',
+      cell: (row: PurchaseInvoiceResponse) => (
+        <span className="font-mono bg-gray-50 px-2 py-1 rounded text-sm border border-gray-100">
+          {row.invoiceNumber}
+        </span>
+      ),
+    },
+    {
+      header: 'التاريخ',
+      cell: (row: PurchaseInvoiceResponse) => (
+        <span dir="ltr">{new Intl.DateTimeFormat('ar-EG', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(row.invoiceDate))}</span>
+      ),
+    },
+    {
+      header: 'المورد',
+      cell: (row: PurchaseInvoiceResponse) => (
+        <span className="font-bold text-gray-900">{row.supplier?.name || '-'}</span>
+      ),
+    },
+    {
+      header: 'الإجمالي',
+      cell: (row: PurchaseInvoiceResponse) => (
+        <span className="font-bold text-gray-900">
+          {formatCurrency(row.totalAmount)}
+        </span>
+      ),
+    },
+    {
+      header: 'المدفوع',
+      cell: (row: PurchaseInvoiceResponse) => (
+        <span className="text-green-600 font-bold">
+          {formatCurrency(row.paidAmount)}
+        </span>
+      ),
+    },
+    {
+      header: 'المتبقي',
+      cell: (row: PurchaseInvoiceResponse) => (
+        <span className={`${row.remainingAmount > 0 ? 'text-red-600' : 'text-gray-900'} font-bold`}>
+          {formatCurrency(row.remainingAmount)}
+        </span>
+      ),
+    },
+  ];
+
+  return (
+    <DataTable
+      columns={columns}
+      data={data?.items || []}
+      isLoading={isLoading}
+      pageIndex={pageIndex}
+      totalPages={data?.totalPages || 1}
+      totalCount={data?.totalCount || 0}
+      pageSize={data?.pageSize || 10}
+      onNextPage={onNextPage}
+      onPrevPage={onPrevPage}
+      onRowClick={onRowClick}
+    />
+  );
+}
+````
+
+## File: src/features/purchases/components/SupplierBatchPickerModal.tsx
+````typescript
+import { useMemo, useState } from 'react';
+import { Search, Package } from 'lucide-react';
+import { useSupplierBatches } from '@/features/suppliers/hooks/useSuppliers';
+import { SupplierBatchResponse } from '@/features/suppliers/schemas/supplierSchemas';
+import { tokens } from '@/shared/styles/tokens';
+import { formatCurrency } from '@/shared/utils/currency';
+import { BaseModal } from '@/shared/components/ui/BaseModal';
+import { Spinner } from '@/shared/components/ui/Spinner';
+
+interface SupplierBatchPickerModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  supplierId: string;
+  onSelectBatch: (batch: SupplierBatchResponse) => void;
+}
+
+export function SupplierBatchPickerModal({
+  isOpen,
+  onClose,
+  supplierId,
+  onSelectBatch,
+}: SupplierBatchPickerModalProps) {
+  const { data: batches, isLoading, error } = useSupplierBatches(supplierId);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredBatches = useMemo(() => {
+    if (!batches) return [];
+    if (!searchTerm) return batches;
+    const lower = searchTerm.toLowerCase();
+    return batches.filter(
+      (b) =>
+        (b.productName && b.productName.toLowerCase().includes(lower)) ||
+        (b.barcode && b.barcode.toLowerCase().includes(lower)) ||
+        b.productId.toLowerCase().includes(lower)
+    );
+  }, [batches, searchTerm]);
+
+  return (
+    <BaseModal isOpen={isOpen} onClose={onClose} title="اختيار صنف من المورد" size="3xl">
+      <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-page-bg)]">
+        <div className="relative">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" size={20} />
+          <input
+            type="text"
+            placeholder="ابحث باسم المنتج أو الباركود..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`${tokens.input} pl-4 pr-10`}
+          />
+        </div>
+      </div>
+
+      <div className="p-4">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-40">
+            <Spinner size={32} />
+          </div>
+        ) : error ? (
+          <div className="text-center py-10 text-[var(--color-danger)]">حدث خطأ أثناء جلب الأصناف.</div>
+        ) : filteredBatches.length === 0 ? (
+          <div className="text-center py-10 flex flex-col items-center justify-center text-[var(--color-text-muted)]">
+            <Package size={48} className="text-gray-300 mb-4" />
+            <p className="text-lg font-semibold text-[var(--color-text-main)]">لا توجد أصناف متوفرة</p>
+            <p className="text-sm mt-1">لا يوجد رصيد حالي لأي أصناف تم شراؤها من هذا المورد.</p>
+          </div>
+        ) : (
+          <div className="grid gap-3">
+            {filteredBatches.map((batch) => (
+              <button
+                type="button"
+                key={batch.batchId}
+                className="flex items-center justify-between p-4 bg-white border border-[var(--color-border)] rounded-lg hover:border-[var(--color-primary)] hover:shadow-sm transition-all text-right"
+                onClick={() => onSelectBatch(batch)}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-indigo-50 text-[var(--color-primary)] rounded-lg flex items-center justify-center">
+                    <Package size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-[var(--color-text-main)]">
+                      {batch.productName || 'منتج غير معروف'}
+                    </h3>
+                    <div className="flex items-center gap-3 mt-1 text-sm text-[var(--color-text-muted)]">
+                      {batch.barcode && <span>{batch.barcode}</span>}
+                      <span>•</span>
+                      <span>شراء: {new Date(batch.dateReceived).toLocaleDateString('ar-EG')}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-left flex flex-col items-end gap-1">
+                  <div className="text-lg font-bold text-[var(--color-text-main)]">
+                    {formatCurrency(batch.purchasePrice)}
+                  </div>
+                  <div className="text-sm">
+                    الكمية المتاحة:{' '}
+                    <span className="font-semibold text-[var(--color-primary)]">{batch.availableQuantity}</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </BaseModal>
+  );
+}
+````
+
+## File: src/features/purchases/components/SupplierReturnsFilters.tsx
+````typescript
+import { Search, Plus } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+
+interface SupplierReturnsFiltersProps {
+  onSearch: (val: string) => void;
+  onNewReturn: () => void;
+}
+
+export function SupplierReturnsFilters({ onSearch, onNewReturn }: SupplierReturnsFiltersProps) {
+  return (
+    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-wrap gap-4 items-center justify-between">
+      <div className="flex items-center gap-4 flex-1">
+        <div className="relative max-w-sm w-full">
+          <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+          <input
+            type="text"
+            placeholder="ابحث..."
+            onChange={(e) => onSearch(e.target.value)}
+            className={`${tokens.input} pl-4 pr-10`}
+          />
+        </div>
+      </div>
+      <button onClick={onNewReturn} className={`${tokens.btn.primary} flex items-center gap-2`}>
+        <Plus size={18} />
+        <span>مرتجع جديد</span>
+      </button>
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/components/SupplierReturnsTable.tsx
+````typescript
+import { DataTable } from '@/shared/components/ui/DataTable';
+import { SupplierReturnResponse, RETURN_REASON_LABELS, RETURN_REASON_COLORS } from '../schemas/supplierReturnSchemas';
+import { formatCurrency } from '@/shared/utils/currency';
+
+interface SupplierReturnsTableProps {
+  data: SupplierReturnResponse[];
+  isLoading: boolean;
+  pageIndex: number;
+  totalPages: number;
+  totalCount: number;
+  pageSize: number;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  onRowClick?: (row: SupplierReturnResponse) => void;
+}
+
+export function SupplierReturnsTable(props: SupplierReturnsTableProps) {
+  const columns = [
+    {
+      header: 'التاريخ',
+      cell: (row: SupplierReturnResponse) => new Intl.DateTimeFormat('ar-EG', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(row.returnDate)),
+    },
+    {
+      header: 'المورد',
+      cell: (row: SupplierReturnResponse) => row.supplier?.name || '—',
+    },
+    {
+      header: 'سبب الإرجاع',
+      cell: (row: SupplierReturnResponse) => (
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${RETURN_REASON_COLORS[row.reason] || RETURN_REASON_COLORS[3]}`}>
+          {RETURN_REASON_LABELS[row.reason] || 'غير معروف'}
+        </span>
+      ),
+    },
+    {
+      header: 'عدد الأصناف',
+      cell: (row: SupplierReturnResponse) => row.items?.length || 0,
+    },
+    {
+      header: 'إجمالي المرتجع',
+      cell: (row: SupplierReturnResponse) => (
+        <span className="font-bold text-gray-900">{formatCurrency(row.totalReturnedAmount)}</span>
+      ),
+    },
+  ];
+
+  return <DataTable columns={columns} {...props} />;
+}
+````
+
+## File: src/features/purchases/hooks/usePurchases.ts
+````typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { purchaseRepository } from "../api/PurchaseApi";
+import { CreatePurchaseInvoiceRequest, PurchaseFilters } from "../schemas/purchaseSchemas";
+
+export const PURCHASE_KEYS = {
+  purchases: (filters: PurchaseFilters) => ["purchases", filters] as const,
+  purchaseDetails: (id: string) => ["purchases", id] as const,
+};
+
+export function usePurchases(filters: PurchaseFilters) {
+  return useQuery({
+    queryKey: PURCHASE_KEYS.purchases(filters),
+    queryFn: () => purchaseRepository.getPurchases(filters),
+  });
+}
+
+export function usePurchaseInvoice(id: string) {
+  return useQuery({
+    queryKey: PURCHASE_KEYS.purchaseDetails(id),
+    queryFn: () => purchaseRepository.getPurchaseInvoice(id),
+    enabled: !!id,
+  });
+}
+
+export function useCreatePurchaseInvoice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreatePurchaseInvoiceRequest) => purchaseRepository.createPurchaseInvoice(data),
+    onSuccess: () => {
+      // Invalidate purchases history and supplier details so balances/statements update
+      queryClient.invalidateQueries({ queryKey: ["purchases"] });
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] }); // Refresh inventory quantities
+    },
+  });
+}
+````
+
+## File: src/features/purchases/hooks/useSupplierReturns.ts
+````typescript
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { supplierReturnRepository } from '../api/SupplierReturnApi';
+import { SupplierReturnFilters, CreateSupplierReturnRequest } from '../schemas/supplierReturnSchemas';
+
+export function useSupplierReturns(filters: SupplierReturnFilters) {
+  return useQuery({
+    queryKey: ['supplier-returns', filters],
+    queryFn: () => supplierReturnRepository.getReturns(filters),
+  });
+}
+
+export function useSupplierReturn(id: string) {
+  return useQuery({
+    queryKey: ['supplier-returns', id],
+    queryFn: () => supplierReturnRepository.getReturn(id),
+    enabled: !!id,
+  });
+}
+
+export function useCreateSupplierReturn() {
+  return useMutation({
+    mutationFn: (data: CreateSupplierReturnRequest) => supplierReturnRepository.createReturn(data),
+  });
+}
+````
+
+## File: src/features/purchases/pages/NewPurchasePage.tsx
+````typescript
+import { useEffect } from 'react';
+import { PurchaseInvoiceForm } from '../components/PurchaseInvoiceForm';
+import { useCreatePurchaseInvoice } from '../hooks/usePurchases';
+import { toast } from 'sonner';
+import { getApiErrorMessage } from '@/shared/utils/apiError';
+import { CreatePurchaseInvoiceRequest } from '../schemas/purchaseSchemas';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useNavigate } from 'react-router-dom';
+
+export function NewPurchasePage() {
+  const { mutate: createInvoice, isPending } = useCreatePurchaseInvoice();
+  const { setTitle, setBackButton } = useHeaderStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTitle("فاتورة مشتريات جديدة");
+    setBackButton(true, "/purchases/history");
+  }, [setTitle, setBackButton]);
+
+  const handleSubmit = (data: CreatePurchaseInvoiceRequest) => {
+    createInvoice(data, {
+      onSuccess: () => {
+        toast.success("تم حفظ فاتورة المشتريات بنجاح وإضافة الكميات للمخزن!");
+        navigate("/purchases/history");
+      },
+      onError: (err: unknown) => {
+        toast.error(getApiErrorMessage(err, "حدث خطأ أثناء حفظ الفاتورة"));
+      }
+    });
+  };
+
+  return (
+    <div className="space-y-4 w-full">
+      <PurchaseInvoiceForm onSubmit={handleSubmit} isSubmitting={isPending} />
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/pages/NewSupplierReturnPage.tsx
+````typescript
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useCreateSupplierReturn } from '../hooks/useSupplierReturns';
+import { tokens } from '@/shared/styles/tokens';
+import { useSuppliers } from '@/features/suppliers/hooks/useSuppliers';
+import { Package, Trash2, AlertCircle, ShoppingCart } from 'lucide-react';
+import { CreateSupplierReturnItemRequest } from '../schemas/supplierReturnSchemas';
+import { formatCurrency } from '@/shared/utils/currency';
+import { getApiErrorMessage } from '@/shared/utils/apiError';
+import { SupplierBatchPickerModal } from '../components/SupplierBatchPickerModal';
+import { SupplierBatchResponse } from '@/features/suppliers/schemas/supplierSchemas';
+
+export function NewSupplierReturnPage() {
+  const navigate = useNavigate();
+  const { setTitle, setBackButton } = useHeaderStore();
+  const createReturn = useCreateSupplierReturn();
+  const { data: suppliersData, isLoading: isLoadingSuppliers } = useSuppliers({ pageSize: 100 });
+
+  const [supplierId, setSupplierId] = useState('');
+  const [reason, setReason] = useState<1 | 2 | 3>(1);
+  const [notes, setNotes] = useState('');
+  const [items, setItems] = useState<CreateSupplierReturnItemRequest[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    setTitle('مرتجع مورد جديد');
+    setBackButton(true, '/purchases/returns');
+  }, [setTitle, setBackButton]);
+
+  const handleOpenModal = () => {
+    if (!supplierId) {
+      setError('يرجى اختيار المورد أولاً قبل إضافة الأصناف');
+      return;
+    }
+    setError(null);
+    setIsModalOpen(true);
+  };
+
+  const handleSelectBatch = (batch: SupplierBatchResponse) => {
+    // Check if already added
+    if (items.some(i => i.batchId === batch.batchId)) {
+      alert('تم إضافة هذا الصنف مسبقاً');
+      return;
+    }
+
+    setItems([...items, { 
+      productId: batch.productId, 
+      batchId: batch.batchId, 
+      quantity: 1, 
+      returnPrice: batch.purchasePrice 
+    }]);
+    setIsModalOpen(false);
+  };
+
+  const handleUpdateItem = (index: number, field: keyof CreateSupplierReturnItemRequest, value: string | number) => {
+    const newItems = [...items];
+    newItems[index] = { ...newItems[index], [field]: value };
+    setItems(newItems);
+  };
+
+  const handleRemoveItem = (index: number) => {
+    setItems(items.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!supplierId) return setError('يجب اختيار مورد');
+    if (items.length === 0) return setError('يجب إضافة صنف واحد على الأقل');
+    if (items.some(i => !i.productId || !i.batchId || i.quantity <= 0)) {
+      return setError('يرجى استكمال جميع بيانات الأصناف بشكل صحيح (معرف المنتج ومعرف الدفعة والكمية)');
+    }
+
+    createReturn.mutate(
+      { supplierId, reason, notes, items },
+      {
+        onSuccess: () => navigate('/purchases/returns'),
+        onError: (err: unknown) => setError(getApiErrorMessage(err, 'حدث خطأ أثناء حفظ المرتجع'))
+      }
+    );
+  };
+
+  const totalAmount = items.reduce((sum, item) => sum + (item.quantity * item.returnPrice), 0);
+
+  return (
+    <div className="w-full space-y-6 pb-20">
+      {error && (
+        <div className="bg-red-50 text-red-600 p-4 rounded-xl flex items-center gap-3 border border-red-200">
+          <AlertCircle size={20} />
+          <p>{error}</p>
+        </div>
+      )}
+
+      <form id="new-return-form" onSubmit={handleSubmit} className="space-y-6">
+        {/* Main Details */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
+          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3">بيانات المرتجع الأساسية</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label className={`${tokens.font.label} block mb-2`}>المورد <span className="text-red-500">*</span></label>
+              <select
+                value={supplierId}
+                onChange={(e) => setSupplierId(e.target.value)}
+                className={tokens.input}
+                disabled={isLoadingSuppliers}
+              >
+                <option value="">-- اختر المورد --</option>
+                {suppliersData?.items.map(s => (
+                  <option key={s.supplierId} value={s.supplierId}>{s.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className={`${tokens.font.label} block mb-2`}>سبب الإرجاع <span className="text-red-500">*</span></label>
+              <select
+                value={reason}
+                onChange={(e) => setReason(Number(e.target.value) as 1 | 2 | 3)}
+                className={tokens.input}
+              >
+                <option value={1}>عيب أو خلل في المنتج</option>
+                <option value={2}>تغيير رأي</option>
+                <option value={3}>سبب آخر</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className={`${tokens.font.label} block mb-2`}>ملاحظات إضافية</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className={tokens.input}
+              rows={2}
+              placeholder="أي تفاصيل أخرى حول الإرجاع..."
+            />
+          </div>
+        </div>
+
+        {/* Items */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h2 className="text-lg font-bold text-gray-800">الأصناف المرتجعة <span className="text-red-500">*</span></h2>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleOpenModal}
+                className="text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors"
+              >
+                <ShoppingCart size={16} /> اختيار صنف من المورد
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {items.map((item, index) => (
+              <div key={index} className="flex flex-wrap md:flex-nowrap items-end gap-3 p-4 bg-gray-50 border border-gray-200 rounded-lg relative group">
+                <button
+                  type="button"
+                  onClick={() => handleRemoveItem(index)}
+                  className="absolute top-2 left-2 text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors"
+                  title="حذف الصنف"
+                >
+                  <Trash2 size={16} />
+                </button>
+
+                <div className="w-full md:w-1/3">
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">معرف المنتج (ID)</label>
+                  <input
+                    type="text"
+                    value={item.productId}
+                    readOnly
+                    className={tokens.input + ' py-2 text-sm bg-gray-100 text-gray-500 cursor-not-allowed'}
+                    placeholder="Product ID..."
+                  />
+                </div>
+                
+                <div className="w-full md:w-1/3">
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">معرف الدفعة (Batch ID)</label>
+                  <input
+                    type="text"
+                    value={item.batchId}
+                    readOnly
+                    className={tokens.input + ' py-2 text-sm bg-gray-100 text-gray-500 cursor-not-allowed'}
+                    placeholder="Batch ID..."
+                  />
+                </div>
+
+                <div className="w-1/2 md:w-24">
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">الكمية</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity || ''}
+                    onFocus={(e) => e.target.select()}
+                    onChange={(e) => handleUpdateItem(index, 'quantity', Number(e.target.value))}
+                    className={tokens.input + ' py-2 text-sm text-center'}
+                  />
+                </div>
+
+                <div className="w-1/2 md:w-32">
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">سعر الإرجاع</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.returnPrice || ''}
+                    onFocus={(e) => e.target.select()}
+                    onChange={(e) => handleUpdateItem(index, 'returnPrice', Number(e.target.value))}
+                    className={tokens.input + ' py-2 text-sm text-center'}
+                  />
+                </div>
+              </div>
+            ))}
+
+            {items.length === 0 && (
+              <div className="py-10 text-center border-2 border-dashed border-gray-200 rounded-xl">
+                <Package size={40} className="mx-auto text-gray-300 mb-3" />
+                <p className="text-gray-500">لم يتم إضافة أي أصناف للمرتجع.</p>
+                <p className="text-sm text-gray-400 mt-1">اضغط على زر الإضافة لاختيار الأصناف.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </form>
+
+      {/* Floating Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 md:right-64 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-between items-center z-10">
+        <div>
+          <p className="text-sm text-gray-500 font-semibold">إجمالي المرتجع</p>
+          <p className="text-xl font-bold text-blue-700">{formatCurrency(totalAmount)}</p>
+        </div>
+        
+        <div className="flex gap-3">
+          <button type="button" onClick={() => navigate('/purchases/returns')} className={tokens.btn.secondary}>
+            إلغاء
+          </button>
+          <button 
+            type="submit" 
+            form="new-return-form" 
+            disabled={createReturn.isPending}
+            className={`${tokens.btn.primary} disabled:opacity-50 min-w-[120px]`}
+          >
+            {createReturn.isPending ? 'جاري الحفظ...' : 'حفظ المرتجع'}
+          </button>
+        </div>
+      </div>
+
+      <SupplierBatchPickerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        supplierId={supplierId}
+        onSelectBatch={handleSelectBatch}
+      />
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/pages/PurchaseInvoiceDetailsPage.tsx
+````typescript
+import { useParams, useNavigate } from 'react-router-dom';
+import { usePurchaseInvoice } from '../hooks/usePurchases';
+import { Printer, AlertCircle, Package, ShoppingCart, CheckCircle, Clock, Building2, ChevronLeft } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+import { formatCurrency } from '@/shared/utils/currency';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useEffect } from 'react';
+
+export function PurchaseInvoiceDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { setTitle, setBackButton } = useHeaderStore();
+
+  const { data: invoice, isLoading, error } = usePurchaseInvoice(id!);
+
+  useEffect(() => {
+    if (invoice) {
+      setTitle(`فاتورة مشتريات #${invoice.invoiceNumber}`);
+    } else {
+      setTitle('تفاصيل الفاتورة');
+    }
+    setBackButton(true, "/purchases/history");
+  }, [invoice, setTitle, setBackButton]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-gray-500">جاري تحميل تفاصيل الفاتورة...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !invoice) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <AlertCircle size={48} className="text-red-400" />
+        <p className="text-gray-500">الفاتورة غير موجودة أو حدث خطأ أثناء التحميل.</p>
+        <button className={tokens.btn.primary} onClick={() => navigate('/purchases/history')}>
+          العودة لسجل المشتريات
+        </button>
+      </div>
+    );
+  }
+
+  const isPaid = invoice.remainingAmount <= 0;
+
+  return (
+    <div className="space-y-5 max-w-5xl mx-auto">
+
+      {/* Top bar: date + status + print */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-gray-500 text-sm">
+            {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(invoice.invoiceDate))}
+          </span>
+          <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${
+            isPaid ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+          }`}>
+            {isPaid
+              ? <><CheckCircle size={13} /> مدفوعة بالكامل</>
+              : <><Clock size={13} /> متبقي دفع</>
+            }
+          </span>
+        </div>
+        <button
+          className={`${tokens.btn.secondary} flex items-center gap-2`}
+          onClick={() => window.print()}
+        >
+          <Printer size={16} />
+          <span>طباعة</span>
+        </button>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Supplier - clickable */}
+        <div
+          className={`${tokens.card} p-4 md:col-span-1 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
+          onClick={() => invoice.supplier?.id && navigate(`/contacts/suppliers/${invoice.supplier.id}`)}
+        >
+          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <div className="flex items-center gap-3">
+            {/* Avatar */}
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
+              <Building2 size={20} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                {invoice.supplier?.name || '-'}
+              </p>
+              {invoice.supplier?.phone && (
+                <p className="text-xs text-gray-400 mt-0.5">{invoice.supplier.phone}</p>
+              )}
+            </div>
+            <ChevronLeft size={14} className="text-gray-300 group-hover:text-blue-400 transition-colors flex-shrink-0" />
+          </div>
+        </div>
+
+        {/* Total */}
+        <div className={`${tokens.card} p-4`}>
+          <p className="text-xs text-gray-500 mb-1">إجمالي الفاتورة</p>
+          <p className="text-base font-bold text-gray-900">{formatCurrency(invoice.totalAmount)}</p>
+        </div>
+
+        {/* Paid */}
+        <div className={`${tokens.card} p-4`}>
+          <p className="text-xs text-gray-500 mb-1">المبلغ المدفوع</p>
+          <p className="text-base font-bold text-green-600">{formatCurrency(invoice.paidAmount)}</p>
+        </div>
+
+        {/* Remaining */}
+        <div className={`${tokens.card} p-4`}>
+          <p className="text-xs text-gray-500 mb-1">المتبقي للمورد</p>
+          <p className={`text-base font-bold ${invoice.remainingAmount > 0 ? 'text-red-600' : 'text-gray-400'}`}>
+            {formatCurrency(invoice.remainingAmount)}
+          </p>
+        </div>
+      </div>
+
+      {/* Notes */}
+      {invoice.notes && (
+        <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
+          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات الفاتورة</p>
+          <p className="text-gray-700 text-sm">{invoice.notes}</p>
+        </div>
+      )}
+
+      {/* Items Table */}
+      <div className={tokens.card}>
+        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+          <h2 className="font-bold text-gray-800">
+            الأصناف
+            <span className="mr-2 text-sm font-normal text-gray-400">({invoice.items?.length || 0} صنف)</span>
+          </h2>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-right text-sm">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
+                <th className="px-5 py-3 font-semibold">الصنف</th>
+                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
+                <th className="px-5 py-3 font-semibold text-center">سعر الشراء (للوحدة)</th>
+                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {invoice.items?.map((item, index) => (
+                <tr key={item.purchaseInvoiceItemId ?? index} className="hover:bg-gray-50 transition-colors">
+                  {/* Product info */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      {item.product?.imageUrl ? (
+                        <img
+                          src={item.product.imageUrl}
+                          alt={item.product.name ?? ''}
+                          className="w-10 h-10 rounded-lg object-cover border border-gray-100"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
+                          <Package size={18} />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-gray-800">{item.product?.name || '—'}</p>
+                        {item.product?.barcode && (
+                          <p className="text-xs text-gray-400 dir-ltr mt-0.5">{item.product.barcode}</p>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Quantity */}
+                  <td className="px-5 py-4 text-center">
+                    <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 font-bold text-sm px-2.5 py-0.5 rounded-full">
+                      <ShoppingCart size={12} />
+                      {item.quantity}
+                    </span>
+                  </td>
+
+                  {/* Unit cost (purchase price) */}
+                  <td className="px-5 py-4 text-center text-gray-700 font-medium">
+                    {formatCurrency(item.unitCost)}
+                  </td>
+
+                  {/* Line total */}
+                  <td className="px-5 py-4 text-left font-bold text-gray-900">
+                    {formatCurrency(item.lineTotal)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+
+            {/* Footer row */}
+            <tfoot className="bg-gray-50 border-t border-gray-200">
+              <tr>
+                <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
+                  الإجمالي الكلي للفاتورة
+                </td>
+                <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
+                  {formatCurrency(invoice.totalAmount)}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/pages/PurchasesHistoryPage.tsx
+````typescript
+import { useState } from 'react';
+import { usePurchases } from '../hooks/usePurchases';
+import { PurchasesTable } from '../components/PurchasesTable';
+import { PurchasesFilters } from '../components/PurchasesFilters';
+import { tokens } from '@/shared/styles/tokens';
+import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
+
+export function PurchasesHistoryPage() {
+  const navigate = useNavigate();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [supplierId, setSupplierId] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const { data, isLoading } = usePurchases({
+    pageNumber: pageIndex,
+    pageSize: 10,
+    searchValue: searchTerm || undefined,
+    supplierId: supplierId || undefined,
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
+  });
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-end items-center">
+        <button 
+          onClick={() => navigate('/purchases/new')}
+          className={`${tokens.btn.primary} flex items-center gap-2`}
+        >
+          <Plus size={18} />
+          <span>فاتورة مشتريات جديدة</span>
+        </button>
+      </div>
+
+      <PurchasesFilters 
+        onSearch={(t) => { setSearchTerm(t); setPageIndex(1); }}
+        onSupplierChange={(s) => { setSupplierId(s); setPageIndex(1); }}
+        onDateChange={(start, end) => { setStartDate(start); setEndDate(end); setPageIndex(1); }}
+      />
+
+      <PurchasesTable
+        data={data}
+        isLoading={isLoading}
+        pageIndex={pageIndex}
+        onNextPage={() => setPageIndex(p => p + 1)}
+        onPrevPage={() => setPageIndex(p => p - 1)}
+        onRowClick={(invoice) => {
+          navigate(`/purchases/${invoice.purchaseInvoiceId}`);
+        }}
+      />
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/pages/SupplierReturnDetailsPage.tsx
+````typescript
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useSupplierReturn } from '../hooks/useSupplierReturns';
+import { AlertCircle, Building2, ChevronLeft, Package, Clock } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+import { formatCurrency } from '@/shared/utils/currency';
+import { RETURN_REASON_LABELS, RETURN_REASON_COLORS } from '../schemas/supplierReturnSchemas';
+
+export function SupplierReturnDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { setTitle, setBackButton } = useHeaderStore();
+
+  const { data: returnData, isLoading, error } = useSupplierReturn(id!);
+
+  useEffect(() => {
+    if (returnData) {
+      setTitle(`مرتجع #${returnData.supplierReturnId.substring(0, 8)}`);
+    } else {
+      setTitle('تفاصيل المرتجع');
+    }
+    setBackButton(true, '/purchases/returns');
+  }, [returnData, setTitle, setBackButton]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-gray-500">جاري تحميل تفاصيل المرتجع...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !returnData) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <AlertCircle size={48} className="text-red-400" />
+        <p className="text-gray-500">المرتجع غير موجود أو حدث خطأ أثناء التحميل.</p>
+        <button className={tokens.btn.primary} onClick={() => navigate('/purchases/returns')}>
+          العودة لسجل المرتجعات
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5 w-full">
+      {/* Top bar */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <span className="text-gray-500 text-sm flex items-center gap-1.5">
+            <Clock size={16} />
+            {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(returnData.returnDate))}
+          </span>
+          <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${RETURN_REASON_COLORS[returnData.reason] || RETURN_REASON_COLORS[3]}`}>
+            {RETURN_REASON_LABELS[returnData.reason] || 'سبب غير معروف'}
+          </span>
+        </div>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Supplier */}
+        <div
+          className={`${tokens.card} p-4 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
+          onClick={() => returnData.supplier?.id && navigate(`/contacts/suppliers/${returnData.supplier.id}`)}
+        >
+          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
+              <Building2 size={20} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                {returnData.supplier?.name || '-'}
+              </p>
+              {returnData.supplier?.phone && (
+                <p className="text-xs text-gray-400 mt-0.5">{returnData.supplier.phone}</p>
+              )}
+            </div>
+            <ChevronLeft size={14} className="text-gray-300 group-hover:text-blue-400 transition-colors flex-shrink-0" />
+          </div>
+        </div>
+
+        {/* Total Amount */}
+        <div className={`${tokens.card} p-4 flex flex-col justify-center`}>
+          <p className="text-xs text-gray-500 mb-1">إجمالي المرتجع</p>
+          <p className="text-xl font-bold text-gray-900">{formatCurrency(returnData.totalReturnedAmount)}</p>
+        </div>
+      </div>
+
+      {/* Notes */}
+      {returnData.notes && (
+        <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
+          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات المرتجع</p>
+          <p className="text-gray-700 text-sm">{returnData.notes}</p>
+        </div>
+      )}
+
+      {/* Items Table */}
+      <div className={tokens.card}>
+        <div className="p-4 border-b border-gray-100">
+          <h2 className="font-bold text-gray-800">
+            الأصناف المرتجعة
+            <span className="mr-2 text-sm font-normal text-gray-400">({returnData.items?.length || 0} صنف)</span>
+          </h2>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-right text-sm">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
+                <th className="px-5 py-3 font-semibold">الصنف</th>
+                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
+                <th className="px-5 py-3 font-semibold text-center">سعر الإرجاع (للوحدة)</th>
+                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {returnData.items?.map((item, index) => (
+                <tr key={item.supplierReturnItemId ?? index} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      {item.product?.imageUrl ? (
+                        <img
+                          src={item.product.imageUrl}
+                          alt={item.product.name ?? ''}
+                          className="w-10 h-10 rounded-lg object-cover border border-gray-100"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
+                          <Package size={18} />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-gray-800">{item.product?.name || '—'}</p>
+                        {item.product?.barcode && (
+                          <p className="text-xs text-gray-400 dir-ltr mt-0.5">{item.product.barcode}</p>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-5 py-4 text-center">
+                    <span className="inline-flex items-center bg-blue-50 text-blue-700 font-bold text-sm px-2.5 py-0.5 rounded-full">
+                      {item.quantity}
+                    </span>
+                  </td>
+                  <td className="px-5 py-4 text-center text-gray-700 font-medium">
+                    {formatCurrency(item.unitCost)}
+                  </td>
+                  <td className="px-5 py-4 text-left font-bold text-gray-900">
+                    {formatCurrency(item.lineTotal)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot className="bg-gray-50 border-t border-gray-200">
+              <tr>
+                <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
+                  الإجمالي الكلي
+                </td>
+                <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
+                  {formatCurrency(returnData.totalReturnedAmount)}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/pages/SupplierReturnsPage.tsx
+````typescript
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useSupplierReturns } from '../hooks/useSupplierReturns';
+import { SupplierReturnsFilters } from '../components/SupplierReturnsFilters';
+import { SupplierReturnsTable } from '../components/SupplierReturnsTable';
+
+export function SupplierReturnsPage() {
+  const [pageIndex, setPageIndex] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const navigate = useNavigate();
+  const { setTitle, setBackButton } = useHeaderStore();
+
+  useEffect(() => {
+    setTitle('مرتجعات الموردين');
+    setBackButton(false);
+  }, [setTitle, setBackButton]);
+
+  const { data, isLoading } = useSupplierReturns({
+    pageNumber: pageIndex,
+    pageSize: 10,
+    searchValue: searchTerm || undefined,
+  });
+
+  return (
+    <div className="space-y-4 w-full">
+      <SupplierReturnsFilters
+        onSearch={(val) => { setSearchTerm(val); setPageIndex(1); }}
+        onNewReturn={() => navigate('/purchases/returns/new')}
+      />
+
+      <SupplierReturnsTable
+        data={data?.items || []}
+        isLoading={isLoading}
+        pageIndex={data?.pageNumber || 1}
+        totalPages={data?.totalPages || 1}
+        totalCount={data?.totalCount || 0}
+        pageSize={data?.pageSize || 10}
+        onNextPage={() => setPageIndex((p) => p + 1)}
+        onPrevPage={() => setPageIndex((p) => p - 1)}
+        onRowClick={(row) => navigate(`/purchases/returns/${row.supplierReturnId}`)}
+      />
+    </div>
+  );
+}
+````
+
+## File: src/features/purchases/schemas/__tests__/purchaseSchemas.test.ts
+````typescript
+import { createPurchaseInvoiceSchema } from '../purchaseSchemas';
+
+describe('createPurchaseInvoiceSchema', () => {
+  it('rejects an empty items list', () => {
+    const result = createPurchaseInvoiceSchema.safeParse({
+      supplierId: 's1',
+      paidAmount: 0,
+      items: [],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts a valid invoice payload', () => {
+    const result = createPurchaseInvoiceSchema.safeParse({
+      supplierId: 's1',
+      paidAmount: 100,
+      notes: 'ملاحظة',
+      items: [
+        {
+          productId: 'p1',
+          productName: 'منتج',
+          quantity: 2,
+          unitCost: 50,
+          wholesalePrice: 60,
+          retailPrice: 80,
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects quantity below 1', () => {
+    const result = createPurchaseInvoiceSchema.safeParse({
+      supplierId: 's1',
+      paidAmount: 0,
+      items: [
+        {
+          productId: 'p1',
+          quantity: 0,
+          unitCost: 10,
+          wholesalePrice: 12,
+          retailPrice: 15,
+        },
+      ],
+    });
+    expect(result.success).toBe(false);
+  });
+});
+````
+
+## File: src/features/purchases/schemas/purchaseSchemas.ts
+````typescript
+import * as z from 'zod';
+import { BaseFilters } from '@/shared/types/pagination';
+
+// Requests
+export const purchaseInvoiceItemSchema = z.object({
+  productId: z.string().min(1, "يجب اختيار منتج"),
+  productName: z.string().optional(), // Frontend only helper
+  quantity: z.number().min(1, "الكمية يجب أن تكون أكبر من صفر"),
+  unitCost: z.number().min(0, "تكلفة الوحدة يجب أن تكون 0 أو أكثر"),
+  wholesalePrice: z.number().min(0, "سعر الجملة غير صالح"),
+  retailPrice: z.number().min(0, "سعر التجزئة غير صالح"),
+});
+
+export type CreatePurchaseInvoiceItemRequest = z.infer<typeof purchaseInvoiceItemSchema>;
+
+export const createPurchaseInvoiceSchema = z.object({
+  supplierId: z.string().min(1, "يجب اختيار مورد"),
+  paidAmount: z.number().min(0, "المبلغ المدفوع غير صالح"),
+  notes: z.string().optional(),
+  items: z.array(purchaseInvoiceItemSchema).min(1, "يجب إضافة منتج واحد على الأقل"),
+});
+
+export type CreatePurchaseInvoiceRequest = z.infer<typeof createPurchaseInvoiceSchema>;
+
+// Responses
+export interface ProductSummary {
+  productId: string;
+  name?: string;
+  barcode?: string;
+  imageUrl?: string;
+  retailPrice: number;
+  wholesalePrice?: number;
+  quantity: number;
+}
+
+export interface PurchaseInvoiceItemResponse {
+  purchaseInvoiceItemId: string;
+  product: ProductSummary;
+  quantity: number;
+  unitCost: number;
+  lineTotal: number;
+}
+
+export interface PurchaseInvoiceResponse {
+  purchaseInvoiceId: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  supplier: {
+    id: string;
+    name: string;
+    phone?: string;
+  };
+  totalAmount: number;
+  paidAmount: number;
+  remainingAmount: number;
+  notes?: string;
+  items: PurchaseInvoiceItemResponse[];
+}
+
+export interface PurchaseFilters extends BaseFilters {
+  supplierId?: string;
+  startDate?: string;
+  endDate?: string;
+}
+````
+
+## File: src/features/purchases/schemas/supplierReturnSchemas.ts
+````typescript
+import * as z from 'zod';
+import { BaseFilters } from '@/shared/types/pagination';
+
+// Return reason labels and colors
+export const RETURN_REASON_LABELS: Record<number, string> = {
+  1: 'عيب أو خلل في المنتج',
+  2: 'تغيير رأي',
+  3: 'سبب آخر',
+};
+
+export const RETURN_REASON_COLORS: Record<number, string> = {
+  1: 'bg-red-50 text-red-700',
+  2: 'bg-amber-50 text-amber-700',
+  3: 'bg-gray-100 text-gray-600',
+};
+
+// Response types
+export interface SupplierReturnProductSummary {
+  productId: string;
+  name?: string;
+  barcode?: string;
+  imageUrl?: string;
+  retailPrice: number;
+  wholesalePrice?: number;
+  quantity: number;
+}
+
+export interface SupplierReturnItemResponse {
+  supplierReturnItemId: string;
+  product: SupplierReturnProductSummary;
+  quantity: number;
+  unitCost: number;
+  lineTotal: number;
+}
+
+export interface SupplierReturnResponse {
+  supplierReturnId: string;
+  supplier: {
+    id: string;
+    name: string;
+    phone?: string;
+  };
+  reason: 1 | 2 | 3;
+  notes?: string;
+  totalReturnedAmount: number;
+  returnDate: string;
+  items: SupplierReturnItemResponse[];
+}
+
+// Request schema
+export const createSupplierReturnItemSchema = z.object({
+  productId: z.string().min(1, 'يجب اختيار منتج'),
+  batchId: z.string().min(1, 'يجب تحديد الدفعة'),
+  quantity: z.number().min(1, 'الكمية يجب أن تكون 1 على الأقل'),
+  returnPrice: z.number().min(0, 'سعر الإرجاع غير صالح'),
+});
+
+export type CreateSupplierReturnItemRequest = z.infer<typeof createSupplierReturnItemSchema>;
+
+export const createSupplierReturnSchema = z.object({
+  supplierId: z.string().min(1, 'يجب اختيار مورد'),
+  reason: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+  notes: z.string().optional(),
+  items: z.array(createSupplierReturnItemSchema).min(1, 'يجب إضافة صنف واحد على الأقل'),
+});
+
+export type CreateSupplierReturnRequest = z.infer<typeof createSupplierReturnSchema>;
+
+// Filters
+export interface SupplierReturnFilters extends BaseFilters {
+  supplierId?: string;
+}
+````
+
+## File: src/features/sales/api/salesApi.ts
+````typescript
+import { apiClient } from "@/lib/axios";
+import { CreateSalesInvoiceRequest, SalesInvoiceResponse, CreateSalesReturnRequest, SalesReturnResponse } from "../schemas/salesSchemas";
+import { PaginatedList } from "@/shared/types/pagination";
+
+export const salesRepository = {
+  createInvoice: async (data: CreateSalesInvoiceRequest): Promise<SalesInvoiceResponse> => {
+    const response = await apiClient.post<SalesInvoiceResponse>('/sales-invoices', data);
+    return response.data;
+  },
+
+  getInvoice: async (id: string): Promise<SalesInvoiceResponse> => {
+    const response = await apiClient.get<SalesInvoiceResponse>(`/sales-invoices/${id}`);
+    return response.data;
+  },
+
+  getInvoices: async (filters: { pageNumber?: number; pageSize?: number; searchValue?: string }): Promise<PaginatedList<SalesInvoiceResponse>> => {
+    const response = await apiClient.get<PaginatedList<SalesInvoiceResponse>>('/sales-invoices', { params: filters });
+    return response.data;
+  },
+
+  createReturn: async (data: CreateSalesReturnRequest): Promise<SalesReturnResponse> => {
+    const response = await apiClient.post<SalesReturnResponse>('/sales-returns', data);
+    return response.data;
+  },
+
+  getReturn: async (id: string): Promise<SalesReturnResponse> => {
+    const response = await apiClient.get<SalesReturnResponse>(`/sales-returns/${id}`);
+    return response.data;
+  },
+
+  getReturns: async (filters: { pageNumber?: number; pageSize?: number; searchValue?: string }): Promise<PaginatedList<SalesReturnResponse>> => {
+    const response = await apiClient.get<PaginatedList<SalesReturnResponse>>('/sales-returns', { params: filters });
+    return response.data;
+  }
+};
+````
+
+## File: src/features/sales/components/BatchSelectionModal.tsx
+````typescript
+import { Building2 } from 'lucide-react';
+import { ProductResponse, ProductBatchResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { formatCurrency } from '@/shared/utils/currency';
+import { BaseModal } from '@/shared/components/ui/BaseModal';
+
+interface BatchSelectionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  product: ProductResponse | null;
+  onSelectBatch: (batch: ProductBatchResponse, selectedPrice: number) => void;
+}
+
+export function BatchSelectionModal({ isOpen, onClose, product, onSelectBatch }: BatchSelectionModalProps) {
+  if (!product) return null;
+
+  const availableBatches = product.batches.filter((b) => b.availableQuantity > 0);
+
+  return (
+    <BaseModal isOpen={isOpen} onClose={onClose} title="اختيار الشركة والسعر" subtitle={product.name} size="3xl">
+      <div className="p-6">
+        {availableBatches.length === 0 ? (
+          <div className="text-center py-10 text-[var(--color-text-muted)] font-medium">
+            لا توجد دفعات متاحة لهذا المنتج في المخزون.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {availableBatches.map((batch) => (
+              <div
+                key={batch.batchId}
+                className="flex items-center justify-between p-4 bg-white border border-[var(--color-border)] rounded-xl gap-4"
+              >
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center shrink-0">
+                    <Building2 size={24} />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-[var(--color-text-main)] truncate">
+                      {batch.supplierName || 'بدون مورد'}
+                    </h4>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-1">
+                      تاريخ: {new Date(batch.dateReceived).toLocaleDateString('ar-EG')} • متاح {batch.availableQuantity}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => onSelectBatch(batch, batch.wholesalePrice)}
+                    className="flex items-center justify-between w-[160px] p-3 bg-white hover:bg-gray-50 border-2 border-[var(--color-border)] hover:border-emerald-600 text-[var(--color-text-main)] rounded-xl transition-colors"
+                  >
+                    <span className="text-sm font-bold text-[var(--color-text-muted)]">جملة</span>
+                    <span className="font-bold">{formatCurrency(batch.wholesalePrice)}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onSelectBatch(batch, batch.retailPrice)}
+                    className="flex items-center justify-between w-[160px] p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl"
+                  >
+                    <span className="text-sm font-bold">تجزئة</span>
+                    <span className="font-bold">{formatCurrency(batch.retailPrice)}</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </BaseModal>
+  );
+}
+````
+
+## File: src/features/sales/components/CheckoutModal.tsx
+````typescript
+import { useState, useEffect } from 'react';
+import { User, Phone, Banknote } from 'lucide-react';
+import { PaymentMethod } from '../schemas/salesSchemas';
+import { tokens } from '@/shared/styles/tokens';
+import { formatCurrency } from '@/shared/utils/currency';
+import { BaseModal } from '@/shared/components/ui/BaseModal';
+
+interface CheckoutModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  totalAmount: number;
+  paymentMethod: PaymentMethod | null;
+  onConfirm: (customerName: string, customerPhone: string, paidAmount: number) => void;
+  isSubmitting: boolean;
+}
+
+export function CheckoutModal({
+  isOpen,
+  onClose,
+  totalAmount,
+  paymentMethod,
+  onConfirm,
+  isSubmitting,
+}: CheckoutModalProps) {
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [paidAmount, setPaidAmount] = useState<number | string>(totalAmount);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setCustomerName('');
+      setCustomerPhone('');
+      setPaidAmount(paymentMethod === PaymentMethod.Cash ? totalAmount : 0);
+      setError('');
+    }
+  }, [isOpen, paymentMethod, totalAmount]);
+
+  if (!paymentMethod) return null;
+
+  const isCredit = paymentMethod === PaymentMethod.Deferred;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    const paid = Number(paidAmount);
+    if (isNaN(paid) || paid < 0) {
+      setError('المبلغ المدفوع غير صحيح');
+      return;
+    }
+
+    if (isCredit) {
+      if (!customerName.trim() || !customerPhone.trim()) {
+        setError('يجب إدخال اسم العميل ورقم الهاتف في حالة الدفع الآجل');
+        return;
+      }
+      if (paid >= totalAmount) {
+        setError('لا يمكن أن يكون المبلغ المدفوع أكبر من أو يساوي الإجمالي في حالة الدفع الآجل');
+        return;
+      }
+    } else if (paid < totalAmount) {
+      setError('في حالة الدفع النقدي يجب دفع المبلغ كاملاً');
+      return;
+    }
+
+    onConfirm(customerName, customerPhone, isCredit ? paid : totalAmount);
+  };
+
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={isCredit ? 'إتمام الدفع الآجل' : 'إتمام الدفع النقدي'}
+      size="md"
+      zIndexClassName="z-[60]"
+      headerClassName={isCredit ? 'bg-amber-50' : 'bg-emerald-50'}
+    >
+      <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <div className="bg-[var(--color-page-bg)] p-4 rounded-xl flex items-center justify-between border border-[var(--color-border)]">
+          <span className="text-[var(--color-text-muted)] font-semibold">الإجمالي المطلوب:</span>
+          <span className="text-2xl font-bold text-[var(--color-text-main)]">{formatCurrency(totalAmount)}</span>
+        </div>
+
+        {error && (
+          <div className="p-3 bg-red-50 text-[var(--color-danger)] rounded-lg text-sm font-semibold text-center border border-red-100">
+            {error}
+          </div>
+        )}
+
+        <div>
+          <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <Phone size={16} /> رقم الهاتف
+            </span>
+            {isCredit && <span className="text-[var(--color-danger)]">*</span>}
+          </label>
+          <input
+            type="text"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            placeholder="مثال: 010xxxxxxxx"
+            className={tokens.input + ' py-3 text-left'}
+            required={isCredit}
+            dir="ltr"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <User size={16} /> اسم العميل
+            </span>
+            {isCredit && <span className="text-[var(--color-danger)]">*</span>}
+          </label>
+          <input
+            type="text"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            placeholder="مثال: أحمد محمد"
+            className={tokens.input + ' py-3'}
+            required={isCredit}
+          />
+        </div>
+
+        {isCredit && (
+          <div className="pt-2 border-t border-[var(--color-border)]">
+            <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Banknote size={16} /> المبلغ المدفوع الآن
+              </span>
+              <span className="text-[var(--color-danger)]">*</span>
+            </label>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              value={paidAmount}
+              onChange={(e) => setPaidAmount(e.target.value)}
+              onFocus={() => {
+                if (paidAmount === 0 || paidAmount === '0') setPaidAmount('');
+              }}
+              onBlur={(e) => {
+                if (e.target.value === '') setPaidAmount(0);
+              }}
+              className={`${tokens.input} py-3 text-xl font-bold text-[var(--color-primary)] text-left`}
+              required
+              dir="ltr"
+            />
+            {Number(paidAmount) >= 0 && Number(paidAmount) < totalAmount && (
+              <p className="text-sm text-amber-700 mt-2.5 font-bold">
+                المتبقي كمديونية: {formatCurrency(totalAmount - Number(paidAmount))}
+              </p>
+            )}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`w-full py-3.5 rounded-xl font-bold text-white text-lg disabled:opacity-70 ${
+            isCredit ? 'bg-amber-600 hover:bg-amber-700' : 'bg-emerald-600 hover:bg-emerald-700'
+          }`}
+        >
+          {isSubmitting ? 'جاري التأكيد...' : 'تأكيد وحفظ الفاتورة'}
+        </button>
+      </form>
+    </BaseModal>
+  );
+}
+````
+
+## File: src/features/sales/components/InvoiceDetailsModal.tsx
+````typescript
+import { Receipt } from 'lucide-react';
+import { useSalesInvoiceDetails } from '@/features/sales/hooks/useSales';
+import { formatCurrency } from '@/shared/utils/currency';
+import { BaseModal } from '@/shared/components/ui/BaseModal';
+import { Spinner } from '@/shared/components/ui/Spinner';
+
+interface InvoiceDetailsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  invoiceId: string | null;
+}
+
+export function InvoiceDetailsModal({ isOpen, onClose, invoiceId }: InvoiceDetailsModalProps) {
+  const { data: invoice, isLoading } = useSalesInvoiceDetails(invoiceId || '');
+
+  return (
+    <BaseModal
+      isOpen={isOpen && !!invoiceId}
+      onClose={onClose}
+      title="تفاصيل الفاتورة"
+      subtitle={invoice ? `رقم الفاتورة: ${invoice.invoiceNumber}` : undefined}
+      size="3xl"
+    >
+      <div className="p-6">
+        {isLoading ? (
+          <div className="py-12 flex justify-center">
+            <Spinner size={32} />
+          </div>
+        ) : invoice ? (
+          <div className="space-y-6">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-[var(--color-page-bg)] rounded-xl p-4 border border-[var(--color-border)]">
+                <span className="text-sm text-[var(--color-text-muted)] block mb-1">الإجمالي</span>
+                <span className="text-xl font-bold text-[var(--color-text-main)]" dir="ltr">
+                  {formatCurrency(invoice.totalAmount)}
+                </span>
+              </div>
+              <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+                <span className="text-sm text-emerald-700 block mb-1">المدفوع</span>
+                <span className="text-xl font-bold text-emerald-700" dir="ltr">
+                  {formatCurrency(invoice.paidAmount)}
+                </span>
+              </div>
+              <div className="bg-red-50 rounded-xl p-4 border border-red-100">
+                <span className="text-sm text-[var(--color-danger)] block mb-1">المتبقي (آجل)</span>
+                <span className="text-xl font-bold text-[var(--color-danger)]" dir="ltr">
+                  {formatCurrency(invoice.remainingAmount)}
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-[var(--color-text-main)] mb-3 flex items-center gap-2">
+                <Receipt size={18} /> المنتجات المباعة
+              </h3>
+              <div className="border border-[var(--color-border)] rounded-xl overflow-hidden">
+                <table className="w-full text-right text-sm">
+                  <thead className="bg-[var(--color-page-bg)] border-b border-[var(--color-border)] text-[var(--color-text-muted)] font-semibold">
+                    <tr>
+                      <th className="px-4 py-3">المنتج</th>
+                      <th className="px-4 py-3">الكمية</th>
+                      <th className="px-4 py-3">سعر الوحدة</th>
+                      <th className="px-4 py-3">الإجمالي</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {invoice.items.map((item) => (
+                      <tr key={item.id}>
+                        <td className="px-4 py-3 font-medium">{item.productName || 'منتج غير معروف'}</td>
+                        <td className="px-4 py-3">
+                          {item.quantity}
+                          {item.returnedQuantity > 0 && (
+                            <span className="text-xs text-[var(--color-danger)] mr-2 block">
+                              (تم إرجاع {item.returnedQuantity})
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3" dir="ltr">
+                          {formatCurrency(item.unitPrice)}
+                        </td>
+                        <td className="px-4 py-3 font-bold" dir="ltr">
+                          {formatCurrency(item.lineTotal)}
+                        </td>
+                      </tr>
+                    ))}
+                    {invoice.items.length === 0 && (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-8 text-center text-[var(--color-text-muted)]">
+                          لا توجد منتجات
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="py-12 text-center text-[var(--color-danger)] font-bold">حدث خطأ أثناء تحميل الفاتورة</div>
+        )}
+      </div>
+    </BaseModal>
+  );
+}
+````
+
+## File: src/features/sales/components/PosCart.tsx
+````typescript
+import { Trash2, Plus, Minus, Undo2, CreditCard, Wallet, Package } from 'lucide-react';
+import { PaymentMethod } from '../schemas/salesSchemas';
+import { CartItem } from '../utils/cartLogic';
+
+export type { CartItem };
+
+function fmt(value: number): string {
+  return new Intl.NumberFormat('en-EG', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+interface PosCartProps {
+  items: CartItem[];
+  onUpdateQuantity: (id: string, delta: number) => void;
+  onRemoveItem: (id: string) => void;
+  onClearCart: () => void;
+  onCheckout: (method: PaymentMethod) => void;
+}
+
+export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, onCheckout }: PosCartProps) {
+  
+  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const total = subtotal; // No tax calculation implemented yet
+
+  const totalQuantity = items.reduce((s, i) => s + i.quantity, 0);
+
+  return (
+    <div className="flex flex-col h-full bg-[#f8f9fa] z-20 relative">
+      
+      {/* Header */}
+      <div className="p-6 pb-4 flex items-start justify-between shrink-0 bg-[#f8f9fa]">
+        
+        <div className="flex flex-col items-end">
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
+            سلة المشتريات
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </h2>
+          <div className="text-sm font-semibold flex items-center gap-1.5" dir="rtl">
+            <span className="text-[#0f8e4c]">الكمية {totalQuantity}</span>
+            <span className="text-gray-300">|</span>
+            <span className="text-[#0f8e4c]">{items.length} أصناف</span>
+          </div>
+        </div>
+
+        <button 
+          onClick={onClearCart}
+          disabled={items.length === 0}
+          className="w-12 h-12 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-all disabled:opacity-50 shadow-sm"
+        >
+          <Trash2 size={20} />
+        </button>
+
+      </div>
+
+      {/* Cart Items List */}
+      <div className="flex-1 overflow-y-auto px-6 py-2 space-y-4 custom-scrollbar bg-[#f8f9fa]">
+        {items.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-4">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="opacity-20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <p className="font-semibold text-lg">السلة فارغة</p>
+          </div>
+        ) : (
+          items.map(item => {
+            const imageSrc = item.imageUrl ? (item.imageUrl.startsWith('http') ? item.imageUrl : `http://localhost:5033${item.imageUrl}`) : null;
+            return (
+              <div key={item.id} className="bg-white border border-gray-100 p-4 rounded-2xl shadow-sm flex gap-4 relative group">
+                
+                {/* Image (Right) */}
+                <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center shrink-0 p-1">
+                  {imageSrc ? (
+                    <img src={imageSrc} alt={item.productName} className="max-h-full max-w-full object-contain mix-blend-multiply" />
+                  ) : (
+                    <Package size={24} className="text-gray-300" />
+                  )}
+                </div>
+
+                {/* Info (Middle) */}
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-sm leading-tight mb-1">{item.productName}</h4>
+                    <p className="text-[11px] text-gray-400 line-clamp-1">
+                      {item.properties && Object.keys(item.properties).length > 0 
+                        ? Object.values(item.properties).join(' - ') 
+                        : item.batchName}
+                    </p>
+                  </div>
+
+                  <div className="mt-3 w-max">
+                    <div className="flex items-center bg-white rounded-lg border border-gray-200 overflow-hidden h-9">
+                      <button 
+                        onClick={() => onUpdateQuantity(item.id, -1)}
+                        className="w-9 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors border-l border-gray-200"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <input 
+                        type="number"
+                        min="1"
+                        max={item.maxQuantity}
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (!isNaN(val)) {
+                            onUpdateQuantity(item.id, val - item.quantity);
+                          }
+                        }}
+                        onFocus={(e) => e.target.select()}
+                        className="w-10 h-full text-center font-bold text-sm bg-transparent outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                      <button 
+                        onClick={() => onUpdateQuantity(item.id, 1)}
+                        disabled={item.quantity >= item.maxQuantity}
+                        className="w-9 h-full flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors border-r border-gray-200 disabled:opacity-50"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions & Price (Left) */}
+                <div className="flex flex-col items-end justify-between shrink-0 pl-1">
+                  <button 
+                    onClick={() => onRemoveItem(item.id)}
+                    className="w-9 h-9 flex items-center justify-center bg-white rounded-lg border border-gray-200 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors shadow-sm"
+                  >
+                    <Undo2 size={16} />
+                  </button>
+                  <div className="font-bold text-[#0f8e4c] text-base mt-auto">
+                    {fmt(item.price * item.quantity)} <span className="text-xs font-normal">ج.م</span>
+                  </div>
+                </div>
+
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Totals & Actions */}
+      <div className="p-6 bg-[#f8f9fa] shrink-0 mt-2">
+        <div className="flex items-center justify-between text-gray-900 font-bold mb-4">
+          <span className="text-sm">المجموع الفرعي</span>
+          <span className="text-sm">{fmt(subtotal)} <span className="text-xs font-normal">ج.م</span></span>
+        </div>
+        
+        <div className="flex items-center justify-between text-xl font-bold text-gray-900 mb-6">
+          <span className="text-xl">الإجمالي</span>
+          <span className="text-[26px] text-[#0f8e4c]">{fmt(total)} <span className="text-sm font-normal">ج.م</span></span>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <button
+            disabled={items.length === 0}
+            onClick={() => onCheckout(PaymentMethod.Cash)}
+            className="w-full py-4 rounded-xl font-bold text-white bg-[#0f8e4c] hover:bg-[#0c7a40] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm text-lg"
+          >
+            <Wallet size={22} />
+            دفع كاش
+          </button>
+          <button
+            disabled={items.length === 0}
+            onClick={() => onCheckout(PaymentMethod.Deferred)}
+            className="w-full py-4 rounded-xl font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg shadow-sm"
+          >
+            <CreditCard size={22} className="text-gray-500" />
+            دفع آجل
+          </button>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+````
+
+## File: src/features/sales/components/PosProductGrid.tsx
+````typescript
+import { Search, Package, ShoppingCart, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ProductResponse, CategorySummary } from '@/features/inventory/schemas/inventorySchemas';
+import { useCategories, useDepartments } from '@/features/inventory/hooks/useInventory';
+import { Spinner } from '@/shared/components/ui/Spinner';
+
+interface PosProductGridProps {
+  products: ProductResponse[];
+  isLoading: boolean;
+  onProductClick: (product: ProductResponse) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  selectedDepartmentId: string;
+  setSelectedDepartmentId: (id: string) => void;
+  selectedCategoryId: string;
+  setSelectedCategoryId: (id: string) => void;
+  pageNumber: number;
+  setPageNumber: (page: number) => void;
+  totalPages: number;
+}
+
+export function PosProductGrid({
+  products,
+  isLoading,
+  onProductClick,
+  searchTerm,
+  setSearchTerm,
+  selectedDepartmentId,
+  setSelectedDepartmentId,
+  selectedCategoryId,
+  setSelectedCategoryId,
+  pageNumber,
+  setPageNumber,
+  totalPages
+}: PosProductGridProps) {
+  
+  const { data: departmentsData } = useDepartments();
+  const { data: categoriesData } = useCategories({ departmentId: selectedDepartmentId || undefined, pageNumber: 1, pageSize: 50 });
+  const departments = departmentsData?.items || [];
+  const categories = categoriesData?.items || [];
+
+  return (
+    <div className="flex flex-col h-full bg-white border-l border-gray-100">
+      {/* Top Bar: Search and Filters */}
+      <div className="p-5 bg-white z-10 flex flex-col gap-5 border-b border-gray-100">
+        
+        {/* Search & Department row */}
+        <div className="flex gap-4 items-center">
+          {/* Search (Right side in RTL) */}
+          <div className="relative flex-1 h-12">
+            <input
+              type="text"
+              placeholder="ابحث عن منتج بالاسم أو امسح الباركود"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-full pl-12 pr-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-700 text-sm transition-all"
+              autoFocus
+            />
+            {/* Search Icon on the left side of input in RTL */}
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          </div>
+
+          {/* Department Select (Left side in RTL) */}
+          <div className="relative w-[300px] h-12">
+            <select
+              value={selectedDepartmentId}
+              onChange={(e) => {
+                setSelectedDepartmentId(e.target.value);
+                setSelectedCategoryId(''); // Reset category when department changes
+              }}
+              className="w-full h-full pl-4 pr-4 bg-white border border-gray-200 rounded-xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-700 text-sm transition-all appearance-none cursor-pointer"
+            >
+              <option value="">اختر القسم الرئيسي</option>
+              {departments.map((dept) => (
+                <option key={dept.departmentId} value={dept.departmentId}>
+                  {dept.name}
+                </option>
+              ))}
+            </select>
+            {/* Custom Chevron (as in design, drop down arrow on the left) */}
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1.5L6 6.5L11 1.5" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        {/* Categories Chips — only show when a department is selected */}
+        {selectedDepartmentId && (
+          <div className="flex items-center gap-3 overflow-x-auto pb-1 custom-scrollbar">
+            <button
+              onClick={() => setSelectedCategoryId('')}
+              className={`whitespace-nowrap px-8 py-2.5 rounded-xl text-sm font-bold transition-colors border ${
+                selectedCategoryId === '' 
+                  ? 'bg-[#0f8e4c] text-white border-[#0f8e4c] shadow-sm' 
+                  : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+              }`}
+            >
+              الكل
+            </button>
+            {categories.map((cat: CategorySummary) => (
+              <button
+                key={cat.categoryId}
+                onClick={() => setSelectedCategoryId(cat.categoryId)}
+                className={`whitespace-nowrap px-8 py-2.5 rounded-xl text-sm font-bold transition-colors border ${
+                  selectedCategoryId === cat.categoryId 
+                    ? 'bg-[#0f8e4c] text-white border-[#0f8e4c] shadow-sm' 
+                    : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Grid */}
+      <div className="flex-1 flex flex-col overflow-hidden bg-gray-50/50">
+        <div className="flex-1 p-5 overflow-y-auto custom-scrollbar">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <Spinner size={40} />
+            </div>
+          ) : products.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400">
+              <Package size={64} className="text-gray-300 mb-4" />
+              <p className="text-xl font-semibold">لا توجد منتجات</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 h-full content-start">
+              {products.map(product => {
+                const hasStock = product.totalQuantity > 0;
+                const isLowStock = product.isLowStock;
+                
+                let statusLabel = 'متوفر';
+                let statusClass = 'bg-[#e6f4ed] text-[#0f8e4c]'; // Light green bg, dark green text
+                if (!hasStock) {
+                  statusLabel = 'نفد المخزون';
+                  statusClass = 'bg-[#fce8e6] text-[#c5221f]'; // Light red bg, dark red text
+                } else if (isLowStock) {
+                  statusLabel = 'مخزون منخفض';
+                  statusClass = 'bg-[#fef7e0] text-[#ea8600]'; // Light orange bg, dark orange text
+                }
+
+                const imageSrc = product.imageUrl ? (product.imageUrl.startsWith('http') ? product.imageUrl : `http://localhost:5033${product.imageUrl}`) : null;
+
+                return (
+                  <div
+                    key={product.productId}
+                    className="bg-white rounded-2xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all overflow-hidden flex flex-col p-3 relative"
+                  >
+                    <span className={`absolute top-3 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-md ${statusClass}`}>
+                      {statusLabel}
+                    </span>
+
+                    <div className="h-32 flex items-center justify-center mb-2 mt-2">
+                      {imageSrc ? (
+                        <img src={imageSrc} alt={product.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
+                      ) : (
+                        <Package size={48} className="text-gray-200" />
+                      )}
+                    </div>
+                    
+                    <div className="flex flex-col flex-1 items-center text-center">
+                      <h3 className="font-bold text-gray-900 text-sm mb-1 line-clamp-1 leading-snug">
+                        {product.name}
+                      </h3>
+                      
+                      <p className="text-[11px] text-gray-400 line-clamp-1 mb-2">
+                        {product.properties && Object.keys(product.properties).length > 0 
+                          ? Object.values(product.properties).join(' - ') 
+                          : product.category.name}
+                      </p>
+                      
+                      <div className="mt-auto mb-3 font-bold text-[12px] text-[#0f8e4c]">
+                        المخزون: {product.totalQuantity}
+                      </div>
+
+                      <button
+                        onClick={() => hasStock && onProductClick(product)}
+                        disabled={!hasStock}
+                        className={`w-full py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all ${
+                          hasStock 
+                            ? 'bg-[#0f8e4c] hover:bg-[#0c7a40] text-white shadow-sm' 
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        }`}
+                      >
+                        <ShoppingCart size={14} />
+                        إضافة
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="border-t border-gray-100 p-4 bg-white flex items-center justify-center gap-4">
+            <button
+              disabled={pageNumber === 1}
+              onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
+              className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+            <span className="font-semibold text-gray-700 text-sm">
+              صفحة {pageNumber} من {totalPages}
+            </span>
+            <button
+              disabled={pageNumber === totalPages}
+              onClick={() => setPageNumber(Math.min(totalPages, pageNumber + 1))}
+              className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/sales/hooks/usePosCart.ts
+````typescript
+import { useCallback, useState } from 'react';
+import {
+  CartItem,
+  addOrIncrementCartItem,
+  cartTotal,
+  removeCartItem,
+  updateCartQuantity,
+} from '../utils/cartLogic';
+
+export function usePosCart() {
+  const [items, setItems] = useState<CartItem[]>([]);
+
+  const addItem = useCallback((item: CartItem) => {
+    setItems((prev) => addOrIncrementCartItem(prev, item));
+  }, []);
+
+  const updateQuantity = useCallback((id: string, delta: number) => {
+    setItems((prev) => updateCartQuantity(prev, id, delta));
+  }, []);
+
+  const removeItem = useCallback((id: string) => {
+    setItems((prev) => removeCartItem(prev, id));
+  }, []);
+
+  const clear = useCallback(() => setItems([]), []);
+
+  return {
+    items,
+    addItem,
+    updateQuantity,
+    removeItem,
+    clear,
+    totalAmount: cartTotal(items),
+  };
+}
+````
+
+## File: src/features/sales/hooks/useSales.ts
+````typescript
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { salesRepository } from "../api/salesApi";
+import { CreateSalesInvoiceRequest, CreateSalesReturnRequest } from "../schemas/salesSchemas";
+import { toast } from "sonner";
+import { getApiErrorMessage } from "@/shared/utils/apiError";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export const SALES_KEYS = {
+  invoices: (filters: BaseFilters) => ["sales-invoices", filters] as const,
+  invoiceDetails: (id: string) => ["sales-invoices", id] as const,
+};
+
+export function useCreateSalesInvoice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateSalesInvoiceRequest) => salesRepository.createInvoice(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sales-invoices"] });
+      toast.success("تم إنشاء فاتورة المبيعات بنجاح");
+    },
+    onError: (error: unknown) => {
+      toast.error(getApiErrorMessage(error, "حدث خطأ أثناء إنشاء الفاتورة"));
+    }
+  });
+}
+
+export function useSalesInvoices(filters: { pageNumber: number; pageSize: number; searchValue?: string }) {
+  return useQuery({
+    queryKey: SALES_KEYS.invoices(filters),
+    queryFn: () => salesRepository.getInvoices(filters),
+  });
+}
+
+export function useSalesInvoiceDetails(id: string) {
+  return useQuery({
+    queryKey: SALES_KEYS.invoiceDetails(id),
+    queryFn: () => salesRepository.getInvoice(id),
+    enabled: !!id,
+  });
+}
+
+export function useCreateSalesReturn() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateSalesReturnRequest) => salesRepository.createReturn(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sales-returns"] });
+      toast.success("تم حفظ المرتجع بنجاح");
+    },
+    onError: (error: unknown) => {
+      toast.error(getApiErrorMessage(error, "حدث خطأ أثناء حفظ المرتجع"));
+    }
+  });
+}
+
+export function useSalesReturns(filters: { pageNumber: number; pageSize: number; searchValue?: string }) {
+  return useQuery({
+    queryKey: ["sales-returns", filters],
+    queryFn: () => salesRepository.getReturns(filters),
+  });
+}
+
+export function useSalesReturnDetails(id: string) {
+  return useQuery({
+    queryKey: ["sales-returns", id],
+    queryFn: () => salesRepository.getReturn(id),
+    enabled: !!id,
+  });
+}
+````
+
+## File: src/features/sales/pages/NewSalesReturnPage.tsx
+````typescript
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSalesInvoiceDetails, useCreateSalesReturn } from '../hooks/useSales';
+import { ReturnReason } from '../schemas/salesSchemas';
+import { formatCurrency } from '@/shared/utils/currency';
+import { Search, AlertCircle, Save } from 'lucide-react';
+import { toast } from 'sonner';
+
+export const NewSalesReturnPage = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialInvoiceId = searchParams.get('invoiceId') || '';
+
+  const [invoiceId, setInvoiceId] = useState(initialInvoiceId);
+  const [searchId, setSearchId] = useState(initialInvoiceId);
+  
+  const { data: invoice, isLoading, error: fetchError } = useSalesInvoiceDetails(searchId);
+  const createReturn = useCreateSalesReturn();
+
+  const [returnItems, setReturnItems] = useState<{ id: string; returnQty: number }[]>([]);
+  const [reason, setReason] = useState<ReturnReason>(ReturnReason.CustomerChangedMind);
+  const [isCashRefund, setIsCashRefund] = useState(false);
+  const [notes, setNotes] = useState('');
+
+  const handleSearch = () => {
+    if (invoiceId.trim()) {
+      setSearchId(invoiceId.trim());
+      setReturnItems([]); // reset
+    }
+  };
+
+  const handleReturnQtyChange = (itemId: string, maxQty: number, qty: number) => {
+    if (qty < 0) qty = 0;
+    if (qty > maxQty) qty = maxQty;
+    
+    setReturnItems(prev => {
+      const existing = prev.find(i => i.id === itemId);
+      if (existing) {
+        return prev.map(i => i.id === itemId ? { ...i, returnQty: qty } : i);
+      }
+      return [...prev, { id: itemId, returnQty: qty }];
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (!invoice) return;
+
+    const itemsToReturn = returnItems
+      .filter(i => i.returnQty > 0)
+      .map(i => {
+        const originalItem = invoice.items.find(invItem => invItem.id === i.id);
+        return {
+          productId: originalItem!.productId,
+          batchId: originalItem!.batchId,
+          quantity: i.returnQty,
+          unitPrice: originalItem!.unitPrice
+        };
+      });
+
+    if (itemsToReturn.length === 0) {
+      toast.error('يجب تحديد كمية لمنتج واحد على الأقل للإرجاع');
+      return;
+    }
+
+    try {
+      await createReturn.mutateAsync({
+        invoiceId: invoice.id,
+        reason,
+        notes,
+        isCashRefund,
+        items: itemsToReturn
+      });
+      navigate('/sales/returns');
+    } catch (err) {
+      // error handled in mutation
+    }
+  };
+
+  return (
+    <div className="space-y-6 w-full max-w-4xl mx-auto">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900">إضافة مرتجع مبيعات جديد</h1>
+      </div>
+
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-6">
+        <div className="flex gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="أدخل رقم الفاتورة للبحث..."
+              value={invoiceId}
+              onChange={(e) => setInvoiceId(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              className="w-full pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            />
+          </div>
+          <button 
+            onClick={handleSearch}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            بحث
+          </button>
+        </div>
+
+        {isLoading && <div className="text-center py-4">جاري البحث...</div>}
+        {fetchError && <div className="text-red-500 text-center py-4 flex items-center justify-center gap-2"><AlertCircle size={20} /> الفاتورة غير موجودة</div>}
+
+        {invoice && (
+          <div className="space-y-6 mt-6 border-t pt-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
+              <div>
+                <p className="text-sm text-gray-500">رقم الفاتورة</p>
+                <p className="font-semibold">{invoice.invoiceNumber}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">العميل</p>
+                <p className="font-semibold">{invoice.customer?.name || 'نقدي'}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">الإجمالي</p>
+                <p className="font-semibold text-blue-600">{formatCurrency(invoice.totalAmount)}</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4">المنتجات</h3>
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <table className="w-full text-sm text-right">
+                  <thead className="bg-gray-50 text-gray-700">
+                    <tr>
+                      <th className="px-4 py-3">المنتج</th>
+                      <th className="px-4 py-3">السعر</th>
+                      <th className="px-4 py-3">الكمية المباعة</th>
+                      <th className="px-4 py-3">كمية الإرجاع</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {invoice.items.map(item => {
+                      const currentQty = returnItems.find(i => i.id === item.id)?.returnQty || 0;
+                      const maxAllowed = item.quantity - (item.returnedQuantity || 0);
+
+                      return (
+                        <tr key={item.id}>
+                          <td className="px-4 py-3 font-medium">{item.productName || item.productId}</td>
+                          <td className="px-4 py-3">{formatCurrency(item.unitPrice)}</td>
+                          <td className="px-4 py-3">
+                            {item.quantity}
+                            {item.returnedQuantity > 0 && (
+                              <span className="text-xs text-red-500 mr-2 block">(تم إرجاع {item.returnedQuantity} مسبقاً)</span>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 w-48">
+                            <input 
+                              type="number"
+                              min="0"
+                              max={maxAllowed}
+                              disabled={maxAllowed === 0}
+                              value={currentQty}
+                              onChange={(e) => handleReturnQtyChange(item.id, maxAllowed, parseInt(e.target.value) || 0)}
+                              className="w-full px-3 py-1 border border-gray-300 rounded text-center disabled:bg-gray-100"
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">سبب الإرجاع</label>
+                <select 
+                  value={reason} 
+                  onChange={(e) => setReason(Number(e.target.value))}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                >
+                  <option value={ReturnReason.CustomerChangedMind}>تغيير رأي العميل</option>
+                  <option value={ReturnReason.Defective}>تالف / عيب صناعة</option>
+                  <option value={ReturnReason.WrongItem}>منتج خطأ</option>
+                  <option value={ReturnReason.Other}>أخرى</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">طريقة الاسترداد</label>
+                <select 
+                  value={isCashRefund ? 'cash' : 'debt'} 
+                  onChange={(e) => setIsCashRefund(e.target.value === 'cash')}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                >
+                  <option value="debt">خصم من المديونية</option>
+                  <option value="cash">نقدي (كاش)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">ملاحظات</label>
+                <input 
+                  type="text" 
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="ملاحظات إضافية..."
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4 border-t">
+              <button 
+                onClick={handleSubmit}
+                disabled={createReturn.isPending}
+                className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              >
+                <Save size={20} />
+                <span>حفظ المرتجع</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+````
+
 ## File: src/features/sales/pages/PosPage.tsx
 ````typescript
+import { useState, useEffect } from 'react';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useProducts } from '@/features/inventory/hooks/useInventory';
+import { ProductResponse, ProductBatchResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { PosProductGrid } from '../components/PosProductGrid';
+import { PosCart } from '../components/PosCart';
+import { BatchSelectionModal } from '../components/BatchSelectionModal';
+import { CheckoutModal } from '../components/CheckoutModal';
+import { useCreateSalesInvoice } from '../hooks/useSales';
+import { usePosCart } from '../hooks/usePosCart';
+import { SaleType, PaymentMethod } from '../schemas/salesSchemas';
+
 export function PosPage() {
+  const { setTitle, setBackButton } = useHeaderStore();
+  const cart = usePosCart();
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const [selectedProduct, setSelectedProduct] = useState<ProductResponse | null>(null);
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
+  const [checkoutMethod, setCheckoutMethod] = useState<PaymentMethod | null>(null);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+
+  const { data: productsData, isLoading: isLoadingProducts } = useProducts({
+    pageNumber: pageNumber,
+    pageSize: 8,
+    searchValue: searchTerm || undefined,
+    categoryId: selectedCategoryId || undefined,
+    departmentId: selectedDepartmentId || undefined,
+  });
+
+  const createInvoiceMutation = useCreateSalesInvoice();
+
+  useEffect(() => {
+    setPageNumber(1);
+  }, [searchTerm, selectedDepartmentId, selectedCategoryId]);
+
+  useEffect(() => {
+    setTitle('نقطة البيع (POS)');
+    setBackButton(false);
+  }, [setTitle, setBackButton]);
+
+  const handleProductClick = (product: ProductResponse) => {
+    setSelectedProduct(product);
+    setIsBatchModalOpen(true);
+  };
+
+  const handleSelectBatch = (batch: ProductBatchResponse, selectedPrice: number) => {
+    if (!selectedProduct) return;
+
+    cart.addItem({
+      id: `${selectedProduct.productId}_${batch.batchId}_${selectedPrice}`,
+      productId: selectedProduct.productId,
+      productName: selectedProduct.name || 'منتج غير معروف',
+      batchId: batch.batchId,
+      batchName: batch.supplierName || 'شركة غير معروفة',
+      imageUrl: selectedProduct.imageUrl,
+      properties: selectedProduct.properties,
+      price: selectedPrice,
+      quantity: 1,
+      maxQuantity: batch.availableQuantity,
+    });
+
+    setIsBatchModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleCheckoutClick = (method: PaymentMethod) => {
+    setCheckoutMethod(method);
+    setIsCheckoutModalOpen(true);
+  };
+
+  const handleConfirmCheckout = (customerName: string, customerPhone: string, paidAmount: number) => {
+    if (!checkoutMethod) return;
+
+    createInvoiceMutation.mutate({
+      customerName: customerName.trim() || undefined,
+      customerPhone: customerPhone.trim() || undefined,
+      saleType: SaleType.Retail,
+      paymentMethod: checkoutMethod,
+      paidAmount: paidAmount,
+      items: cart.items.map((item) => ({
+        productId: item.productId,
+        batchId: item.batchId,
+        quantity: item.quantity,
+        sellingPrice: item.price,
+      })),
+    }, {
+      onSuccess: () => {
+        cart.clear();
+        setIsCheckoutModalOpen(false);
+        setCheckoutMethod(null);
+      },
+    });
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">PosPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="-m-6 w-[calc(100%+3rem)] h-[calc(100vh-theme(spacing.16))] bg-gray-50 overflow-hidden flex">
+      <div className="flex-1 overflow-hidden relative">
+        <PosProductGrid
+          products={productsData?.items || []}
+          isLoading={isLoadingProducts}
+          onProductClick={handleProductClick}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedDepartmentId={selectedDepartmentId}
+          setSelectedDepartmentId={setSelectedDepartmentId}
+          selectedCategoryId={selectedCategoryId}
+          setSelectedCategoryId={setSelectedCategoryId}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+          totalPages={productsData?.totalPages || 1}
+        />
+      </div>
+
+      <div className="w-[380px] shrink-0 h-full border-r border-gray-200">
+        <PosCart
+          items={cart.items}
+          onUpdateQuantity={cart.updateQuantity}
+          onRemoveItem={cart.removeItem}
+          onClearCart={cart.clear}
+          onCheckout={handleCheckoutClick}
+        />
+      </div>
+
+      <BatchSelectionModal
+        isOpen={isBatchModalOpen}
+        onClose={() => setIsBatchModalOpen(false)}
+        product={selectedProduct}
+        onSelectBatch={handleSelectBatch}
+      />
+
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        totalAmount={cart.totalAmount}
+        paymentMethod={checkoutMethod}
+        onConfirm={handleConfirmCheckout}
+        isSubmitting={createInvoiceMutation.isPending}
+      />
     </div>
   );
 }
@@ -3024,13 +8492,1375 @@ export function PosPage() {
 
 ## File: src/features/sales/pages/SalesHistoryPage.tsx
 ````typescript
+import { useState, useEffect } from 'react';
+import { useSalesInvoices } from '../hooks/useSales';
+import { DataTable } from '@/shared/components/ui/DataTable';
+import { formatCurrency } from '@/shared/utils/currency';
+import { formatDate } from '@/shared/utils/date';
+import { Search, CornerUpLeft } from 'lucide-react';
+import { InvoiceDetailsModal } from '../components/InvoiceDetailsModal';
+import { SaleType, PaymentMethod, SalesInvoiceResponse } from '../schemas/salesSchemas';
+import { useNavigate } from 'react-router-dom';
+
 export function SalesHistoryPage() {
+  const [pageIndex, setPageIndex] = useState(1);
+  const pageSize = 10;
+  const [searchValue, setSearchValue] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  // Simple debounce for search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchValue);
+      setPageIndex(1);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchValue]);
+
+  const { data, isLoading } = useSalesInvoices({
+    pageNumber: pageIndex,
+    pageSize,
+    searchValue: debouncedSearch,
+  });
+
+  const columns = [
+    {
+      header: 'رقم الفاتورة',
+      cell: (row: SalesInvoiceResponse) => (
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded">
+            {row.invoiceNumber}
+          </span>
+          {row.hasReturns && (
+            <span className="px-2 py-1 text-[10px] font-bold bg-red-100 text-red-600 rounded-full" title="يوجد مرتجعات على هذه الفاتورة">
+              يوجد مرتجع
+            </span>
+          )}
+        </div>
+      ),
+    },
+    {
+      header: 'العميل',
+      cell: (row: SalesInvoiceResponse) => (
+        <div className="flex flex-col">
+          <span className="font-bold text-gray-800">{row.customer?.name || 'عميل نقدي (بدون اسم)'}</span>
+          {row.customer?.phone && <span className="text-xs text-gray-500">{row.customer.phone}</span>}
+        </div>
+      ),
+    },
+    {
+      header: 'تاريخ الفاتورة',
+      cell: (row: SalesInvoiceResponse) => formatDate(row.createdAt),
+    },
+    {
+      header: 'نوع الفاتورة',
+      cell: (row: SalesInvoiceResponse) => {
+        const isWholesale = row.saleType === SaleType.Wholesale;
+        return (
+          <span className={`px-2 py-1 rounded-full text-xs font-bold ${isWholesale ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}`}>
+            {isWholesale ? 'جملة' : 'قطاعي'}
+          </span>
+        );
+      },
+    },
+    {
+      header: 'طريقة الدفع',
+      cell: (row: SalesInvoiceResponse) => {
+        const isCash = row.paymentMethod === PaymentMethod.Cash;
+        return (
+          <span className={`px-2 py-1 rounded-full text-xs font-bold ${isCash ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`}>
+            {isCash ? 'كاش (نقدي)' : 'آجل (ذمة)'}
+          </span>
+        );
+      },
+    },
+    {
+      header: 'الإجمالي',
+      cell: (row: SalesInvoiceResponse) => (
+        <span className="font-bold text-gray-900" dir="ltr">{formatCurrency(row.totalAmount)}</span>
+      ),
+    },
+    {
+      header: 'الإجراءات',
+      cell: (row: SalesInvoiceResponse) => (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/sales/returns/new?invoiceId=${row.invoiceNumber}`);
+          }}
+          className="flex items-center gap-1 px-3 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition-colors font-medium text-sm border border-red-200"
+          title="إرجاع الفاتورة"
+        >
+          <CornerUpLeft size={16} />
+          <span>إرجاع</span>
+        </button>
+      ),
+    },
+  ];
+
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h1 className="text-2xl font-bold text-gray-800">SalesHistoryPage</h1>
-      <p className="text-gray-500 mt-2">هذه الصفحة قيد الإنشاء...</p>
+    <div className="space-y-6 animate-in fade-in duration-500">
+      
+      {/* Filters and Table */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        
+        {/* Search Bar */}
+        <div className="p-5 border-b border-gray-100 bg-gray-50 flex items-center gap-4">
+          <div className="relative w-full md:w-96">
+            <input
+              type="text"
+              placeholder="ابحث برقم الفاتورة أو اسم العميل..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-white"
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          </div>
+        </div>
+
+        {/* Data Table */}
+        <div className="p-5">
+          <DataTable
+            columns={columns}
+            data={data?.items || []}
+            isLoading={isLoading}
+            totalCount={data?.totalCount || 0}
+            pageSize={pageSize}
+            pageIndex={pageIndex}
+            totalPages={data?.totalPages || 1}
+            onNextPage={() => setPageIndex(p => Math.min(p + 1, data?.totalPages || 1))}
+            onPrevPage={() => setPageIndex(p => Math.max(p - 1, 1))}
+            onRowClick={(row) => setSelectedInvoiceId(row.id)}
+          />
+        </div>
+      </div>
+
+      {/* Invoice Details Modal */}
+      <InvoiceDetailsModal
+        isOpen={!!selectedInvoiceId}
+        onClose={() => setSelectedInvoiceId(null)}
+        invoiceId={selectedInvoiceId}
+      />
     </div>
   );
+}
+````
+
+## File: src/features/sales/pages/SalesReturnsPage.tsx
+````typescript
+import { useState } from 'react';
+import { useSalesReturns } from '../hooks/useSales';
+import { DataTable } from '@/shared/components/ui/DataTable';
+import { formatCurrency } from '@/shared/utils/currency';
+import { formatDate } from '@/shared/utils/date';
+import { ReturnReason, SalesReturnResponse } from '../schemas/salesSchemas';
+import { Search, Plus } from 'lucide-react';
+import { useDebounce } from '@/shared/hooks/useDebounce';
+import { useNavigate } from 'react-router-dom';
+
+const getReasonLabel = (reason: ReturnReason) => {
+  switch (reason) {
+    case ReturnReason.Defective: return 'تالف / عيب صناعة';
+    case ReturnReason.WrongItem: return 'منتج خطأ';
+    case ReturnReason.CustomerChangedMind: return 'تغيير رأي العميل';
+    case ReturnReason.Other: return 'أخرى';
+    default: return 'غير معروف';
+  }
+};
+
+export const SalesReturnsPage = () => {
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
+  const navigate = useNavigate();
+
+  const { data, isLoading } = useSalesReturns({
+    pageNumber: page,
+    pageSize: 10,
+    searchValue: debouncedSearch,
+    // date: dateFilter // If backend supports it, otherwise frontend filter or just pass it if backend can handle it. Wait, backend RequestFilters doesn't have Date out of the box unless we add it. 
+  });
+
+  const columns = [
+    {
+      header: 'تاريخ المرتجع',
+      cell: (row: SalesReturnResponse) => formatDate(row.returnDate),
+    },
+    {
+      header: 'رقم الفاتورة الأصلية',
+      cell: (row: SalesReturnResponse) => row.invoiceNumber || row.invoiceId?.substring(0, 8) || '-',
+    },
+    {
+      header: 'السبب',
+      cell: (row: SalesReturnResponse) => getReasonLabel(row.reason),
+    },
+    {
+      header: 'طريقة الاسترداد',
+      cell: (row: SalesReturnResponse) => (
+        <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.isCashRefund ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
+          {row.isCashRefund ? 'نقدي (كاش)' : 'خصم من المديونية'}
+        </span>
+      ),
+    },
+    {
+      header: 'إجمالي المرتجع',
+      cell: (row: SalesReturnResponse) => (
+        <span className="font-bold text-red-600">
+          {formatCurrency(row.totalReturnedAmount)}
+        </span>
+      ),
+    }
+  ];
+
+  // Client side date filtering if backend doesn't support it directly in RequestFilters
+  const filteredData = data?.items?.filter((item) => {
+    if (!dateFilter) return true;
+    return item.returnDate.startsWith(dateFilter);
+  }) || [];
+
+  return (
+    <div className="space-y-6 w-full">
+      <div className="flex justify-end items-center">
+        <button
+          onClick={() => navigate('/sales/returns/new')}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Plus size={20} />
+          <span>إضافة مرتجع جديد</span>
+        </button>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="flex gap-4 mb-6">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="البحث برقم الفاتورة..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            />
+          </div>
+          <div className="w-48">
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        <DataTable
+          data={filteredData}
+          columns={columns}
+          isLoading={isLoading}
+          pageIndex={page}
+          pageSize={10}
+          totalCount={data?.totalCount || 0}
+          totalPages={data?.totalPages || 1}
+          onNextPage={() => setPage(p => Math.min(p + 1, data?.totalPages || 1))}
+          onPrevPage={() => setPage(p => Math.max(p - 1, 1))}
+        />
+      </div>
+    </div>
+  );
+};
+````
+
+## File: src/features/sales/schemas/salesSchemas.ts
+````typescript
+export enum SaleType {
+  Wholesale = 1,
+  Retail = 2,
+}
+
+export enum PaymentMethod {
+  Cash = 1,
+  Deferred = 2, // Credit/آجل
+}
+
+export interface CreateSalesInvoiceItemRequest {
+  productId: string;
+  batchId: string;
+  quantity: number;
+  sellingPrice: number;
+}
+
+export interface CreateSalesInvoiceRequest {
+  customerId?: string;
+  customerName?: string;
+  customerPhone?: string;
+  saleType: SaleType;
+  paymentMethod: PaymentMethod;
+  paidAmount: number;
+  notes?: string;
+  items: CreateSalesInvoiceItemRequest[];
+}
+
+export interface SalesInvoiceItemResponse {
+  id: string;
+  productId: string;
+  productName: string;
+  batchId: string;
+  quantity: number;
+  returnedQuantity: number;
+  unitPrice: number;
+  unitCost: number;
+  lineTotal: number;
+}
+
+export interface SalesInvoiceResponse {
+  id: string;
+  invoiceNumber: string;
+  customer?: {
+    id: string;
+    name: string;
+    phone: string;
+  };
+  saleType: SaleType;
+  paymentMethod: PaymentMethod;
+  totalAmount: number;
+  paidAmount: number;
+  remainingAmount: number;
+  notes?: string;
+  createdAt: string;
+  hasReturns: boolean;
+  items: SalesInvoiceItemResponse[];
+}
+
+export enum ReturnReason {
+  Defective = 1,
+  WrongItem = 2,
+  CustomerChangedMind = 3,
+  Other = 4
+}
+
+export interface ReturnItemRequest {
+  productId: string;
+  batchId: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface CreateSalesReturnRequest {
+  invoiceId: string;
+  reason: ReturnReason;
+  notes?: string;
+  isCashRefund: boolean;
+  items: ReturnItemRequest[];
+}
+
+export interface ReturnItemResponse {
+  id: string;
+  productId: string;
+  batchId: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface SalesReturnResponse {
+  id: string;
+  invoiceId: string;
+  invoiceNumber: string;
+  isFullInvoiceReturn: boolean;
+  reason: ReturnReason;
+  notes?: string;
+  isCashRefund: boolean;
+  totalReturnedAmount: number;
+  returnDate: string;
+  items: ReturnItemResponse[];
+}
+````
+
+## File: src/features/sales/utils/__tests__/cartLogic.test.ts
+````typescript
+import { CartItem, addOrIncrementCartItem, cartTotal, removeCartItem, updateCartQuantity } from '../cartLogic';
+
+function item(overrides: Partial<CartItem> = {}): CartItem {
+  return {
+    id: 'p1_b1_10',
+    productId: 'p1',
+    productName: 'آيفون',
+    batchId: 'b1',
+    batchName: 'مورد',
+    quantity: 1,
+    price: 10,
+    maxQuantity: 5,
+    ...overrides,
+  };
+}
+
+describe('cartLogic', () => {
+  it('adds a new line then increments the same line', () => {
+    const first = addOrIncrementCartItem([], item());
+    expect(first).toHaveLength(1);
+    expect(first[0].quantity).toBe(1);
+
+    const second = addOrIncrementCartItem(first, item());
+    expect(second).toHaveLength(1);
+    expect(second[0].quantity).toBe(2);
+  });
+
+  it('does not exceed maxQuantity', () => {
+    const full = [item({ quantity: 5, maxQuantity: 5 })];
+    const next = addOrIncrementCartItem(full, item({ maxQuantity: 5 }));
+    expect(next[0].quantity).toBe(5);
+  });
+
+  it('updates quantity and removes the line when it reaches zero', () => {
+    const items = [item({ quantity: 2 })];
+    expect(updateCartQuantity(items, 'p1_b1_10', 1)[0].quantity).toBe(3);
+    expect(updateCartQuantity(items, 'p1_b1_10', -2)).toHaveLength(0);
+  });
+
+  it('ignores increment past stock', () => {
+    const items = [item({ quantity: 5, maxQuantity: 5 })];
+    expect(updateCartQuantity(items, 'p1_b1_10', 1)[0].quantity).toBe(5);
+  });
+
+  it('removes a line and calculates the total', () => {
+    const items = [item({ quantity: 2, price: 50 }), item({ id: 'other', quantity: 1, price: 20 })];
+    expect(cartTotal(items)).toBe(120);
+    expect(removeCartItem(items, 'p1_b1_10')).toHaveLength(1);
+  });
+});
+````
+
+## File: src/features/sales/utils/__tests__/posUtils.test.ts
+````typescript
+import { formatProductSpecs, getStockStatus, resolveProductImageUrl } from '../posUtils';
+
+describe('posUtils', () => {
+  it('returns out of stock when quantity is zero or flagged', () => {
+    expect(getStockStatus(0, false, false, 5)).toBe('out');
+    expect(getStockStatus(3, true, false, 5)).toBe('out');
+  });
+
+  it('returns low stock from flag or min alert', () => {
+    expect(getStockStatus(4, false, true, 5)).toBe('low');
+    expect(getStockStatus(2, false, false, 5)).toBe('low');
+  });
+
+  it('returns in stock otherwise', () => {
+    expect(getStockStatus(10, false, false, 5)).toBe('in');
+  });
+
+  it('formats specs and skips empty values', () => {
+    expect(formatProductSpecs()).toBe('');
+    expect(formatProductSpecs({ color: 'أحمر', storage: '512', extra: '' })).toBe('أحمر - 512');
+  });
+
+  it('resolves relative image urls against the API base', () => {
+    expect(resolveProductImageUrl(undefined)).toBeUndefined();
+    expect(resolveProductImageUrl('https://cdn.example/p.png')).toBe('https://cdn.example/p.png');
+    expect(resolveProductImageUrl('/uploads/p.png')).toMatch(/\/uploads\/p\.png$/);
+  });
+});
+````
+
+## File: src/features/sales/utils/cartLogic.ts
+````typescript
+export interface CartItem {
+  id: string;
+  productId: string;
+  productName: string;
+  imageUrl?: string;
+  batchId: string;
+  batchName: string;
+  properties?: Record<string, string>;
+  quantity: number;
+  price: number;
+  maxQuantity: number;
+}
+
+export function addOrIncrementCartItem(items: CartItem[], incoming: CartItem): CartItem[] {
+  const existing = items.find((item) => item.id === incoming.id);
+  if (!existing) return [...items, incoming];
+  if (existing.quantity >= existing.maxQuantity) return items;
+  return items.map((item) =>
+    item.id === incoming.id ? { ...item, quantity: item.quantity + 1 } : item
+  );
+}
+
+export function updateCartQuantity(items: CartItem[], id: string, delta: number): CartItem[] {
+  return items.flatMap((item) => {
+    if (item.id !== id) return [item];
+    const nextQty = item.quantity + delta;
+    if (nextQty <= 0) return [];
+    if (nextQty > item.maxQuantity) return [item];
+    return [{ ...item, quantity: nextQty }];
+  });
+}
+
+export function removeCartItem(items: CartItem[], id: string): CartItem[] {
+  return items.filter((item) => item.id !== id);
+}
+
+export function cartTotal(items: CartItem[]): number {
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+````
+
+## File: src/features/sales/utils/posUtils.ts
+````typescript
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7073';
+
+export function resolveProductImageUrl(imageUrl?: string): string | undefined {
+  if (!imageUrl) return undefined;
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) return imageUrl;
+  const base = API_BASE_URL.replace(/\/$/, '');
+  return `${base}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
+}
+
+export function formatProductSpecs(properties?: Record<string, string>): string {
+  if (!properties) return '';
+  return Object.values(properties).filter(Boolean).join(' - ');
+}
+
+export type StockStatus = 'in' | 'low' | 'out';
+
+export function getStockStatus(
+  totalQuantity: number,
+  isOutOfStock: boolean,
+  isLowStock: boolean,
+  minQuantityAlert: number
+): StockStatus {
+  if (isOutOfStock || totalQuantity <= 0) return 'out';
+  if (isLowStock || totalQuantity <= minQuantityAlert) return 'low';
+  return 'in';
+}
+````
+
+## File: src/features/suppliers/api/SupplierApi.ts
+````typescript
+import { apiClient } from "@/lib/axios";
+import { PaginatedList } from "@/shared/types/pagination";
+import { SupplierResponse, CreateSupplierRequest, UpdateSupplierRequest, SupplierFilters, SupplierStatementItemResponse, SupplierBatchResponse } from "../schemas/supplierSchemas";
+
+export const supplierRepository = {
+  getSuppliers: async (filters: SupplierFilters): Promise<PaginatedList<SupplierResponse>> => {
+    const response = await apiClient.get<PaginatedList<SupplierResponse>>('/suppliers', { params: filters });
+    return response.data;
+  },
+  
+  getSupplier: async (id: string): Promise<SupplierResponse> => {
+    const response = await apiClient.get<SupplierResponse>(`/suppliers/${id}`);
+    return response.data;
+  },
+  
+  createSupplier: async (data: CreateSupplierRequest): Promise<SupplierResponse> => {
+    const response = await apiClient.post<SupplierResponse>('/suppliers', data);
+    return response.data;
+  },
+  
+  updateSupplier: async (id: string, data: UpdateSupplierRequest): Promise<SupplierResponse> => {
+    const response = await apiClient.put<SupplierResponse>(`/suppliers/${id}`, data);
+    return response.data;
+  },
+  
+  deleteSupplier: async (id: string): Promise<void> => {
+    await apiClient.delete(`/suppliers/${id}`);
+  },
+
+  getSupplierStatement: async (id: string, filters: SupplierFilters): Promise<SupplierStatementItemResponse[]> => {
+    const response = await apiClient.get<SupplierStatementItemResponse[]>(`/suppliers/${id}/statement`, { params: filters });
+    return response.data;
+  },
+
+  getSupplierBatches: async (id: string): Promise<SupplierBatchResponse[]> => {
+    const response = await apiClient.get<SupplierBatchResponse[]>(`/suppliers/${id}/batches`);
+    return response.data;
+  },
+};
+````
+
+## File: src/features/suppliers/components/SupplierFilters.tsx
+````typescript
+import { Search, Plus } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+
+interface SupplierFiltersProps {
+  searchTerm: string;
+  onSearchChange: (val: string) => void;
+  onAddClick: () => void;
+}
+
+export function SupplierFilters({
+  searchTerm,
+  onSearchChange,
+  onAddClick,
+}: SupplierFiltersProps) {
+  return (
+    <div className={`${tokens.card} p-4 flex flex-wrap gap-4 items-center justify-between bg-white shadow-sm`}>
+      {/* Left side: Search */}
+      <div className="flex items-center gap-3 flex-1 flex-wrap">
+        <div className="relative flex-1 min-w-[200px] max-w-[350px]">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+          <input
+            type="text"
+            placeholder="بحث بالاسم أو الهاتف..."
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-gray-50"
+          />
+        </div>
+      </div>
+
+      {/* Right side: Add Button */}
+      <button onClick={onAddClick} className={tokens.btn.primary + " flex items-center gap-2 whitespace-nowrap"}>
+        <Plus size={16} />
+        إضافة مورد جديد
+      </button>
+    </div>
+  );
+}
+````
+
+## File: src/features/suppliers/components/SupplierForm.tsx
+````typescript
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { tokens } from '@/shared/styles/tokens';
+import { SupplierResponse, createSupplierSchema } from '../schemas/supplierSchemas';
+import { useEffect } from 'react';
+
+type SupplierFormValues = z.infer<typeof createSupplierSchema>;
+
+interface SupplierFormProps {
+  initialData?: SupplierResponse;
+  onSubmit: (data: SupplierFormValues) => void;
+  isSubmitting?: boolean;
+}
+
+export function SupplierForm({ initialData, onSubmit }: SupplierFormProps) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SupplierFormValues>({
+    resolver: zodResolver(createSupplierSchema),
+    defaultValues: {
+      name: initialData?.name || '',
+      type: initialData?.type || '',
+      phone: initialData?.phone || '',
+      address: initialData?.address || '',
+    },
+  });
+
+  // Reset form when initialData changes
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.name,
+        type: initialData.type || '',
+        phone: initialData.phone || '',
+        address: initialData.address || '',
+      });
+    } else {
+      reset({
+        name: '',
+        type: '',
+        phone: '',
+        address: '',
+      });
+    }
+  }, [initialData, reset]);
+
+  return (
+    <form id="supplier-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      
+      {/* Name */}
+      <div>
+        <label className={tokens.font.label + " mb-2 block"}>اسم المورد <span className="text-red-500">*</span></label>
+        <input
+          {...register('name')}
+          type="text"
+          placeholder="مثال: شركة سامسونج"
+          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+        />
+        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+      </div>
+
+      {/* Type */}
+      <div>
+        <label className={tokens.font.label + " mb-2 block"}>نوع التوريد</label>
+        <input
+          {...register('type')}
+          type="text"
+          placeholder="مثال: إلكترونيات، شاشات..."
+          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+        />
+        {errors.type && <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>}
+      </div>
+
+      {/* Phone */}
+      <div>
+        <label className={tokens.font.label + " mb-2 block"}>رقم الهاتف</label>
+        <input
+          {...register('phone')}
+          type="text"
+          dir="ltr"
+          placeholder="01xxxxxxxxx"
+          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-left"
+        />
+        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+      </div>
+
+      {/* Address */}
+      <div>
+        <label className={tokens.font.label + " mb-2 block"}>العنوان</label>
+        <textarea
+          {...register('address')}
+          placeholder="عنوان المورد بالتفصيل..."
+          rows={3}
+          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+        />
+        {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>}
+      </div>
+
+    </form>
+  );
+}
+````
+
+## File: src/features/suppliers/components/SupplierOverviewCard.tsx
+````typescript
+import { formatCurrency } from '@/shared/utils/currency';
+import { tokens } from '@/shared/styles/tokens';
+import { SupplierResponse } from '../schemas/supplierSchemas';
+import { Phone, MapPin, Tag } from 'lucide-react';
+
+interface SupplierOverviewCardProps {
+  supplier: SupplierResponse;
+}
+
+const translateType = (type?: string) => {
+  if (!type) return 'غير محدد';
+  const map: Record<string, string> = {
+    'Wholesale': 'جملة',
+    'Retail': 'تجزئة (قطاعي)',
+    'Distributor': 'موزع',
+    'Company': 'شركة',
+    'Individual': 'فرد (شخصي)',
+  };
+  return map[type] || type;
+};
+
+export function SupplierOverviewCard({ supplier }: SupplierOverviewCardProps) {
+  // فى حسابات الموردين: 
+  // إذا كان الرصيد بالسالب (دائن) يعني أن المورد له فلوس عندنا.
+  // إذا كان بالموجب (مدين) يعني أننا دافعين بزيادة أو المورد عليه فلوس لنا.
+  const isOwedByUs = supplier.debtBalance < 0; // المورد له فلوس
+  const isOwedToUs = supplier.debtBalance > 0; // نحن لنا فلوس
+
+  return (
+    <div className={`${tokens.card} p-6 bg-white flex flex-col md:flex-row gap-6 justify-between items-start`}>
+      <div className="space-y-4 flex-1">
+        <h2 className="text-2xl font-bold text-gray-900">{supplier.name}</h2>
+        
+        <div className="flex flex-col gap-3 mt-4">
+          <div className="flex items-center gap-2 text-gray-600">
+            <Tag size={18} className="text-gray-400" />
+            <span className="text-sm font-medium">النوع:</span>
+            <span className="text-sm font-bold text-gray-800">{translateType(supplier.type)}</span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-600">
+            <Phone size={18} className="text-gray-400" />
+            <span className="text-sm font-medium">الهاتف:</span>
+            <span className="text-sm font-bold text-gray-800 font-mono" dir="ltr">{supplier.phone || '---'}</span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-600">
+            <MapPin size={18} className="text-gray-400" />
+            <span className="text-sm font-medium">العنوان:</span>
+            <span className="text-sm font-bold text-gray-800">{supplier.address || '---'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 min-w-[250px]">
+        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex flex-col items-center justify-center text-center">
+          <span className="text-sm text-gray-500 font-medium mb-1">الرصيد الحالي للمورد</span>
+          <span className={`text-2xl font-bold ${isOwedByUs ? 'text-red-600' : isOwedToUs ? 'text-green-600' : 'text-gray-900'}`}>
+            {formatCurrency(Math.abs(supplier.debtBalance))}
+          </span>
+          <span className="text-xs text-gray-500 mt-1 font-medium">
+            {isOwedByUs ? '(مطلوب سداده للمورد)' : isOwedToUs ? '(دفعنا بزيادة - لنا عند المورد)' : '(الحساب خالص ومُصَفَّر)'}
+          </span>
+        </div>
+
+        <div className="flex gap-4">
+          <div className="flex-1 bg-blue-50/50 rounded-xl p-3 border border-blue-100 text-center">
+            <span className="text-xs text-gray-500 block mb-1">فواتير الشراء</span>
+            <span className="text-lg font-bold text-blue-700">{supplier.purchaseInvoicesCount}</span>
+          </div>
+          <div className="flex-1 bg-orange-50/50 rounded-xl p-3 border border-orange-100 text-center">
+            <span className="text-xs text-gray-500 block mb-1">المرتجعات</span>
+            <span className="text-lg font-bold text-orange-700">{supplier.returnsCount}</span>
+          </div>
+        </div>
+        
+        <div className="text-center mt-2">
+          <span className="text-xs text-gray-400">تاريخ الإضافة: {new Intl.DateTimeFormat('ar-EG').format(new Date(supplier.createdAt))}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/suppliers/components/SuppliersTable.tsx
+````typescript
+import { formatCurrency } from '@/shared/utils/currency';
+import { Trash2, Edit } from 'lucide-react';
+import { DataTable } from '@/shared/components/ui/DataTable';
+import { SupplierResponse } from '../schemas/supplierSchemas';
+import { PaginatedList } from '@/shared/types/pagination';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
+
+interface SuppliersTableProps {
+  data?: PaginatedList<SupplierResponse>;
+  isLoading: boolean;
+  pageIndex: number;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  onEdit?: (supplier: SupplierResponse) => void;
+  onDelete?: (supplier: SupplierResponse) => void;
+  onRowClick?: (supplier: SupplierResponse) => void;
+}
+
+export function SuppliersTable({
+  data,
+  isLoading,
+  pageIndex,
+  onNextPage,
+  onPrevPage,
+  onEdit,
+  onDelete,
+  onRowClick,
+}: SuppliersTableProps) {
+  const columns = [
+    {
+      header: 'اسم المورد',
+      cell: (row: SupplierResponse) => (
+        <span className="text-base font-bold text-gray-900">{row.name}</span>
+      ),
+    },
+    {
+      header: 'الهاتف',
+      cell: (row: SupplierResponse) => (
+        <span className="text-sm font-semibold text-gray-600 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-100" dir="ltr">
+          {row.phone || '---'}
+        </span>
+      ),
+    },
+    {
+      header: 'الرصيد المستحق',
+      cell: (row: SupplierResponse) => (
+        <span className={`text-base font-bold ${row.debtBalance > 0 ? 'text-red-600' : row.debtBalance < 0 ? 'text-green-600' : 'text-gray-900'}`}>
+          {formatCurrency(row.debtBalance)}
+        </span>
+      ),
+    },
+    {
+      header: 'عدد الفواتير',
+      cell: (row: SupplierResponse) => (
+        <span className="text-sm font-bold text-gray-800">{row.purchaseInvoicesCount}</span>
+      ),
+    },
+    {
+      header: 'عدد المرتجعات',
+      cell: (row: SupplierResponse) => (
+        <span className="text-sm font-bold text-gray-800">{row.returnsCount}</span>
+      ),
+    },
+    {
+      header: 'الإجراءات',
+      cell: (row: SupplierResponse) => (
+        <div className="flex justify-center gap-3 text-gray-400">
+          <HasPermission permission={Permissions.ContactsWrite}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.(row);
+              }}
+              className="hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-blue-50"
+              title="تعديل"
+              aria-label="تعديل المورد"
+            >
+              <Edit size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(row);
+              }}
+              className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
+              title="حذف"
+              aria-label="حذف المورد"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <DataTable
+      columns={columns}
+      data={data?.items || []}
+      isLoading={isLoading}
+      pageIndex={data?.pageNumber || pageIndex}
+      totalPages={data?.totalPages || 1}
+      totalCount={data?.totalCount || 0}
+      pageSize={10}
+      onNextPage={onNextPage}
+      onPrevPage={onPrevPage}
+      onRowClick={onRowClick}
+    />
+  );
+}
+````
+
+## File: src/features/suppliers/components/SupplierStatementCard.tsx
+````typescript
+import { formatCurrency } from '@/shared/utils/currency';
+import { tokens } from '@/shared/styles/tokens';
+import { SupplierStatementItemResponse } from '../schemas/supplierSchemas';
+
+interface SupplierStatementCardProps {
+  statement?: SupplierStatementItemResponse[];
+  isLoading: boolean;
+}
+
+const translateTxType = (type: string) => {
+  const map: Record<string, string> = {
+    'PurchaseInvoice': 'فاتورة مشتريات (استلام بضاعة)',
+    'InvoicePayment': 'سداد من فاتورة',
+    'Payment': 'دفعة نقدية (سند صرف للمورد)',
+    'Return': 'مرتجع مشتريات (إرجاع بضاعة)',
+    'OpeningBalance': 'رصيد افتتاحي',
+  };
+  return map[type] || type;
+};
+
+export function SupplierStatementCard({ statement, isLoading }: SupplierStatementCardProps) {
+  return (
+    <div className={`${tokens.card} bg-white overflow-hidden`}>
+      <div className="p-4 border-b border-gray-100">
+        <h3 className="text-lg font-bold text-gray-800">كشف الحساب (حركة المورد)</h3>
+      </div>
+      
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-right">
+          <thead className="bg-gray-50/50 text-gray-500 font-medium">
+            <tr>
+              <th className="px-4 py-3">تاريخ الحركة</th>
+              <th className="px-4 py-3">البيان (نوع الحركة)</th>
+              <th className="px-4 py-3">خُصم من حسابه (دفعنا له)</th>
+              <th className="px-4 py-3">أُضيف لحسابه (اشترينا منه)</th>
+              <th className="px-4 py-3">صافي الحساب (بعد الحركة)</th>
+              <th className="px-4 py-3">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 text-gray-700">
+            {isLoading ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                  جاري تحميل كشف الحساب...
+                </td>
+              </tr>
+            ) : statement && statement.length > 0 ? (
+              statement.map((item, idx) => (
+                <tr key={idx} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-4 py-3" dir="ltr">
+                    {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(item.date))}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">
+                      {translateTxType(item.transactionType)}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-bold text-red-600">
+                    {item.debit > 0 ? formatCurrency(item.debit) : '-'}
+                  </td>
+                  <td className="px-4 py-3 font-bold text-green-600">
+                    {item.credit > 0 ? formatCurrency(item.credit) : '-'}
+                  </td>
+                  <td className="px-4 py-3 font-bold" dir="ltr">
+                    {formatCurrency(item.balanceAfter)}
+                  </td>
+                  <td className="px-4 py-3 text-xs text-gray-500">{item.notes || '---'}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                  لا توجد حركات مسجلة لهذا المورد حتى الآن.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/suppliers/hooks/useSuppliers.ts
+````typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supplierRepository } from "../api/SupplierApi";
+import { SupplierFilters, CreateSupplierRequest, UpdateSupplierRequest } from "../schemas/supplierSchemas";
+import { toast } from "sonner";
+
+export const SUPPLIER_KEYS = {
+  suppliers: (filters: SupplierFilters) => ["suppliers", filters] as const,
+  supplierDetails: (id: string) => ["suppliers", id] as const,
+  supplierStatement: (id: string, filters: SupplierFilters) => ["suppliers", id, "statement", filters] as const,
+  supplierBatches: (id: string) => ["suppliers", id, "batches"] as const,
+};
+
+export function useSuppliers(filters: SupplierFilters) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.suppliers(filters),
+    queryFn: () => supplierRepository.getSuppliers(filters),
+  });
+}
+
+export function useSupplierDetails(id: string) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.supplierDetails(id),
+    queryFn: () => supplierRepository.getSupplier(id),
+    enabled: !!id,
+  });
+}
+
+export function useSupplierStatement(id: string, filters: SupplierFilters = { pageNumber: 1, pageSize: 100 }) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.supplierStatement(id, filters),
+    queryFn: () => supplierRepository.getSupplierStatement(id, filters),
+    enabled: !!id,
+  });
+}
+
+export function useSupplierBatches(id: string) {
+  return useQuery({
+    queryKey: SUPPLIER_KEYS.supplierBatches(id),
+    queryFn: () => supplierRepository.getSupplierBatches(id),
+    enabled: !!id,
+  });
+}
+
+export function useCreateSupplier() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateSupplierRequest) => supplierRepository.createSupplier(data),
+    onSuccess: () => {
+      toast.success("تم إضافة المورد بنجاح!");
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+    },
+    onError: () => toast.error("حدث خطأ أثناء إضافة المورد"),
+  });
+}
+
+export function useUpdateSupplier() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateSupplierRequest }) => 
+      supplierRepository.updateSupplier(id, data),
+    onSuccess: (_, { id }) => {
+      toast.success("تم تحديث بيانات المورد بنجاح!");
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+      queryClient.invalidateQueries({ queryKey: SUPPLIER_KEYS.supplierDetails(id) });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تحديث المورد"),
+  });
+}
+
+export function useDeleteSupplier() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => supplierRepository.deleteSupplier(id),
+    onSuccess: () => {
+      toast.success("تم حذف المورد بنجاح!");
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+    },
+    onError: () => toast.error("حدث خطأ أثناء حذف المورد، قد يكون مرتبطاً بفواتير"),
+  });
+}
+````
+
+## File: src/features/suppliers/pages/SupplierDetailsPage.tsx
+````typescript
+import { useParams } from 'react-router-dom';
+import { useSupplierDetails, useSupplierStatement } from '../hooks/useSuppliers';
+import { SupplierOverviewCard } from '../components/SupplierOverviewCard';
+import { SupplierStatementCard } from '../components/SupplierStatementCard';
+import { PageLoader } from '@/shared/components/ui/PageLoader';
+import { BackButton } from '@/shared/components/ui/BackButton';
+import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
+import { useEffect } from 'react';
+
+export function SupplierDetailsPage() {
+  const { id } = useParams<{ id: string }>();
+  const { setTitle, setBackButton } = useHeaderStore();
+
+  const { data: supplier, isLoading: isLoadingSupplier, isError } = useSupplierDetails(id!);
+  const { data: statement, isLoading: isLoadingStatement } = useSupplierStatement(id!);
+
+  useEffect(() => {
+    setTitle("تفاصيل المورد");
+    setBackButton(true, "/contacts/suppliers");
+  }, [setTitle, setBackButton]);
+
+  if (isLoadingSupplier) {
+    return <PageLoader />;
+  }
+
+  if (isError || !supplier) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <p className="text-gray-500">لم يتم العثور على المورد.</p>
+        <BackButton to="/contacts/suppliers" label="العودة للقائمة" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4 max-w-full overflow-hidden">
+
+
+      <div className="grid grid-cols-1 gap-4">
+        {/* Overview */}
+        <SupplierOverviewCard supplier={supplier} />
+
+        {/* Statement / Transactions */}
+        <SupplierStatementCard statement={statement} isLoading={isLoadingStatement} />
+      </div>
+    </div>
+  );
+}
+````
+
+## File: src/features/suppliers/pages/SuppliersPage.tsx
+````typescript
+import { useState } from 'react';
+import { useSuppliers, useCreateSupplier, useUpdateSupplier, useDeleteSupplier } from '../hooks/useSuppliers';
+import { SupplierResponse, CreateSupplierRequest } from '../schemas/supplierSchemas';
+import { SupplierFilters } from '../components/SupplierFilters';
+import { SuppliersTable } from '../components/SuppliersTable';
+import { SupplierForm } from '../components/SupplierForm';
+import { RightDrawer } from '@/shared/components/ui/RightDrawer';
+import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
+import { tokens } from '@/shared/styles/tokens';
+import * as z from 'zod';
+import { createSupplierSchema } from '../schemas/supplierSchemas';
+
+import { useNavigate } from 'react-router-dom';
+
+export function SuppliersPage() {
+  const navigate = useNavigate();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Drawer state
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [supplierToEdit, setSupplierToEdit] = useState<SupplierResponse | undefined>(undefined);
+
+  // Delete modal state
+  const [supplierToDelete, setSupplierToDelete] = useState<SupplierResponse | null>(null);
+
+  const { data, isLoading } = useSuppliers({
+    pageNumber: pageIndex,
+    pageSize: 10,
+    searchValue: searchTerm || undefined,
+  });
+
+  const createSupplier = useCreateSupplier();
+  const updateSupplier = useUpdateSupplier();
+  const deleteSupplier = useDeleteSupplier();
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setPageIndex(1);
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerOpen(false);
+    setSupplierToEdit(undefined);
+  };
+
+  const openAddDrawer = () => {
+    setSupplierToEdit(undefined);
+    setIsDrawerOpen(true);
+  };
+
+  const openEditDrawer = (supplier: SupplierResponse) => {
+    setSupplierToEdit(supplier);
+    setIsDrawerOpen(true);
+  };
+
+  const handleFormSubmit = (formData: z.infer<typeof createSupplierSchema>) => {
+    const payload: CreateSupplierRequest = {
+      name: formData.name,
+      type: formData.type || undefined,
+      phone: formData.phone || undefined,
+      address: formData.address || undefined,
+    };
+
+    if (supplierToEdit) {
+      updateSupplier.mutate(
+        { id: supplierToEdit.supplierId, data: payload },
+        { onSuccess: closeDrawer }
+      );
+    } else {
+      createSupplier.mutate(payload, { onSuccess: closeDrawer });
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    if (supplierToDelete) {
+      deleteSupplier.mutate(supplierToDelete.supplierId, {
+        onSuccess: () => setSupplierToDelete(null),
+      });
+    }
+  };
+
+  const isSubmitting = createSupplier.isPending || updateSupplier.isPending;
+
+  const drawerFooter = (
+    <>
+      <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
+        إلغاء
+      </button>
+      <button
+        type="submit"
+        form="supplier-form"
+        disabled={isSubmitting}
+        className={tokens.btn.primary + " disabled:opacity-60"}
+      >
+        {isSubmitting ? 'جاري الحفظ...' : (supplierToEdit ? 'حفظ التعديلات' : 'إضافة المورد')}
+      </button>
+    </>
+  );
+
+  return (
+    <div className="space-y-4">
+      {/* Filter toolbar */}
+      <SupplierFilters
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        onAddClick={openAddDrawer}
+      />
+
+      {/* Data table */}
+      <SuppliersTable
+        data={data}
+        isLoading={isLoading}
+        pageIndex={pageIndex}
+        onNextPage={() => setPageIndex((p) => p + 1)}
+        onPrevPage={() => setPageIndex((p) => p - 1)}
+        onEdit={openEditDrawer}
+        onDelete={(supplier) => setSupplierToDelete(supplier)}
+        onRowClick={(supplier) => navigate(`/contacts/suppliers/${supplier.supplierId}`)}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={!!supplierToDelete}
+        title="تأكيد حذف المورد"
+        message={
+          supplierToDelete
+            ? `هل أنت متأكد من حذف المورد "${supplierToDelete.name}" نهائياً؟ لا يمكن التراجع عن هذه الخطوة وقد يؤثر على فواتير المشتريات المرتبطة به.`
+            : ''
+        }
+        confirmText={deleteSupplier.isPending ? 'جاري الحذف...' : 'نعم، احذف'}
+        cancelText="إلغاء"
+        onConfirm={handleDeleteConfirm}
+        onClose={() => setSupplierToDelete(null)}
+        type="danger"
+      />
+
+      {/* Add/Edit Drawer */}
+      <RightDrawer
+        isOpen={isDrawerOpen}
+        onClose={closeDrawer}
+        title={supplierToEdit ? "تعديل بيانات المورد" : "إضافة مورد جديد"}
+        footer={drawerFooter}
+      >
+        <SupplierForm
+          initialData={supplierToEdit}
+          onSubmit={handleFormSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </RightDrawer>
+    </div>
+  );
+}
+````
+
+## File: src/features/suppliers/schemas/supplierSchemas.ts
+````typescript
+import { z } from "zod";
+import { BaseFilters } from "@/shared/types/pagination";
+
+export interface SupplierFilters extends BaseFilters {
+  searchValue?: string;
+}
+
+export interface SupplierResponse {
+  supplierId: string;
+  name: string;
+  type?: string;
+  phone?: string;
+  address?: string;
+  debtBalance: number;
+  purchaseInvoicesCount: number;
+  returnsCount: number;
+  createdAt: string;
+}
+
+export interface SupplierStatementItemResponse {
+  date: string;
+  transactionType: string;
+  transactionId: string;
+  debit: number;
+  credit: number;
+  balanceAfter: number;
+  notes?: string;
+}
+
+export const createSupplierSchema = z.object({
+  name: z.string().min(1, "اسم المورد مطلوب"),
+  type: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+});
+
+export type CreateSupplierRequest = z.infer<typeof createSupplierSchema>;
+export type UpdateSupplierRequest = CreateSupplierRequest;
+
+export interface SupplierBatchResponse {
+  batchId: string;
+  productId: string;
+  productName?: string;
+  barcode?: string;
+  availableQuantity: number;
+  purchasePrice: number;
+  dateReceived: string;
 }
 ````
 
@@ -3154,6 +9984,12 @@ export const storage = {
   getToken: () => localStorage.getItem('token'),
   setToken: (token: string) => localStorage.setItem('token', token),
   clearToken: () => localStorage.removeItem('token'),
+  getPermissions: (): string[] => {
+    const perms = localStorage.getItem('permissions');
+    return perms ? JSON.parse(perms) : [];
+  },
+  setPermissions: (permissions: string[]) => localStorage.setItem('permissions', JSON.stringify(permissions)),
+  clearPermissions: () => localStorage.removeItem('permissions'),
 };
 ````
 
@@ -3332,9 +10168,14 @@ export class GlobalErrorBoundary extends Component<Props, State> {
 ````typescript
 import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
+import { useHeaderStore } from "../../hooks/useHeaderStore";
+import { useSidebarStore } from "../../hooks/useSidebarStore";
+import { BackButton } from "../ui/BackButton";
+import { useEffect } from "react";
+import { Menu } from "lucide-react";
 
-// Map routes to page titles
-const pageTitles: Record<string, string> = {
+// Map routes to default page titles
+const defaultPageTitles: Record<string, string> = {
   "/": "لوحة القيادة",
   "/sales/pos": "نقطة البيع (POS)",
   "/sales/history": "سجل المبيعات",
@@ -3342,8 +10183,8 @@ const pageTitles: Record<string, string> = {
   "/purchases/new": "فاتورة مشتريات جديدة",
   "/purchases/history": "سجل المشتريات",
   "/purchases/returns": "مرتجعات الموردين",
-  "/inventory/products": "إدارة المنتجات",
-  "/inventory/categories": "إدارة الأقسام",
+  "/inventory/products": "المنتجات",
+  "/inventory/categories": "الأقسام",
   "/contacts/customers": "العملاء",
   "/contacts/suppliers": "الموردين",
   "/finance/drawer": "الدرج والوردية",
@@ -3354,7 +10195,17 @@ const pageTitles: Record<string, string> = {
 
 export function AppLayout() {
   const location = useLocation();
-  const pageTitle = pageTitles[location.pathname] || "سنترالي";
+  const { title, backPath, setTitle, setBackButton } = useHeaderStore();
+  const { isOpen, toggle } = useSidebarStore();
+
+  // Set default title based on route if available, and reset back button
+  useEffect(() => {
+    const defaultTitle = defaultPageTitles[location.pathname];
+    if (defaultTitle) {
+      setTitle(defaultTitle);
+      setBackButton(false);
+    }
+  }, [location.pathname, setTitle, setBackButton]);
 
   return (
     <div className="flex h-screen bg-gray-50 font-sans" dir="rtl">
@@ -3362,11 +10213,20 @@ export function AppLayout() {
       <Sidebar />
 
       {/* Main Content — offset by sidebar width */}
-      <div className="flex-1 flex flex-col min-h-screen mr-64">
+      <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${isOpen ? 'mr-64' : 'mr-20'}`}>
 
         {/* Page Header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-10">
-          <h1 className="text-xl font-bold text-gray-800">{pageTitle}</h1>
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-10 transition-all duration-300">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={toggle}
+              className="p-2 -mr-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <Menu size={20} />
+            </button>
+            <BackButton to={backPath} />
+            <h1 className="text-xl font-bold text-gray-800">{title}</h1>
+          </div>
 
           <div className="flex items-center gap-4">
             <button className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
@@ -3447,6 +10307,35 @@ export function Header() {
 }
 ````
 
+## File: src/shared/components/layout/ProtectedRoute.tsx
+````typescript
+import { Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  requiredPermissions?: string[];
+}
+
+export function ProtectedRoute({ children, requiredPermissions }: ProtectedRouteProps) {
+  const { isAuthenticated, hasPermission } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (requiredPermissions && requiredPermissions.length > 0) {
+    const hasAnyRequired = requiredPermissions.some(perm => hasPermission(perm));
+    if (!hasAnyRequired) {
+      // User is logged in but doesn't have the required permission
+      return <Navigate to="/unauthorized" replace />;
+    }
+  }
+
+  return <>{children}</>;
+}
+````
+
 ## File: src/shared/components/layout/Sidebar.tsx
 ````typescript
 import { Link, useLocation } from "react-router-dom";
@@ -3456,8 +10345,10 @@ import {
   LogOut, MonitorSmartphone
 } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Permissions } from "@/features/auth/schemas/permissions";
+import { useSidebarStore } from "../../hooks/useSidebarStore";
 
-const menuGroups = [
+const menuGroups: { title: string, permission?: string, items: { name: string, path: string, icon: any, permission?: string }[] }[] = [
   {
     title: "الرئيسية",
     items: [
@@ -3466,116 +10357,145 @@ const menuGroups = [
   },
   {
     title: "المبيعات",
+    permission: Permissions.SalesRead,
     items: [
-      { name: "نقطة البيع (POS)", path: "/sales/pos", icon: MonitorSmartphone },
-      { name: "سجل المبيعات", path: "/sales/history", icon: ShoppingCart },
-      { name: "المرتجعات", path: "/sales/returns", icon: ShoppingCart },
+      { name: "نقطة البيع (POS)", path: "/sales/pos", icon: MonitorSmartphone, permission: Permissions.SalesWrite },
+      { name: "سجل المبيعات", path: "/sales/history", icon: ShoppingCart, permission: Permissions.SalesRead },
+      { name: "المرتجعات", path: "/sales/returns", icon: ShoppingCart, permission: Permissions.SalesRead },
     ]
   },
   {
     title: "المشتريات",
+    permission: Permissions.PurchasesRead,
     items: [
-      { name: "فاتورة مشتريات", path: "/purchases/new", icon: ShoppingBag },
-      { name: "سجل المشتريات", path: "/purchases/history", icon: ShoppingBag },
-      { name: "مرتجعات الموردين", path: "/purchases/returns", icon: ShoppingBag },
+      { name: "فاتورة مشتريات", path: "/purchases/new", icon: ShoppingBag, permission: Permissions.PurchasesWrite },
+      { name: "سجل المشتريات", path: "/purchases/history", icon: ShoppingBag, permission: Permissions.PurchasesRead },
+      { name: "مرتجعات الموردين", path: "/purchases/returns", icon: ShoppingBag, permission: Permissions.PurchasesRead },
     ]
   },
   {
     title: "المخزون",
+    permission: Permissions.InventoryRead,
     items: [
-      { name: "المنتجات", path: "/inventory/products", icon: Package },
-      { name: "الأقسام", path: "/inventory/categories", icon: Package },
+      { name: "المنتجات", path: "/inventory/products", icon: Package, permission: Permissions.InventoryRead },
+      { name: "الأقسام", path: "/inventory/categories", icon: Package, permission: Permissions.InventoryRead },
     ]
   },
   {
     title: "جهات الاتصال",
+    permission: Permissions.ContactsRead,
     items: [
-      { name: "العملاء", path: "/contacts/customers", icon: Users },
-      { name: "الموردين", path: "/contacts/suppliers", icon: Users },
+      { name: "العملاء", path: "/contacts/customers", icon: Users, permission: Permissions.ContactsRead },
+      { name: "الموردين", path: "/contacts/suppliers", icon: Users, permission: Permissions.ContactsRead },
     ]
   },
   {
     title: "المالية",
+    permission: Permissions.FinanceRead,
     items: [
-      { name: "الدرج والوردية", path: "/finance/drawer", icon: Wallet },
-      { name: "الخزينة", path: "/finance/safe", icon: Wallet },
-      { name: "المصروفات", path: "/finance/expenses", icon: Wallet },
+      { name: "الدرج والوردية", path: "/finance/drawer", icon: Wallet, permission: Permissions.FinanceRead },
+      { name: "الخزينة", path: "/finance/safe", icon: Wallet, permission: Permissions.FinanceRead },
+      { name: "المصروفات", path: "/finance/expenses", icon: Wallet, permission: Permissions.FinanceRead },
     ]
   }
 ];
 
 export function Sidebar() {
   const location = useLocation();
-  const { logout } = useAuth();
+  const { logout, hasPermission } = useAuth();
+  const { isOpen } = useSidebarStore();
 
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
   return (
-    // w-64 fixed height, bg-slate-900, text-slate-300
-    <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col h-screen fixed right-0 top-0 border-l border-slate-800 flex-shrink-0">
+    <aside className={`${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-slate-900 text-slate-300 flex flex-col h-screen fixed right-0 top-0 border-l border-slate-800 flex-shrink-0 z-20`}>
 
-      {/* Logo — h-16, bg-slate-950, centered */}
-      <div className="h-16 flex items-center justify-center border-b border-slate-800 bg-slate-950">
-        <h1 className="text-xl font-bold text-white tracking-wider">سنترالي</h1>
+      {/* Logo */}
+      <div className="h-16 flex items-center justify-center border-b border-slate-800 bg-slate-950 shrink-0">
+        <h1 className={`text-xl font-bold text-white tracking-wider transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 hidden'}`}>
+          سنترالي
+        </h1>
+        {!isOpen && (
+          <h1 className="text-xl font-bold text-white tracking-wider">س</h1>
+        )}
       </div>
 
       {/* Nav Groups */}
-      <div className="flex-1 overflow-y-auto py-4 px-3">
-        {menuGroups.map((group, gi) => (
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 custom-scrollbar">
+        {menuGroups.map((group, gi) => {
+          const visibleItems = group.items.filter((item) => !item.permission || hasPermission(item.permission));
+          if (visibleItems.length === 0) return null;
+          if (group.permission && !hasPermission(group.permission)) return null;
+
+          return (
           <div key={gi} className="mb-6">
-            {/* Group title — text-xs uppercase text-slate-500 */}
-            <h3 className="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            {/* Group title */}
+            <h3 className={`px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 h-0 mb-0 overflow-hidden'}`}>
               {group.title}
             </h3>
+            
+            {/* When closed, we still need some spacing between groups */}
+            {!isOpen && gi > 0 && <div className="h-4"></div>}
+
             <ul className="space-y-1">
-              {group.items.map((item) => {
+              {visibleItems.map((item) => {
                 const active = isActive(item.path);
                 return (
                   <li key={item.path}>
                     <Link
                       to={item.path}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+                      title={!isOpen ? item.name : undefined}
+                      className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
                         active
                           ? "bg-blue-600 text-white"
                           : "hover:bg-slate-800 hover:text-white"
                       }`}
                     >
                       {/* Icons — w-5 h-5 = 20px */}
-                      <item.icon size={20} className={active ? "text-white" : "text-slate-400"} />
-                      <span>{item.name}</span>
+                      <item.icon size={20} className={`shrink-0 ${active ? "text-white" : "text-slate-400"}`} />
+                      <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
+                        {item.name}
+                      </span>
                     </Link>
                   </li>
                 );
               })}
             </ul>
           </div>
-        ))}
+          );
+        })}
 
         {/* Settings */}
-        <div className="border-t border-slate-800 pt-4">
+        <div className="border-t border-slate-800 pt-4 mt-2">
           <Link
             to="/settings"
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+            title={!isOpen ? "الإعدادات" : undefined}
+            className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
               location.pathname.startsWith("/settings")
                 ? "bg-blue-600 text-white"
                 : "hover:bg-slate-800 hover:text-white"
             }`}
           >
-            <Settings size={20} className="text-slate-400" />
-            <span>الإعدادات</span>
+            <Settings size={20} className="text-slate-400 shrink-0" />
+            <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
+              الإعدادات
+            </span>
           </Link>
         </div>
       </div>
 
       {/* Logout */}
-      <div className="p-4 border-t border-slate-800 bg-slate-950">
+      <div className={`p-4 border-t border-slate-800 bg-slate-950 shrink-0 ${!isOpen && 'flex justify-center'}`}>
         <button
           onClick={logout}
-          className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium"
+          title={!isOpen ? "تسجيل خروج" : undefined}
+          className={`flex items-center ${isOpen ? 'gap-3 px-3 w-full' : 'justify-center w-10'} py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium`}
         >
-          <LogOut size={20} />
-          تسجيل خروج
+          <LogOut size={20} className="shrink-0" />
+          <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
+            تسجيل خروج
+          </span>
         </button>
       </div>
     </aside>
@@ -3621,6 +10541,142 @@ describe('Button Component', () => {
 });
 ````
 
+## File: src/shared/components/ui/BackButton.tsx
+````typescript
+import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+interface BackButtonProps {
+  /** اختياري: مسار محدد للرجوع إليه. إذا لم يُحدد يرجع للصفحة السابقة في التاريخ. */
+  to?: string;
+  label?: string;
+}
+
+/**
+ * زر رجوع موحد يُستخدم في جميع صفحات التفاصيل والنماذج.
+ * الشكل: مربع بحواف دائرية، أيقونة سهم، اختياري نص.
+ */
+export function BackButton({ to, label }: BackButtonProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (to) navigate(to);
+    else navigate(-1);
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 border border-gray-200 rounded-lg transition-colors shadow-sm text-sm font-medium"
+      title="رجوع"
+    >
+      <ArrowRight size={16} />
+      {label && <span>{label}</span>}
+    </button>
+  );
+}
+````
+
+## File: src/shared/components/ui/BaseModal.tsx
+````typescript
+import { ReactNode, useId, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { X } from 'lucide-react';
+import { useModalBehavior } from '@/shared/hooks/useModalBehavior';
+
+type ModalSize = 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+
+const sizeClass: Record<ModalSize, string> = {
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  '4xl': 'max-w-4xl',
+};
+
+export interface BaseModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  subtitle?: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  size?: ModalSize;
+  headerClassName?: string;
+  zIndexClassName?: string;
+  hideCloseButton?: boolean;
+}
+
+export function BaseModal({
+  isOpen,
+  onClose,
+  title,
+  subtitle,
+  children,
+  footer,
+  size = 'md',
+  headerClassName = 'bg-[var(--color-page-bg)]',
+  zIndexClassName = 'z-50',
+  hideCloseButton = false,
+}: BaseModalProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  useModalBehavior(isOpen, onClose, panelRef);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div
+      className={`fixed inset-0 ${zIndexClassName} flex items-center justify-center bg-black/40 backdrop-blur-sm p-4`}
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        ref={panelRef}
+        className={`bg-[var(--color-surface)] rounded-xl shadow-xl w-full ${sizeClass[size]} max-h-[90vh] flex flex-col overflow-hidden`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        onClick={(e) => e.stopPropagation()}
+        tabIndex={-1}
+      >
+        <div className={`px-6 py-4 border-b border-[var(--color-border)] flex items-center justify-between shrink-0 ${headerClassName}`}>
+          <div>
+            <h2 id={titleId} className="text-lg font-bold text-[var(--color-text-main)]">
+              {title}
+            </h2>
+            {subtitle && (
+              <div className="text-sm text-[var(--color-text-muted)] mt-0.5">{subtitle}</div>
+            )}
+          </div>
+          {!hideCloseButton && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label="إغلاق"
+            >
+              <X size={20} className="text-[var(--color-text-muted)]" />
+            </button>
+          )}
+        </div>
+
+        <div className="flex-1 overflow-y-auto">{children}</div>
+
+        {footer && (
+          <div className="px-6 py-4 bg-[var(--color-page-bg)] border-t border-[var(--color-border)] shrink-0">
+            {footer}
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+}
+````
+
 ## File: src/shared/components/ui/Button.tsx
 ````typescript
 import * as React from "react"
@@ -3653,12 +10709,152 @@ Button.displayName = "Button"
 export { Button }
 ````
 
+## File: src/shared/components/ui/ClearablePriceInput.tsx
+````typescript
+import { UseFormRegisterReturn, UseFormSetValue, FieldPath, FieldValues } from 'react-hook-form';
+
+interface ClearablePriceInputProps<T extends FieldValues> {
+  registration: UseFormRegisterReturn;
+  setValue: UseFormSetValue<T>;
+  name: FieldPath<T>;
+  currentValue: number | undefined;
+  className?: string;
+}
+
+/** Clears default 0 on focus so the user can type a clean price; restores 0 if left empty. */
+export function ClearablePriceInput<T extends FieldValues>({
+  registration,
+  setValue,
+  name,
+  currentValue,
+  className,
+}: ClearablePriceInputProps<T>) {
+  const { onBlur, onChange, ...rest } = registration;
+
+  return (
+    <input
+      type="number"
+      min="0"
+      step="0.01"
+      className={className}
+      {...rest}
+      onChange={onChange}
+      onFocus={(e) => {
+        if (currentValue === 0 || e.target.value === '0') {
+          // @ts-ignore
+          setValue(name, '', { shouldDirty: true });
+        } else {
+          e.target.select();
+        }
+      }}
+      onBlur={(e) => {
+        onBlur(e);
+        if (e.target.value === '' || Number.isNaN(e.target.valueAsNumber)) {
+          // @ts-ignore
+          setValue(name, 0, { shouldValidate: true });
+        }
+      }}
+    />
+  );
+}
+````
+
+## File: src/shared/components/ui/ConfirmModal.tsx
+````typescript
+import { ReactNode } from 'react';
+import { AlertTriangle, Info, AlertCircle } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+import { BaseModal } from './BaseModal';
+
+interface ConfirmModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: ReactNode;
+  confirmText?: string;
+  cancelText?: string;
+  type?: 'danger' | 'warning' | 'info';
+  isLoading?: boolean;
+}
+
+export function ConfirmModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmText = 'تأكيد',
+  cancelText = 'إلغاء',
+  type = 'danger',
+  isLoading = false,
+}: ConfirmModalProps) {
+  const getIcon = () => {
+    switch (type) {
+      case 'danger':
+        return (
+          <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-[var(--color-danger)] shrink-0">
+            <AlertTriangle size={20} />
+          </div>
+        );
+      case 'warning':
+        return (
+          <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+            <AlertCircle size={20} />
+          </div>
+        );
+      case 'info':
+        return (
+          <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-[var(--color-primary)] shrink-0">
+            <Info size={20} />
+          </div>
+        );
+    }
+  };
+
+  const getBtnClass = () => {
+    if (type === 'danger') {
+      return 'bg-[var(--color-danger)] hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-60';
+    }
+    if (type === 'warning') {
+      return 'bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-60';
+    }
+    return tokens.btn.primary;
+  };
+
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      size="md"
+      footer={
+        <div className="flex justify-end gap-3">
+          <button type="button" onClick={onClose} disabled={isLoading} className={tokens.btn.secondary}>
+            {cancelText}
+          </button>
+          <button type="button" onClick={onConfirm} disabled={isLoading} className={getBtnClass()}>
+            {isLoading ? 'جاري المعالجة...' : confirmText}
+          </button>
+        </div>
+      }
+    >
+      <div className="p-6 flex gap-4">
+        {getIcon()}
+        <div className="text-sm text-[var(--color-text-muted)] leading-relaxed">{message}</div>
+      </div>
+    </BaseModal>
+  );
+}
+````
+
 ## File: src/shared/components/ui/DataTable.tsx
 ````typescript
 import React from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { Spinner } from "./Spinner";
 
-interface Column<T> {
+export interface Column<T> {
   header: string;
   accessorKey?: keyof T;
   cell?: (row: T) => React.ReactNode;
@@ -3674,6 +10870,7 @@ interface DataTableProps<T> {
   pageSize: number;
   onNextPage: () => void;
   onPrevPage: () => void;
+  onRowClick?: (row: T) => void;
 }
 
 export function DataTable<T>({
@@ -3686,6 +10883,7 @@ export function DataTable<T>({
   pageSize,
   onNextPage,
   onPrevPage,
+  onRowClick,
 }: DataTableProps<T>) {
   const from = totalCount === 0 ? 0 : (pageIndex - 1) * pageSize + 1;
   const to = Math.min(pageIndex * pageSize, totalCount);
@@ -3711,7 +10909,7 @@ export function DataTable<T>({
               <tr>
                 <td colSpan={columns.length} className="px-6 py-10 text-center text-gray-400 text-sm">
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                    <Spinner size={16} />
                     جاري تحميل البيانات...
                   </div>
                 </td>
@@ -3724,7 +10922,11 @@ export function DataTable<T>({
               </tr>
             ) : (
               data.map((row, ri) => (
-                <tr key={ri} className="hover:bg-gray-50 transition-colors">
+                <tr 
+                  key={ri} 
+                  className={`transition-colors ${onRowClick ? 'hover:bg-gray-50 cursor-pointer' : 'hover:bg-gray-50'}`}
+                  onClick={() => onRowClick?.(row)}
+                >
                   {columns.map((col, ci) => (
                     <td key={ci} className="px-6 py-4">
                       {col.cell
@@ -3824,24 +11026,151 @@ export { Label }
 
 ## File: src/shared/components/ui/PageLoader.tsx
 ````typescript
-import { Loader2 } from "lucide-react";
+import { Loader2 } from 'lucide-react';
+import { Spinner } from './Spinner';
 
 export function PageLoader() {
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-gray-50/50">
-      <div className="flex flex-col items-center gap-2 text-gray-500">
-        <Loader2 className="animate-spin" size={32} />
-        <span className="text-sm text-gray-700">جاري التحميل...</span>
+    <div className="flex h-screen w-full items-center justify-center bg-[var(--color-page-bg)]">
+      <div className="flex flex-col items-center gap-2 text-[var(--color-text-muted)]">
+        <Spinner size={32} />
+        <span className="text-sm text-[var(--color-text-main)]">جاري التحميل...</span>
       </div>
     </div>
+  );
+}
+
+/** Inline loader for tables and modal bodies. */
+export function InlineLoader({ label = 'جاري تحميل البيانات...' }: { label?: string }) {
+  return (
+    <div className="flex items-center justify-center gap-2 py-10 text-sm text-[var(--color-text-muted)]">
+      <Loader2 className="animate-spin text-[var(--color-primary)]" size={16} />
+      {label}
+    </div>
+  );
+}
+````
+
+## File: src/shared/components/ui/PickerModal.tsx
+````typescript
+import { ReactNode } from 'react';
+import { Search } from 'lucide-react';
+import { tokens } from '@/shared/styles/tokens';
+import { BaseModal } from './BaseModal';
+import { DataTable, Column } from './DataTable';
+
+interface PickerModalPagination {
+  pageIndex: number;
+  totalPages: number;
+  totalCount: number;
+  pageSize: number;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+}
+
+export interface PickerModalProps<T> {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  subtitle?: string;
+  searchPlaceholder?: string;
+  searchValue: string;
+  onSearchChange: (value: string) => void;
+  filters?: ReactNode;
+  columns: Column<T>[];
+  data: T[];
+  isLoading?: boolean;
+  pagination: PickerModalPagination;
+  onRowClick?: (row: T) => void;
+  selectedCount?: number;
+  confirmLabel?: string;
+  confirmDisabled?: boolean;
+  onConfirm?: () => void;
+}
+
+export function PickerModal<T>({
+  isOpen,
+  onClose,
+  title,
+  subtitle,
+  searchPlaceholder = 'بحث...',
+  searchValue,
+  onSearchChange,
+  filters,
+  columns,
+  data,
+  isLoading,
+  pagination,
+  onRowClick,
+  selectedCount = 0,
+  confirmLabel = 'إضافة',
+  confirmDisabled,
+  onConfirm,
+}: PickerModalProps<T>) {
+  const footer = onConfirm ? (
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-sm text-[var(--color-text-muted)]">
+        {selectedCount > 0 ? `تم تحديد ${selectedCount} عنصر` : 'لم يتم تحديد عناصر بعد'}
+      </span>
+      <div className="flex gap-3">
+        <button type="button" onClick={onClose} className={tokens.btn.secondary}>
+          إلغاء
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          disabled={confirmDisabled ?? selectedCount === 0}
+          className={`${tokens.btn.primary} disabled:opacity-50`}
+        >
+          {confirmLabel} ({selectedCount})
+        </button>
+      </div>
+    </div>
+  ) : undefined;
+
+  return (
+    <BaseModal isOpen={isOpen} onClose={onClose} title={title} subtitle={subtitle} size="4xl" footer={footer}>
+      <div className="px-6 py-3 border-b border-[var(--color-border)] bg-[var(--color-page-bg)]">
+        <div className={filters ? 'grid grid-cols-1 md:grid-cols-3 gap-3 items-center' : ''}>
+          <div className="relative">
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" size={16} />
+            <input
+              type="text"
+              placeholder={searchPlaceholder}
+              value={searchValue}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className={`${tokens.input} pr-10`}
+              autoFocus
+            />
+          </div>
+          {filters}
+        </div>
+      </div>
+
+      <div className="px-6 py-4">
+        <DataTable
+          columns={columns}
+          data={data}
+          isLoading={isLoading}
+          pageIndex={pagination.pageIndex}
+          totalPages={pagination.totalPages}
+          totalCount={pagination.totalCount}
+          pageSize={pagination.pageSize}
+          onNextPage={pagination.onNextPage}
+          onPrevPage={pagination.onPrevPage}
+          onRowClick={onRowClick}
+        />
+      </div>
+    </BaseModal>
   );
 }
 ````
 
 ## File: src/shared/components/ui/RightDrawer.tsx
 ````typescript
-import React, { useEffect } from "react";
-import { X } from "lucide-react";
+import React, { useRef } from 'react';
+import { X } from 'lucide-react';
+import { useModalBehavior } from '@/shared/hooks/useModalBehavior';
 
 interface RightDrawerProps {
   isOpen: boolean;
@@ -3852,119 +11181,71 @@ interface RightDrawerProps {
 }
 
 export function RightDrawer({ isOpen, onClose, title, children, footer }: RightDrawerProps) {
-  const drawerRef = React.useRef<HTMLDivElement>(null);
-  const previousFocusRef = React.useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      previousFocusRef.current = document.activeElement as HTMLElement;
-      // Small timeout to ensure DOM is rendered before focusing
-      setTimeout(() => {
-        const focusableElements = drawerRef.current?.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        ) as NodeListOf<HTMLElement>;
-        
-        if (focusableElements && focusableElements.length > 0) {
-          focusableElements[0].focus();
-        }
-      }, 10);
-    } else {
-      if (previousFocusRef.current) {
-        previousFocusRef.current.focus();
-      }
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        return;
-      }
-
-      if (e.key === "Tab" && drawerRef.current) {
-        const focusableElements = drawerRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        ) as NodeListOf<HTMLElement>;
-        
-        if (focusableElements.length === 0) return;
-        
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            lastElement.focus();
-            e.preventDefault();
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            firstElement.focus();
-            e.preventDefault();
-          }
-        }
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, onClose]);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useModalBehavior(isOpen, onClose, drawerRef);
 
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex justify-end" 
-      dir="rtl"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="drawer-title"
-    >
-      {/* Semi-transparent overlay */}
+    <div className="fixed inset-0 z-50 flex justify-end" dir="rtl" role="presentation">
       <div
-        className="absolute inset-0"
-        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
+        className="absolute inset-0 bg-black/40"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Drawer Panel - w-[450px] fixed, slides from right */}
-      <div 
+      <div
         ref={drawerRef}
-        className="relative w-[450px] bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300"
+        className="relative w-[450px] bg-[var(--color-surface)] h-full shadow-2xl flex flex-col"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="drawer-title"
+        tabIndex={-1}
       >
-        
-        {/* Drawer Header — h-16, bg-gray-50 */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">
-          <h2 id="drawer-title" className="text-lg font-bold text-gray-800">{title}</h2>
+        <div className="h-16 flex items-center justify-between px-6 border-b border-[var(--color-border)] bg-[var(--color-page-bg)] flex-shrink-0">
+          <h2 id="drawer-title" className="text-lg font-bold text-[var(--color-text-main)]">
+            {title}
+          </h2>
           <button
+            type="button"
             onClick={onClose}
             aria-label="إغلاق"
-            className="text-gray-400 hover:text-gray-600 hover:bg-gray-200 p-1.5 rounded-lg transition-colors"
+            className="text-[var(--color-text-muted)] hover:text-[var(--color-text-main)] hover:bg-gray-200 p-1.5 rounded-lg transition-colors"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Drawer Body */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {children}
-        </div>
+        <div className="flex-1 overflow-y-auto p-6">{children}</div>
 
-        {/* Drawer Footer — bg-gray-50, border-t */}
         {footer && (
-          <div className="border-t border-gray-200 bg-gray-50 px-6 py-4 flex justify-end gap-3 flex-shrink-0">
+          <div className="border-t border-[var(--color-border)] bg-[var(--color-page-bg)] px-6 py-4 flex justify-end gap-3 flex-shrink-0">
             {footer}
           </div>
         )}
       </div>
     </div>
+  );
+}
+````
+
+## File: src/shared/components/ui/Spinner.tsx
+````typescript
+import { Loader2 } from 'lucide-react';
+
+interface SpinnerProps {
+  size?: number;
+  className?: string;
+  label?: string;
+}
+
+export function Spinner({ size = 24, className = '', label = 'جاري التحميل' }: SpinnerProps) {
+  return (
+    <Loader2
+      className={`animate-spin text-[var(--color-primary)] ${className}`}
+      size={size}
+      aria-label={label}
+    />
   );
 }
 ````
@@ -4016,6 +11297,35 @@ describe('useDebounce Hook', () => {
 });
 ````
 
+## File: src/shared/hooks/__tests__/useFocusTrap.test.ts
+````typescript
+import { getFocusableElements } from '../useFocusTrap';
+
+describe('getFocusableElements', () => {
+  beforeEach(() => {
+    Object.defineProperty(HTMLElement.prototype, 'offsetParent', {
+      configurable: true,
+      get() {
+        return document.body;
+      },
+    });
+  });
+  it('returns enabled interactive elements only', () => {
+    document.body.innerHTML = `
+      <div id="root">
+        <button type="button">ok</button>
+        <button type="button" disabled>no</button>
+        <input />
+        <a href="#x">link</a>
+      </div>
+    `;
+    const root = document.getElementById('root')!;
+    const ids = getFocusableElements(root).map((el) => el.tagName.toLowerCase());
+    expect(ids).toEqual(['button', 'input', 'a']);
+  });
+});
+````
+
 ## File: src/shared/hooks/useDebounce.ts
 ````typescript
 import { useState, useEffect } from 'react';
@@ -4034,6 +11344,141 @@ export function useDebounce<T>(value: T, delay = 400): T {
 
   return debounced;
 }
+````
+
+## File: src/shared/hooks/useFocusTrap.ts
+````typescript
+import { RefObject, useEffect } from 'react';
+
+const FOCUSABLE_SELECTOR =
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+export function getFocusableElements(container: HTMLElement): HTMLElement[] {
+  return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+    (el) => !el.hasAttribute('disabled') && el.tabIndex !== -1 && el.offsetParent !== null
+  );
+}
+
+/**
+ * Traps keyboard Tab focus inside a container while active.
+ */
+export function useFocusTrap(containerRef: RefObject<HTMLElement | null>, isActive: boolean) {
+  useEffect(() => {
+    if (!isActive) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const focusFirst = () => {
+      const focusable = getFocusableElements(container);
+      (focusable[0] ?? container).focus();
+    };
+
+    const timer = window.setTimeout(focusFirst, 10);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const focusable = getFocusableElements(container);
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first || !container.contains(document.activeElement)) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else if (document.activeElement === last) {
+        first.focus();
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [containerRef, isActive]);
+}
+````
+
+## File: src/shared/hooks/useHeaderStore.ts
+````typescript
+import { create } from 'zustand';
+
+interface HeaderState {
+  title: string;
+  showBackButton: boolean;
+  backPath?: string;
+  setTitle: (title: string) => void;
+  setBackButton: (show: boolean, path?: string) => void;
+}
+
+export const useHeaderStore = create<HeaderState>((set) => ({
+  title: 'سنترالي',
+  showBackButton: false,
+  backPath: undefined,
+  setTitle: (title) => set({ title }),
+  setBackButton: (showBackButton, backPath) => set({ showBackButton, backPath }),
+}));
+````
+
+## File: src/shared/hooks/useModalBehavior.ts
+````typescript
+import { RefObject, useEffect, useRef } from 'react';
+import { useFocusTrap } from './useFocusTrap';
+
+/**
+ * Shared overlay behavior: body scroll lock, Escape to close, focus trap, restore focus.
+ */
+export function useModalBehavior(
+  isOpen: boolean,
+  onClose: () => void,
+  containerRef: RefObject<HTMLElement | null>
+) {
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useFocusTrap(containerRef, isOpen);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
+}
+````
+
+## File: src/shared/hooks/useSidebarStore.ts
+````typescript
+import { create } from 'zustand';
+
+interface SidebarState {
+  isOpen: boolean;
+  toggle: () => void;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export const useSidebarStore = create<SidebarState>((set) => ({
+  isOpen: true,
+  toggle: () => set((state) => ({ isOpen: !state.isOpen })),
+  setIsOpen: (isOpen) => set({ isOpen }),
+}));
 ````
 
 ## File: src/shared/styles/tokens.ts
@@ -4072,6 +11517,9 @@ export const tokens = {
   // --- Badge ---
   badge: {
     indigo: "bg-indigo-50 text-[var(--color-primary)] px-2.5 py-1 rounded-full text-xs font-medium",
+    success: "bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium",
+    warning: "bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-medium",
+    danger: "bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-xs font-medium",
   },
 
   // --- Card / Surface ---
@@ -4109,6 +11557,123 @@ export interface PaginatedList<T> {
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
+}
+````
+
+## File: src/shared/utils/__tests__/apiError.test.ts
+````typescript
+import { describe, it, expect } from 'vitest';
+import axios from 'axios';
+import { getApiErrorMessage } from '../apiError';
+
+describe('getApiErrorMessage', () => {
+  it('uses fallback for unknown errors', () => {
+    expect(getApiErrorMessage('x', 'فشل')).toBe('فشل');
+  });
+
+  it('reads Error.message', () => {
+    expect(getApiErrorMessage(new Error('network'))).toBe('network');
+  });
+
+  it('reads axios description', () => {
+    const axiosError = new axios.AxiosError('fail');
+    axiosError.response = {
+      data: { description: 'غير مصرح' },
+      status: 400,
+      statusText: 'Bad Request',
+      headers: {},
+      config: { headers: new axios.AxiosHeaders() },
+    };
+
+    expect(getApiErrorMessage(axiosError, 'fallback')).toBe('غير مصرح');
+  });
+});
+````
+
+## File: src/shared/utils/__tests__/currency.test.ts
+````typescript
+import { formatCurrency } from '../currency';
+
+describe('formatCurrency', () => {
+  it('formats zero with two decimals', () => {
+    expect(formatCurrency(0)).toContain('٠');
+  });
+
+  it('formats integers without forcing extra decimals', () => {
+    const formatted = formatCurrency(1500);
+    expect(formatted).toMatch(/١٬٥٠٠|1,500/);
+  });
+
+  it('returns a fallback for invalid numbers', () => {
+    expect(formatCurrency(Number.NaN)).toBe('٠٫٠٠ ج.م.');
+  });
+});
+````
+
+## File: src/shared/utils/apiError.ts
+````typescript
+import axios from 'axios';
+
+interface ApiErrorBody {
+  message?: string;
+  description?: string;
+}
+
+export function getApiErrorMessage(error: unknown, fallback = 'حدث خطأ غير متوقع'): string {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as ApiErrorBody | undefined;
+    return data?.description || data?.message || fallback;
+  }
+
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return fallback;
+}
+````
+
+## File: src/shared/utils/currency.ts
+````typescript
+export function formatCurrency(value: number): string {
+  if (value == null || isNaN(value)) {
+    return '٠٫٠٠ ج.م.';
+  }
+
+  if (value === 0) {
+    // Specifically format 0 as 0.00
+    const zeroFormatter = new Intl.NumberFormat('ar-EG', {
+      style: 'currency',
+      currency: 'EGP',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return zeroFormatter.format(0);
+  }
+
+  // Use Intl.NumberFormat to get comma separators (e.g. 155,000)
+  const formatter = new Intl.NumberFormat('ar-EG', {
+    style: 'currency',
+    currency: 'EGP',
+    minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formatter.format(value);
+}
+````
+
+## File: src/shared/utils/date.ts
+````typescript
+export function formatDate(dateString: string | Date | undefined): string {
+  if (!dateString) return '';
+  return new Intl.DateTimeFormat('ar-EG', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(dateString));
 }
 ````
 

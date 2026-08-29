@@ -1,3 +1,4 @@
+import { tokens } from '@/shared/styles/tokens';
 import { Bell, Search, User } from "lucide-react";
 
 export function Header() {
@@ -11,7 +12,7 @@ export function Header() {
             type="text" 
             aria-label="بحث شامل"
             placeholder="ابحث عن فاتورة، عميل، منتج..." 
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pr-10 pl-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className={`${tokens.input} bg-gray-50`}
           />
         </div>
       </div>

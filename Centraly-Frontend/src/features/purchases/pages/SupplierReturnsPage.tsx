@@ -24,7 +24,7 @@ export function SupplierReturnsPage() {
   });
 
   return (
-    <div className="space-y-4 max-w-7xl mx-auto">
+    <div className="space-y-4 w-full">
       <SupplierReturnsFilters
         onSearch={(val) => { setSearchTerm(val); setPageIndex(1); }}
         onNewReturn={() => navigate('/purchases/returns/new')}

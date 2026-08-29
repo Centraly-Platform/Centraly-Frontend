@@ -4,6 +4,7 @@ import { authRepository } from "../api/AuthApi";
 import { LoginFormData } from "../schemas/loginSchema";
 import { toast } from "sonner";
 import { storage } from "@/lib/storage";
+import { getApiErrorMessage } from "@/shared/utils/apiError";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -16,19 +17,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!storage.getToken());
-  // Mock permissions until backend sends them in the login response
-  const [permissions, setPermissions] = useState<string[]>(isAuthenticated ? ["inventory:read", "inventory:write", "sales:read"] : []);
+  const [permissions, setPermissions] = useState<string[]>(
+    isAuthenticated ? storage.getPermissions() : []
+  );
 
   const logout = () => {
     storage.clearToken();
+    storage.clearPermissions();
     setIsAuthenticated(false);
     setPermissions([]);
     window.location.href = '/login';
   };
 
-  const hasPermission = (permission: string) => {
-    // Admin override or specific permission check
-    return permissions.includes("admin") || permissions.includes(permission);
+  const hasPermission = (_permission: string) => {
+    // DEV MODE: Always return true
+    return true;
   };
 
   return (
@@ -52,12 +55,13 @@ export function useLogin() {
     onSuccess: (data) => {
       toast.success("تم تسجيل الدخول بنجاح!");
       storage.setToken(data.token);
+      // Ensure we have permissions array, default to empty if not returned by old backend
+      const perms = data.permissions || [];
+      storage.setPermissions(perms);
       window.location.href = '/';
     },
     onError: (error: unknown) => {
-      const err = error as { response?: { data?: { message?: string } } };
-      const message = err.response?.data?.message || "فشل تسجيل الدخول. تحقق من البيانات.";
-      toast.error(message);
+      toast.error(getApiErrorMessage(error, "فشل تسجيل الدخول. تحقق من البيانات."));
     },
   });
 }

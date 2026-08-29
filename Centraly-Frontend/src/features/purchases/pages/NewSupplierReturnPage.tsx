@@ -7,8 +7,11 @@ import { useSuppliers } from '@/features/suppliers/hooks/useSuppliers';
 import { Package, Trash2, AlertCircle, ShoppingCart } from 'lucide-react';
 import { CreateSupplierReturnItemRequest } from '../schemas/supplierReturnSchemas';
 import { formatCurrency } from '@/shared/utils/currency';
+import { getApiErrorMessage } from '@/shared/utils/apiError';
 import { SupplierBatchPickerModal } from '../components/SupplierBatchPickerModal';
 import { SupplierBatchResponse } from '@/features/suppliers/schemas/supplierSchemas';
+import { ReturnOptionsForm } from '@/features/sales/components/ReturnOptionsForm';
+import { usePaymentSourcePrompt } from '@/features/finance/hooks/usePaymentSourcePrompt';
 
 export function NewSupplierReturnPage() {
   const navigate = useNavigate();
@@ -17,11 +20,13 @@ export function NewSupplierReturnPage() {
   const { data: suppliersData, isLoading: isLoadingSuppliers } = useSuppliers({ pageSize: 100 });
 
   const [supplierId, setSupplierId] = useState('');
-  const [reason, setReason] = useState<1 | 2 | 3>(1);
+  const [reason, setReason] = useState<number>(1);
   const [notes, setNotes] = useState('');
   const [items, setItems] = useState<CreateSupplierReturnItemRequest[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCashRefund, setIsCashRefund] = useState(false);
+  const { promptPaymentSource, PaymentSourcePromptModal } = usePaymentSourcePrompt(4);
 
   useEffect(() => {
     setTitle('مرتجع مورد جديد');
@@ -63,7 +68,7 @@ export function NewSupplierReturnPage() {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -73,11 +78,18 @@ export function NewSupplierReturnPage() {
       return setError('يرجى استكمال جميع بيانات الأصناف بشكل صحيح (معرف المنتج ومعرف الدفعة والكمية)');
     }
 
+    let finalPaymentSource: number | undefined;
+    if (isCashRefund) {
+      const sourceId = await promptPaymentSource();
+      if (!sourceId) return;
+      finalPaymentSource = sourceId;
+    }
+
     createReturn.mutate(
-      { supplierId, reason, notes, items },
+      { supplierId, reason: reason as 1 | 2 | 3 | 4, notes, items, isCashRefund, paymentSource: finalPaymentSource },
       {
         onSuccess: () => navigate('/purchases/returns'),
-        onError: (err: any) => setError(err.response?.data?.message || 'حدث خطأ أثناء حفظ المرتجع')
+        onError: (err: unknown) => setError(getApiErrorMessage(err, 'حدث خطأ أثناء حفظ المرتجع'))
       }
     );
   };
@@ -85,7 +97,7 @@ export function NewSupplierReturnPage() {
   const totalAmount = items.reduce((sum, item) => sum + (item.quantity * item.returnPrice), 0);
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-20">
+    <div className="w-full space-y-6 pb-20">
       {error && (
         <div className="bg-red-50 text-red-600 p-4 rounded-xl flex items-center gap-3 border border-red-200">
           <AlertCircle size={20} />
@@ -114,30 +126,16 @@ export function NewSupplierReturnPage() {
               </select>
             </div>
 
-            <div>
-              <label className={`${tokens.font.label} block mb-2`}>سبب الإرجاع <span className="text-red-500">*</span></label>
-              <select
-                value={reason}
-                onChange={(e) => setReason(Number(e.target.value) as 1 | 2 | 3)}
-                className={tokens.input}
-              >
-                <option value={1}>عيب أو خلل في المنتج</option>
-                <option value={2}>تغيير رأي</option>
-                <option value={3}>سبب آخر</option>
-              </select>
-            </div>
           </div>
 
-          <div>
-            <label className={`${tokens.font.label} block mb-2`}>ملاحظات إضافية</label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className={tokens.input}
-              rows={2}
-              placeholder="أي تفاصيل أخرى حول الإرجاع..."
-            />
-          </div>
+          <ReturnOptionsForm
+            reason={reason}
+            onReasonChange={setReason}
+            isCashRefund={isCashRefund}
+            onCashRefundChange={setIsCashRefund}
+            notes={notes}
+            onNotesChange={setNotes}
+          />
         </div>
 
         {/* Items */}
@@ -255,6 +253,7 @@ export function NewSupplierReturnPage() {
         supplierId={supplierId}
         onSelectBatch={handleSelectBatch}
       />
+      <PaymentSourcePromptModal />
     </div>
   );
 }

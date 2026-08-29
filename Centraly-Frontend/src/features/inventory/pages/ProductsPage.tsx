@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { createProductSchema, CreateProductRequest } from '../schemas/inventorySchemas';
-import { useProducts, useCategories, useCreateProduct, useDeleteProduct } from '@/features/inventory/hooks/useInventory';
+import { useProducts, useCreateProduct, useDeleteProduct } from '@/features/inventory/hooks/useInventory';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
 import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
 import { ProductFilters } from '@/features/inventory/components/ProductFilters';
@@ -36,8 +36,6 @@ export function ProductsPage() {
     categoryId: categoryFilter || undefined,
     stockStatus: stockFilter || undefined,
   });
-  const { data: categoriesData } = useCategories();
-  const categories = categoriesData?.items || [];
   const createProduct        = useCreateProduct();
   const deleteProduct        = useDeleteProduct();
 
@@ -166,7 +164,6 @@ export function ProductsPage() {
         footer={drawerFooter}
       >
         <AddProductForm
-          categories={categories}
           onSubmit={handleFormSubmit}
           isSubmitting={createProduct.isPending}
         />

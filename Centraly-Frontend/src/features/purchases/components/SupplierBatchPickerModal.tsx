@@ -1,9 +1,11 @@
-import { useState, useMemo } from 'react';
-import { Search, X, Package } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Search, Package } from 'lucide-react';
 import { useSupplierBatches } from '@/features/suppliers/hooks/useSuppliers';
 import { SupplierBatchResponse } from '@/features/suppliers/schemas/supplierSchemas';
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
+import { BaseModal } from '@/shared/components/ui/BaseModal';
+import { Spinner } from '@/shared/components/ui/Spinner';
 
 interface SupplierBatchPickerModalProps {
   isOpen: boolean;
@@ -12,101 +14,93 @@ interface SupplierBatchPickerModalProps {
   onSelectBatch: (batch: SupplierBatchResponse) => void;
 }
 
-export function SupplierBatchPickerModal({ isOpen, onClose, supplierId, onSelectBatch }: SupplierBatchPickerModalProps) {
+export function SupplierBatchPickerModal({
+  isOpen,
+  onClose,
+  supplierId,
+  onSelectBatch,
+}: SupplierBatchPickerModalProps) {
   const { data: batches, isLoading, error } = useSupplierBatches(supplierId);
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredBatches = useMemo(() => {
     if (!batches) return [];
     if (!searchTerm) return batches;
-    
     const lower = searchTerm.toLowerCase();
-    return batches.filter(b => 
-      (b.productName && b.productName.toLowerCase().includes(lower)) ||
-      (b.barcode && b.barcode.toLowerCase().includes(lower)) ||
-      b.productId.toLowerCase().includes(lower)
+    return batches.filter(
+      (b) =>
+        (b.productName && b.productName.toLowerCase().includes(lower)) ||
+        (b.barcode && b.barcode.toLowerCase().includes(lower)) ||
+        b.productId.toLowerCase().includes(lower)
     );
   }, [batches, searchTerm]);
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl flex flex-col max-h-[90vh]">
-        
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h2 className="text-lg font-bold text-gray-800">اختيار صنف من المورد</h2>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg">
-            <X size={20} />
-          </button>
+    <BaseModal isOpen={isOpen} onClose={onClose} title="اختيار صنف من المورد" size="3xl">
+      <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-page-bg)]">
+        <div className="relative">
+          <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" size={20} />
+          <input
+            type="text"
+            placeholder="ابحث باسم المنتج أو الباركود..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`${tokens.input} pl-4 pr-10`}
+          />
         </div>
+      </div>
 
-        {/* Search & Filters */}
-        <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-          <div className="relative">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-            <input
-              type="text"
-              placeholder="ابحث باسم المنتج أو الباركود..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className={`${tokens.input} pl-4 pr-10`}
-            />
+      <div className="p-4">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-40">
+            <Spinner size={32} />
           </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-4">
-          {isLoading ? (
-            <div className="flex items-center justify-center h-40">
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-          ) : error ? (
-            <div className="text-center py-10 text-red-500">حدث خطأ أثناء جلب الأصناف.</div>
-          ) : filteredBatches.length === 0 ? (
-            <div className="text-center py-10 flex flex-col items-center justify-center text-gray-500">
-              <Package size={48} className="text-gray-300 mb-4" />
-              <p className="text-lg font-semibold text-gray-700">لا توجد أصناف متوفرة</p>
-              <p className="text-sm mt-1">لا يوجد رصيد حالي لأي أصناف تم شراؤها من هذا المورد.</p>
-            </div>
-          ) : (
-            <div className="grid gap-3">
-              {filteredBatches.map(batch => (
-                <div 
-                  key={batch.batchId} 
-                  className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer group"
-                  onClick={() => onSelectBatch(batch)}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
-                      <Package size={24} />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
-                        {batch.productName || 'منتج غير معروف'}
-                      </h3>
-                      <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
-                        {batch.barcode && <span>{batch.barcode}</span>}
-                        <span>•</span>
-                        <span>شراء: {new Date(batch.dateReceived).toLocaleDateString('ar-EG')}</span>
-                      </div>
-                    </div>
+        ) : error ? (
+          <div className="text-center py-10 text-[var(--color-danger)]">حدث خطأ أثناء جلب الأصناف.</div>
+        ) : filteredBatches.length === 0 ? (
+          <div className="text-center py-10 flex flex-col items-center justify-center text-[var(--color-text-muted)]">
+            <Package size={48} className="text-gray-300 mb-4" />
+            <p className="text-lg font-semibold text-[var(--color-text-main)]">لا توجد أصناف متوفرة</p>
+            <p className="text-sm mt-1">لا يوجد رصيد حالي لأي أصناف تم شراؤها من هذا المورد.</p>
+          </div>
+        ) : (
+          <div className="grid gap-3">
+            {filteredBatches.map((batch) => (
+              <button
+                type="button"
+                key={batch.batchId}
+                className="flex items-center justify-between p-4 bg-white border border-[var(--color-border)] rounded-lg hover:border-[var(--color-primary)] hover:shadow-sm transition-all text-right"
+                onClick={() => onSelectBatch(batch)}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-indigo-50 text-[var(--color-primary)] rounded-lg flex items-center justify-center">
+                    <Package size={24} />
                   </div>
-                  
-                  <div className="text-left flex flex-col items-end gap-1">
-                    <div className="text-lg font-bold text-gray-800">{formatCurrency(batch.purchasePrice)}</div>
-                    <div className="text-sm">
-                      الكمية المتاحة: <span className="font-semibold text-blue-600">{batch.availableQuantity}</span>
+                  <div>
+                    <h3 className="font-bold text-[var(--color-text-main)]">
+                      {batch.productName || 'منتج غير معروف'}
+                    </h3>
+                    <div className="flex items-center gap-3 mt-1 text-sm text-[var(--color-text-muted)]">
+                      {batch.barcode && <span>{batch.barcode}</span>}
+                      <span>•</span>
+                      <span>شراء: {new Date(batch.dateReceived).toLocaleDateString('ar-EG')}</span>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-
+                <div className="text-left flex flex-col items-end gap-1">
+                  <div className="text-lg font-bold text-[var(--color-text-main)]">
+                    {formatCurrency(batch.purchasePrice)}
+                  </div>
+                  <div className="text-sm">
+                    الكمية المتاحة:{' '}
+                    <span className="font-semibold text-[var(--color-primary)]">{batch.availableQuantity}</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </BaseModal>
   );
 }

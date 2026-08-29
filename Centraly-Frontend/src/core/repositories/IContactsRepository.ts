@@ -21,7 +21,7 @@ export interface IContactsRepository {
   deleteCustomer(id: string): Promise<void>;
   
   // Customer Transactions
-  getCustomerStatement(filters: StatementFilters): Promise<PaginatedList<CustomerStatementResponse>>;
+  getCustomerStatement(customerId: string): Promise<CustomerStatementResponse[]>;
   addCustomerPayment(customerId: string, data: CreatePaymentRequest): Promise<string>;
 
   // Suppliers

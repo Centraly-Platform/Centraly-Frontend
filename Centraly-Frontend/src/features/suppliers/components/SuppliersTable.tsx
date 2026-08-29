@@ -1,8 +1,11 @@
 import { formatCurrency } from '@/shared/utils/currency';
-import { Trash2, Edit } from 'lucide-react';
+import { Trash2, Edit, CreditCard } from 'lucide-react';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { SupplierResponse } from '../schemas/supplierSchemas';
 import { PaginatedList } from '@/shared/types/pagination';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
+
 
 interface SuppliersTableProps {
   data?: PaginatedList<SupplierResponse>;
@@ -12,6 +15,7 @@ interface SuppliersTableProps {
   onPrevPage: () => void;
   onEdit?: (supplier: SupplierResponse) => void;
   onDelete?: (supplier: SupplierResponse) => void;
+  onPay?: (supplier: SupplierResponse) => void;
   onRowClick?: (supplier: SupplierResponse) => void;
 }
 
@@ -23,6 +27,7 @@ export function SuppliersTable({
   onPrevPage,
   onEdit,
   onDelete,
+  onPay,
   onRowClick,
 }: SuppliersTableProps) {
   const columns = [
@@ -43,9 +48,28 @@ export function SuppliersTable({
     {
       header: 'الرصيد المستحق',
       cell: (row: SupplierResponse) => (
-        <span className={`text-base font-bold ${row.debtBalance > 0 ? 'text-red-600' : row.debtBalance < 0 ? 'text-green-600' : 'text-gray-900'}`}>
-          {formatCurrency(row.debtBalance)}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className={`text-base font-bold ${row.debtBalance > 0 ? 'text-green-600' : row.debtBalance < 0 ? 'text-red-600' : 'text-gray-900'}`}>
+            {formatCurrency(row.debtBalance)}
+          </span>
+          {row.debtBalance !== 0 && onPay && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onPay(row);
+              }}
+              className={`text-xs px-2 py-1 rounded flex items-center gap-1 border transition-colors ${
+                row.debtBalance > 0 
+                  ? 'bg-green-50 text-green-700 hover:bg-green-100 border-green-200' 
+                  : 'bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200'
+              }`}
+              title={row.debtBalance > 0 ? "تسديد دفعة" : "استلام دفعة"}
+            >
+              <CreditCard size={14} />
+              {row.debtBalance > 0 ? 'تسديد' : 'استلام'}
+            </button>
+          )}
+        </div>
       ),
     },
     {
@@ -64,26 +88,32 @@ export function SuppliersTable({
       header: 'الإجراءات',
       cell: (row: SupplierResponse) => (
         <div className="flex justify-center gap-3 text-gray-400">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit?.(row);
-            }}
-            className="hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-blue-50"
-            title="تعديل"
-          >
-            <Edit size={18} />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete?.(row);
-            }}
-            className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
-            title="حذف"
-          >
-            <Trash2 size={18} />
-          </button>
+          <HasPermission permission={Permissions.ContactsWrite}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.(row);
+              }}
+              className="hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-blue-50"
+              title="تعديل"
+              aria-label="تعديل المورد"
+            >
+              <Edit size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(row);
+              }}
+              className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
+              title="حذف"
+              aria-label="حذف المورد"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
         </div>
       ),
     },

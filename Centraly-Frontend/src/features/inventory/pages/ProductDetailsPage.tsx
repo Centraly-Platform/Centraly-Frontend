@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as z from 'zod';
-import { useProduct, useUpdateProduct, useCategories } from '@/features/inventory/hooks/useInventory';
+import { useProduct, useUpdateProduct } from '@/features/inventory/hooks/useInventory';
 import { createProductSchema, CreateProductRequest } from '@/features/inventory/schemas/inventorySchemas';
 import { tokens } from '@/shared/styles/tokens';
 import { RightDrawer } from '@/shared/components/ui/RightDrawer';
@@ -20,8 +20,6 @@ export function ProductDetailsPage() {
 
   const { data: product, isLoading, error } = useProduct(id!);
   const updateProduct = useUpdateProduct();
-  const { data: categoriesData } = useCategories();
-  const categories = categoriesData?.items || [];
 
   useEffect(() => {
     if (product) {
@@ -98,7 +96,6 @@ export function ProductDetailsPage() {
         footer={drawerFooter}
       >
         <AddProductForm
-          categories={categories}
           onSubmit={handleFormSubmit}
           isSubmitting={updateProduct.isPending}
           initialData={product}

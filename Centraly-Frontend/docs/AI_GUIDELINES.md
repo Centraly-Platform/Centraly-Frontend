@@ -19,17 +19,19 @@
 - يجب استخدام الـ Design Tokens الموجودة في `src/shared/styles/tokens.ts`.
 - يتم تعريف الألوان في المتغيرات `CSS Variables` داخل `src/index.css`، ويتم استدعاؤها عبر `tokens.ts`.
 - مثال صحيح: `<div className={tokens.font.muted}>` أو `bg-[var(--color-primary)]`.
-- حافظ على الـ Layout موحداً. استخدم المكونات المشتركة مثل `<AppLayout>` للصفحات، و `<RightDrawer>` للنوافذ الجانبية بدلاً من اختراع Layouts جديدة.
+- حافظ على الـ Layout موحداً. استخدم المكونات المشتركة مثل `<AppLayout>` للصفحات، و `<RightDrawer>` للنوافذ الجانبية، و `<BaseModal>` / `<PickerModal>` لأي نافذة منبثقة بدلاً من اختراع مودال من الصفر.
 
 ### 3. كتابة كود نظيف وآمن (Clean Code & Type Safety)
-- **ممنوع استخدام `any`.** استخدم `unknown` إذا كنت لا تعرف النوع، أو قم بكتابة الـ Interface الصحيح.
+- **ممنوع استخدام `any`.** استخدم `unknown` إذا كنت لا تعرف النوع، أو قم بكتابة الـ Interface الصحيح. استخرج رسالة الخطأ من الـ API عبر `getApiErrorMessage`.
 - تعامل مع الأخطاء دائماً بطريقة الـ Error Boundaries ولا تدع الـ App ينهار.
 - النماذج (Forms) تُبنى حصراً باستخدام `react-hook-form` مع `zodResolver` لربطها بـ `Zod` schemas.
 - لا تضع منطق الـ API داخل مكونات الـ UI (`Components`). المكونات يجب أن تستدعي `Custom Hooks` فقط.
+- استخدم `<Spinner>` / `<PageLoader>` بدلاً من إعادة كتابة دائرة تحميل. استخدم `<Input>` أو `tokens.input` لحقول الإدخال.
+- أي منطق حساب مالي (سلة POS، فاتورة، مرتجع) يجب أن يرافقه اختبار unit.
 
 ### 4. الوصولية (Accessibility - a11y)
 - أي زر يحتوي على أيقونة فقط يجب أن يمتلك `aria-label`.
-- النوافذ المنبثقة يجب أن تحتوي على `role="dialog"`, `aria-modal="true"`, و Focus Trap.
+- النوافذ المنبثقة **يجب** أن تُبنى على `BaseModal` أو `RightDrawer` لتوفير `role="dialog"`, `aria-modal="true"`, Escape، و Focus Trap تلقائياً.
 
 ### 5. التعليمات الخاصة بالـ Commits
 - اجعل الـ Commits صغيرة، ذرية (Atomic)، وتعبر عن تغيير واحد (Feature, Fix, Refactor).

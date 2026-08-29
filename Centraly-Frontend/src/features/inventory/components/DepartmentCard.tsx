@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { DepartmentResponse, CategoryResponse } from '@/features/inventory/schemas/inventorySchemas';
 import { Layers, Tag, Package, Plus, Edit, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import { HasPermission } from '@/features/auth/components/HasPermission';
+import { Permissions } from '@/features/auth/schemas/permissions';
 
 interface DepartmentCardProps {
   department: DepartmentResponse;
@@ -47,35 +49,42 @@ export function DepartmentCard({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddCategory(department.departmentId);
-            }}
-            className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg flex items-center gap-1 mr-2"
-          >
-            <Plus size={16} /> إضافة قسم فرعي
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onEditDepartment(department.departmentId, department.name);
-            }}
-            className="text-gray-400 hover:text-blue-500 transition-colors p-2"
-            title="تعديل القسم"
-          >
-            <Edit size={18} />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeleteDepartment(department.departmentId, department.name);
-            }}
-            className="text-gray-400 hover:text-red-500 transition-colors p-2"
-            title="حذف القسم"
-          >
-            <Trash2 size={18} />
-          </button>
+          <HasPermission permission={Permissions.InventoryWrite}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddCategory(department.departmentId);
+              }}
+              className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg flex items-center gap-1 mr-2"
+            >
+              <Plus size={16} /> إضافة قسم فرعي
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditDepartment(department.departmentId, department.name);
+              }}
+              className="text-gray-400 hover:text-blue-500 transition-colors p-2"
+              title="تعديل القسم"
+              aria-label="تعديل القسم"
+            >
+              <Edit size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteDepartment(department.departmentId, department.name);
+              }}
+              className="text-gray-400 hover:text-red-500 transition-colors p-2"
+              title="حذف القسم"
+              aria-label="حذف القسم"
+            >
+              <Trash2 size={18} />
+            </button>
+          </HasPermission>
         </div>
       </div>
 
@@ -96,20 +105,26 @@ export function DepartmentCard({
                     </div>
                   </div>
                   <div className="flex gap-1">
-                    <button
-                      onClick={() => onEditCategory(cat.categoryId, cat.name, cat.department.departmentId)}
-                      className="text-gray-300 hover:text-blue-500 transition-colors p-1"
-                      title="تعديل"
-                    >
-                      <Edit size={16} />
-                    </button>
-                    <button
-                      onClick={() => onDeleteCategory(cat.categoryId, cat.name)}
-                      className="text-gray-300 hover:text-red-500 transition-colors p-1"
-                      title="حذف"
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                    <HasPermission permission={Permissions.InventoryWrite}>
+                      <button
+                        type="button"
+                        onClick={() => onEditCategory(cat.categoryId, cat.name, cat.department.departmentId)}
+                        className="text-gray-300 hover:text-blue-500 transition-colors p-1"
+                        title="تعديل"
+                        aria-label="تعديل القسم الفرعي"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onDeleteCategory(cat.categoryId, cat.name)}
+                        className="text-gray-300 hover:text-red-500 transition-colors p-1"
+                        title="حذف"
+                        aria-label="حذف القسم الفرعي"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </HasPermission>
                   </div>
                 </div>
               ))}
@@ -120,12 +135,15 @@ export function DepartmentCard({
                 <Tag size={20} />
               </div>
               <p className="text-gray-500 font-medium">لا يوجد أقسام فرعية بعد</p>
-              <button 
-                onClick={() => onAddCategory(department.departmentId)}
-                className="text-blue-600 text-sm mt-2 font-semibold hover:underline"
-              >
-                إضافة قسم فرعي جديد
-              </button>
+              <HasPermission permission={Permissions.InventoryWrite}>
+                <button
+                  type="button"
+                  onClick={() => onAddCategory(department.departmentId)}
+                  className="text-blue-600 text-sm mt-2 font-semibold hover:underline"
+                >
+                  إضافة قسم فرعي جديد
+                </button>
+              </HasPermission>
             </div>
           )}
         </div>

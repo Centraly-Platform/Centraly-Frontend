@@ -1,21 +1,20 @@
 import { useForm, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from "zod";
-import { useDepartments } from '@/features/inventory/hooks/useInventory';
+import { useDepartments, useCategories } from '@/features/inventory/hooks/useInventory';
 import { tokens } from '@/shared/styles/tokens';
 import { Plus, Trash2 } from 'lucide-react';
-import { ProductResponse, CategoryResponse, createProductSchema } from '../schemas/inventorySchemas';
+import { ProductResponse, createProductSchema } from '../schemas/inventorySchemas';
 
 type ProductFormValues = z.infer<typeof createProductSchema>;
 
 interface AddProductFormProps {
-  categories?: CategoryResponse[];
   onSubmit: (data: ProductFormValues) => void;
   isSubmitting: boolean;
   initialData?: ProductResponse;
 }
 
-export function AddProductForm({ categories, onSubmit, initialData, isSubmitting: _ }: AddProductFormProps) {
+export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddProductFormProps) {
   const {
     register,
     handleSubmit,
@@ -40,9 +39,12 @@ export function AddProductForm({ categories, onSubmit, initialData, isSubmitting
     name: 'propertiesList'
   });
 
-  // Watch categoryId to fetch related departments
-  const selectedCategoryId = useWatch({ control, name: 'categoryId' });
-  const { data: departmentsData } = useDepartments(selectedCategoryId || undefined);
+  // Watch departmentId to fetch related categories
+  const selectedDepartmentId = useWatch({ control, name: 'departmentId' });
+  const { data: categoriesData } = useCategories(selectedDepartmentId || undefined);
+  const categories = categoriesData?.items || [];
+  
+  const { data: departmentsData } = useDepartments();
   const departments = departmentsData?.items || [];
 
   return (
@@ -79,35 +81,38 @@ export function AddProductForm({ categories, onSubmit, initialData, isSubmitting
         </div>
       </div>
 
-      {/* Category */}
+      {/* Department Select */}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
           القسم الرئيسي <span className="text-red-500">*</span>
         </label>
-        <select className={tokens.input} {...register('categoryId')}>
+        <select className={tokens.input} {...register('departmentId')} onChange={(e) => {
+          register('departmentId').onChange(e);
+          setValue('categoryId', ''); // Reset child when parent changes
+        }}>
           <option value="">اختر القسم الرئيسي...</option>
-          {categories?.map((cat) => (
-            <option key={cat.categoryId} value={cat.categoryId}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-        {errors.categoryId && <p className="text-red-500 text-xs mt-1">{errors.categoryId.message as string}</p>}
-      </div>
-
-      {/* Department Select */}
-      <div>
-        <label className={tokens.font.label + " block mb-1.5"}>القسم الفرعي</label>
-        <select className={tokens.input} {...register('departmentId')} disabled={!selectedCategoryId}>
-          <option value="">اختر القسم الفرعي...</option>
           {departments?.map((dep) => (
             <option key={dep.departmentId} value={dep.departmentId}>
               {dep.name}
             </option>
           ))}
         </select>
-        {errors.departmentId && (
-          <p className="text-red-500 text-xs mt-1">{String(errors.departmentId.message)}</p>
+        {errors.departmentId && <p className="text-red-500 text-xs mt-1">{String(errors.departmentId.message)}</p>}
+      </div>
+
+      {/* Category Select */}
+      <div>
+        <label className={tokens.font.label + " block mb-1.5"}>القسم الفرعي</label>
+        <select className={tokens.input} {...register('categoryId')} disabled={!selectedDepartmentId}>
+          <option value="">اختر القسم الفرعي...</option>
+          {categories?.map((cat) => (
+            <option key={cat.categoryId} value={cat.categoryId}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+        {errors.categoryId && (
+          <p className="text-red-500 text-xs mt-1">{String(errors.categoryId.message)}</p>
         )}
       </div>
 

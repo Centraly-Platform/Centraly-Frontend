@@ -46,3 +46,25 @@ export interface SupplierBatchResponse {
   purchasePrice: number;
   dateReceived: string;
 }
+
+export const createSupplierPaymentSchema = z.object({
+  supplierId: z.string().min(1),
+  amount: z.number().min(0.01, "المبلغ يجب أن يكون أكبر من 0"),
+  isReceipt: z.boolean().default(false),
+  paymentSource: z.number().optional(),
+  notes: z.string().optional(),
+});
+
+export type CreateSupplierPaymentRequest = z.infer<typeof createSupplierPaymentSchema>;
+
+export interface SupplierPaymentResponse {
+  id: string;
+  supplier: {
+    id: string;
+    name: string;
+    phone?: string;
+  };
+  amount: number;
+  paymentDate: string;
+  notes?: string;
+}

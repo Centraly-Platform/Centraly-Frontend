@@ -25,7 +25,7 @@ export function DepartmentForm({ form, onSubmit }: DepartmentFormProps) {
         <input
           type="text"
           {...form.register('name')}
-          className={`mt-1 block w-full rounded-lg border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ${form.formState.errors.name ? 'border-red-500' : 'border-gray-300'}`}
+          className={`${tokens.input} mt-1 ${form.formState.errors.name ? 'border-red-500' : ''}`}
         />
         {form.formState.errors.name && <p className="text-red-500 text-xs mt-1">{form.formState.errors.name.message}</p>}
       </div>
@@ -46,7 +46,7 @@ export function CategoryForm({ form, departments, onSubmit }: CategoryFormProps)
         <label className={tokens.font.label}>القسم الرئيسي <span className="text-red-500">*</span></label>
         <select
           {...form.register('departmentId')}
-          className={`mt-1 block w-full rounded-lg border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white ${form.formState.errors.departmentId ? 'border-red-500' : 'border-gray-300'}`}
+          className={`${tokens.select} mt-1 ${form.formState.errors.departmentId ? 'border-red-500' : ''}`}
         >
           <option value="">-- اختر القسم الرئيسي --</option>
           {departments.map(d => (
@@ -60,7 +60,7 @@ export function CategoryForm({ form, departments, onSubmit }: CategoryFormProps)
         <input
           type="text"
           {...form.register('name')}
-          className={`mt-1 block w-full rounded-lg border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ${form.formState.errors.name ? 'border-red-500' : 'border-gray-300'}`}
+          className={`${tokens.input} mt-1 ${form.formState.errors.name ? 'border-red-500' : ''}`}
         />
         {form.formState.errors.name && <p className="text-red-500 text-xs mt-1">{form.formState.errors.name.message}</p>}
       </div>

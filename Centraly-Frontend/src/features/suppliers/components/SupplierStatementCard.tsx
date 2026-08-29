@@ -12,7 +12,7 @@ const translateTxType = (type: string) => {
     'PurchaseInvoice': 'فاتورة مشتريات (استلام بضاعة)',
     'InvoicePayment': 'سداد من فاتورة',
     'Payment': 'دفعة نقدية (سند صرف للمورد)',
-    'Return': 'مرتجع مشتريات (إرجاع بضاعة)',
+    'Return': 'مرتجع مشتريات (ترجيع بضاعة)',
     'OpeningBalance': 'رصيد افتتاحي',
   };
   return map[type] || type;
@@ -31,8 +31,8 @@ export function SupplierStatementCard({ statement, isLoading }: SupplierStatemen
             <tr>
               <th className="px-4 py-3">تاريخ الحركة</th>
               <th className="px-4 py-3">البيان (نوع الحركة)</th>
-              <th className="px-4 py-3">خُصم من حسابه (دفعنا له)</th>
-              <th className="px-4 py-3">أُضيف لحسابه (اشترينا منه)</th>
+              <th className="px-4 py-3">خصم من حسابه (دفعنا له)</th>
+              <th className="px-4 py-3">أضيف لحسابه (اشترينا منه)</th>
               <th className="px-4 py-3">صافي الحساب (بعد الحركة)</th>
               <th className="px-4 py-3">ملاحظات</th>
             </tr>

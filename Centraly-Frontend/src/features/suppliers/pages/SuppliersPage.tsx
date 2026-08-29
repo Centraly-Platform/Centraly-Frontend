@@ -9,8 +9,8 @@ import { ConfirmModal } from '@/shared/components/ui/ConfirmModal';
 import { tokens } from '@/shared/styles/tokens';
 import * as z from 'zod';
 import { createSupplierSchema } from '../schemas/supplierSchemas';
-
 import { useNavigate } from 'react-router-dom';
+import { SupplierPaymentModal } from '../components/SupplierPaymentModal';
 
 export function SuppliersPage() {
   const navigate = useNavigate();
@@ -23,6 +23,9 @@ export function SuppliersPage() {
 
   // Delete modal state
   const [supplierToDelete, setSupplierToDelete] = useState<SupplierResponse | null>(null);
+
+  // Payment modal state
+  const [supplierToPay, setSupplierToPay] = useState<SupplierResponse | null>(null);
 
   const { data, isLoading } = useSuppliers({
     pageNumber: pageIndex,
@@ -116,6 +119,7 @@ export function SuppliersPage() {
         onPrevPage={() => setPageIndex((p) => p - 1)}
         onEdit={openEditDrawer}
         onDelete={(supplier) => setSupplierToDelete(supplier)}
+        onPay={(supplier) => setSupplierToPay(supplier)}
         onRowClick={(supplier) => navigate(`/contacts/suppliers/${supplier.supplierId}`)}
       />
 
@@ -125,7 +129,7 @@ export function SuppliersPage() {
         title="تأكيد حذف المورد"
         message={
           supplierToDelete
-            ? `هل أنت متأكد من حذف المورد "${supplierToDelete.name}" نهائياً؟ لا يمكن التراجع عن هذه الخطوة وقد يؤثر على فواتير المشتريات المرتبطة به.`
+            ? `هل أنت متأكد من حذف المورد "${supplierToDelete.name}" نهائياً؟ لا يمكن التراجع عن هذا الإجراء وقد يؤدي لحذف الفواتير المرتبطة به.`
             : ''
         }
         confirmText={deleteSupplier.isPending ? 'جاري الحذف...' : 'نعم، احذف'}
@@ -148,6 +152,15 @@ export function SuppliersPage() {
           isSubmitting={isSubmitting}
         />
       </RightDrawer>
+
+      {/* Payment Modal */}
+      {supplierToPay && (
+        <SupplierPaymentModal
+          isOpen={!!supplierToPay}
+          onClose={() => setSupplierToPay(null)}
+          supplier={supplierToPay}
+        />
+      )}
     </div>
   );
 }

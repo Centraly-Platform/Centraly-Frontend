@@ -5,6 +5,7 @@ import { useSupplierReturn } from '../hooks/useSupplierReturns';
 import { AlertCircle, Building2, ChevronLeft, Package, Clock } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 import { formatCurrency } from '@/shared/utils/currency';
+import { Spinner } from '@/shared/components/ui/Spinner';
 import { RETURN_REASON_LABELS, RETURN_REASON_COLORS } from '../schemas/supplierReturnSchemas';
 
 export function SupplierReturnDetailsPage() {
@@ -25,10 +26,12 @@ export function SupplierReturnDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-          <p className="text-gray-500">جاري تحميل تفاصيل المرتجع...</p>
+      <div className="p-6 h-screen bg-gray-50">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <Spinner size={40} className="mx-auto mb-3" />
+            <p className="text-gray-500">جاري تحميل تفاصيل المرتجع...</p>
+          </div>
         </div>
       </div>
     );
@@ -47,7 +50,7 @@ export function SupplierReturnDetailsPage() {
   }
 
   return (
-    <div className="space-y-5 max-w-5xl mx-auto">
+    <div className="space-y-5 w-full">
       {/* Top bar */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">

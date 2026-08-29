@@ -9,7 +9,10 @@ export interface FinanceFilters extends BaseFilters {
 // --- Enums ---
 export type DrawerTransactionType = 1 | 2; // Income = 1, Expense = 2
 export type DrawerTransactionCategory = 1 | 2 | 3 | 4 | 5; 
-export type ExpensePaymentSource = 1 | 2; // Drawer = 1, Safe = 2
+export type PaymentSource = 1 | 2; // Drawer = 1, Safe = 2
+
+export type GlobalTransactionCategory = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
+export type PaymentSourcePolicy = 1 | 2 | 3; // DrawerOnly = 1, SafeOnly = 2, Either = 3
 
 // --- Drawer ---
 
@@ -21,7 +24,7 @@ export type OpenSessionRequest = z.infer<typeof openSessionSchema>;
 export const addManualTransactionSchema = z.object({
   type: z.number(),
   category: z.number(),
-  amount: z.number().min(0.01),
+  amount: z.number().min(0.01, "المبلغ يجب أن يكون أكبر من 0"),
   notes: z.string().optional(),
   source: z.string().optional(),
 });
@@ -68,6 +71,14 @@ export const receiveDrawerDepositSchema = z.object({
 });
 export type ReceiveDrawerDepositRequest = z.infer<typeof receiveDrawerDepositSchema>;
 
+export const addManualSafeTransactionSchema = z.object({
+  type: z.number(),
+  category: z.number(),
+  amount: z.number().min(0.01),
+  notes: z.string().optional(),
+});
+export type AddManualSafeTransactionRequest = z.infer<typeof addManualSafeTransactionSchema>;
+
 export interface SafeResponse {
   id: string;
   name: string;
@@ -96,7 +107,7 @@ export type CreateExpenseCategoryRequest = z.infer<typeof createExpenseCategoryS
 export const createExpenseSchema = z.object({
   categoryId: z.string().min(1),
   amount: z.number().min(0.01),
-  paymentSource: z.number(), // ExpensePaymentSource
+  paymentSource: z.number().optional(),
   notes: z.string().optional(),
 });
 export type CreateExpenseRequest = z.infer<typeof createExpenseSchema>;

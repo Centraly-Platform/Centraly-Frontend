@@ -12,12 +12,14 @@ src/
 ├── features/         # الميزات (Features) مقسمة بشكل منطقي
 │   ├── auth/         # المصادقة (تسجيل الدخول، الصلاحيات)
 │   ├── inventory/    # المخزون (المنتجات، الأقسام)
-│   ├── finance/      # المالية (الخزينة، المصروفات، الدرج)
-│   ├── invoices/     # الفواتير (مبيعات، مشتريات)
-│   └── contacts/     # جهات الاتصال (موردين، عملاء)
+│   ├── sales/        # المبيعات و POS والمرتجعات
+│   ├── purchases/    # فواتير المشتريات ومرتجعات الموردين
+│   ├── suppliers/    # الموردين
+│   ├── contacts/     # العملاء
+│   └── finance/      # المالية (الخزينة، المصروفات، الدرج)
 ├── shared/           # المكونات المشتركة بين عدة ميزات
-│   ├── components/   # مكونات UI العامة (Button, Table, RightDrawer)
-│   ├── hooks/        # Hooks عامة (useDebounce, useFocusTrap)
+│   ├── components/   # مكونات UI العامة (Button, Table, BaseModal, PickerModal)
+│   ├── hooks/        # Hooks عامة (useDebounce, useFocusTrap, useModalBehavior)
 │   ├── styles/       # Design Tokens و CSS Variables
 │   └── types/        # الأنواع العامة (Pagination, Common enums)
 └── App.tsx           # الموجه الرئيسي وربط الـ Routes
@@ -42,6 +44,6 @@ src/
 - مكونات الـ UI مبنية فوق `TailwindCSS` ومجمعة في `shared/components/ui/` لضمان التوحيد (Consistency).
 
 ## 5. الحماية ومعالجة الأخطاء (Security & Error Handling)
-- **Token Storage:** يتم تخزين الـ JWT في الذاكرة (Memory) لمنع ثغرات XSS، وسيتم الترقية لـ HttpOnly Cookies.
-- **RBAC:** مكون `HasPermission` و `ProtectedRoute` يتحكمان في عرض المكونات والصفحات حسب صلاحيات المستخدم.
+- **Token Storage:** يتم تخزين الـ JWT حالياً في `localStorage` عبر `src/lib/storage.ts` لأن الباك-إند لا يوفّر refresh token بعد. الخطة المستقبلية: الانتقال إلى HttpOnly Cookies عند دعم الـ refresh endpoint.
+- **RBAC:** صلاحيات موحدة في `src/features/auth/schemas/permissions.ts`. `ProtectedRoute` يحمي الصفحات، و`HasPermission` يخفي أزرار UI الحساسة. حتى يرسل الباك permissions في login تُستخدم مجموعة صلاحيات مؤقتة كاملة للمستخدم المسجّل.
 - **Error Boundaries:** المشروع محمي بـ `GlobalErrorBoundary` و `FeatureErrorBoundary` لضمان عدم انهيار التطبيق بالكامل عند حدوث خطأ في مكون فرعي.

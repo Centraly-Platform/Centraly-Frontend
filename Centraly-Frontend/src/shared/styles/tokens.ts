@@ -32,6 +32,9 @@ export const tokens = {
   // --- Badge ---
   badge: {
     indigo: "bg-indigo-50 text-[var(--color-primary)] px-2.5 py-1 rounded-full text-xs font-medium",
+    success: "bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium",
+    warning: "bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-medium",
+    danger: "bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-xs font-medium",
   },
 
   // --- Card / Surface ---

@@ -59,9 +59,11 @@ export type CreateSupplierReturnItemRequest = z.infer<typeof createSupplierRetur
 
 export const createSupplierReturnSchema = z.object({
   supplierId: z.string().min(1, 'يجب اختيار مورد'),
-  reason: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+  reason: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
   notes: z.string().optional(),
   items: z.array(createSupplierReturnItemSchema).min(1, 'يجب إضافة صنف واحد على الأقل'),
+  isCashRefund: z.boolean().default(false),
+  paymentSource: z.number().optional(),
 });
 
 export type CreateSupplierReturnRequest = z.infer<typeof createSupplierReturnSchema>;

@@ -11,8 +11,9 @@ import {
 } from "../schemas/inventorySchemas";
 
 export class InventoryRepository implements IInventoryRepository {
-  async getCategories(filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>> {
-    const { data } = await apiClient.get<PaginatedList<CategoryResponse>>('/categories', { params: filters });
+  async getCategories(departmentId?: string, filters?: ProductFilters): Promise<PaginatedList<CategoryResponse>> {
+    const params = { ...filters, departmentId };
+    const { data } = await apiClient.get<PaginatedList<CategoryResponse>>('/categories', { params });
     return data;
   }
 
@@ -29,9 +30,8 @@ export class InventoryRepository implements IInventoryRepository {
     await apiClient.delete(`/categories/${id}`);
   }
 
-  async getDepartments(categoryId?: string, filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>> {
-    const params = { ...filters, categoryId };
-    const { data } = await apiClient.get<PaginatedList<DepartmentResponse>>('/departments', { params });
+  async getDepartments(filters?: ProductFilters): Promise<PaginatedList<DepartmentResponse>> {
+    const { data } = await apiClient.get<PaginatedList<DepartmentResponse>>('/departments', { params: filters });
     return data;
   }
 
@@ -70,8 +70,9 @@ export class InventoryRepository implements IInventoryRepository {
       formData.append('Image', reqData.image);
     }
     if (reqData.properties) {
-      Object.entries(reqData.properties).forEach(([key, value]) => {
-        formData.append(`Properties[${key}]`, value as string);
+      Object.entries(reqData.properties).forEach(([key, value], index) => {
+        formData.append(`Properties[${index}].Key`, key);
+        formData.append(`Properties[${index}].Value`, value as string);
       });
     }
 
@@ -93,8 +94,9 @@ export class InventoryRepository implements IInventoryRepository {
       formData.append('Image', reqData.image);
     }
     if (reqData.properties) {
-      Object.entries(reqData.properties).forEach(([key, value]) => {
-        formData.append(`Properties[${key}]`, value as string);
+      Object.entries(reqData.properties).forEach(([key, value], index) => {
+        formData.append(`Properties[${index}].Key`, key);
+        formData.append(`Properties[${index}].Value`, value as string);
       });
     }
 

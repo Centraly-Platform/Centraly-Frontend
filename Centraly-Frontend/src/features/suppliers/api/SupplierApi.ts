@@ -36,4 +36,9 @@ export const supplierRepository = {
     const response = await apiClient.get<SupplierBatchResponse[]>(`/suppliers/${id}/batches`);
     return response.data;
   },
+
+  addSupplierPayment: async (data: import('../schemas/supplierSchemas').CreateSupplierPaymentRequest): Promise<import('../schemas/supplierSchemas').SupplierPaymentResponse> => {
+    const response = await apiClient.post<import('../schemas/supplierSchemas').SupplierPaymentResponse>(`/supplier-transactions/payments`, data);
+    return response.data;
+  },
 };

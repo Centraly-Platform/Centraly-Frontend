@@ -78,3 +78,18 @@ export function useDeleteSupplier() {
     onError: () => toast.error("حدث خطأ أثناء حذف المورد، قد يكون مرتبطاً بفواتير"),
   });
 }
+
+export function useCreateSupplierPayment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: import('../schemas/supplierSchemas').CreateSupplierPaymentRequest) => 
+      supplierRepository.addSupplierPayment(data),
+    onSuccess: (_, variables) => {
+      toast.success("تم تسجيل الدفعة بنجاح!");
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+      queryClient.invalidateQueries({ queryKey: SUPPLIER_KEYS.supplierDetails(variables.supplierId) });
+      queryClient.invalidateQueries({ queryKey: ["finance", "drawer"] });
+    },
+    onError: () => toast.error("حدث خطأ أثناء تسجيل الدفعة"),
+  });
+}
