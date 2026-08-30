@@ -129,7 +129,7 @@ export function PosProductGrid({
               <p className="text-xl font-semibold">لا توجد منتجات</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 h-full content-start">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 h-full content-start">
               {products.map(product => {
                 const hasStock = product.totalQuantity > 0;
                 const isLowStock = product.isLowStock;
@@ -149,13 +149,13 @@ export function PosProductGrid({
                 return (
                   <div
                     key={product.productId}
-                    className="bg-white rounded-2xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all overflow-hidden flex flex-col p-3 relative"
+                    className="bg-white rounded-2xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all overflow-hidden flex flex-col p-2 sm:p-3 relative"
                   >
-                    <span className={`absolute top-3 right-3 z-10 text-[10px] font-bold px-2 py-0.5 rounded-md ${statusClass}`}>
+                    <span className={`absolute top-2 sm:top-3 right-2 sm:right-3 z-10 text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-md ${statusClass}`}>
                       {statusLabel}
                     </span>
 
-                    <div className="h-32 flex items-center justify-center mb-2 mt-2">
+                    <div className="h-24 sm:h-32 flex items-center justify-center mb-2 mt-2">
                       {imageSrc ? (
                         <img src={imageSrc} alt={product.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
                       ) : (
@@ -164,24 +164,24 @@ export function PosProductGrid({
                     </div>
                     
                     <div className="flex flex-col flex-1 items-center text-center">
-                      <h3 className="font-bold text-gray-900 text-sm mb-1 line-clamp-1 leading-snug">
+                      <h3 className="font-bold text-gray-900 text-xs sm:text-sm mb-1 line-clamp-1 leading-snug">
                         {product.name}
                       </h3>
                       
-                      <p className="text-[11px] text-gray-400 line-clamp-1 mb-2">
+                      <p className="text-[10px] sm:text-[11px] text-gray-400 line-clamp-1 mb-2">
                         {product.properties && Object.keys(product.properties).length > 0 
                           ? Object.values(product.properties).join(' - ') 
                           : product.category.name}
                       </p>
                       
-                      <div className="mt-auto mb-3 font-bold text-[12px] text-[#0f8e4c]">
+                      <div className="mt-auto mb-3 font-bold text-[11px] sm:text-[12px] text-[#0f8e4c]">
                         المخزون: {product.totalQuantity}
                       </div>
 
                       <button
                         onClick={() => hasStock && onProductClick(product)}
                         disabled={!hasStock}
-                        className={`w-full py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all ${
+                        className={`w-full py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all ${
                           hasStock 
                             ? 'bg-[#0f8e4c] hover:bg-[#0c7a40] text-white shadow-sm' 
                             : 'bg-gray-100 text-gray-400 cursor-not-allowed'

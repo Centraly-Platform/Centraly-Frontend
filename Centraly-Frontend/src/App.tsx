@@ -34,6 +34,7 @@ const DrawerHistoryPage = lazy(() => import("./features/finance/pages/DrawerHist
 const DrawerSessionDetailsPage = lazy(() => import("./features/finance/pages/DrawerSessionDetailsPage").then(module => ({ default: module.DrawerSessionDetailsPage })));
 const SafePage = lazy(() => import("./features/finance/pages/SafePage").then(module => ({ default: module.SafePage })));
 const ExpensesPage = lazy(() => import("./features/finance/pages/ExpensesPage").then(module => ({ default: module.ExpensesPage })));
+const OwnerTransactionsPage = lazy(() => import("./features/finance/pages/OwnerTransactionsPage").then(module => ({ default: module.OwnerTransactionsPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -128,6 +129,7 @@ export default function App() {
                   <Route path="/finance/drawer/history/:id" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><DrawerSessionDetailsPage /></ProtectedRoute>} />
                   <Route path="/finance/safe"     element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><SafePage /></ProtectedRoute>} />
                   <Route path="/finance/expenses" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><ExpensesPage /></ProtectedRoute>} />
+                  <Route path="/finance/owner-transactions" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><OwnerTransactionsPage /></ProtectedRoute>} />
                 </Route>
 
                 <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />

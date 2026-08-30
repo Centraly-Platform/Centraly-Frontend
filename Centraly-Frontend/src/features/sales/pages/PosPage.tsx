@@ -9,6 +9,7 @@ import { CheckoutModal } from '../components/CheckoutModal';
 import { useCreateSalesInvoice } from '../hooks/useSales';
 import { usePosCart } from '../hooks/usePosCart';
 import { SaleType, PaymentMethod } from '../schemas/salesSchemas';
+import { ShoppingCart, X } from 'lucide-react';
 
 export function PosPage() {
   const { setTitle, setBackButton } = useHeaderStore();
@@ -23,6 +24,7 @@ export function PosPage() {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const [checkoutMethod, setCheckoutMethod] = useState<PaymentMethod | null>(null);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
 
   const { data: productsData, isLoading: isLoadingProducts } = useProducts({
     pageNumber: pageNumber,
@@ -98,9 +100,12 @@ export function PosPage() {
     });
   };
 
+  const totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalAmount = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
   return (
-    <div className="-m-6 w-[calc(100%+3rem)] h-[calc(100vh-theme(spacing.16))] bg-gray-50 overflow-hidden flex">
-      <div className="flex-1 overflow-hidden relative">
+    <div className="-m-6 w-[calc(100%+3rem)] h-[calc(100vh-theme(spacing.16))] bg-gray-50 overflow-hidden flex flex-col lg:flex-row relative">
+      <div className="flex-1 overflow-hidden relative pb-[80px] lg:pb-0">
         <PosProductGrid
           products={productsData?.items || []}
           isLoading={isLoadingProducts}
@@ -117,7 +122,8 @@ export function PosPage() {
         />
       </div>
 
-      <div className="w-[380px] shrink-0 h-full border-r border-gray-200">
+      {/* Desktop Cart */}
+      <div className="hidden lg:block w-[380px] shrink-0 h-full border-r border-gray-200">
         <PosCart
           items={cart.items}
           onUpdateQuantity={cart.updateQuantity}
@@ -126,6 +132,50 @@ export function PosPage() {
           onCheckout={handleCheckoutClick}
         />
       </div>
+
+      {/* Mobile Cart Button / Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 flex items-center justify-between">
+         <div className="flex flex-col">
+            <span className="text-gray-500 text-sm font-semibold">الإجمالي ({totalQuantity} منتجات)</span>
+            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} ج.م</span>
+         </div>
+         <button 
+           onClick={() => setIsMobileCartOpen(true)}
+           className="bg-[#0f8e4c] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-sm"
+         >
+           <ShoppingCart size={20} />
+           عرض السلة
+         </button>
+      </div>
+
+      {/* Mobile Cart Drawer */}
+      {isMobileCartOpen && (
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/50" onClick={() => setIsMobileCartOpen(false)} />
+          {/* Drawer */}
+          <div className="absolute top-0 right-0 bottom-0 w-[90%] max-w-[400px] bg-[#f8f9fa] shadow-2xl flex flex-col">
+             {/* Close button row */}
+             <div className="p-4 pb-0 flex justify-start bg-[#f8f9fa] shrink-0 z-30">
+               <button onClick={() => setIsMobileCartOpen(false)} className="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 hover:bg-gray-100 rounded-xl transition-colors shadow-sm">
+                 <X size={20} className="text-gray-600" />
+               </button>
+             </div>
+             <div className="flex-1 overflow-hidden relative">
+               <PosCart
+                 items={cart.items}
+                 onUpdateQuantity={cart.updateQuantity}
+                 onRemoveItem={cart.removeItem}
+                 onClearCart={cart.clear}
+                 onCheckout={(method) => {
+                   handleCheckoutClick(method);
+                   setIsMobileCartOpen(false);
+                 }}
+               />
+             </div>
+          </div>
+        </div>
+      )}
 
       <BatchSelectionModal
         isOpen={isBatchModalOpen}
@@ -145,3 +195,4 @@ export function PosPage() {
     </div>
   );
 }
+

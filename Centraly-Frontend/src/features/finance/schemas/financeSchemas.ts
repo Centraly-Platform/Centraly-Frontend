@@ -126,3 +126,23 @@ export interface ExpenseResponse {
   expenseDate: string;
   notes?: string;
 }
+
+// --- Owner Transactions ---
+
+export const createOwnerTransactionSchema = z.object({
+  category: z.number(),
+  amount: z.number().min(0.01),
+  paymentSource: z.number(),
+  notes: z.string().optional(),
+});
+export type CreateOwnerTransactionRequest = z.infer<typeof createOwnerTransactionSchema>;
+
+export interface OwnerTransactionResponse {
+  id: string;
+  category: number;
+  amount: number;
+  paymentSource: number;
+  notes?: string;
+  createdAt: string;
+  createdByUserId?: string;
+}

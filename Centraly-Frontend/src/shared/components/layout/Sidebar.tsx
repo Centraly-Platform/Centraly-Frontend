@@ -56,6 +56,7 @@ const menuGroups: { title: string, permission?: string, items: { name: string, p
       { name: "الدرج والوردية", path: "/finance/drawer", icon: Wallet, permission: Permissions.FinanceRead },
       { name: "الخزينة", path: "/finance/safe", icon: Wallet, permission: Permissions.FinanceRead },
       { name: "المصروفات", path: "/finance/expenses", icon: Wallet, permission: Permissions.FinanceRead },
+      { name: "معاملات المالك", path: "/finance/owner-transactions", icon: Wallet, permission: Permissions.FinanceRead },
     ]
   }
 ];
