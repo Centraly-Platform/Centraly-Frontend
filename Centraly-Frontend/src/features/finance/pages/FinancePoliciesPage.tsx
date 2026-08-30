@@ -10,6 +10,7 @@ export function FinancePoliciesPage() {
   const { data: policies, isLoading } = useFinancePolicies();
   const { mutate: updatePolicy, isPending } = useUpdateFinancePolicy();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [activeDescription, setActiveDescription] = useState<string | null>(null);
 
   useEffect(() => {
     setTitle("السياسات المالية للمدير");
@@ -110,13 +111,24 @@ export function FinancePoliciesPage() {
           <tbody className="divide-y divide-gray-100">
             {policies?.map((policy) => (
               <tr key={policy.id} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-6 py-4">
-                  <div className="font-semibold text-gray-900 flex items-center gap-2">
-                    {categoryLabels[policy.category] || policy.category}
-                    <Info size={16} className="text-gray-400 cursor-help" title={categoryDescriptions[policy.category]} />
-                  </div>
-                  <div className="text-xs text-gray-500 font-mono mt-1 opacity-70">{policy.category}</div>
-                </td>
+                  <td className="px-6 py-4">
+                    <div className="font-semibold text-gray-900 flex items-center gap-2">
+                      {categoryLabels[policy.category] || policy.category}
+                      <button 
+                        type="button" 
+                        onClick={() => setActiveDescription(activeDescription === policy.category ? null : policy.category)}
+                        className="text-gray-400 hover:text-blue-600 transition-colors focus:outline-none"
+                      >
+                        <Info size={16} />
+                      </button>
+                    </div>
+                    <div className="text-xs text-gray-500 font-mono mt-1 opacity-70">{policy.category}</div>
+                    {activeDescription === policy.category && (
+                      <div className="mt-2 p-3 bg-blue-50 text-blue-800 text-sm leading-relaxed rounded-lg border border-blue-100 shadow-sm whitespace-pre-wrap animate-in fade-in slide-in-from-top-1">
+                        {categoryDescriptions[policy.category]}
+                      </div>
+                    )}
+                  </td>
                 <td className="px-6 py-4">
                   <div className="relative">
                     <select
