@@ -3,7 +3,7 @@ import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { useFinancePolicies, useUpdateFinancePolicy } from '../hooks/useFinancePolicies';
 import { GlobalTransactionCategory, PaymentSourcePolicy } from '../schemas/financeSchemas';
 import { tokens } from '@/shared/styles/tokens';
-import { ShieldAlert, Loader2 } from 'lucide-react';
+import { ShieldAlert, Loader2, Info } from 'lucide-react';
 
 export function FinancePoliciesPage() {
   const { setTitle, setBackButton } = useHeaderStore();
@@ -26,10 +26,26 @@ export function FinancePoliciesPage() {
     CustomerPayment: 'تحصيل دفعة من عميل (سجل العملاء > تحصيل)',
     CustomerRefund: 'رد أموال لعميل',
     Expense: 'المصروفات العامة (المالية > المصروفات)',
-    OwnerDeposit: 'إيداع رأس مال المالك (قريباً)',
-    OwnerWithdrawal: 'مسحوبات الأرباح للمالك (قريباً)',
+    OwnerDeposit: 'إيداع رأس مال المالك',
+    OwnerWithdrawal: 'مسحوبات الأرباح للمالك',
     ManualIncome: 'إيراد يدوي عام (الدرج / الخزينة > إضافة إيراد)',
     ManualExpense: 'مصروف يدوي عام (الدرج / الخزينة > إضافة مصروف)',
+  };
+
+  const categoryDescriptions: Record<string, string> = {
+    CashSale: 'عمليات البيع المباشر للزبائن كاش. مثال: عميل يشتري بضاعة بـ 100 ج.م ويدفع نقداً في نقطة البيع.',
+    SalesReturn: 'عندما يُرجع العميل بضاعة وتُعيد له أمواله كاش. مثال: عميل أعاد منتجاً وأخذ 50 ج.م من الدرج.',
+    CashPurchase: 'دفع المال للمورد نقداً وقت شراء البضاعة. مثال: شراء بضاعة بـ 500 ج.م ودفعها فوراً من الدرج.',
+    PurchaseReturn: 'عند إرجاع بضاعة للمورد واستلام ثمنها كاش. مثال: أرجعت بضاعة تالفة للمورد وأعطاك 200 ج.م نقدًا أدخلتها الدرج.',
+    SupplierPayment: 'تسديد دفعة من مديونية سابقة لمورد. مثال: مورد له حساب مفتوح، قمت بإعطائه 1000 ج.م من الدرج لتقليل حسابه.',
+    SupplierReceipt: 'نادر الحدوث: استلام كاش من مورد لأي سبب وتنزيله من رصيده (لتقليل حسابه الدائن).',
+    CustomerPayment: 'تحصيل دفعة كاش من عميل عليه ديون. مثال: عميل اشترى آجل، والآن أحضر 300 ج.م لسداد جزء من حسابه.',
+    CustomerRefund: 'إعطاء كاش لعميل دون ربطه بفاتورة مرتجع معينة. مثال: عميل دفع بزيادة سابقاً وجاء اليوم ليسترد 100 ج.م نقداً من الدرج.',
+    Expense: 'أي مصروف يومي أو شهري للمكان. مثال: دفع 50 ج.م إكرامية أو فاتورة كهرباء من الدرج.',
+    OwnerDeposit: 'قيام صاحب العمل بوضع أموال من جيبه الخاص لدعم الكاش. مثال: المالك يضع 5000 ج.م في الخزينة.',
+    OwnerWithdrawal: 'قيام صاحب العمل بسحب أموال لصالحه. مثال: المالك يسحب 1000 ج.م من الخزينة كمصروف شخصي.',
+    ManualIncome: 'إضافة إيراد ندي ليس له تصنيف في النظام. مثال: تسجيل إيراد استثنائي من الدرج.',
+    ManualExpense: 'سحب مصروف سريع ليس له تصنيف في فئات المصروفات المحددة.',
   };
 
   const categoryEnumMap: Record<string, GlobalTransactionCategory> = {
@@ -95,7 +111,10 @@ export function FinancePoliciesPage() {
             {policies?.map((policy) => (
               <tr key={policy.id} className="hover:bg-gray-50/50 transition-colors">
                 <td className="px-6 py-4">
-                  <div className="font-semibold text-gray-900">{categoryLabels[policy.category] || policy.category}</div>
+                  <div className="font-semibold text-gray-900 flex items-center gap-2">
+                    {categoryLabels[policy.category] || policy.category}
+                    <Info size={16} className="text-gray-400 cursor-help" title={categoryDescriptions[policy.category]} />
+                  </div>
                   <div className="text-xs text-gray-500 font-mono mt-1 opacity-70">{policy.category}</div>
                 </td>
                 <td className="px-6 py-4">
