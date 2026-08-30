@@ -57,6 +57,7 @@ const menuGroups: { title: string, permission?: string, items: { name: string, p
       { name: "الخزينة", path: "/finance/safe", icon: Wallet, permission: Permissions.FinanceRead },
       { name: "المصروفات", path: "/finance/expenses", icon: Wallet, permission: Permissions.FinanceRead },
       { name: "معاملات المالك", path: "/finance/owner-transactions", icon: Wallet, permission: Permissions.FinanceRead },
+      { name: "عمليات المحافظ", path: "/operations/wallets", icon: Wallet, permission: Permissions.FinanceWrite },
     ]
   }
 ];
@@ -128,12 +129,12 @@ export function Sidebar() {
         })}
 
         {/* Settings */}
-        <div className="border-t border-slate-800 pt-4 mt-2">
+        <div className="border-t border-slate-800 pt-4 mt-2 space-y-1">
           <Link
             to="/settings/finance-policies"
             title={!isOpen ? "سياسات النظام" : undefined}
             className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
-              location.pathname.startsWith("/settings")
+              location.pathname === "/settings/finance-policies"
                 ? "bg-blue-600 text-white"
                 : "hover:bg-slate-800 hover:text-white"
             }`}
@@ -141,6 +142,20 @@ export function Sidebar() {
             <Settings size={20} className="text-slate-400 shrink-0" />
             <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
               سياسات النظام
+            </span>
+          </Link>
+          <Link
+            to="/settings/wallets"
+            title={!isOpen ? "إدارة المحافظ" : undefined}
+            className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
+              location.pathname === "/settings/wallets"
+                ? "bg-blue-600 text-white"
+                : "hover:bg-slate-800 hover:text-white"
+            }`}
+          >
+            <Wallet size={20} className="text-slate-400 shrink-0" />
+            <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
+              إدارة المحافظ
             </span>
           </Link>
         </div>

@@ -35,6 +35,8 @@ const DrawerSessionDetailsPage = lazy(() => import("./features/finance/pages/Dra
 const SafePage = lazy(() => import("./features/finance/pages/SafePage").then(module => ({ default: module.SafePage })));
 const ExpensesPage = lazy(() => import("./features/finance/pages/ExpensesPage").then(module => ({ default: module.ExpensesPage })));
 const OwnerTransactionsPage = lazy(() => import("./features/finance/pages/OwnerTransactionsPage").then(module => ({ default: module.OwnerTransactionsPage })));
+const WalletsAdminPage = lazy(() => import("./features/wallets/pages/WalletsAdminPage").then(module => ({ default: module.WalletsAdminPage })));
+const WalletOperationsPage = lazy(() => import("./features/wallets/pages/WalletOperationsPage").then(module => ({ default: module.WalletOperationsPage })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -130,10 +132,12 @@ export default function App() {
                   <Route path="/finance/safe"     element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><SafePage /></ProtectedRoute>} />
                   <Route path="/finance/expenses" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><ExpensesPage /></ProtectedRoute>} />
                   <Route path="/finance/owner-transactions" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><OwnerTransactionsPage /></ProtectedRoute>} />
+                  <Route path="/operations/wallets" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceWrite]}><WalletOperationsPage /></ProtectedRoute>} />
                 </Route>
 
                 <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
                 <Route path="/settings/finance-policies" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceRead]}><FinancePoliciesPage /></ProtectedRoute>} />
+                <Route path="/settings/wallets" element={<ProtectedRoute requiredPermissions={[Permissions.FinanceWrite]}><WalletsAdminPage /></ProtectedRoute>} />
               </Route>
 
               {/* Fallback */}
