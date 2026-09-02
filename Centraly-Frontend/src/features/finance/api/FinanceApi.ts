@@ -11,8 +11,8 @@ import {
 
 export class FinanceRepository implements IFinanceRepository {
   // --- Drawer ---
-  async getCurrentDrawerSession(): Promise<DrawerSessionResponse> {
-    const { data } = await apiClient.get<DrawerSessionResponse>('/drawers/active');
+  async getCurrentDrawerSession(type: number = 1): Promise<DrawerSessionResponse> {
+    const { data } = await apiClient.get<DrawerSessionResponse>('/drawers/active', { params: { type } });
     return data;
   }
 
@@ -21,8 +21,8 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
 
-  async closeDrawerSession(): Promise<void> {
-    await apiClient.post('/drawers/close');
+  async closeDrawerSession(type: number = 1): Promise<void> {
+    await apiClient.post('/drawers/close', null, { params: { type } });
   }
 
   async addDrawerTransaction(reqData: AddManualTransactionRequest): Promise<string> {

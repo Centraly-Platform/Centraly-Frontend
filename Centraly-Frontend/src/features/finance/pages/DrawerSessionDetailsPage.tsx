@@ -82,7 +82,7 @@ export function DrawerSessionDetailsPage() {
       </div>
 
       {/* Financial Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-gray-500 text-sm font-medium mb-2">إجمالي المبيعات / الداخل</p>
           <p className="text-2xl font-bold text-green-600" dir="ltr">+{formatCurrency(session.totalIncome || 0)}</p>
@@ -90,6 +90,10 @@ export function DrawerSessionDetailsPage() {
         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
           <p className="text-gray-500 text-sm font-medium mb-2">إجمالي المصروفات / الخارج</p>
           <p className="text-2xl font-bold text-red-600" dir="ltr">-{formatCurrency(session.totalExpense || 0)}</p>
+        </div>
+        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+          <p className="text-gray-500 text-sm font-medium mb-2">صافي الأرباح</p>
+          <p className="text-2xl font-bold text-blue-600" dir="ltr">{formatCurrency(session.totalProfit ?? 0)}</p>
         </div>
         <div className="bg-gray-900 p-5 rounded-2xl shadow-sm text-white">
           <p className="text-gray-400 text-sm font-medium mb-2">الرصيد النهائي للصندوق</p>

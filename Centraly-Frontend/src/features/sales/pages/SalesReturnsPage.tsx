@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useSalesReturns } from '../hooks/useSales';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { Plus } from 'lucide-react';
@@ -23,11 +23,7 @@ export const SalesReturnsPage = () => {
 
   const columns = getSalesReturnsColumns();
 
-  // Client side date filtering if backend doesn't support it directly in RequestFilters
-  const filteredData = data?.items?.filter((item) => {
-    if (!dateFilter) return true;
-    return item.returnDate.startsWith(dateFilter);
-  }) || [];
+  const filteredData = data?.items || [];
 
   return (
     <div className="space-y-6 w-full">
@@ -37,7 +33,7 @@ export const SalesReturnsPage = () => {
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus size={20} />
-          <span>إضافة مرتجع جديد</span>
+          <span>Ø¥Ø¶Ø§ÙØ© Ù…Ø±ØªØ¬Ø¹ Ø¬Ø¯ÙŠØ¯</span>
         </button>
       </div>
 
@@ -64,3 +60,4 @@ export const SalesReturnsPage = () => {
     </div>
   );
 };
+

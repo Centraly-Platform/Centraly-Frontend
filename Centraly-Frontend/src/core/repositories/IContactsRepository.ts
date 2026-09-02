@@ -1,14 +1,10 @@
-import { PaginatedList } from "@/shared/types/pagination";
+﻿import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CreateCustomerRequest, 
   CustomerResponse, 
   CustomerStatementResponse, CustomerDebtHistoryResponse, 
-  CreateSupplierRequest, 
-  SupplierResponse, 
-  SupplierStatementItemResponse, 
   CreatePaymentRequest,
-  ContactFilters,
-  StatementFilters
+  ContactFilters
 } from "@/features/contacts/schemas/contactSchemas";
 
 export interface IContactsRepository {
@@ -23,16 +19,4 @@ export interface IContactsRepository {
   // Customer Transactions
   getCustomerStatement(customerId: string): Promise<CustomerStatementResponse[]>;
   addCustomerPayment(customerId: string, data: CreatePaymentRequest): Promise<string>;
-
-  // Suppliers
-  getSuppliers(filters: ContactFilters): Promise<PaginatedList<SupplierResponse>>;
-  getSupplier(id: string): Promise<SupplierResponse>;
-  createSupplier(data: CreateSupplierRequest): Promise<string>;
-  updateSupplier(id: string, data: CreateSupplierRequest): Promise<void>;
-  deleteSupplier(id: string): Promise<void>;
-
-  // Supplier Transactions
-  getSupplierStatement(filters: StatementFilters): Promise<PaginatedList<SupplierStatementItemResponse>>;
-  addSupplierPayment(supplierId: string, data: CreatePaymentRequest): Promise<string>;
 }
-

@@ -1,3 +1,5 @@
+﻿import { formatCurrency } from '@/shared/utils/currency';
+import { formatDate } from '@/shared/utils/date';
 import { useState } from 'react';
 import { useOwnerTransactions, useCreateOwnerTransaction } from '../hooks/useOwnerTransactions';
 import { usePaymentSourcePrompt } from '../hooks/usePaymentSourcePrompt';
@@ -55,39 +57,39 @@ export function OwnerTransactionsPage() {
 
   const columns = [
     {
-      header: 'النوع',
+      header: 'Ø§Ù„Ù†ÙˆØ¹',
       cell: (row: OwnerTransactionResponse) => (
         <span className={row.category === 10 ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
-          {row.category === 10 ? 'إيداع رأس مال' : 'سحب أرباح'}
+          {row.category === 10 ? 'Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ù…Ø§Ù„' : 'Ø³Ø­Ø¨ Ø£Ø±Ø¨Ø§Ø­'}
         </span>
       ),
     },
     {
-      header: 'المبلغ',
+      header: 'Ø§Ù„Ù…Ø¨Ù„Øº',
       cell: (row: OwnerTransactionResponse) => (
         <span dir="ltr" className="font-semibold text-gray-800 inline-block">
-          {row.amount.toLocaleString()} د.ع
+          {formatCurrency(row.amount)}
         </span>
       ),
     },
     {
-      header: 'المصدر',
+      header: 'Ø§Ù„Ù…ØµØ¯Ø±',
       cell: (row: OwnerTransactionResponse) => (
         <span className="text-gray-600 text-sm">
-          {row.paymentSource === 1 ? 'الدرج' : 'الخزينة'}
+          {row.paymentSource === 1 ? 'Ø§Ù„Ø¯Ø±Ø¬' : 'Ø§Ù„Ø®Ø²ÙŠÙ†Ø©'}
         </span>
       ),
     },
     {
-      header: 'التاريخ',
+      header: 'Ø§Ù„ØªØ§Ø±ÙŠØ®',
       cell: (row: OwnerTransactionResponse) => (
         <span className="text-gray-600 text-sm">
-          {new Date(row.createdAt).toLocaleString('ar-IQ')}
+          {formatDate(row.createdAt)}
         </span>
       ),
     },
     {
-      header: 'ملاحظات',
+      header: 'Ù…Ù„Ø§Ø­Ø¸Ø§Øª',
       cell: (row: OwnerTransactionResponse) => (
         <span className="text-gray-500 text-sm">
           {row.notes || '-'}
@@ -102,10 +104,10 @@ export function OwnerTransactionsPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <Wallet className="w-7 h-7 text-indigo-600" />
-            معاملات المالك
+            Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ø§Ù„Ù…Ø§Ù„Ùƒ
           </h1>
           <p className="text-gray-500 mt-1 flex items-center gap-1.5 text-sm">
-            إدارة إيداع رأس المال وسحب الأرباح
+            Ø¥Ø¯Ø§Ø±Ø© Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ø§Ù„Ù…Ø§Ù„ ÙˆØ³Ø­Ø¨ Ø§Ù„Ø£Ø±Ø¨Ø§Ø­
           </p>
         </div>
         <div className="flex gap-3">
@@ -114,20 +116,20 @@ export function OwnerTransactionsPage() {
             className={tokens.btn.primary + " flex items-center gap-2 bg-green-600 hover:bg-green-700"}
           >
             <ArrowDownCircle className="w-5 h-5" />
-            إيداع رأس مال
+            Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ù…Ø§Ù„
           </button>
           <button 
             onClick={() => handleOpenModal('Withdrawal')}
             className={tokens.btn.primary + " flex items-center gap-2 bg-red-600 hover:bg-red-700"}
           >
             <ArrowUpCircle className="w-5 h-5" />
-            سحب أرباح
+            Ø³Ø­Ø¨ Ø£Ø±Ø¨Ø§Ø­
           </button>
         </div>
       </div>
 
       <div>
-        <h3 className="text-lg font-bold text-gray-800 mb-4">سجل المعاملات</h3>
+        <h3 className="text-lg font-bold text-gray-800 mb-4">Ø³Ø¬Ù„ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª</h3>
         <DataTable
           columns={columns}
           data={transactions || []}
@@ -145,11 +147,11 @@ export function OwnerTransactionsPage() {
       <BaseModal
         isOpen={modalState.isOpen}
         onClose={() => setModalState({ isOpen: false, type: null })}
-        title={modalState.type === 'Deposit' ? 'إيداع رأس مال جديد' : 'سحب أرباح'}
+        title={modalState.type === 'Deposit' ? 'Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ù…Ø§Ù„ Ø¬Ø¯ÙŠØ¯' : 'Ø³Ø­Ø¨ Ø£Ø±Ø¨Ø§Ø­'}
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">المبلغ</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ù…Ø¨Ù„Øº</label>
             <input
               type="number"
               required
@@ -157,30 +159,30 @@ export function OwnerTransactionsPage() {
               step="any"
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
-              className={tokens.input.base}
+              className={tokens.input}
               placeholder="0.00"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ملاحظات (اختياري)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ù…Ù„Ø§Ø­Ø¸Ø§Øª (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className={tokens.input.base}
+              className={tokens.input}
               rows={3}
-              placeholder="أدخل أي ملاحظات هنا..."
+              placeholder="Ø£Ø¯Ø®Ù„ Ø£ÙŠ Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ù‡Ù†Ø§..."
             />
           </div>
           <div className="flex gap-3 pt-4">
             <button type="submit" disabled={isSubmitting} className={`${tokens.btn.primary} flex-1`}>
-              {isSubmitting ? 'جاري الحفظ...' : 'تأكيد'}
+              {isSubmitting ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'ØªØ£ÙƒÙŠØ¯'}
             </button>
             <button 
               type="button" 
               onClick={() => setModalState({ isOpen: false, type: null })}
               className={`${tokens.btn.ghost} flex-1`}
             >
-              إلغاء
+              Ø¥Ù„ØºØ§Ø¡
             </button>
           </div>
         </form>
@@ -188,3 +190,7 @@ export function OwnerTransactionsPage() {
     </div>
   );
 }
+
+
+
+

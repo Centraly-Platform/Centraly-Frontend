@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { useProducts } from '@/features/inventory/hooks/useInventory';
-import { ProductResponse, ProductBatchResponse } from '@/features/inventory/schemas/inventorySchemas';
+import { ProductResponse, ProductBatchResponse, ProductUsageDto } from '@/features/inventory/schemas/inventorySchemas';
 import { PosProductGrid } from '../components/PosProductGrid';
 import { PosCart } from '../components/PosCart';
 import { BatchSelectionModal } from '../components/BatchSelectionModal';
@@ -32,6 +32,7 @@ export function PosPage() {
     searchValue: searchTerm || undefined,
     categoryId: selectedCategoryId || undefined,
     departmentId: selectedDepartmentId || undefined,
+    excludeUsage: ProductUsageDto.MaintenanceOnly,
   });
 
   const createInvoiceMutation = useCreateSalesInvoice();
@@ -41,7 +42,7 @@ export function PosPage() {
   }, [searchTerm, selectedDepartmentId, selectedCategoryId]);
 
   useEffect(() => {
-    setTitle('نقطة البيع (POS)');
+    setTitle('Ù†Ù‚Ø·Ø© Ø§Ù„Ø¨ÙŠØ¹ (POS)');
     setBackButton(false);
   }, [setTitle, setBackButton]);
 
@@ -56,9 +57,9 @@ export function PosPage() {
     cart.addItem({
       id: `${selectedProduct.productId}_${batch.batchId}_${selectedPrice}`,
       productId: selectedProduct.productId,
-      productName: selectedProduct.name || 'منتج غير معروف',
+      productName: selectedProduct.name || 'Ù…Ù†ØªØ¬ ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ',
       batchId: batch.batchId,
-      batchName: batch.supplierName || 'شركة غير معروفة',
+      batchName: batch.supplierName || 'Ø´Ø±ÙƒØ© ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙØ©',
       imageUrl: selectedProduct.imageUrl,
       properties: selectedProduct.properties,
       price: selectedPrice,
@@ -75,13 +76,13 @@ export function PosPage() {
     setIsCheckoutModalOpen(true);
   };
 
-  const handleConfirmCheckout = (customerName: string, customerPhone: string, paidAmount: number, paymentSource?: number) => {
+  const handleConfirmCheckout = (customerName: string, customerPhone: string, paidAmount: number, paymentSource?: number, saleType: SaleType = SaleType.Retail) => {
     if (!checkoutMethod) return;
 
     createInvoiceMutation.mutate({
       customerName: customerName.trim() || undefined,
       customerPhone: customerPhone.trim() || undefined,
-      saleType: SaleType.Retail,
+      saleType: saleType,
       paymentMethod: checkoutMethod,
       paidAmount: paidAmount,
       paymentSource: paymentSource,
@@ -136,15 +137,15 @@ export function PosPage() {
       {/* Mobile Cart Button / Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 flex items-center justify-between">
          <div className="flex flex-col">
-            <span className="text-gray-500 text-sm font-semibold">الإجمالي ({totalQuantity} منتجات)</span>
-            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} ج.م</span>
+            <span className="text-gray-500 text-sm font-semibold">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ ({totalQuantity} Ù…Ù†ØªØ¬Ø§Øª)</span>
+            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} Ø¬.Ù…</span>
          </div>
          <button 
            onClick={() => setIsMobileCartOpen(true)}
            className="bg-[#0f8e4c] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-sm"
          >
            <ShoppingCart size={20} />
-           عرض السلة
+           Ø¹Ø±Ø¶ Ø§Ù„Ø³Ù„Ø©
          </button>
       </div>
 
@@ -195,4 +196,5 @@ export function PosPage() {
     </div>
   );
 }
+
 

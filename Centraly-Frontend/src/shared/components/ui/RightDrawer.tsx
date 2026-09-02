@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { X } from 'lucide-react';
 import { useModalBehavior } from '@/shared/hooks/useModalBehavior';
+import { cn } from '@/lib/utils';
 
 interface RightDrawerProps {
   isOpen: boolean;
@@ -8,9 +9,10 @@ interface RightDrawerProps {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  width?: string;
 }
 
-export function RightDrawer({ isOpen, onClose, title, children, footer }: RightDrawerProps) {
+export function RightDrawer({ isOpen, onClose, title, children, footer, width = 'w-[450px]' }: RightDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   useModalBehavior(isOpen, onClose, drawerRef);
 
@@ -26,7 +28,7 @@ export function RightDrawer({ isOpen, onClose, title, children, footer }: RightD
 
       <div
         ref={drawerRef}
-        className="relative w-[450px] bg-[var(--color-surface)] h-full shadow-2xl flex flex-col"
+        className={cn("relative bg-[var(--color-surface)] h-full shadow-2xl flex flex-col", width)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="drawer-title"

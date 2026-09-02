@@ -22,6 +22,7 @@ export function ProductsPage() {
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [stockFilter, setStockFilter]       = useState('');
+  const [usageFilter, setUsageFilter]       = useState('');
   const [isDrawerOpen, setIsDrawerOpen]   = useState(false);
   
   const [productToDelete, setProductToDelete] = useState<ProductResponse | null>(null);
@@ -35,6 +36,7 @@ export function ProductsPage() {
     departmentId: departmentFilter || undefined,
     categoryId: categoryFilter || undefined,
     stockStatus: stockFilter || undefined,
+    usage: usageFilter ? Number(usageFilter) : undefined,
   });
   const createProduct        = useCreateProduct();
   const deleteProduct        = useDeleteProduct();
@@ -48,6 +50,7 @@ export function ProductsPage() {
 
   const handleDepartmentChange = (val: string) => {
     setDepartmentFilter(val);
+    setCategoryFilter('');
     setPageIndex(1);
   };
 
@@ -58,6 +61,11 @@ export function ProductsPage() {
 
   const handleStockChange = (val: string) => {
     setStockFilter(val);
+    setPageIndex(1);
+  };
+
+  const handleUsageChange = (val: string) => {
+    setUsageFilter(val);
     setPageIndex(1);
   };
 
@@ -76,6 +84,7 @@ export function ProductsPage() {
       departmentId: formData.departmentId,
       categoryId: formData.categoryId,
       minQuantityAlert: formData.minQuantityAlert,
+      usage: formData.usage || 3,
       barcode: formData.barcode,
       storageLocation: formData.storageLocation,
     };
@@ -127,6 +136,8 @@ export function ProductsPage() {
         onCategoryChange={handleCategoryChange}
         stockFilter={stockFilter}
         onStockChange={handleStockChange}
+        usageFilter={usageFilter}
+        onUsageChange={handleUsageChange}
         onAddClick={() => setIsDrawerOpen(true)}
       />
 

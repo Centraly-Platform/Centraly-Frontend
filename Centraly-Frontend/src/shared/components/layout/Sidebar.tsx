@@ -1,106 +1,169 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  LayoutDashboard, ShoppingCart, ShoppingBag,
-  Package, Users, Wallet, Settings,
-  LogOut, MonitorSmartphone
+import { 
+  MonitorSmartphone, ShoppingCart, Wrench, Package, 
+  Users, Wallet, Settings, LogOut, ShoppingBag,
+  ChevronDown, ChevronUp, Grip, Zap
 } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { Permissions } from "@/features/auth/schemas/permissions";
-import { useSidebarStore } from "../../hooks/useSidebarStore";
+import { useSidebarStore } from "@/shared/hooks/useSidebarStore";
+import { useState } from "react";
 
-const menuGroups: { title: string, permission?: string, items: { name: string, path: string, icon: any, permission?: string }[] }[] = [
+type MenuItem = {
+  name: string;
+  path: string;
+  icon: any;
+  allowedRoles?: string[];
+};
+
+type MenuGroup = {
+  title: string;
+  items: MenuItem[];
+  allowedRoles?: string[];
+};
+
+const SALES_ROLES = ["Admin", "Manager", "Salesperson"];
+const INVENTORY_ROLES = ["Admin", "Manager", "Salesperson", "Technician"];
+const PURCHASES_ROLES = ["Admin", "Manager"];
+const MAINTENANCE_ROLES = ["Admin", "Manager", "Technician"];
+const CUSTOMER_ROLES = ["Admin", "Manager", "Salesperson"];
+const SUPPLIER_ROLES = ["Admin", "Manager"];
+const DRAWER_EXPENSE_ROLES = ["Admin", "Manager", "Salesperson", "Technician"];
+const ADMIN_MANAGER = ["Admin", "Manager"];
+
+const menuGroups: MenuGroup[] = [
   {
-    title: "الرئيسية",
+    title: "الوصول السريع",
+    allowedRoles: SALES_ROLES,
     items: [
-      { name: "لوحة القيادة", path: "/", icon: LayoutDashboard },
+      { name: "شاشة الكاشير (POS)", path: "/sales/pos", icon: MonitorSmartphone, allowedRoles: SALES_ROLES },
+      { name: "عمليات المحافظ", path: "/operations/wallets", icon: Zap, allowedRoles: SALES_ROLES },
+    ]
+  },
+  {
+    title: "الصيانة",
+    allowedRoles: MAINTENANCE_ROLES,
+    items: [
+      { name: "تذاكر الصيانة", path: "/maintenance", icon: Wrench, allowedRoles: MAINTENANCE_ROLES },
     ]
   },
   {
     title: "المبيعات",
-    permission: Permissions.SalesRead,
+    allowedRoles: SALES_ROLES,
     items: [
-      { name: "نقطة البيع (POS)", path: "/sales/pos", icon: MonitorSmartphone, permission: Permissions.SalesWrite },
-      { name: "سجل المبيعات", path: "/sales/history", icon: ShoppingCart, permission: Permissions.SalesRead },
-      { name: "المرتجعات", path: "/sales/returns", icon: ShoppingCart, permission: Permissions.SalesRead },
+      { name: "سجل المبيعات", path: "/sales/history", icon: ShoppingCart, allowedRoles: SALES_ROLES },
+      { name: "مرتجعات المبيعات", path: "/sales/returns", icon: ShoppingCart, allowedRoles: SALES_ROLES },
     ]
   },
   {
     title: "المشتريات",
-    permission: Permissions.PurchasesRead,
+    allowedRoles: PURCHASES_ROLES,
     items: [
-      { name: "فاتورة مشتريات", path: "/purchases/new", icon: ShoppingBag, permission: Permissions.PurchasesWrite },
-      { name: "سجل المشتريات", path: "/purchases/history", icon: ShoppingBag, permission: Permissions.PurchasesRead },
-      { name: "مرتجعات الموردين", path: "/purchases/returns", icon: ShoppingBag, permission: Permissions.PurchasesRead },
+      { name: "فاتورة مشتريات", path: "/purchases/new", icon: ShoppingBag, allowedRoles: PURCHASES_ROLES },
+      { name: "سجل المشتريات", path: "/purchases/history", icon: ShoppingBag, allowedRoles: PURCHASES_ROLES },
+      { name: "مرتجعات الموردين", path: "/purchases/returns", icon: ShoppingBag, allowedRoles: PURCHASES_ROLES },
     ]
   },
   {
     title: "المخزون",
-    permission: Permissions.InventoryRead,
+    allowedRoles: INVENTORY_ROLES,
     items: [
-      { name: "المنتجات", path: "/inventory/products", icon: Package, permission: Permissions.InventoryRead },
-      { name: "الأقسام", path: "/inventory/categories", icon: Package, permission: Permissions.InventoryRead },
+      { name: "المنتجات", path: "/inventory/products", icon: Package, allowedRoles: INVENTORY_ROLES },
+      { name: "التصنيفات", path: "/inventory/categories", icon: Package, allowedRoles: INVENTORY_ROLES },
     ]
   },
   {
     title: "جهات الاتصال",
-    permission: Permissions.ContactsRead,
+    allowedRoles: SALES_ROLES,
     items: [
-      { name: "العملاء", path: "/contacts/customers", icon: Users, permission: Permissions.ContactsRead },
-      { name: "الموردين", path: "/contacts/suppliers", icon: Users, permission: Permissions.ContactsRead },
+      { name: "العملاء", path: "/contacts/customers", icon: Users, allowedRoles: CUSTOMER_ROLES },
+      { name: "الموردين", path: "/contacts/suppliers", icon: Users, allowedRoles: SUPPLIER_ROLES },
     ]
   },
   {
-    title: "المالية",
-    permission: Permissions.FinanceRead,
+    title: "الماليات",
+    allowedRoles: DRAWER_EXPENSE_ROLES,
     items: [
-      { name: "الدرج والوردية", path: "/finance/drawer", icon: Wallet, permission: Permissions.FinanceRead },
-      { name: "الخزينة", path: "/finance/safe", icon: Wallet, permission: Permissions.FinanceRead },
-      { name: "المصروفات", path: "/finance/expenses", icon: Wallet, permission: Permissions.FinanceRead },
-      { name: "معاملات المالك", path: "/finance/owner-transactions", icon: Wallet, permission: Permissions.FinanceRead },
-      { name: "عمليات المحافظ", path: "/operations/wallets", icon: Wallet, permission: Permissions.FinanceWrite },
+      { name: "الدرج والمصروفات", path: "/finance/drawer", icon: Wallet, allowedRoles: DRAWER_EXPENSE_ROLES },
+      { name: "الخزينات", path: "/finance/safe", icon: Wallet, allowedRoles: ADMIN_MANAGER },
+      { name: "المصروفات", path: "/finance/expenses", icon: Wallet, allowedRoles: DRAWER_EXPENSE_ROLES },
+      { name: "معاملات المالك", path: "/finance/owner-transactions", icon: Wallet, allowedRoles: ADMIN_MANAGER },
+    ]
+  },
+  {
+    title: "الإدارة والصلاحيات",
+    allowedRoles: ADMIN_MANAGER,
+    items: [
+      { name: "إدارة المستخدمين", path: "/admin/users", icon: Users, allowedRoles: ADMIN_MANAGER },
+      { name: "الأدوار والصلاحيات", path: "/admin/roles", icon: Settings, allowedRoles: ADMIN_MANAGER },
     ]
   }
 ];
 
 export function Sidebar() {
   const location = useLocation();
-  const { logout, hasPermission } = useAuth();
+  const { logout, hasAnyRole } = useAuth();
   const { isOpen } = useSidebarStore();
+  
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<number, boolean>>({});
+
+  const toggleGroup = (index: number) => {
+    setCollapsedGroups(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
   return (
-    <aside className={`${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-slate-900 text-slate-300 flex flex-col h-screen fixed right-0 top-0 border-l border-slate-800 flex-shrink-0 z-20`}>
+    <aside className={`${isOpen ? 'w-64' : 'w-20'} transition-all duration-300 bg-[#F1F5F9] text-slate-900 flex flex-col h-screen fixed right-0 top-0 border-l border-slate-200 flex-shrink-0 z-20 shadow-[rgba(0,0,0,0.04)_inset_0px_0px_0px,rgba(0,0,0,0.05)_-4px_0px_10px]`}>
 
-      {/* Logo */}
-      <div className="h-16 flex items-center justify-center border-b border-slate-800 bg-slate-950 shrink-0">
-        <h1 className={`text-xl font-bold text-white tracking-wider transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 hidden'}`}>
-          سنترالي
-        </h1>
+      {/* Logo Area */}
+      <div className="h-20 flex items-center justify-center border-b border-slate-200 bg-[#F1F5F9] shrink-0 relative overflow-hidden">
+        <div className={`${isOpen ? 'opacity-100 flex items-center gap-3' : 'opacity-0 hidden'} transition-all duration-300 relative z-10 w-full px-6`}>
+          <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/20">
+            <Grip className="w-6 h-6 text-white" />
+          </div>
+          <h1 className="text-2xl font-extrabold text-slate-800 tracking-wide">
+            سنترالي
+          </h1>
+        </div>
         {!isOpen && (
-          <h1 className="text-xl font-bold text-white tracking-wider">س</h1>
+          <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/20 relative z-10">
+            <Grip className="w-6 h-6 text-white" />
+          </div>
         )}
       </div>
 
-      {/* Nav Groups */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 custom-scrollbar">
+      {/* Navigation Links */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-6 px-4 custom-scrollbar" dir="rtl">
         {menuGroups.map((group, gi) => {
-          const visibleItems = group.items.filter((item) => !item.permission || hasPermission(item.permission));
+          const visibleItems = group.items.filter((item) => !item.allowedRoles || hasAnyRole(item.allowedRoles));
           if (visibleItems.length === 0) return null;
-          if (group.permission && !hasPermission(group.permission)) return null;
+          if (group.allowedRoles && !hasAnyRole(group.allowedRoles)) return null;
+          
+          const isCollapsed = collapsedGroups[gi];
 
           return (
           <div key={gi} className="mb-6">
-            {/* Group title */}
-            <h3 className={`px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 h-0 mb-0 overflow-hidden'}`}>
-              {group.title}
-            </h3>
+            <div 
+              onClick={() => isOpen && toggleGroup(gi)}
+              className={`${isOpen ? 'cursor-pointer hover:text-slate-800' : ''} flex items-center justify-between px-3 mb-2 text-slate-400 group transition-colors`}
+            >
+              <h3 className={`${isOpen ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'} text-[13px] font-bold uppercase tracking-wider transition-all duration-300 select-none`}>
+                {group.title}
+              </h3>
+              {isOpen && (
+                <div className="text-slate-400 group-hover:text-slate-600 transition-colors">
+                  {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+                </div>
+              )}
+            </div>
             
-            {/* When closed, we still need some spacing between groups */}
-            {!isOpen && gi > 0 && <div className="h-4"></div>}
+            {!isOpen && gi > 0 && <div className="h-5"></div>}
 
-            <ul className="space-y-1">
+            <ul className={`${isCollapsed && isOpen ? 'hidden' : 'block'} space-y-1.5`}>
               {visibleItems.map((item) => {
                 const active = isActive(item.path);
                 return (
@@ -108,15 +171,10 @@ export function Sidebar() {
                     <Link
                       to={item.path}
                       title={!isOpen ? item.name : undefined}
-                      className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
-                        active
-                          ? "bg-blue-600 text-white"
-                          : "hover:bg-slate-800 hover:text-white"
-                      }`}
+                      className={`${isOpen ? 'gap-3 px-3.5' : 'justify-center px-0'} flex items-center py-3 rounded-xl transition-all duration-200 text-[15px] font-semibold relative ${active ? "bg-white text-blue-700 shadow-sm border border-slate-200/60" : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 border border-transparent"}`}
                     >
-                      {/* Icons — w-5 h-5 = 20px */}
-                      <item.icon size={20} className={`shrink-0 ${active ? "text-white" : "text-slate-400"}`} />
-                      <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
+                      <item.icon size={22} strokeWidth={active ? 2.5 : 2} className={`${active ? "text-blue-600" : "text-slate-500"} shrink-0`} />
+                      <span className={`${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'} transition-all duration-300 whitespace-nowrap`}>
                         {item.name}
                       </span>
                     </Link>
@@ -128,49 +186,43 @@ export function Sidebar() {
           );
         })}
 
-        {/* Settings */}
-        <div className="border-t border-slate-800 pt-4 mt-2 space-y-1">
-          <Link
-            to="/settings/finance-policies"
-            title={!isOpen ? "سياسات النظام" : undefined}
-            className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
-              location.pathname === "/settings/finance-policies"
-                ? "bg-blue-600 text-white"
-                : "hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            <Settings size={20} className="text-slate-400 shrink-0" />
-            <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
-              سياسات النظام
-            </span>
-          </Link>
-          <Link
-            to="/settings/wallets"
-            title={!isOpen ? "إدارة المحافظ" : undefined}
-            className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors text-sm font-medium ${
-              location.pathname === "/settings/wallets"
-                ? "bg-blue-600 text-white"
-                : "hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            <Wallet size={20} className="text-slate-400 shrink-0" />
-            <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
-              إدارة المحافظ
-            </span>
-          </Link>
-        </div>
+        {hasAnyRole(ADMIN_MANAGER) && (
+          <div className="border-t border-slate-200 pt-6 mt-3 mb-3 space-y-1.5">
+            <Link
+              to="/settings/finance-policies"
+              title={!isOpen ? "سياسات النظام" : undefined}
+              className={`${isOpen ? 'gap-3 px-3.5' : 'justify-center px-0'} flex items-center py-3 rounded-xl transition-all duration-200 text-[15px] font-semibold relative ${location.pathname === "/settings/finance-policies" ? "bg-white text-blue-700 shadow-sm border border-slate-200/60" : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 border border-transparent"}`}
+            >
+              <Settings size={22} strokeWidth={location.pathname === "/settings/finance-policies" ? 2.5 : 2} className={`${location.pathname === "/settings/finance-policies" ? "text-blue-600" : "text-slate-500"} shrink-0`} />
+              <span className={`${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'} transition-all duration-300 whitespace-nowrap`}>
+                سياسات النظام
+              </span>
+            </Link>
+            
+            <Link
+              to="/settings/wallets"
+              title={!isOpen ? "إدارة المحافظ" : undefined}
+              className={`${isOpen ? 'gap-3 px-3.5' : 'justify-center px-0'} flex items-center py-3 rounded-xl transition-all duration-200 text-[15px] font-semibold relative ${location.pathname === "/settings/wallets" ? "bg-white text-blue-700 shadow-sm border border-slate-200/60" : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 border border-transparent"}`}
+            >
+              <Wallet size={22} strokeWidth={location.pathname === "/settings/wallets" ? 2.5 : 2} className={`${location.pathname === "/settings/wallets" ? "text-blue-600" : "text-slate-500"} shrink-0`} />
+              <span className={`${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'} transition-all duration-300 whitespace-nowrap`}>
+                إدارة المحافظ
+              </span>
+            </Link>
+          </div>
+        )}
       </div>
 
-      {/* Logout */}
-      <div className={`p-4 border-t border-slate-800 bg-slate-950 shrink-0 ${!isOpen && 'flex justify-center'}`}>
+      {/* Footer Area */}
+      <div className={`${!isOpen ? 'flex justify-center' : ''} p-4 border-t border-slate-200 bg-transparent shrink-0`}>
         <button
           onClick={logout}
-          title={!isOpen ? "تسجيل خروج" : undefined}
-          className={`flex items-center ${isOpen ? 'gap-3 px-3 w-full' : 'justify-center w-10'} py-2.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium`}
+          title={!isOpen ? "تسجيل الخروج" : undefined}
+          className={`${isOpen ? 'gap-3 px-4 w-full' : 'justify-center w-12'} flex items-center py-3 rounded-xl text-red-500 hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all duration-200 text-[15px] font-bold group`}
         >
-          <LogOut size={20} className="shrink-0" />
-          <span className={`transition-all duration-300 whitespace-nowrap ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'}`}>
-            تسجيل خروج
+          <LogOut size={22} className="shrink-0 group-hover:scale-110 transition-transform" />
+          <span className={`${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 hidden'} transition-all duration-300 whitespace-nowrap`}>
+            تسجيل الخروج
           </span>
         </button>
       </div>

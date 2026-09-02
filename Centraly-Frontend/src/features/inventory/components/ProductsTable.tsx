@@ -70,6 +70,28 @@ export function ProductsTable({
       ),
     },
     {
+      header: 'النوع',
+      cell: (row: ProductResponse) => {
+        let label = 'غير محدد';
+        let color = 'bg-gray-100 text-gray-700';
+        if (row.usage === 1) {
+          label = 'بيع فقط';
+          color = 'bg-emerald-50 text-emerald-700 border-emerald-100';
+        } else if (row.usage === 2) {
+          label = 'صيانة فقط';
+          color = 'bg-orange-50 text-orange-700 border-orange-100';
+        } else if (row.usage === 3) {
+          label = 'بيع وصيانة';
+          color = 'bg-purple-50 text-purple-700 border-purple-100';
+        }
+        return (
+          <span className={`px-2.5 py-1 rounded-md text-xs font-bold border ${color}`}>
+            {label}
+          </span>
+        );
+      },
+    },
+    {
       header: 'الكمية',
       cell: (row: ProductResponse) => (
         <span className="text-base font-bold text-gray-800">{row.totalQuantity}</span>

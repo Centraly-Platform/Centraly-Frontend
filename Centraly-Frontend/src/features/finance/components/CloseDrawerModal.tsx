@@ -15,7 +15,7 @@ export function CloseDrawerModal({ isOpen, onClose, session }: CloseDrawerModalP
   const closeDrawer = useCloseDrawer();
 
   const handleClose = () => {
-    closeDrawer.mutate(undefined, {
+    closeDrawer.mutate(session.type, {
       onSuccess: () => {
         onClose();
       }

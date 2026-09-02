@@ -41,8 +41,9 @@ export function ProductDetailsPage() {
       departmentId: formData.departmentId,
       categoryId: formData.categoryId,
       minQuantityAlert: formData.minQuantityAlert,
-      barcode: formData.barcode,
-      storageLocation: formData.storageLocation,
+      usage: formData.usage || 3,
+      barcode: formData.barcode || undefined,
+      storageLocation: formData.storageLocation || undefined,
     };
     
     if (formData.image) {

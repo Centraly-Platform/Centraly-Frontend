@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { User, Phone, Banknote } from 'lucide-react';
-import { PaymentMethod } from '../schemas/salesSchemas';
+import { PaymentMethod, SaleType } from '../schemas/salesSchemas';
 import { PaymentSource } from '@/features/finance/schemas/financeSchemas';
 import { usePaymentSourcePrompt } from '@/features/finance/hooks/usePaymentSourcePrompt';
 import { tokens } from '@/shared/styles/tokens';
@@ -12,7 +12,7 @@ interface CheckoutModalProps {
   onClose: () => void;
   totalAmount: number;
   paymentMethod: PaymentMethod | null;
-  onConfirm: (customerName: string, customerPhone: string, paidAmount: number, paymentSource?: PaymentSource) => void;
+  onConfirm: (customerName: string, customerPhone: string, paidAmount: number, paymentSource?: PaymentSource, saleType?: SaleType) => void;
   isSubmitting: boolean;
 }
 
@@ -26,10 +26,11 @@ export function CheckoutModal({
 }: CheckoutModalProps) {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
+  const [saleType, setSaleType] = useState<SaleType>(SaleType.Retail);
   const [paidAmount, setPaidAmount] = useState<number | string>(totalAmount);
   const [error, setError] = useState('');
 
-  const { promptPaymentSource, PaymentSourcePromptModal } = usePaymentSourcePrompt(1); // GlobalTransactionCategory.CashSale
+  const { promptPaymentSource, PaymentSourcePromptModal, isPoliciesLoading } = usePaymentSourcePrompt(1); // GlobalTransactionCategory.CashSale
 
   useEffect(() => {
     if (isOpen) {
@@ -50,21 +51,21 @@ export function CheckoutModal({
 
     const paid = Number(paidAmount);
     if (isNaN(paid) || paid < 0) {
-      setError('يرجى إدخال مبلغ دفع صحيح');
+      setError('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ù…Ø¨Ù„Øº Ø¯ÙØ¹ ØµØ­ÙŠØ­');
       return;
     }
 
     if (isCredit) {
       if (!customerName.trim() || !customerPhone.trim()) {
-        setError('يجب إدخال اسم العميل ورقم الهاتف في حالة البيع الآجل');
+        setError('ÙŠØ¬Ø¨ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ ÙˆØ±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¢Ø¬Ù„');
         return;
       }
       if (paid >= totalAmount) {
-        setError('لا يمكن أن يكون المبلغ المدفوع أكبر من أو يساوي الإجمالي في حالة البيع الآجل');
+        setError('Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø£Ù† ÙŠÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ Ø£ÙƒØ¨Ø± Ù…Ù† Ø£Ùˆ ÙŠØ³Ø§ÙˆÙŠ Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¢Ø¬Ù„');
         return;
       }
     } else if (paid < totalAmount) {
-      setError('في حالة الدفع النقدي يجب دفع المبلغ كاملاً');
+      setError('ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ù†Ù‚Ø¯ÙŠ ÙŠØ¬Ø¨ Ø¯ÙØ¹ Ø§Ù„Ù…Ø¨Ù„Øº ÙƒØ§Ù…Ù„Ø§Ù‹');
       return;
     }
 
@@ -75,7 +76,7 @@ export function CheckoutModal({
       finalSource = source;
     }
 
-    onConfirm(customerName, customerPhone, isCredit ? paid : totalAmount, finalSource);
+    onConfirm(customerName, customerPhone, isCredit ? paid : totalAmount, finalSource, saleType);
   };
 
   return (
@@ -84,14 +85,14 @@ export function CheckoutModal({
       <BaseModal
         isOpen={isOpen}
         onClose={onClose}
-        title={isCredit ? 'إتمام الدفع الآجل' : 'إتمام الدفع النقدي'}
+        title={isCredit ? 'Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø¢Ø¬Ù„' : 'Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ù†Ù‚Ø¯ÙŠ'}
         size="md"
         zIndexClassName="z-[60]"
         headerClassName={isCredit ? 'bg-amber-50' : 'bg-emerald-50'}
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="bg-[var(--color-page-bg)] p-4 rounded-xl flex items-center justify-between border border-[var(--color-border)]">
-            <span className="text-[var(--color-text-muted)] font-semibold">الإجمالي المطلوب:</span>
+            <span className="text-[var(--color-text-muted)] font-semibold">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨:</span>
             <span className="text-2xl font-bold text-[var(--color-text-main)]">{formatCurrency(totalAmount)}</span>
           </div>
 
@@ -104,7 +105,19 @@ export function CheckoutModal({
           <div>
             <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Phone size={16} /> رقم الهاتف
+                نوع الفاتورة
+              </span>
+            </label>
+            <select
+              value={saleType}
+              onChange={(e) => setSaleType(Number(e.target.value) as SaleType)}
+              className={tokens.input + ' py-3 mb-4'}
+            >
+              <option value={SaleType.Retail}>قطاعي (تجزئة)</option>
+              <option value={SaleType.Wholesale}>جملة</option>
+            </select>
+          </div>
+          <div>`n            <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">`n              <span className="flex items-center gap-1.5">`n                <Phone size={16} /> Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ
               </span>
               {isCredit && <span className="text-[var(--color-danger)]">*</span>}
             </label>
@@ -112,7 +125,7 @@ export function CheckoutModal({
               type="text"
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
-              placeholder="مثال: 010xxxxxxxx"
+              placeholder="Ù…Ø«Ø§Ù„: 010xxxxxxxx"
               className={tokens.input + ' py-3 text-left'}
               required={isCredit}
               dir="ltr"
@@ -122,7 +135,7 @@ export function CheckoutModal({
           <div>
             <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <User size={16} /> اسم العميل
+                <User size={16} /> Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„
               </span>
               {isCredit && <span className="text-[var(--color-danger)]">*</span>}
             </label>
@@ -130,7 +143,7 @@ export function CheckoutModal({
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="مثال: أحمد محمد"
+              placeholder="Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…Ø¯"
               className={tokens.input + ' py-3'}
               required={isCredit}
             />
@@ -140,7 +153,7 @@ export function CheckoutModal({
             <div className="pt-2 border-t border-[var(--color-border)]">
               <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <Banknote size={16} /> المبلغ المدفوع الآن
+                  <Banknote size={16} /> Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ Ø§Ù„Ø¢Ù†
                 </span>
                 <span className="text-[var(--color-danger)]">*</span>
               </label>
@@ -162,7 +175,7 @@ export function CheckoutModal({
               />
               {Number(paidAmount) >= 0 && Number(paidAmount) < totalAmount && (
                 <p className="text-sm text-amber-700 mt-2.5 font-bold">
-                  المتبقي كمديونية: {formatCurrency(totalAmount - Number(paidAmount))}
+                  Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ ÙƒÙ…Ø¯ÙŠÙˆÙ†ÙŠØ©: {formatCurrency(totalAmount - Number(paidAmount))}
                 </p>
               )}
             </div>
@@ -170,15 +183,16 @@ export function CheckoutModal({
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isPoliciesLoading}
             className={`w-full py-3.5 rounded-xl font-bold text-white text-lg disabled:opacity-70 ${
               isCredit ? 'bg-amber-600 hover:bg-amber-700' : 'bg-emerald-600 hover:bg-emerald-700'
             }`}
           >
-            {isSubmitting ? 'جاري التأكيد...' : 'تأكيد وحفظ الفاتورة'}
+            {isSubmitting ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ£ÙƒÙŠØ¯...' : 'ØªØ£ÙƒÙŠØ¯ ÙˆØ­ÙØ¸ Ø§Ù„ÙØ§ØªÙˆØ±Ø©'}
           </button>
         </form>
       </BaseModal>
     </>
   );
 }
+

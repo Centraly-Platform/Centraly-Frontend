@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+﻿import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BaseModal } from '@/shared/components/ui/BaseModal';
 import { addManualSafeTransactionSchema, AddManualSafeTransactionRequest } from '../schemas/financeSchemas';
@@ -23,7 +23,7 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
     formState: { errors },
   } = useForm<AddManualSafeTransactionRequest>({
     resolver: zodResolver(addManualSafeTransactionSchema),
-    defaultValues: { type: 1, category: 3, amount: 0, notes: '' }
+    defaultValues: { type: 1, category: 6, amount: 0, notes: '' }
   });
 
   const transactionType = watch('type');
@@ -38,31 +38,31 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
   };
 
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title="إضافة معاملة يدوية للخزينة">
+    <BaseModal isOpen={isOpen} onClose={onClose} title="Ø¥Ø¶Ø§ÙØ© Ù…Ø¹Ø§Ù…Ù„Ø© ÙŠØ¯ÙˆÙŠØ© Ù„Ù„Ø®Ø²ÙŠÙ†Ø©">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         
         {/* Type Selection */}
         <div className="grid grid-cols-2 gap-3">
           <label 
-            onClick={() => { setValue('type', 1, { shouldValidate: true }); setValue('category', 3); }}
+            onClick={() => { setValue('type', 1, { shouldValidate: true }); setValue('category', 6); }}
             className={`
             cursor-pointer rounded-xl border-2 p-4 text-center transition-all
             ${transactionType === 1 ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 hover:border-gray-300'}
           `}>
-            <div className="font-semibold text-lg">إيداع نقدي</div>
+            <div className="font-semibold text-lg">Ø¥ÙŠØ¯Ø§Ø¹ Ù†Ù‚Ø¯ÙŠ</div>
           </label>
           <label 
-            onClick={() => { setValue('type', 2, { shouldValidate: true }); setValue('category', 4); }}
+            onClick={() => { setValue('type', 2, { shouldValidate: true }); setValue('category', 7); }}
             className={`
             cursor-pointer rounded-xl border-2 p-4 text-center transition-all
             ${transactionType === 2 ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-200 hover:border-gray-300'}
           `}>
-            <div className="font-semibold text-lg">سحب نقدي</div>
+            <div className="font-semibold text-lg">Ø³Ø­Ø¨ Ù†Ù‚Ø¯ÙŠ</div>
           </label>
         </div>
 
         <div>
-          <label className={tokens.font.label + " block mb-1.5"}>المبلغ (ج.م)</label>
+          <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ù…Ø¨Ù„Øº (Ø¬.Ù…)</label>
           <input
             type="number"
             step="0.01"
@@ -75,28 +75,31 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
         </div>
 
         <div>
-          <label className={tokens.font.label + " block mb-1.5"}>البيان / السبب</label>
+          <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ø¨ÙŠØ§Ù† / Ø§Ù„Ø³Ø¨Ø¨</label>
           <input
             type="text"
             {...register('notes')}
             className={tokens.input}
-            placeholder="مثال: إيداع بنكي..."
+            placeholder="Ù…Ø«Ø§Ù„: Ø¥ÙŠØ¯Ø§Ø¹ Ø¨Ù†ÙƒÙŠ..."
           />
         </div>
 
         <div className="flex justify-end gap-3 pt-4 mt-2">
           <button type="button" onClick={onClose} className={tokens.btn.ghost}>
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button
             type="submit"
             disabled={addTransaction.isPending}
             className={tokens.btn.primary}
           >
-            {addTransaction.isPending ? 'جاري الحفظ...' : 'حفظ المعاملة'}
+            {addTransaction.isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø©'}
           </button>
         </div>
       </form>
     </BaseModal>
   );
 }
+
+
+

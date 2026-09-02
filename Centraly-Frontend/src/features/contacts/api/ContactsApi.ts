@@ -3,10 +3,8 @@ import { IContactsRepository } from "@/core/repositories/IContactsRepository";
 import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CreateCustomerRequest, CustomerResponse, CustomerStatementResponse, 
-  CreateSupplierRequest, SupplierResponse, SupplierStatementItemResponse, 
   CreatePaymentRequest,
-  ContactFilters,
-  StatementFilters
+  ContactFilters
 } from "../schemas/contactSchemas";
 
 import { CustomerDebtHistoryResponse } from '../schemas/contactSchemas';
@@ -51,43 +49,6 @@ export class ContactsRepository implements IContactsRepository {
     const { data } = await apiClient.post<string>(`/customers/${customerId}/transactions/payments`, reqData);
     return data;
   }
-
-  // --- Suppliers ---
-  async getSuppliers(filters: ContactFilters): Promise<PaginatedList<SupplierResponse>> {
-    const { data } = await apiClient.get<PaginatedList<SupplierResponse>>('/suppliers', { params: filters });
-    return data;
-  }
-
-  async getSupplier(id: string): Promise<SupplierResponse> {
-    const { data } = await apiClient.get<SupplierResponse>(`/suppliers/${id}`);
-    return data;
-  }
-
-  async createSupplier(reqData: CreateSupplierRequest): Promise<string> {
-    const { data } = await apiClient.post<string>('/suppliers', reqData);
-    return data;
-  }
-
-  async updateSupplier(id: string, reqData: CreateSupplierRequest): Promise<void> {
-    await apiClient.put(`/suppliers/${id}`, reqData);
-  }
-
-  async deleteSupplier(id: string): Promise<void> {
-    await apiClient.delete(`/suppliers/${id}`);
-  }
-
-  async getSupplierStatement(filters: StatementFilters): Promise<PaginatedList<SupplierStatementItemResponse>> {
-    if (!filters.supplierId) throw new Error("supplierId is required for statement");
-    const { data } = await apiClient.get<PaginatedList<SupplierStatementItemResponse>>(`/suppliers/${filters.supplierId}/statement`, { params: filters });
-    return data;
-  }
-
-  async addSupplierPayment(supplierId: string, reqData: CreatePaymentRequest): Promise<string> {
-    const payload = { ...reqData, supplierId };
-    const { data } = await apiClient.post<string>('/supplier-transactions/payments', payload);
-    return data;
-  }
 }
 
 export const contactsRepository = new ContactsRepository();
-

@@ -59,10 +59,9 @@ export interface SalesInvoiceResponse {
 }
 
 export enum ReturnReason {
-  Defective = 1,
-  WrongItem = 2,
-  CustomerChangedMind = 3,
-  Other = 4
+  Defect = 1,
+  ChangedMind = 2,
+  Other = 3
 }
 
 export interface ReturnItemRequest {

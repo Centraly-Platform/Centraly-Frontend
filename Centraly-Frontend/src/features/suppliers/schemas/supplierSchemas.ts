@@ -1,4 +1,4 @@
-import { z } from "zod";
+﻿import { z } from "zod";
 import { BaseFilters } from "@/shared/types/pagination";
 
 export interface SupplierFilters extends BaseFilters {
@@ -28,7 +28,7 @@ export interface SupplierStatementItemResponse {
 }
 
 export const createSupplierSchema = z.object({
-  name: z.string().min(1, "اسم المورد مطلوب"),
+  name: z.string().min(1, "Ø§Ø³Ù… Ø§Ù„Ù…ÙˆØ±Ø¯ Ù…Ø·Ù„ÙˆØ¨"),
   type: z.string().optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
@@ -49,7 +49,7 @@ export interface SupplierBatchResponse {
 
 export const createSupplierPaymentSchema = z.object({
   supplierId: z.string().min(1),
-  amount: z.number().min(0.01, "المبلغ يجب أن يكون أكبر من 0"),
+  amount: z.number().min(0.01, "Ø§Ù„Ù…Ø¨Ù„Øº ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ø£ÙƒØ¨Ø± Ù…Ù† 0"),
   isReceipt: z.boolean().default(false),
   paymentSource: z.number().optional(),
   notes: z.string().optional(),

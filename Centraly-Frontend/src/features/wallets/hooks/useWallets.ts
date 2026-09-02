@@ -33,11 +33,24 @@ export function useWallets() {
     }
   });
 
+  const updateWalletMutation = useMutation({
+    mutationFn: ({ walletId, data }: { walletId: string, data: any }) => walletApi.updateWallet(walletId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      toast.success("تم تعديل المحفظة بنجاح");
+    },
+    onError: () => {
+      toast.error("حدث خطأ أثناء تعديل المحفظة");
+    }
+  });
+
   return {
     wallets: walletsQuery.data ?? [],
     isLoading: walletsQuery.isLoading,
     createWallet: createWalletMutation.mutate,
     isCreating: createWalletMutation.isPending,
+    updateWallet: updateWalletMutation.mutate,
+    isUpdating: updateWalletMutation.isPending,
     processOperation: processOperationMutation.mutate,
     isProcessing: processOperationMutation.isPending,
   };

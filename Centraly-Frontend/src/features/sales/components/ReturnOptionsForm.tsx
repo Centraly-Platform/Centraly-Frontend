@@ -26,9 +26,8 @@ export function ReturnOptionsForm({
           onChange={(e) => onReasonChange(Number(e.target.value))}
           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         >
-          <option value={ReturnReason.CustomerChangedMind}>تغيير رأي العميل</option>
-          <option value={ReturnReason.Defective}>تالف / عيب صناعة</option>
-          <option value={ReturnReason.WrongItem}>منتج خطأ</option>
+          <option value={ReturnReason.ChangedMind}>تغيير رأي</option>
+          <option value={ReturnReason.Defect}>تالف / عيب صناعة</option>
           <option value={ReturnReason.Other}>أخرى</option>
         </select>
       </div>

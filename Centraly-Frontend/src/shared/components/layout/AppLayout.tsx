@@ -40,7 +40,7 @@ export function AppLayout() {
   }, [location.pathname, setTitle, setBackButton]);
 
   return (
-    <div className="flex h-screen bg-gray-50 font-sans" dir="rtl">
+    <div className="flex h-screen bg-[#F5F7FA] font-sans" dir="rtl">
       {/* Sidebar fixed on the right */}
       <Sidebar />
 

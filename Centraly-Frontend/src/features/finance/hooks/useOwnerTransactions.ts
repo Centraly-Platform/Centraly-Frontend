@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ownerTransactionApi } from "../api/OwnerTransactionApi";
 import { CreateOwnerTransactionRequest } from "../schemas/financeSchemas";
 import { toast } from "sonner";
@@ -21,13 +21,14 @@ export function useCreateOwnerTransaction() {
   return useMutation({
     mutationFn: (data: CreateOwnerTransactionRequest) => ownerTransactionApi.createOwnerTransaction(data),
     onSuccess: () => {
-      toast.success("تم تسجيل معاملة المالك بنجاح");
+      toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: OWNER_TRANSACTION_KEYS.all });
-      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer });
+      queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "حدث خطأ أثناء تسجيل المعاملة");
+    onError: () => {
+      toast.error("حدث خطأ");
     },
   });
 }
+

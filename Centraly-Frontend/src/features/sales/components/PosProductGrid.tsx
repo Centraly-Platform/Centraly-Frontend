@@ -1,3 +1,4 @@
+﻿import { resolveProductImageUrl } from '../utils/posUtils';
 import { tokens } from '@/shared/styles/tokens';
 import { Search, Package, ShoppingCart, ChevronRight, ChevronLeft } from 'lucide-react';
 import { ProductResponse, CategorySummary } from '@/features/inventory/schemas/inventorySchemas';
@@ -50,7 +51,7 @@ export function PosProductGrid({
           <div className="relative flex-1 h-12">
             <input
               type="text"
-              placeholder="ابحث عن منتج بالاسم أو امسح الباركود"
+              placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ù†ØªØ¬ Ø¨Ø§Ù„Ø§Ø³Ù… Ø£Ùˆ Ø§Ù…Ø³Ø­ Ø§Ù„Ø¨Ø§Ø±ÙƒÙˆØ¯"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`${tokens.input} pl-12 h-full`}
@@ -70,7 +71,7 @@ export function PosProductGrid({
               }}
               className={`${tokens.select} h-full cursor-pointer`}
             >
-              <option value="">اختر القسم الرئيسي</option>
+              <option value="">Ø§Ø®ØªØ± Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ</option>
               {departments.map((dept) => (
                 <option key={dept.departmentId} value={dept.departmentId}>
                   {dept.name}
@@ -86,7 +87,7 @@ export function PosProductGrid({
           </div>
         </div>
         
-        {/* Categories Chips — only show when a department is selected */}
+        {/* Categories Chips â€” only show when a department is selected */}
         {selectedDepartmentId && (
           <div className="flex items-center gap-3 overflow-x-auto pb-1 custom-scrollbar">
             <button
@@ -97,7 +98,7 @@ export function PosProductGrid({
                   : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200 hover:bg-gray-50'
               }`}
             >
-              الكل
+              Ø§Ù„ÙƒÙ„
             </button>
             {categories.map((cat: CategorySummary) => (
               <button
@@ -126,7 +127,7 @@ export function PosProductGrid({
           ) : products.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400">
               <Package size={64} className="text-gray-300 mb-4" />
-              <p className="text-xl font-semibold">لا توجد منتجات</p>
+              <p className="text-xl font-semibold">Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù†ØªØ¬Ø§Øª</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 h-full content-start">
@@ -134,17 +135,17 @@ export function PosProductGrid({
                 const hasStock = product.totalQuantity > 0;
                 const isLowStock = product.isLowStock;
                 
-                let statusLabel = 'متوفر';
+                let statusLabel = 'Ù…ØªÙˆÙØ±';
                 let statusClass = 'bg-[#e6f4ed] text-[#0f8e4c]'; // Light green bg, dark green text
                 if (!hasStock) {
-                  statusLabel = 'نفد المخزون';
+                  statusLabel = 'Ù†ÙØ¯ Ø§Ù„Ù…Ø®Ø²ÙˆÙ†';
                   statusClass = 'bg-[#fce8e6] text-[#c5221f]'; // Light red bg, dark red text
                 } else if (isLowStock) {
-                  statusLabel = 'مخزون منخفض';
+                  statusLabel = 'Ù…Ø®Ø²ÙˆÙ† Ù…Ù†Ø®ÙØ¶';
                   statusClass = 'bg-[#fef7e0] text-[#ea8600]'; // Light orange bg, dark orange text
                 }
 
-                const imageSrc = product.imageUrl ? (product.imageUrl.startsWith('http') ? product.imageUrl : `http://localhost:5033${product.imageUrl}`) : null;
+                const imageSrc = product.imageUrl ? resolveProductImageUrl(product.imageUrl) : null;
 
                 return (
                   <div
@@ -175,7 +176,7 @@ export function PosProductGrid({
                       </p>
                       
                       <div className="mt-auto mb-3 font-bold text-[11px] sm:text-[12px] text-[#0f8e4c]">
-                        المخزون: {product.totalQuantity}
+                        Ø§Ù„Ù…Ø®Ø²ÙˆÙ†: {product.totalQuantity}
                       </div>
 
                       <button
@@ -188,7 +189,7 @@ export function PosProductGrid({
                         }`}
                       >
                         <ShoppingCart size={14} />
-                        إضافة
+                        Ø¥Ø¶Ø§ÙØ©
                       </button>
                     </div>
                   </div>
@@ -209,7 +210,7 @@ export function PosProductGrid({
               <ChevronRight size={20} />
             </button>
             <span className="font-semibold text-gray-700 text-sm">
-              صفحة {pageNumber} من {totalPages}
+              ØµÙØ­Ø© {pageNumber} Ù…Ù† {totalPages}
             </span>
             <button
               disabled={pageNumber === totalPages}
@@ -224,3 +225,5 @@ export function PosProductGrid({
     </div>
   );
 }
+
+

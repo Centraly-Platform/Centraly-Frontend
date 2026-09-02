@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { financeRepository } from "../api/FinanceApi";
 
 import { 
@@ -9,7 +9,7 @@ import {
 import { toast } from "sonner";
 
 export const FINANCE_KEYS = {
-  activeDrawer: ["drawer", "active"] as const,
+  activeDrawer: (type: number) => ["drawer", "active", type] as const,
   drawerHistory: (filters: FinanceFilters) => ["drawer", "history", filters] as const,
   drawerSessionById: (id: string) => ["drawer", "history", id] as const,
   safes: ["safes"] as const,
@@ -20,10 +20,10 @@ export const FINANCE_KEYS = {
 
 // --- Drawer ---
 
-export function useActiveDrawer() {
+export function useActiveDrawer(type: number = 1) {
   return useQuery({
-    queryKey: FINANCE_KEYS.activeDrawer,
-    queryFn: () => financeRepository.getCurrentDrawerSession(),
+    queryKey: FINANCE_KEYS.activeDrawer(type),
+    queryFn: () => financeRepository.getCurrentDrawerSession(type),
   });
 }
 
@@ -46,23 +46,25 @@ export function useOpenDrawer() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: OpenSessionRequest) => financeRepository.openDrawerSession(data),
-    onSuccess: () => {
-      toast.success("تم فتح الدرج بنجاح");
-      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer });
+    onSuccess: (_, variables) => {
+      toast.success("تم التنفيذ بنجاح");
+      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer(variables.type || 1) });
     },
-    onError: () => toast.error("حدث خطأ أثناء فتح الدرج"),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 
 export function useCloseDrawer() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => financeRepository.closeDrawerSession(),
-    onSuccess: () => {
-      toast.success("تم إغلاق الدرج بنجاح");
-      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer });
+    mutationFn: (type: number = 1) => financeRepository.closeDrawerSession(type),
+    onSuccess: (_, type) => {
+      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer(type) });
+      toast.success("تم التنفيذ بنجاح");
     },
-    onError: () => toast.error("حدث خطأ أثناء إغلاق الدرج"),
+    onError: () => {
+      toast.error("حدث خطأ");
+    }
   });
 }
 
@@ -71,11 +73,11 @@ export function useAddDrawerTransaction() {
   return useMutation({
     mutationFn: (data: AddManualTransactionRequest) => financeRepository.addDrawerTransaction(data),
     onSuccess: () => {
-      toast.success("تم تسجيل الحركة بنجاح");
-      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer });
+      toast.success("تم التنفيذ بنجاح");
+      queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
     },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "حدث خطأ أثناء تسجيل الحركة");
+    onError: () => {
+      toast.error("حدث خطأ");
     },
   });
 }
@@ -94,10 +96,10 @@ export function useCreateSafe() {
   return useMutation({
     mutationFn: (data: CreateSafeRequest) => financeRepository.createSafe(data),
     onSuccess: () => {
-      toast.success("تم إضافة الخزينة بنجاح");
+      toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة الخزينة"),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 
@@ -107,11 +109,11 @@ export function useDepositFromDrawer() {
     mutationFn: ({ safeId, data }: { safeId: string, data: ReceiveDrawerDepositRequest }) => 
       financeRepository.depositFromDrawer(safeId, data),
     onSuccess: () => {
-      toast.success("تم إيداع التوريدية بنجاح");
+      toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
-      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer });
+      queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
     },
-    onError: () => toast.error("حدث خطأ أثناء الإيداع"),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 
@@ -121,11 +123,11 @@ export function useAddManualSafeTransaction() {
     mutationFn: ({ safeId, data }: { safeId: string, data: AddManualSafeTransactionRequest }) => 
       financeRepository.addManualSafeTransaction(safeId, data),
     onSuccess: (_, variables) => {
-      toast.success("تم تسجيل المعاملة بنجاح");
+      toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
       queryClient.invalidateQueries({ queryKey: ["safes", variables.safeId, "transactions"] });
     },
-    onError: () => toast.error("حدث خطأ أثناء تسجيل المعاملة"),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 
@@ -152,10 +154,10 @@ export function useCreateExpenseCategory() {
   return useMutation({
     mutationFn: (data: CreateExpenseCategoryRequest) => financeRepository.createExpenseCategory(data),
     onSuccess: () => {
-      toast.success("تم إضافة بند المصروف بنجاح");
+      toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.expenseCategories });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة البند"),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 
@@ -164,12 +166,12 @@ export function useRecordExpense() {
   return useMutation({
     mutationFn: (data: CreateExpenseRequest) => financeRepository.recordExpense(data),
     onSuccess: () => {
-      toast.success("تم تسجيل المصروف بنجاح");
+      toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
-      queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer });
+      queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: () => toast.error("حدث خطأ أثناء تسجيل المصروف"),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 
@@ -179,3 +181,4 @@ export function useExpenses(filters: FinanceFilters) {
     queryFn: () => financeRepository.getExpenses(filters),
   });
 }
+

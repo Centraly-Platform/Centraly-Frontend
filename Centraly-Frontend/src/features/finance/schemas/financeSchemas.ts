@@ -4,6 +4,7 @@ import { BaseFilters } from "@/shared/types/pagination";
 export interface FinanceFilters extends BaseFilters {
   startDate?: string;
   endDate?: string;
+  type?: number;
 }
 
 // --- Enums ---
@@ -18,6 +19,7 @@ export type PaymentSourcePolicy = 1 | 2 | 3; // DrawerOnly = 1, SafeOnly = 2, Ei
 
 export const openSessionSchema = z.object({
   openingBalance: z.number().min(0),
+  type: z.number().optional()
 });
 export type OpenSessionRequest = z.infer<typeof openSessionSchema>;
 
@@ -48,10 +50,12 @@ export interface DrawerSessionResponse {
   openedAt: string;
   openedByUserId: string;
   isClosed: boolean;
+  type: number;
   closedAt?: string;
   totalIncome?: number;
   totalExpense?: number;
   closingBalance?: number;
+  totalProfit?: number;
   transactions: DrawerTransactionResponse[];
 }
 

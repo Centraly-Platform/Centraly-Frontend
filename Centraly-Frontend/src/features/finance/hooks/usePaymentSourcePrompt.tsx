@@ -35,10 +35,18 @@ export function usePaymentSourcePrompt(defaultCategory?: GlobalTransactionCatego
       }
       
       const categoryString = categoryEnumToString[targetCategory];
+      // If policies are not loaded yet, reject or cancel
+      if (!policies) {
+        // Technically shouldn't happen if UI disables buttons while loading, but just in case
+        console.warn('Finance policies are still loading.');
+        resolve(null);
+        return;
+      }
+
       // Find policy
-      const policy = policies?.find(p => p.category === categoryString);
+      const policy = policies.find(p => p.category === categoryString);
       
-      // If no policy is loaded yet, or it's "Either", prompt the user
+      // If no policy is found, or it's "Either", prompt the user
       if (!policy || policy.allowedSource === 'Either') {
         resolverRef.current = resolve;
         setIsOpen(true);
@@ -112,5 +120,5 @@ export function usePaymentSourcePrompt(defaultCategory?: GlobalTransactionCatego
     </BaseModal>
   );
 
-  return { promptPaymentSource, PaymentSourcePromptModal };
+  return { promptPaymentSource, PaymentSourcePromptModal, isPoliciesLoading: !policies };
 }

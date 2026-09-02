@@ -1,14 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { inventoryRepository } from "../api/InventoryApi";
 import { ProductFilters, CreateProductRequest } from "../schemas/inventorySchemas";
 import { toast } from "sonner";
 
 export const INVENTORY_KEYS = {
   categories: ["categories"] as const,
-  departments: () => ["departments"] as const,
+  departments: ["departments"] as const,
   products: (filters: ProductFilters) => ["products", filters] as const,
   productDetails: (id: string) => ["products", id] as const,
-  batches: (filters: ProductFilters) => ["batches", filters] as const,
 };
 
 // --- Queries ---
@@ -22,7 +21,7 @@ export function useCategories(departmentId?: string, filters: ProductFilters = {
 
 export function useDepartments(filters: ProductFilters = { pageNumber: 1, pageSize: 100 }) {
   return useQuery({
-    queryKey: [...INVENTORY_KEYS.departments(), filters],
+    queryKey: [...INVENTORY_KEYS.departments, filters],
     queryFn: () => inventoryRepository.getDepartments(filters),
   });
 }
@@ -42,13 +41,6 @@ export function useProduct(id: string) {
   });
 }
 
-export function useProductBatches(filters: ProductFilters) {
-  return useQuery({
-    queryKey: INVENTORY_KEYS.batches(filters),
-    queryFn: () => inventoryRepository.getProductBatches(filters),
-  });
-}
-
 // --- Mutations ---
 
 export function useCreateProduct() {
@@ -56,10 +48,10 @@ export function useCreateProduct() {
   return useMutation({
     mutationFn: (data: CreateProductRequest) => inventoryRepository.createProduct(data),
     onSuccess: () => {
-      toast.success("تم إضافة المنتج بنجاح!");
+      toast.success("ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة المنتج"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…Ù†ØªØ¬"),
   });
 }
 
@@ -69,11 +61,11 @@ export function useUpdateProduct() {
     mutationFn: ({ id, data }: { id: string; data: CreateProductRequest }) => 
       inventoryRepository.updateProduct(id, data),
     onSuccess: (_, { id }) => {
-      toast.success("تم تعديل المنتج بنجاح!");
+      toast.success("ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.productDetails(id) });
     },
-    onError: () => toast.error("حدث خطأ أثناء تعديل المنتج"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…Ù†ØªØ¬"),
   });
 }
 
@@ -82,10 +74,10 @@ export function useDeleteProduct() {
   return useMutation({
     mutationFn: (id: string) => inventoryRepository.deleteProduct(id),
     onSuccess: () => {
-      toast.success("تم حذف المنتج بنجاح!");
+      toast.success("ØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: () => toast.error("حدث خطأ أثناء حذف المنتج"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ù…Ù†ØªØ¬"),
   });
 }
 
@@ -96,10 +88,10 @@ export function useCreateCategory() {
   return useMutation({
     mutationFn: (data: { name: string; departmentId: string }) => inventoryRepository.createCategory(data),
     onSuccess: () => {
-      toast.success("تم إضافة القسم الفرعي بنجاح!");
+      toast.success("ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الفرعي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ"),
   });
 }
 
@@ -109,10 +101,10 @@ export function useUpdateCategory() {
     mutationFn: ({ id, data }: { id: string; data: { name: string; departmentId: string } }) => 
       inventoryRepository.updateCategory(id, data),
     onSuccess: () => {
-      toast.success("تم تعديل القسم الفرعي بنجاح!");
+      toast.success("ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
     },
-    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الفرعي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ"),
   });
 }
 
@@ -121,10 +113,10 @@ export function useDeleteCategory() {
   return useMutation({
     mutationFn: (id: string) => inventoryRepository.deleteCategory(id),
     onSuccess: () => {
-      toast.success("تم حذف القسم الفرعي بنجاح!");
+      toast.success("ØªÙ… Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
     },
-    onError: () => toast.error("حدث خطأ أثناء حذف القسم الفرعي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ"),
   });
 }
 
@@ -135,10 +127,10 @@ export function useCreateDepartment() {
   return useMutation({
     mutationFn: (data: { name: string }) => inventoryRepository.createDepartment(data),
     onSuccess: () => {
-      toast.success("تم إضافة القسم الرئيسي بنجاح!");
-      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+      toast.success("ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الرئيسي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ"),
   });
 }
 
@@ -148,10 +140,10 @@ export function useUpdateDepartment() {
     mutationFn: ({ id, data }: { id: string; data: { name: string } }) => 
       inventoryRepository.updateDepartment(id, data),
     onSuccess: () => {
-      toast.success("تم تعديل القسم الرئيسي بنجاح!");
-      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+      toast.success("ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments });
     },
-    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الرئيسي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ"),
   });
 }
 
@@ -160,9 +152,10 @@ export function useDeleteDepartment() {
   return useMutation({
     mutationFn: (id: string) => inventoryRepository.deleteDepartment(id),
     onSuccess: () => {
-      toast.success("تم حذف القسم الرئيسي بنجاح!");
-      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments() });
+      toast.success("ØªÙ… Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
+      queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments });
     },
-    onError: () => toast.error("حدث خطأ أثناء حذف القسم الرئيسي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ"),
   });
 }
+

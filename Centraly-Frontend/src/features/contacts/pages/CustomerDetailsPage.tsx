@@ -60,8 +60,8 @@ export function CustomerDetailsPage() {
 
   const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amount = Number(paymentAmount);
-    if (isNaN(amount) || amount <= 0) {
+    const parsedAmount = Number(paymentAmount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
       toast.error('المبلغ غير صحيح');
       return;
     }
@@ -69,8 +69,10 @@ export function CustomerDetailsPage() {
     const source = await promptPaymentSource(isRefund ? 8 : 7);
     if (!source) return; // User canceled the prompt
 
+    const finalAmount = isRefund ? -Math.abs(parsedAmount) : Math.abs(parsedAmount);
+
     addPayment.mutate(
-      { id: id!, data: { amount, notes: paymentNotes, paymentSource: source, isRefund } },
+      { id: id!, data: { amount: finalAmount, notes: paymentNotes, paymentSource: source } },
       {
         onSuccess: () => {
           setIsPaymentDrawerOpen(false);

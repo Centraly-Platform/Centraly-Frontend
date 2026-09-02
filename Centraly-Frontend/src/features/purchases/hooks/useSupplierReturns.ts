@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supplierReturnRepository } from '../api/SupplierReturnApi';
 import { SupplierReturnFilters, CreateSupplierReturnRequest } from '../schemas/supplierReturnSchemas';
 
@@ -18,7 +18,13 @@ export function useSupplierReturn(id: string) {
 }
 
 export function useCreateSupplierReturn() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: CreateSupplierReturnRequest) => supplierReturnRepository.createReturn(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["supplier-returns"] });
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
   });
 }

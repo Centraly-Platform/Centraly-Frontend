@@ -6,16 +6,20 @@ export enum WalletOperationType {
 export interface WalletResponse {
   id: string;
   name: string;
-  provider: string | null;
+  phoneNumber: string;
+  ownerName: string | null;
   balance: number;
+  imageUrl: string | null;
   isActive: boolean;
   createdAt: string;
 }
 
 export interface CreateWalletRequest {
   name: string;
-  provider: string | null;
+  phoneNumber: string;
+  ownerName?: string | null;
   initialBalance: number;
+  image: File;
 }
 
 export interface ProcessOperationRequest {
@@ -35,4 +39,29 @@ export interface WalletOperationResponse {
   profit: number;
   drawerTransactionId: string | null;
   createdAt: string;
+}
+
+export interface UpdateWalletRequest {
+  name: string;
+  phoneNumber: string;
+  ownerName?: string | null;
+  isActive: boolean;
+  image?: File;
+}
+
+export interface WalletDetailsResponse extends WalletResponse {
+  netProfit: number;
+}
+
+export interface WalletOperationFilter {
+  pageNumber?: number;
+  pageSize?: number;
+  walletId?: string;
+  operationType?: WalletOperationType;
+  dateFrom?: string;
+  dateTo?: string;
+}
+
+export interface WalletOperationsSummaryResponse {
+  totalProfit: number;
 }

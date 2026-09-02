@@ -1,9 +1,8 @@
-import { PaginatedList } from "@/shared/types/pagination";
+﻿import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CategoryResponse, 
   CreateProductRequest, 
   DepartmentResponse, 
-  ProductBatchResponse, 
   ProductResponse,
   ProductFilters
 } from "@/features/inventory/schemas/inventorySchemas";
@@ -27,7 +26,5 @@ export interface IInventoryRepository {
   createProduct(data: CreateProductRequest): Promise<string>;
   updateProduct(id: string, data: CreateProductRequest): Promise<void>;
   deleteProduct(id: string): Promise<void>;
-
-  // Batches
-  getProductBatches(filters: ProductFilters): Promise<PaginatedList<ProductBatchResponse>>;
 }
+

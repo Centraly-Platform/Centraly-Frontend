@@ -1,11 +1,10 @@
-import { apiClient } from "@/lib/axios";
+﻿import { apiClient } from "@/lib/axios";
 import { IInventoryRepository } from "@/core/repositories/IInventoryRepository";
 import { PaginatedList } from "@/shared/types/pagination";
 import { 
   CategoryResponse, 
   CreateProductRequest, 
   DepartmentResponse, 
-  ProductBatchResponse, 
   ProductResponse,
   ProductFilters
 } from "../schemas/inventorySchemas";
@@ -108,11 +107,7 @@ export class InventoryRepository implements IInventoryRepository {
   async deleteProduct(id: string): Promise<void> {
     await apiClient.delete(`/products/${id}`);
   }
-
-  async getProductBatches(filters: ProductFilters): Promise<PaginatedList<ProductBatchResponse>> {
-    const { data } = await apiClient.get<PaginatedList<ProductBatchResponse>>('/products/batches', { params: filters });
-    return data;
-  }
 }
 
 export const inventoryRepository = new InventoryRepository();
+

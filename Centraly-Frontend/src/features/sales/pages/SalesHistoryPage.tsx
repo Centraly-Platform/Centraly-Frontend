@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 import { useSalesInvoices } from '../hooks/useSales';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { InvoiceDetailsModal } from '../components/InvoiceDetailsModal';
@@ -10,18 +11,13 @@ export function SalesHistoryPage() {
   const [pageIndex, setPageIndex] = useState(1);
   const pageSize = 10;
   const [searchValue, setSearchValue] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debouncedSearch = useDebounce(searchValue, 500);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Simple debounce for search
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchValue);
-      setPageIndex(1);
-    }, 500);
-    return () => clearTimeout(handler);
-  }, [searchValue]);
+    setPageIndex(1);
+  }, [debouncedSearch]);
 
   const { data, isLoading } = useSalesInvoices({
     pageNumber: pageIndex,
@@ -71,3 +67,5 @@ export function SalesHistoryPage() {
     </div>
   );
 }
+
+

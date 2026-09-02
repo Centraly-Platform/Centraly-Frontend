@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { useCreateSupplierReturn } from '../hooks/useSupplierReturns';
 import { tokens } from '@/shared/styles/tokens';
@@ -29,13 +30,13 @@ export function NewSupplierReturnPage() {
   const { promptPaymentSource, PaymentSourcePromptModal } = usePaymentSourcePrompt(4);
 
   useEffect(() => {
-    setTitle('مرتجع مورد جديد');
+    setTitle('Ù…Ø±ØªØ¬Ø¹ Ù…ÙˆØ±Ø¯ Ø¬Ø¯ÙŠØ¯');
     setBackButton(true, '/purchases/returns');
   }, [setTitle, setBackButton]);
 
   const handleOpenModal = () => {
     if (!supplierId) {
-      setError('يرجى اختيار المورد أولاً قبل إضافة الأصناف');
+      setError('ÙŠØ±Ø¬Ù‰ Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…ÙˆØ±Ø¯ Ø£ÙˆÙ„Ø§Ù‹ Ù‚Ø¨Ù„ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø£ØµÙ†Ø§Ù');
       return;
     }
     setError(null);
@@ -45,7 +46,7 @@ export function NewSupplierReturnPage() {
   const handleSelectBatch = (batch: SupplierBatchResponse) => {
     // Check if already added
     if (items.some(i => i.batchId === batch.batchId)) {
-      alert('تم إضافة هذا الصنف مسبقاً');
+      alert('ØªÙ… Ø¥Ø¶Ø§ÙØ© Ù‡Ø°Ø§ Ø§Ù„ØµÙ†Ù Ù…Ø³Ø¨Ù‚Ø§Ù‹');
       return;
     }
 
@@ -72,10 +73,10 @@ export function NewSupplierReturnPage() {
     e.preventDefault();
     setError(null);
 
-    if (!supplierId) return setError('يجب اختيار مورد');
-    if (items.length === 0) return setError('يجب إضافة صنف واحد على الأقل');
+    if (!supplierId) return setError('ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…ÙˆØ±Ø¯');
+    if (items.length === 0) return setError('ÙŠØ¬Ø¨ Ø¥Ø¶Ø§ÙØ© ØµÙ†Ù ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„');
     if (items.some(i => !i.productId || !i.batchId || i.quantity <= 0)) {
-      return setError('يرجى استكمال جميع بيانات الأصناف بشكل صحيح (معرف المنتج ومعرف الدفعة والكمية)');
+      return setError('ÙŠØ±Ø¬Ù‰ Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ø¬Ù…ÙŠØ¹ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø£ØµÙ†Ø§Ù Ø¨Ø´ÙƒÙ„ ØµØ­ÙŠØ­ (Ù…Ø¹Ø±Ù Ø§Ù„Ù…Ù†ØªØ¬ ÙˆÙ…Ø¹Ø±Ù Ø§Ù„Ø¯ÙØ¹Ø© ÙˆØ§Ù„ÙƒÙ…ÙŠØ©)');
     }
 
     let finalPaymentSource: number | undefined;
@@ -86,10 +87,13 @@ export function NewSupplierReturnPage() {
     }
 
     createReturn.mutate(
-      { supplierId, reason: reason as 1 | 2 | 3 | 4, notes, items, isCashRefund, paymentSource: finalPaymentSource },
+      { supplierId, reason: reason as 1 | 2 | 3, notes, items, isCashRefund, paymentSource: finalPaymentSource },
       {
-        onSuccess: () => navigate('/purchases/returns'),
-        onError: (err: unknown) => setError(getApiErrorMessage(err, 'حدث خطأ أثناء حفظ المرتجع'))
+        onSuccess: () => {
+          toast.success("ØªÙ… Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹ Ø¨Ù†Ø¬Ø§Ø­!");
+          navigate('/purchases/returns');
+        },
+        onError: (err: unknown) => setError(getApiErrorMessage(err, 'Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹'))
       }
     );
   };
@@ -108,18 +112,18 @@ export function NewSupplierReturnPage() {
       <form id="new-return-form" onSubmit={handleSubmit} className="space-y-6">
         {/* Main Details */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
-          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3">بيانات المرتجع الأساسية</h2>
+          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3">Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±ØªØ¬Ø¹ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className={`${tokens.font.label} block mb-2`}>المورد <span className="text-red-500">*</span></label>
+              <label className={`${tokens.font.label} block mb-2`}>Ø§Ù„Ù…ÙˆØ±Ø¯ <span className="text-red-500">*</span></label>
               <select
                 value={supplierId}
                 onChange={(e) => setSupplierId(e.target.value)}
                 className={tokens.input}
                 disabled={isLoadingSuppliers}
               >
-                <option value="">-- اختر المورد --</option>
+                <option value="">-- Ø§Ø®ØªØ± Ø§Ù„Ù…ÙˆØ±Ø¯ --</option>
                 {suppliersData?.items.map(s => (
                   <option key={s.supplierId} value={s.supplierId}>{s.name}</option>
                 ))}
@@ -141,14 +145,14 @@ export function NewSupplierReturnPage() {
         {/* Items */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <h2 className="text-lg font-bold text-gray-800">الأصناف المرتجعة <span className="text-red-500">*</span></h2>
+            <h2 className="text-lg font-bold text-gray-800">Ø§Ù„Ø£ØµÙ†Ø§Ù Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø© <span className="text-red-500">*</span></h2>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={handleOpenModal}
                 className="text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors"
               >
-                <ShoppingCart size={16} /> اختيار صنف من المورد
+                <ShoppingCart size={16} /> Ø§Ø®ØªÙŠØ§Ø± ØµÙ†Ù Ù…Ù† Ø§Ù„Ù…ÙˆØ±Ø¯
               </button>
             </div>
           </div>
@@ -160,13 +164,13 @@ export function NewSupplierReturnPage() {
                   type="button"
                   onClick={() => handleRemoveItem(index)}
                   className="absolute top-2 left-2 text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors"
-                  title="حذف الصنف"
+                  title="Ø­Ø°Ù Ø§Ù„ØµÙ†Ù"
                 >
                   <Trash2 size={16} />
                 </button>
 
                 <div className="w-full md:w-1/3">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">معرف المنتج (ID)</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ù…Ø¹Ø±Ù Ø§Ù„Ù…Ù†ØªØ¬ (ID)</label>
                   <input
                     type="text"
                     value={item.productId}
@@ -177,7 +181,7 @@ export function NewSupplierReturnPage() {
                 </div>
                 
                 <div className="w-full md:w-1/3">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">معرف الدفعة (Batch ID)</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ù…Ø¹Ø±Ù Ø§Ù„Ø¯ÙØ¹Ø© (Batch ID)</label>
                   <input
                     type="text"
                     value={item.batchId}
@@ -188,7 +192,7 @@ export function NewSupplierReturnPage() {
                 </div>
 
                 <div className="w-1/2 md:w-24">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">الكمية</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ø§Ù„ÙƒÙ…ÙŠØ©</label>
                   <input
                     type="number"
                     min="1"
@@ -200,7 +204,7 @@ export function NewSupplierReturnPage() {
                 </div>
 
                 <div className="w-1/2 md:w-32">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">سعر الإرجاع</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ø³Ø¹Ø± Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹</label>
                   <input
                     type="number"
                     min="0"
@@ -217,8 +221,8 @@ export function NewSupplierReturnPage() {
             {items.length === 0 && (
               <div className="py-10 text-center border-2 border-dashed border-gray-200 rounded-xl">
                 <Package size={40} className="mx-auto text-gray-300 mb-3" />
-                <p className="text-gray-500">لم يتم إضافة أي أصناف للمرتجع.</p>
-                <p className="text-sm text-gray-400 mt-1">اضغط على زر الإضافة لاختيار الأصناف.</p>
+                <p className="text-gray-500">Ù„Ù… ÙŠØªÙ… Ø¥Ø¶Ø§ÙØ© Ø£ÙŠ Ø£ØµÙ†Ø§Ù Ù„Ù„Ù…Ø±ØªØ¬Ø¹.</p>
+                <p className="text-sm text-gray-400 mt-1">Ø§Ø¶ØºØ· Ø¹Ù„Ù‰ Ø²Ø± Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ù„Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ø£ØµÙ†Ø§Ù.</p>
               </div>
             )}
           </div>
@@ -228,13 +232,13 @@ export function NewSupplierReturnPage() {
       {/* Floating Action Bar */}
       <div className="fixed bottom-0 left-0 right-0 md:right-64 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-between items-center z-10">
         <div>
-          <p className="text-sm text-gray-500 font-semibold">إجمالي المرتجع</p>
+          <p className="text-sm text-gray-500 font-semibold">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø±ØªØ¬Ø¹</p>
           <p className="text-xl font-bold text-blue-700">{formatCurrency(totalAmount)}</p>
         </div>
         
         <div className="flex gap-3">
           <button type="button" onClick={() => navigate('/purchases/returns')} className={tokens.btn.secondary}>
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button 
             type="submit" 
@@ -242,7 +246,7 @@ export function NewSupplierReturnPage() {
             disabled={createReturn.isPending}
             className={`${tokens.btn.primary} disabled:opacity-50 min-w-[120px]`}
           >
-            {createReturn.isPending ? 'جاري الحفظ...' : 'حفظ المرتجع'}
+            {createReturn.isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹'}
           </button>
         </div>
       </div>

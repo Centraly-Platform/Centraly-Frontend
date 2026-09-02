@@ -24,13 +24,16 @@ export function PurchaseInvoiceItemsTable() {
 
     products.forEach((product) => {
       if (existingIds.has(product.productId)) return;
+      const needsMaintenance = product.usage === 2 || product.usage === 3; // MaintenanceOnly=2, Both=3
       append({
         productId: product.productId,
         productName: product.name,
+        productUsage: product.usage,
         quantity: 1,
         unitCost: 0,
         wholesalePrice: 0,
         retailPrice: 0,
+        maintenancePrice: needsMaintenance ? 0 : undefined,
       });
     });
   };
@@ -70,6 +73,9 @@ export function PurchaseInvoiceItemsTable() {
                 <th className="px-4 py-3 w-36">تكلفة الوحدة (الشراء)</th>
                 <th className="px-4 py-3 w-36">سعر الجملة الجديد</th>
                 <th className="px-4 py-3 w-36">سعر التجزئة الجديد</th>
+                {fields.some(f => f.productUsage === 2 || f.productUsage === 3) && (
+                  <th className="px-4 py-3 w-36 bg-orange-50 text-orange-700">سعر الصيانة</th>
+                )}
                 <th className="px-4 py-3 w-32">الإجمالي</th>
                 <th className="px-4 py-3 w-16 text-center">حذف</th>
               </tr>
@@ -79,12 +85,18 @@ export function PurchaseInvoiceItemsTable() {
                 const itemQty = watchItems[index]?.quantity || 0;
                 const itemCost = watchItems[index]?.unitCost || 0;
                 const total = itemQty * itemCost;
+                const needsMaintenance = field.productUsage === 2 || field.productUsage === 3;
+                const hasAnyMaintenance = fields.some(f => f.productUsage === 2 || f.productUsage === 3);
 
                 return (
-                  <tr key={field.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={field.id} className={`hover:bg-gray-50 transition-colors ${needsMaintenance ? 'bg-orange-50/30' : ''}`}>
                     <td className="px-4 py-3 font-bold text-[var(--color-text-main)]">
                       {field.productName}
+                      {needsMaintenance && (
+                        <span className="mr-2 text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">صيانة</span>
+                      )}
                       <input type="hidden" {...register(`items.${index}.productId`)} />
+                      <input type="hidden" {...register(`items.${index}.productUsage`, { valueAsNumber: true })} />
                     </td>
                     <td className="px-4 py-3">
                       <input
@@ -128,6 +140,21 @@ export function PurchaseInvoiceItemsTable() {
                         className={`${tokens.input} py-1 px-2 text-center`}
                       />
                     </td>
+                    {hasAnyMaintenance && (
+                      <td className="px-4 py-3 bg-orange-50/50">
+                        {needsMaintenance ? (
+                          <ClearablePriceInput
+                            registration={register(`items.${index}.maintenancePrice`, { valueAsNumber: true })}
+                            setValue={setValue}
+                            name={`items.${index}.maintenancePrice`}
+                            currentValue={watchItems[index]?.maintenancePrice}
+                            className={`${tokens.input} py-1 px-2 text-center text-orange-700 font-bold`}
+                          />
+                        ) : (
+                          <span className="text-gray-300 text-xs text-center block">—</span>
+                        )}
+                      </td>
+                    )}
                     <td className="px-4 py-3 font-bold text-[var(--color-text-main)]" dir="ltr">
                       {formatCurrency(total)}
                     </td>

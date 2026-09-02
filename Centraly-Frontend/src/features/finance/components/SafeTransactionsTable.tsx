@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/shared/utils/currency';
+﻿import { formatCurrency } from '@/shared/utils/currency';
 import { formatDate } from '@/shared/utils/date';
 import { SafeTransactionResponse } from '../schemas/financeSchemas';
 
@@ -10,7 +10,7 @@ export function SafeTransactionsTable({ transactions }: SafeTransactionsTablePro
   if (!transactions || transactions.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-        <p className="text-gray-500">لا توجد حركات مسجلة في هذه الخزينة حتى الآن.</p>
+        <p className="text-gray-500">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø±ÙƒØ§Øª Ù…Ø³Ø¬Ù„Ø© ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„Ø®Ø²ÙŠÙ†Ø© Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.</p>
       </div>
     );
   }
@@ -20,19 +20,19 @@ export function SafeTransactionsTable({ transactions }: SafeTransactionsTablePro
       <table className="w-full text-right border-collapse">
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">الوقت</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">النوع</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">التصنيف</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">المبلغ</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">الرصيد بعد الحركة</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">الملاحظات</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„ÙˆÙ‚Øª</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ù†ÙˆØ¹</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„ØªØµÙ†ÙŠÙ</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ù…Ø¨Ù„Øº</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ø±ØµÙŠØ¯ Ø¨Ø¹Ø¯ Ø§Ù„Ø­Ø±ÙƒØ©</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø§Øª</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
           {transactions.map((tx) => {
             // Assuming transactionType is string like 'Income' or 'Deposit' or numbers as strings. If backend sends numbers or text, adjust appropriately.
-            // If it's something like "إيداع" or "سحب":
-            const isIncome = tx.transactionType === 'إيداع' || tx.transactionType === '1' || tx.amount > 0; 
+            // If it's something like "Ø¥ÙŠØ¯Ø§Ø¹" or "Ø³Ø­Ø¨":
+            const isIncome = tx.transactionType === 'Income' || tx.amount > 0; 
             
             return (
               <tr key={tx.id} className="hover:bg-gray-50/50 transition-colors">
@@ -68,3 +68,4 @@ export function SafeTransactionsTable({ transactions }: SafeTransactionsTablePro
     </div>
   );
 }
+

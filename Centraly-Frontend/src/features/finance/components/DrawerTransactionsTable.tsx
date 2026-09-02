@@ -20,10 +20,14 @@ export function DrawerTransactionsTable({ transactions }: DrawerTransactionsTabl
   const getCategoryLabel = (category: number) => {
     switch (category) {
       case 1: return 'مبيعات';
-      case 2: return 'مرتجعات';
-      case 3: return 'إيداع نقدي';
-      case 4: return 'سحب نقدي';
-      case 5: return 'مصروفات';
+      case 2: return 'موردين';
+      case 3: return 'صيانة';
+      case 4: return 'مرتجعات';
+      case 5: return 'تسديد مديونية عميل';
+      case 6: return 'حركة يدوية';
+      case 7: return 'واردات (مشتريات)';
+      case 8: return 'إرجاع لمورد';
+      case 10: return 'عملية محفظة';
       default: return 'أخرى';
     }
   };

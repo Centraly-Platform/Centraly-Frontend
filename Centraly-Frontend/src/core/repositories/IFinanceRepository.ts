@@ -1,4 +1,4 @@
-import { PaginatedList } from "@/shared/types/pagination";
+﻿import { PaginatedList } from "@/shared/types/pagination";
 import { 
   OpenSessionRequest, DrawerSessionResponse, AddManualTransactionRequest,
   CreateSafeRequest, SafeResponse, SafeTransactionResponse, ReceiveDrawerDepositRequest, AddManualSafeTransactionRequest,
@@ -9,9 +9,9 @@ import {
 
 export interface IFinanceRepository {
   // Drawer
-  getCurrentDrawerSession(): Promise<DrawerSessionResponse>;
+  getCurrentDrawerSession(type?: number): Promise<DrawerSessionResponse>;
   openDrawerSession(data: OpenSessionRequest): Promise<string>;
-  closeDrawerSession(): Promise<void>;
+  closeDrawerSession(type?: number): Promise<void>;
   addDrawerTransaction(data: AddManualTransactionRequest): Promise<string>;
   getDrawerHistory(filters: FinanceFilters): Promise<PaginatedList<DrawerSessionResponse>>;
   getDrawerSessionById(id: string): Promise<DrawerSessionResponse>;
@@ -29,3 +29,4 @@ export interface IFinanceRepository {
   getExpenses(filters: FinanceFilters): Promise<ExpenseResponse[]>;
   recordExpense(request: CreateExpenseRequest): Promise<ExpenseResponse>;
 }
+

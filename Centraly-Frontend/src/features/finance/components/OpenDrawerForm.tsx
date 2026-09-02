@@ -6,7 +6,7 @@ import { openSessionSchema, OpenSessionRequest } from '../schemas/financeSchemas
 import { tokens } from '@/shared/styles/tokens';
 import { useOpenDrawer } from '../hooks/useFinance';
 
-export function OpenDrawerForm() {
+export function OpenDrawerForm({ type = 1 }: { type?: number }) {
   const openDrawer = useOpenDrawer();
   
   const {
@@ -19,14 +19,14 @@ export function OpenDrawerForm() {
   });
 
   const onSubmit = (data: OpenSessionRequest) => {
-    openDrawer.mutate(data);
+    openDrawer.mutate({ ...data, type });
   };
 
   return (
     <div className="max-w-md mx-auto mt-12">
       <div className="flex justify-end mb-4">
         <Link 
-          to="/finance/drawer/history"
+          to={type === 2 ? "/finance/drawer/history?type=2" : "/finance/drawer/history?type=1"}
           className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100"
         >
           <History className="w-4 h-4" />

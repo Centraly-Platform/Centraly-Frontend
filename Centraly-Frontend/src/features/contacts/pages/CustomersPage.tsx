@@ -22,7 +22,7 @@ export function CustomersPage() {
   const { data, isLoading } = useCustomers({
     pageNumber: pageIndex,
     pageSize: 10,
-    customerPhone: searchTerm || undefined, // Backend might need search string in phone or general search
+    searchValue: searchTerm || undefined,
   });
 
   const createCustomer = useCreateCustomer();

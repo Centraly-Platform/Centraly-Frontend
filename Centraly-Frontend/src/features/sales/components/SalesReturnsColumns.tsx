@@ -4,9 +4,8 @@ import { ReturnReason, SalesReturnResponse } from '../schemas/salesSchemas';
 
 const getReasonLabel = (reason: ReturnReason) => {
   switch (reason) {
-    case ReturnReason.Defective: return 'تالف / عيب صناعة';
-    case ReturnReason.WrongItem: return 'منتج خطأ';
-    case ReturnReason.CustomerChangedMind: return 'تغيير رأي العميل';
+    case ReturnReason.Defect: return 'تالف / عيب صناعة';
+    case ReturnReason.ChangedMind: return 'تغيير رأي العميل';
     case ReturnReason.Other: return 'أخرى';
     default: return 'غير معروف';
   }

@@ -1,11 +1,11 @@
-import * as z from 'zod';
+﻿import * as z from 'zod';
 import { BaseFilters } from '@/shared/types/pagination';
 
 // Return reason labels and colors
 export const RETURN_REASON_LABELS: Record<number, string> = {
-  1: 'عيب أو خلل في المنتج',
-  2: 'تغيير رأي',
-  3: 'سبب آخر',
+  1: 'Ø¹ÙŠØ¨ Ø£Ùˆ Ø®Ù„Ù„ ÙÙŠ Ø§Ù„Ù…Ù†ØªØ¬',
+  2: 'ØªØºÙŠÙŠØ± Ø±Ø£ÙŠ',
+  3: 'Ø³Ø¨Ø¨ Ø¢Ø®Ø±',
 };
 
 export const RETURN_REASON_COLORS: Record<number, string> = {
@@ -49,19 +49,19 @@ export interface SupplierReturnResponse {
 
 // Request schema
 export const createSupplierReturnItemSchema = z.object({
-  productId: z.string().min(1, 'يجب اختيار منتج'),
-  batchId: z.string().min(1, 'يجب تحديد الدفعة'),
-  quantity: z.number().min(1, 'الكمية يجب أن تكون 1 على الأقل'),
-  returnPrice: z.number().min(0, 'سعر الإرجاع غير صالح'),
+  productId: z.string().min(1, 'ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…Ù†ØªØ¬'),
+  batchId: z.string().min(1, 'ÙŠØ¬Ø¨ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯ÙØ¹Ø©'),
+  quantity: z.number().min(1, 'Ø§Ù„ÙƒÙ…ÙŠØ© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† 1 Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„'),
+  returnPrice: z.number().min(0, 'Ø³Ø¹Ø± Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­'),
 });
 
 export type CreateSupplierReturnItemRequest = z.infer<typeof createSupplierReturnItemSchema>;
 
 export const createSupplierReturnSchema = z.object({
-  supplierId: z.string().min(1, 'يجب اختيار مورد'),
-  reason: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
+  supplierId: z.string().min(1, 'ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…ÙˆØ±Ø¯'),
+  reason: z.union([z.literal(1), z.literal(2), z.literal(3)]),
   notes: z.string().optional(),
-  items: z.array(createSupplierReturnItemSchema).min(1, 'يجب إضافة صنف واحد على الأقل'),
+  items: z.array(createSupplierReturnItemSchema).min(1, 'ÙŠØ¬Ø¨ Ø¥Ø¶Ø§ÙØ© ØµÙ†Ù ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„'),
   isCashRefund: z.boolean().default(false),
   paymentSource: z.number().optional(),
 });

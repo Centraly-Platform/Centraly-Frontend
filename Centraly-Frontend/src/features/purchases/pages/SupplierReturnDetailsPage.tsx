@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+﻿import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { useSupplierReturn } from '../hooks/useSupplierReturns';
@@ -17,9 +17,9 @@ export function SupplierReturnDetailsPage() {
 
   useEffect(() => {
     if (returnData) {
-      setTitle(`مرتجع #${returnData.supplierReturnId.substring(0, 8)}`);
+      setTitle(`Ù…Ø±ØªØ¬Ø¹ #${returnData.supplierReturnId.substring(0, 8)}`);
     } else {
-      setTitle('تفاصيل المرتجع');
+      setTitle('ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø±ØªØ¬Ø¹');
     }
     setBackButton(true, '/purchases/returns');
   }, [returnData, setTitle, setBackButton]);
@@ -30,7 +30,7 @@ export function SupplierReturnDetailsPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <Spinner size={40} className="mx-auto mb-3" />
-            <p className="text-gray-500">جاري تحميل تفاصيل المرتجع...</p>
+            <p className="text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø±ØªØ¬Ø¹...</p>
           </div>
         </div>
       </div>
@@ -41,9 +41,9 @@ export function SupplierReturnDetailsPage() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
         <AlertCircle size={48} className="text-red-400" />
-        <p className="text-gray-500">المرتجع غير موجود أو حدث خطأ أثناء التحميل.</p>
+        <p className="text-gray-500">Ø§Ù„Ù…Ø±ØªØ¬Ø¹ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ Ø£Ùˆ Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù…ÙŠÙ„.</p>
         <button className={tokens.btn.primary} onClick={() => navigate('/purchases/returns')}>
-          العودة لسجل المرتجعات
+          Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ø³Ø¬Ù„ Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø§Øª
         </button>
       </div>
     );
@@ -59,7 +59,7 @@ export function SupplierReturnDetailsPage() {
             {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(returnData.returnDate))}
           </span>
           <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${RETURN_REASON_COLORS[returnData.reason] || RETURN_REASON_COLORS[3]}`}>
-            {RETURN_REASON_LABELS[returnData.reason] || 'سبب غير معروف'}
+            {RETURN_REASON_LABELS[returnData.reason] || 'Ø³Ø¨Ø¨ ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ'}
           </span>
         </div>
       </div>
@@ -71,7 +71,7 @@ export function SupplierReturnDetailsPage() {
           className={`${tokens.card} p-4 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
           onClick={() => returnData.supplier?.id && navigate(`/contacts/suppliers/${returnData.supplier.id}`)}
         >
-          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <p className="text-xs text-gray-500 mb-2">Ø§Ù„Ù…ÙˆØ±Ø¯</p>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
               <Building2 size={20} />
@@ -90,7 +90,7 @@ export function SupplierReturnDetailsPage() {
 
         {/* Total Amount */}
         <div className={`${tokens.card} p-4 flex flex-col justify-center`}>
-          <p className="text-xs text-gray-500 mb-1">إجمالي المرتجع</p>
+          <p className="text-xs text-gray-500 mb-1">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø±ØªØ¬Ø¹</p>
           <p className="text-xl font-bold text-gray-900">{formatCurrency(returnData.totalReturnedAmount)}</p>
         </div>
       </div>
@@ -98,7 +98,7 @@ export function SupplierReturnDetailsPage() {
       {/* Notes */}
       {returnData.notes && (
         <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
-          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات المرتجع</p>
+          <p className="text-xs text-blue-600 font-semibold mb-1">Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ù…Ø±ØªØ¬Ø¹</p>
           <p className="text-gray-700 text-sm">{returnData.notes}</p>
         </div>
       )}
@@ -107,8 +107,8 @@ export function SupplierReturnDetailsPage() {
       <div className={tokens.card}>
         <div className="p-4 border-b border-gray-100">
           <h2 className="font-bold text-gray-800">
-            الأصناف المرتجعة
-            <span className="mr-2 text-sm font-normal text-gray-400">({returnData.items?.length || 0} صنف)</span>
+            Ø§Ù„Ø£ØµÙ†Ø§Ù Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø©
+            <span className="mr-2 text-sm font-normal text-gray-400">({returnData.items?.length || 0} ØµÙ†Ù)</span>
           </h2>
         </div>
 
@@ -116,10 +116,10 @@ export function SupplierReturnDetailsPage() {
           <table className="w-full text-right text-sm">
             <thead>
               <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
-                <th className="px-5 py-3 font-semibold">الصنف</th>
-                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
-                <th className="px-5 py-3 font-semibold text-center">سعر الإرجاع (للوحدة)</th>
-                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
+                <th className="px-5 py-3 font-semibold">Ø§Ù„ØµÙ†Ù</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø§Ù„ÙƒÙ…ÙŠØ©</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø³Ø¹Ø± Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹ (Ù„Ù„ÙˆØ­Ø¯Ø©)</th>
+                <th className="px-5 py-3 font-semibold text-left">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -139,7 +139,7 @@ export function SupplierReturnDetailsPage() {
                         </div>
                       )}
                       <div>
-                        <p className="font-semibold text-gray-800">{item.product?.name || '—'}</p>
+                        <p className="font-semibold text-gray-800">{item.product?.name || 'â€”'}</p>
                         {item.product?.barcode && (
                           <p className="text-xs text-gray-400 dir-ltr mt-0.5">{item.product.barcode}</p>
                         )}
@@ -163,7 +163,7 @@ export function SupplierReturnDetailsPage() {
             <tfoot className="bg-gray-50 border-t border-gray-200">
               <tr>
                 <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
-                  الإجمالي الكلي
+                  Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„ÙŠ
                 </td>
                 <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
                   {formatCurrency(returnData.totalReturnedAmount)}
@@ -176,3 +176,5 @@ export function SupplierReturnDetailsPage() {
     </div>
   );
 }
+
+

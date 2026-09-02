@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+﻿import { useParams, useNavigate } from 'react-router-dom';
 import { usePurchaseInvoice } from '../hooks/usePurchases';
 import { Printer, AlertCircle, Package, ShoppingCart, CheckCircle, Clock, Building2, ChevronLeft } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
@@ -17,9 +17,9 @@ export function PurchaseInvoiceDetailsPage() {
 
   useEffect(() => {
     if (invoice) {
-      setTitle(`فاتورة مشتريات #${invoice.invoiceNumber}`);
+      setTitle(`ÙØ§ØªÙˆØ±Ø© Ù…Ø´ØªØ±ÙŠØ§Øª #${invoice.invoiceNumber}`);
     } else {
-      setTitle('تفاصيل الفاتورة');
+      setTitle('ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©');
     }
     setBackButton(true, "/purchases/history");
   }, [invoice, setTitle, setBackButton]);
@@ -27,11 +27,11 @@ export function PurchaseInvoiceDetailsPage() {
   if (isLoading) {
     return (
       <div className="p-6 h-screen bg-gray-50">
-        <BackButton to="/purchases/history" label="رجوع للسجل" />
+        <BackButton to="/purchases/history" label="Ø±Ø¬ÙˆØ¹ Ù„Ù„Ø³Ø¬Ù„" />
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <Spinner size={40} className="mx-auto mb-3" />
-            <p className="text-gray-500">جاري تحميل تفاصيل الفاتورة...</p>
+            <p className="text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©...</p>
           </div>
         </div>
       </div>
@@ -42,9 +42,9 @@ export function PurchaseInvoiceDetailsPage() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
         <AlertCircle size={48} className="text-red-400" />
-        <p className="text-gray-500">الفاتورة غير موجودة أو حدث خطأ أثناء التحميل.</p>
+        <p className="text-gray-500">Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø© Ø£Ùˆ Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù…ÙŠÙ„.</p>
         <button className={tokens.btn.primary} onClick={() => navigate('/purchases/history')}>
-          العودة لسجل المشتريات
+          Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ø³Ø¬Ù„ Ø§Ù„Ù…Ø´ØªØ±ÙŠØ§Øª
         </button>
       </div>
     );
@@ -65,8 +65,8 @@ export function PurchaseInvoiceDetailsPage() {
             isPaid ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
           }`}>
             {isPaid
-              ? <><CheckCircle size={13} /> مدفوعة بالكامل</>
-              : <><Clock size={13} /> متبقي دفع</>
+              ? <><CheckCircle size={13} /> Ù…Ø¯ÙÙˆØ¹Ø© Ø¨Ø§Ù„ÙƒØ§Ù…Ù„</>
+              : <><Clock size={13} /> Ù…ØªØ¨Ù‚ÙŠ Ø¯ÙØ¹</>
             }
           </span>
         </div>
@@ -75,7 +75,7 @@ export function PurchaseInvoiceDetailsPage() {
           onClick={() => window.print()}
         >
           <Printer size={16} />
-          <span>طباعة</span>
+          <span>Ø·Ø¨Ø§Ø¹Ø©</span>
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export function PurchaseInvoiceDetailsPage() {
           className={`${tokens.card} p-4 md:col-span-1 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
           onClick={() => invoice.supplier?.id && navigate(`/contacts/suppliers/${invoice.supplier.id}`)}
         >
-          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <p className="text-xs text-gray-500 mb-2">Ø§Ù„Ù…ÙˆØ±Ø¯</p>
           <div className="flex items-center gap-3">
             {/* Avatar */}
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
@@ -106,19 +106,19 @@ export function PurchaseInvoiceDetailsPage() {
 
         {/* Total */}
         <div className={`${tokens.card} p-4`}>
-          <p className="text-xs text-gray-500 mb-1">إجمالي الفاتورة</p>
+          <p className="text-xs text-gray-500 mb-1">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø©</p>
           <p className="text-base font-bold text-gray-900">{formatCurrency(invoice.totalAmount)}</p>
         </div>
 
         {/* Paid */}
         <div className={`${tokens.card} p-4`}>
-          <p className="text-xs text-gray-500 mb-1">المبلغ المدفوع</p>
+          <p className="text-xs text-gray-500 mb-1">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹</p>
           <p className="text-base font-bold text-green-600">{formatCurrency(invoice.paidAmount)}</p>
         </div>
 
         {/* Remaining */}
         <div className={`${tokens.card} p-4`}>
-          <p className="text-xs text-gray-500 mb-1">المتبقي للمورد</p>
+          <p className="text-xs text-gray-500 mb-1">Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ Ù„Ù„Ù…ÙˆØ±Ø¯</p>
           <p className={`text-base font-bold ${invoice.remainingAmount > 0 ? 'text-red-600' : 'text-gray-400'}`}>
             {formatCurrency(invoice.remainingAmount)}
           </p>
@@ -128,7 +128,7 @@ export function PurchaseInvoiceDetailsPage() {
       {/* Notes */}
       {invoice.notes && (
         <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
-          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات الفاتورة</p>
+          <p className="text-xs text-blue-600 font-semibold mb-1">Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©</p>
           <p className="text-gray-700 text-sm">{invoice.notes}</p>
         </div>
       )}
@@ -137,8 +137,8 @@ export function PurchaseInvoiceDetailsPage() {
       <div className={tokens.card}>
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-bold text-gray-800">
-            الأصناف
-            <span className="mr-2 text-sm font-normal text-gray-400">({invoice.items?.length || 0} صنف)</span>
+            Ø§Ù„Ø£ØµÙ†Ø§Ù
+            <span className="mr-2 text-sm font-normal text-gray-400">({invoice.items?.length || 0} ØµÙ†Ù)</span>
           </h2>
         </div>
 
@@ -146,10 +146,10 @@ export function PurchaseInvoiceDetailsPage() {
           <table className="w-full text-right text-sm">
             <thead>
               <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
-                <th className="px-5 py-3 font-semibold">الصنف</th>
-                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
-                <th className="px-5 py-3 font-semibold text-center">سعر الشراء (للوحدة)</th>
-                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
+                <th className="px-5 py-3 font-semibold">Ø§Ù„ØµÙ†Ù</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø§Ù„ÙƒÙ…ÙŠØ©</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø³Ø¹Ø± Ø§Ù„Ø´Ø±Ø§Ø¡ (Ù„Ù„ÙˆØ­Ø¯Ø©)</th>
+                <th className="px-5 py-3 font-semibold text-left">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -170,7 +170,7 @@ export function PurchaseInvoiceDetailsPage() {
                         </div>
                       )}
                       <div>
-                        <p className="font-semibold text-gray-800">{item.product?.name || '—'}</p>
+                        <p className="font-semibold text-gray-800">{item.product?.name || 'â€”'}</p>
                         {item.product?.barcode && (
                           <p className="text-xs text-gray-400 dir-ltr mt-0.5">{item.product.barcode}</p>
                         )}
@@ -203,7 +203,7 @@ export function PurchaseInvoiceDetailsPage() {
             <tfoot className="bg-gray-50 border-t border-gray-200">
               <tr>
                 <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
-                  الإجمالي الكلي للفاتورة
+                  Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„ÙŠ Ù„Ù„ÙØ§ØªÙˆØ±Ø©
                 </td>
                 <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
                   {formatCurrency(invoice.totalAmount)}
@@ -217,3 +217,5 @@ export function PurchaseInvoiceDetailsPage() {
     </div>
   );
 }
+
+

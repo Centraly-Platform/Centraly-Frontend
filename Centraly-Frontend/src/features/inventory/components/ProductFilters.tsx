@@ -13,6 +13,8 @@ interface ProductFiltersProps {
   onCategoryChange: (val: string) => void;
   stockFilter: string;
   onStockChange: (val: string) => void;
+  usageFilter: string;
+  onUsageChange: (val: string) => void;
   onAddClick: () => void;
 }
 
@@ -25,6 +27,8 @@ export function ProductFilters({
   onCategoryChange,
   stockFilter,
   onStockChange,
+  usageFilter,
+  onUsageChange,
   onAddClick,
 }: ProductFiltersProps) {
   const { data: categoriesData } = useCategories();
@@ -97,6 +101,20 @@ export function ProductFilters({
             <option value="InStock">متوفر</option>
             <option value="LowStock">منخفض</option>
             <option value="OutOfStock">نفد المخزون</option>
+          </select>
+        </div>
+
+        {/* Usage Filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={usageFilter}
+            onChange={(e) => onUsageChange(e.target.value)}
+            className={`${tokens.select} bg-gray-50 min-w-[140px]`}
+          >
+            <option value="">النوع (الكل)</option>
+            <option value="1">بيع فقط</option>
+            <option value="2">صيانة فقط</option>
+            <option value="3">بيع أو صيانة</option>
           </select>
         </div>
       </div>

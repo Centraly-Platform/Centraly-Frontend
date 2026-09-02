@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSalesInvoiceDetails, useCreateSalesReturn } from '../hooks/useSales';
 import { ReturnReason } from '../schemas/salesSchemas';
@@ -22,7 +22,7 @@ export const NewSalesReturnPage = () => {
   const createReturn = useCreateSalesReturn();
 
   const [returnItems, setReturnItems] = useState<{ id: string; returnQty: number }[]>([]);
-  const [reason, setReason] = useState<ReturnReason>(ReturnReason.CustomerChangedMind);
+  const [reason, setReason] = useState<ReturnReason>(ReturnReason.ChangedMind);
   const [isCashRefund, setIsCashRefund] = useState(true);
 
   const { promptPaymentSource, PaymentSourcePromptModal } = usePaymentSourcePrompt(2); // GlobalTransactionCategory.SalesReturn
@@ -65,7 +65,7 @@ export const NewSalesReturnPage = () => {
       });
 
     if (itemsToReturn.length === 0) {
-      toast.error('يجب تحديد كمية لمنتج واحد على الأقل للإرجاع');
+      toast.error('ÙŠØ¬Ø¨ ØªØ­Ø¯ÙŠØ¯ ÙƒÙ…ÙŠØ© Ù„Ù…Ù†ØªØ¬ ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„Ù„Ø¥Ø±Ø¬Ø§Ø¹');
       return;
     }
 
@@ -94,7 +94,7 @@ export const NewSalesReturnPage = () => {
   return (
     <div className="space-y-6 w-full max-w-4xl mx-auto">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">إضافة مرتجع مبيعات جديد</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Ø¥Ø¶Ø§ÙØ© Ù…Ø±ØªØ¬Ø¹ Ù…Ø¨ÙŠØ¹Ø§Øª Ø¬Ø¯ÙŠØ¯</h1>
       </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-6">
@@ -104,8 +104,8 @@ export const NewSalesReturnPage = () => {
           onSearch={handleSearch}
         />
 
-        {isLoading && <div className="text-center py-4">جاري البحث...</div>}
-        {fetchError && <div className="text-red-500 text-center py-4 flex items-center justify-center gap-2"><AlertCircle size={20} /> الفاتورة غير موجودة</div>}
+        {isLoading && <div className="text-center py-4">Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¨Ø­Ø«...</div>}
+        {fetchError && <div className="text-red-500 text-center py-4 flex items-center justify-center gap-2"><AlertCircle size={20} /> Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø©</div>}
 
         {invoice && (
           <div className="space-y-6 mt-6 border-t pt-6">
@@ -133,7 +133,7 @@ export const NewSalesReturnPage = () => {
                 className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 <Save size={20} />
-                <span>حفظ المرتجع</span>
+                <span>Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹</span>
               </button>
             </div>
           </div>

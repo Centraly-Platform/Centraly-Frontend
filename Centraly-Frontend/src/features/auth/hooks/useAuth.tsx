@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+﻿import { createContext, useContext, useState, ReactNode } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { authRepository } from "../api/AuthApi";
 import { LoginFormData } from "../schemas/loginSchema";
@@ -9,8 +9,11 @@ import { getApiErrorMessage } from "@/shared/utils/apiError";
 interface AuthContextType {
   isAuthenticated: boolean;
   permissions: string[];
-  logout: () => void;
+  roles: string[];
+  logout: () => Promise<void>;
   hasPermission: (permission: string) => boolean;
+  hasRole: (role: string) => boolean;
+  hasAnyRole: (roles: string[]) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,22 +23,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [permissions, setPermissions] = useState<string[]>(
     isAuthenticated ? storage.getPermissions() : []
   );
+  const [roles, setRoles] = useState<string[]>(
+    isAuthenticated ? storage.getRoles() : []
+  );
 
-  const logout = () => {
-    storage.clearToken();
-    storage.clearPermissions();
-    setIsAuthenticated(false);
-    setPermissions([]);
-    window.location.href = '/login';
+  const logout = async () => {
+    try {
+      const token = storage.getToken();
+      const refreshToken = storage.getRefreshToken();
+      if (token && refreshToken) {
+        await authRepository.revokeRefreshToken({ token, refreshToken });
+      }
+    } catch (err) {
+      console.error("Failed to revoke token on logout", err);
+    } finally {
+      storage.clearToken();
+      storage.clearRefreshToken();
+      storage.clearPermissions();
+      storage.clearRoles();
+      setIsAuthenticated(false);
+      setPermissions([]);
+      setRoles([]);
+      window.location.href = '/login';
+    }
   };
 
-  const hasPermission = (_permission: string) => {
-    // DEV MODE: Always return true
-    return true;
+  const hasPermission = (permission: string) => {
+    return permissions.includes(permission) || roles.includes("Admin");
+  };
+
+  const hasRole = (role: string) => {
+    return roles.includes(role);
+  };
+
+  const hasAnyRole = (allowedRoles: string[]) => {
+    return allowedRoles.some(r => roles.includes(r));
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, permissions, logout, hasPermission }}>
+    <AuthContext.Provider value={{ isAuthenticated, permissions, roles, logout, hasPermission, hasRole, hasAnyRole }}>
       {children}
     </AuthContext.Provider>
   );
@@ -55,13 +81,19 @@ export function useLogin() {
     onSuccess: (data) => {
       toast.success("تم تسجيل الدخول بنجاح!");
       storage.setToken(data.token);
-      // Ensure we have permissions array, default to empty if not returned by old backend
+      if (data.refreshToken) {
+        storage.setRefreshToken(data.refreshToken);
+      }
+      
       const perms = data.permissions || [];
+      const userRoles = data.role || [];
       storage.setPermissions(perms);
+      storage.setRoles(userRoles);
+      
       window.location.href = '/';
     },
     onError: (error: unknown) => {
-      toast.error(getApiErrorMessage(error, "فشل تسجيل الدخول. تحقق من البيانات."));
+      toast.error(getApiErrorMessage(error, "فشل تسجيل الدخول. تأكد من البيانات."));
     },
   });
 }

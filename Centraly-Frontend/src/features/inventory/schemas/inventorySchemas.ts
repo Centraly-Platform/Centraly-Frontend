@@ -1,10 +1,18 @@
 import { z } from "zod";
 import { BaseFilters } from "@/shared/types/pagination";
 
+export enum ProductUsageDto {
+  SaleOnly = 1,
+  MaintenanceOnly = 2,
+  SaleAndMaintenance = 3
+}
+
 export interface ProductFilters extends BaseFilters {
   categoryId?: string;
   departmentId?: string;
   stockStatus?: string;
+  usage?: ProductUsageDto;
+  excludeUsage?: ProductUsageDto;
 }
 
 // Shared common filters
@@ -48,6 +56,7 @@ export const createProductSchema = z.object({
   image: z.instanceof(File, { message: "يجب أن يكون ملفًا" }).optional(),
   minQuantityAlert: z.coerce.number().min(0, "يجب أن تكون 0 أو أكثر"),
   storageLocation: z.string().optional(),
+  usage: z.coerce.number().default(ProductUsageDto.SaleAndMaintenance),
   propertiesList: z.array(z.object({
     key: z.string().min(1, "الاسم مطلوب"),
     value: z.string().min(1, "القيمة مطلوبة")
@@ -76,6 +85,7 @@ export interface ProductBatchResponse {
   purchasePrice: number;
   wholesalePrice: number;
   retailPrice: number;
+  maintenancePrice: number;
   dateReceived: string;
 }
 
@@ -92,6 +102,11 @@ export interface ProductResponse {
   isOutOfStock: boolean;
   isLowStock: boolean;
   createdAt: string;
+  usage: ProductUsageDto;
   properties: Record<string, string>;
   batches: ProductBatchResponse[];
+}
+
+export function isMaintenanceProduct(usage?: ProductUsageDto): boolean {
+  return usage === ProductUsageDto.MaintenanceOnly || usage === ProductUsageDto.SaleAndMaintenance;
 }

@@ -1,8 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { contactsRepository } from "../api/ContactsApi";
 
 import { 
-  CreateCustomerRequest, CreateSupplierRequest, CreatePaymentRequest,
+  CreateCustomerRequest, CreatePaymentRequest,
   ContactFilters, StatementFilters 
 } from "../schemas/contactSchemas";
 import { toast } from "sonner";
@@ -11,10 +11,6 @@ export const CONTACT_KEYS = {
   customers: (filters: ContactFilters) => ["customers", filters] as const,
   customerDetails: (id: string) => ["customers", id] as const,
   customerStatement: (filters: StatementFilters) => ["customers", "statement", filters] as const,
-  
-  suppliers: (filters: ContactFilters) => ["suppliers", filters] as const,
-  supplierDetails: (id: string) => ["suppliers", id] as const,
-  supplierStatement: (filters: StatementFilters) => ["suppliers", "statement", filters] as const,
 };
 
 // --- Customer Queries & Mutations ---
@@ -89,56 +85,6 @@ export function useAddCustomerPayment() {
       toast.success("تم تسجيل الدفعة بنجاح");
       queryClient.invalidateQueries({ queryKey: ["customers"] });
       queryClient.invalidateQueries({ queryKey: CONTACT_KEYS.customerDetails(id) });
-    },
-    onError: () => toast.error("حدث خطأ أثناء تسجيل الدفعة"),
-  });
-}
-
-// --- Supplier Queries & Mutations ---
-
-export function useSuppliers(filters: ContactFilters) {
-  return useQuery({
-    queryKey: CONTACT_KEYS.suppliers(filters),
-    queryFn: () => contactsRepository.getSuppliers(filters),
-  });
-}
-
-export function useSupplier(id: string) {
-  return useQuery({
-    queryKey: CONTACT_KEYS.supplierDetails(id),
-    queryFn: () => contactsRepository.getSupplier(id),
-    enabled: !!id,
-  });
-}
-
-export function useSupplierStatement(filters: StatementFilters) {
-  return useQuery({
-    queryKey: CONTACT_KEYS.supplierStatement(filters),
-    queryFn: () => contactsRepository.getSupplierStatement(filters),
-  });
-}
-
-export function useCreateSupplier() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: CreateSupplierRequest) => contactsRepository.createSupplier(data),
-    onSuccess: () => {
-      toast.success("تم إضافة المورد بنجاح");
-      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
-    },
-    onError: () => toast.error("حدث خطأ أثناء إضافة المورد"),
-  });
-}
-
-export function useAddSupplierPayment() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: CreatePaymentRequest }) => 
-      contactsRepository.addSupplierPayment(id, data),
-    onSuccess: (_, { id }) => {
-      toast.success("تم تسجيل الدفعة بنجاح");
-      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
-      queryClient.invalidateQueries({ queryKey: CONTACT_KEYS.supplierDetails(id) });
     },
     onError: () => toast.error("حدث خطأ أثناء تسجيل الدفعة"),
   });
