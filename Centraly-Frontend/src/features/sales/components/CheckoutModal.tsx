@@ -51,21 +51,21 @@ export function CheckoutModal({
 
     const paid = Number(paidAmount);
     if (isNaN(paid) || paid < 0) {
-      setError('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ù…Ø¨Ù„Øº Ø¯ÙØ¹ ØµØ­ÙŠØ­');
+      setError('يرجى إدخال مبلغ دفع صحيح');
       return;
     }
 
     if (isCredit) {
       if (!customerName.trim() || !customerPhone.trim()) {
-        setError('ÙŠØ¬Ø¨ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ ÙˆØ±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¢Ø¬Ù„');
+        setError('يجب إدخال اسم العميل ورقم الهاتف في حالة البيع الآجل');
         return;
       }
       if (paid >= totalAmount) {
-        setError('Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø£Ù† ÙŠÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ Ø£ÙƒØ¨Ø± Ù…Ù† Ø£Ùˆ ÙŠØ³Ø§ÙˆÙŠ Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¢Ø¬Ù„');
+        setError('لا يمكن أن يكون المبلغ المدفوع أكبر من أو يساوي الإجمالي في حالة البيع الآجل');
         return;
       }
     } else if (paid < totalAmount) {
-      setError('ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ù†Ù‚Ø¯ÙŠ ÙŠØ¬Ø¨ Ø¯ÙØ¹ Ø§Ù„Ù…Ø¨Ù„Øº ÙƒØ§Ù…Ù„Ø§Ù‹');
+      setError('في حالة الدفع النقدي يجب دفع المبلغ كاملاً');
       return;
     }
 
@@ -85,14 +85,14 @@ export function CheckoutModal({
       <BaseModal
         isOpen={isOpen}
         onClose={onClose}
-        title={isCredit ? 'Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø¢Ø¬Ù„' : 'Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ù†Ù‚Ø¯ÙŠ'}
+        title={isCredit ? 'إتمام الدفع الآجل' : 'إتمام الدفع النقدي'}
         size="md"
         zIndexClassName="z-[60]"
         headerClassName={isCredit ? 'bg-amber-50' : 'bg-emerald-50'}
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="bg-[var(--color-page-bg)] p-4 rounded-xl flex items-center justify-between border border-[var(--color-border)]">
-            <span className="text-[var(--color-text-muted)] font-semibold">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨:</span>
+            <span className="text-[var(--color-text-muted)] font-semibold">الإجمالي المطلوب:</span>
             <span className="text-2xl font-bold text-[var(--color-text-main)]">{formatCurrency(totalAmount)}</span>
           </div>
 
@@ -117,7 +117,7 @@ export function CheckoutModal({
               <option value={SaleType.Wholesale}>جملة</option>
             </select>
           </div>
-          <div>`n            <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">`n              <span className="flex items-center gap-1.5">`n                <Phone size={16} /> Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ
+          <div>`n            <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">`n              <span className="flex items-center gap-1.5">`n                <Phone size={16} /> رقم الهاتف
               </span>
               {isCredit && <span className="text-[var(--color-danger)]">*</span>}
             </label>
@@ -125,7 +125,7 @@ export function CheckoutModal({
               type="text"
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
-              placeholder="Ù…Ø«Ø§Ù„: 010xxxxxxxx"
+              placeholder="مثال: 010xxxxxxxx"
               className={tokens.input + ' py-3 text-left'}
               required={isCredit}
               dir="ltr"
@@ -135,7 +135,7 @@ export function CheckoutModal({
           <div>
             <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <User size={16} /> Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„
+                <User size={16} /> اسم العميل
               </span>
               {isCredit && <span className="text-[var(--color-danger)]">*</span>}
             </label>
@@ -143,7 +143,7 @@ export function CheckoutModal({
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…Ø¯"
+              placeholder="مثال: أحمد محمد"
               className={tokens.input + ' py-3'}
               required={isCredit}
             />
@@ -153,7 +153,7 @@ export function CheckoutModal({
             <div className="pt-2 border-t border-[var(--color-border)]">
               <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <Banknote size={16} /> Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ Ø§Ù„Ø¢Ù†
+                  <Banknote size={16} /> المبلغ المدفوع الآن
                 </span>
                 <span className="text-[var(--color-danger)]">*</span>
               </label>
@@ -175,7 +175,7 @@ export function CheckoutModal({
               />
               {Number(paidAmount) >= 0 && Number(paidAmount) < totalAmount && (
                 <p className="text-sm text-amber-700 mt-2.5 font-bold">
-                  Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ ÙƒÙ…Ø¯ÙŠÙˆÙ†ÙŠØ©: {formatCurrency(totalAmount - Number(paidAmount))}
+                  المتبقي كمديونية: {formatCurrency(totalAmount - Number(paidAmount))}
                 </p>
               )}
             </div>
@@ -188,7 +188,7 @@ export function CheckoutModal({
               isCredit ? 'bg-amber-600 hover:bg-amber-700' : 'bg-emerald-600 hover:bg-emerald-700'
             }`}
           >
-            {isSubmitting ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ£ÙƒÙŠØ¯...' : 'ØªØ£ÙƒÙŠØ¯ ÙˆØ­ÙØ¸ Ø§Ù„ÙØ§ØªÙˆØ±Ø©'}
+            {isSubmitting ? 'جاري التأكيد...' : 'تأكيد وحفظ الفاتورة'}
           </button>
         </form>
       </BaseModal>

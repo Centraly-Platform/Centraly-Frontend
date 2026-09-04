@@ -23,16 +23,16 @@ interface Props {
 }
 
 const TIME_PRESETS = [
-  { label: '30 Ø¯Ù‚ÙŠÙ‚Ø©', minutes: 30 },
-  { label: 'Ø³Ø§Ø¹Ø©', minutes: 60 },
-  { label: 'Ø³Ø§Ø¹ØªÙŠÙ†', minutes: 120 },
-  { label: '3 Ø³Ø§Ø¹Ø§Øª', minutes: 180 },
-  { label: 'ØºØ¯Ø§Ù‹', minutes: 1440 },
+  { label: '30 دقيقة', minutes: 30 },
+  { label: 'ساعة', minutes: 60 },
+  { label: 'ساعتين', minutes: 120 },
+  { label: '3 ساعات', minutes: 180 },
+  { label: 'غداً', minutes: 1440 },
 ];
 
 const COMMON_PROBLEMS = [
-  'ØªØºÙŠÙŠØ± Ø´Ø§Ø´Ø©', 'ØªØºÙŠÙŠØ± Ø¨Ø·Ø§Ø±ÙŠØ©', 'Ø³ÙˆÙƒÙŠØª Ø´Ø­Ù†', 'Ø¨Ø§ØºØ©', 
-  'ØµÙŠØ§Ù†Ø© Ø¨ÙˆØ±Ø¯Ø©', 'Ø³ÙˆÙØª ÙˆÙŠØ±', 'Ø³Ù…Ø§Ø¹Ø© / Ù…Ø§ÙŠÙƒ', 'ÙØ­Øµ ÙˆÙƒØ´Ù'
+  'تغيير شاشة', 'تغيير بطارية', 'سوكيت شحن', 'باغة', 
+  'صيانة بوردة', 'سوفت وير', 'سماعة / مايك', 'فحص وكشف'
 ];
 
 const ADVANCE_PRESETS = [0, 50, 100, 200];
@@ -55,8 +55,8 @@ function formatArabicDelivery(isoString?: string) {
 
   const timePart = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  if (isToday) return `Ø§Ù„ÙŠÙˆÙ…ØŒ ${timePart}`;
-  if (isTomorrow) return `ØºØ¯Ø§Ù‹ØŒ ${timePart}`;
+  if (isToday) return `اليوم، ${timePart}`;
+  if (isTomorrow) return `غداً، ${timePart}`;
   return date.toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', hour12: true });
 }
 
@@ -120,22 +120,22 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
   };
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title="Ø¥Ø¶Ø§ÙØ© ØªØ°ÙƒØ±Ø© ØµÙŠØ§Ù†Ø©" width="w-[500px]">
+    <Drawer isOpen={isOpen} onClose={onClose} title="إضافة تذكرة صيانة" width="w-[500px]">
       <form onSubmit={handleSubmit(onSubmit as any)} className="h-full flex flex-col">
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 bg-white">
           
           {/* Section 1: Customer */}
           <section className="space-y-4">
             <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800">
-              <User className="w-4 h-4 text-blue-600" /> Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„
+              <User className="w-4 h-4 text-blue-600" /> معلومات العميل
             </h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
-                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ <span className="text-red-500">*</span></label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">اسم العميل <span className="text-red-500">*</span></label>
                 <Input
                   {...register('customerName')}
-                  placeholder="Ù…Ø«Ø§Ù„: Ù…Ø­Ù…Ø¯ Ø¹Ù„ÙŠ"
+                  placeholder="مثال: محمد علي"
                   autoComplete="off"
                   autoFocus
                   onChange={(e) => {
@@ -169,7 +169,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">رقم الهاتف</label>
                 <Input
                   {...register('customerPhone')}
                   placeholder="01xxxxxxxxx"
@@ -187,23 +187,23 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
           {/* Section 2: Device & Problem */}
           <section className="space-y-4">
             <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800">
-              <Smartphone className="w-4 h-4 text-blue-600" /> Ø§Ù„Ø¬Ù‡Ø§Ø² ÙˆØ§Ù„Ù…Ø´ÙƒÙ„Ø©
+              <Smartphone className="w-4 h-4 text-blue-600" /> الجهاز والمشكلة
             </h3>
             
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Ø§Ø³Ù… Ø§Ù„Ø¬Ù‡Ø§Ø² / Ø§Ù„Ù…ÙˆØ¯ÙŠÙ„</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1.5">اسم الجهاز / الموديل</label>
               <Input
                 {...register('deviceDescription')}
-                placeholder="Ù…Ø«Ø§Ù„: iPhone 14 Pro"
+                placeholder="مثال: iPhone 14 Pro"
                 className="bg-slate-50/50 border-slate-200 focus:bg-white h-11"
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-xs font-semibold text-slate-500">ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¹Ø·Ù„</label>
+                <label className="block text-xs font-semibold text-slate-500">تفاصيل العطل</label>
                 <span className="text-[10px] font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> Ø£Ø¶Ù Ø³Ø±ÙŠØ¹Ø§Ù‹
+                  <Sparkles className="w-3 h-3" /> أضف سريعاً
                 </span>
               </div>
               
@@ -222,7 +222,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
 
               <textarea
                 {...register('problem')}
-                placeholder="Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„ Ø£Ùˆ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ­Øµ Ø§Ù„Ø³Ø±ÙŠØ¹..."
+                placeholder="ملاحظات العميل أو تفاصيل الفحص السريع..."
                 className={cn(tokens.input, "min-h-[80px] bg-slate-50/50 border-slate-200 focus:bg-white resize-y py-3")}
               />
             </div>
@@ -234,7 +234,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
           <section className="space-y-6">
             <div>
               <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800 mb-4">
-                <Clock className="w-4 h-4 text-blue-600" /> Ù…ÙˆØ¹Ø¯ Ø§Ù„تسليم Ø§Ù„Ù…ØªÙˆÙ‚Ø¹
+                <Clock className="w-4 h-4 text-blue-600" /> موعد التسليم المتوقع
               </h3>
               
               <div className="bg-slate-100/70 p-1.5 rounded-xl flex items-center gap-1 mb-3">
@@ -272,7 +272,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
 
             <div>
               <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800 mb-3">
-                <Coins className="w-4 h-4 text-emerald-600" /> Ø§Ù„Ø¯ÙØ¹Ø© Ø§Ù„Ù…Ù‚Ø¯Ù…Ø© (Ø¹Ø±Ø¨ÙˆÙ†)
+                <Coins className="w-4 h-4 text-emerald-600" /> الدفعة المقدمة (عربون)
               </h3>
               
               <div className="flex items-center gap-2">
@@ -280,7 +280,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
                   type="number"
                   min="0"
                   step="0.01"
-                  {...register('paidAmount', { valueAsNumber: true })}
+                  {...register('paidAmount', { valueAsNumber: true })} onFocus={(e) => e.target.select()}
                   className="w-32 h-11 font-bold text-lg text-emerald-700 text-center bg-emerald-50/30 border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500"
                 />
                 <div className="flex-1 bg-slate-100/70 p-1 rounded-xl flex items-center gap-1">
@@ -296,7 +296,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
                           : "text-slate-500 hover:bg-slate-200/50"
                       )}
                     >
-                      {amt === 0 ? 'Ø¨Ø¯ÙˆÙ†' : `+${amt}`}
+                      {amt === 0 ? 'بدون' : `+${amt}`}
                     </button>
                   ))}
                 </div>
@@ -321,7 +321,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
             className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
           >
             <Save className="w-5 h-5" />
-            {isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡...' : 'Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ØªØ°ÙƒØ±Ø©'}
+            {isPending ? 'جاري الإنشاء...' : 'إنشاء التذكرة'}
           </button>
         </div>
       </form>

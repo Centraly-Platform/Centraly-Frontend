@@ -1,4 +1,6 @@
-import axios from 'axios';
+﻿const fs = require('fs');
+
+let apiError = import axios from 'axios';
 
 interface ApiErrorBody {
   code?: string;
@@ -32,3 +34,13 @@ export function getApiErrorMessage(error: unknown, fallback = 'حدث خطأ غ�
 
   return fallback;
 }
+;
+fs.writeFileSync('src/shared/utils/apiError.ts', apiError, 'utf8');
+
+let financeHooks = fs.readFileSync('src/features/finance/hooks/useFinance.ts', 'utf8');
+if (!financeHooks.includes('getApiErrorMessage')) {
+    financeHooks = "import { getApiErrorMessage } from '@/shared/utils/apiError';\n" + financeHooks;
+}
+financeHooks = financeHooks.replace(/onError:\s*\(\)\s*=>\s*toast\.error\([^)]+\)/g, 'onError: (err) => toast.error(getApiErrorMessage(err))');
+financeHooks = financeHooks.replace(/onError:\s*\(\)\s*=>\s*\{\s*toast\.error\([^)]+\);\s*\}/g, 'onError: (err) => { toast.error(getApiErrorMessage(err)); }');
+fs.writeFileSync('src/features/finance/hooks/useFinance.ts', financeHooks, 'utf8');

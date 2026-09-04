@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { formatCurrency } from '@/shared/utils/currency';
+import { formatCurrency, roundMoney } from '@/shared/utils/currency';
 import { tokens } from '@/shared/styles/tokens';
 import { CreatePurchaseInvoiceRequest } from '../../schemas/purchaseSchemas';
 import { ClearablePriceInput } from '@/shared/components/ui/ClearablePriceInput';
@@ -14,11 +14,8 @@ export function PurchaseInvoiceSummary({ isSubmitting }: PurchaseInvoiceSummaryP
   const watchItems = watch('items');
   const watchPaidAmount = watch('paidAmount');
 
-  const totalInvoice = (watchItems || []).reduce(
-    (acc, item) => acc + ((item.quantity || 0) * (item.unitCost || 0)),
-    0
-  );
-  const remaining = totalInvoice - (watchPaidAmount || 0);
+  const totalInvoice = roundMoney((watchItems || []).reduce((acc, item) => acc + ((item.quantity || 0) * (item.unitCost || 0)), 0));
+  const remaining = roundMoney(totalInvoice - (watchPaidAmount || 0));
   const hasItems = watchItems && watchItems.length > 0;
 
   return (

@@ -3,24 +3,24 @@ import { BaseFilters } from '@/shared/types/pagination';
 
 // Requests
 export const purchaseInvoiceItemSchema = z.object({
-  productId: z.string().min(1, "ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…Ù†ØªØ¬"),
+  productId: z.string().min(1, "يجب اختيار منتج"),
   productName: z.string().optional(), // Frontend only helper
   productUsage: z.number().optional(), // Frontend only: 1=SaleOnly, 2=MaintenanceOnly, 3=Both
-  quantity: z.number().min(1, "Ø§Ù„ÙƒÙ…ÙŠØ© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† Ø£ÙƒØ¨Ø± Ù…Ù† ØµÙØ±"),
-  unitCost: z.number().min(0, "ØªÙƒÙ„ÙØ© Ø§Ù„ÙˆØ­Ø¯Ø© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† 0 Ø£Ùˆ Ø£ÙƒØ«Ø±"),
-  wholesalePrice: z.number().min(0, "Ø³Ø¹Ø± Ø§Ù„Ø¬Ù…Ù„Ø© ØºÙŠØ± ØµØ§Ù„Ø­"),
-  retailPrice: z.number().min(0, "Ø³Ø¹Ø± Ø§Ù„ØªØ¬Ø²Ø¦Ø© ØºÙŠØ± ØµØ§Ù„Ø­"),
-  maintenancePrice: z.number().min(0, "Ø³Ø¹Ø± Ø§Ù„ØµÙŠØ§Ù†Ø© ØºÙŠØ± ØµØ§Ù„Ø­").optional(),
+  quantity: z.number().min(1, "الكمية يجب أن تكون أكبر من صفر"),
+  unitCost: z.number().min(0, "تكلفة الوحدة يجب أن تكون 0 أو أكثر"),
+  wholesalePrice: z.number().min(0, "سعر الجملة غير صالح"),
+  retailPrice: z.number().min(0, "سعر التجزئة غير صالح"),
+  maintenancePrice: z.number().min(0, "سعر الصيانة غير صالح").optional(),
 });
 
 export type CreatePurchaseInvoiceItemRequest = z.infer<typeof purchaseInvoiceItemSchema>;
 
 export const createPurchaseInvoiceSchema = z.object({
-  supplierId: z.string().min(1, "ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…ÙˆØ±Ø¯"),
-  paidAmount: z.number().min(0, "Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ ØºÙŠØ± ØµØ§Ù„Ø­"),
+  supplierId: z.string().min(1, "يجب اختيار مورد"),
+  paidAmount: z.number().min(0, "المبلغ المدفوع غير صالح"),
   paymentSource: z.number().optional(),
   notes: z.string().optional(),
-  items: z.array(purchaseInvoiceItemSchema).min(1, "ÙŠØ¬Ø¨ Ø¥Ø¶Ø§ÙØ© Ù…Ù†ØªØ¬ ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„"),
+  items: z.array(purchaseInvoiceItemSchema).min(1, "يجب إضافة منتج واحد على الأقل"),
 });
 
 export type CreatePurchaseInvoiceRequest = z.infer<typeof createPurchaseInvoiceSchema>;

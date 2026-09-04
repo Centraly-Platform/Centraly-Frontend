@@ -32,8 +32,8 @@ export function RolesPage() {
             <ShieldAlert size={24} />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø£Ø¯ÙˆØ§Ø± ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª</h1>
-            <p className="text-slate-500 mt-1.5 text-sm font-medium">Ø§Ù„ØªØ­ÙƒÙ… ÙÙŠ Ù…Ø¬Ù…ÙˆØ¹Ø§Øª Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© ÙÙŠ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØªØ®ØµÙŠØµ ÙˆØµÙˆÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†.</p>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">إدارة الأدوار والصلاحيات</h1>
+            <p className="text-slate-500 mt-1.5 text-sm font-medium">التحكم في مجموعات الصلاحيات المتاحة في النظام وتخصيص وصول المستخدمين.</p>
           </div>
         </div>
         
@@ -45,10 +45,10 @@ export function RolesPage() {
               onChange={(e) => setIncludeDisabled(e.target.checked)}
               className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer"
             />
-            <span className="text-sm font-bold text-slate-600">Ø¥Ø¸Ù‡Ø§Ø± Ø§Ù„Ù…Ø¹Ø·Ù„Ø©</span>
+            <span className="text-sm font-bold text-slate-600">إظهار المعطلة</span>
           </label>
           <Button onClick={handleAdd} className="gap-2 shadow-indigo-500/20 shadow-lg px-6 h-12 bg-indigo-600 hover:bg-indigo-700">
-            <Plus size={18} /> Ø¥Ø¶Ø§ÙØ© Ø¯ÙˆØ± Ø¬Ø¯ÙŠØ¯
+            <Plus size={18} /> إضافة دور جديد
           </Button>
         </div>
       </div>
@@ -58,16 +58,16 @@ export function RolesPage() {
         {isLoading ? (
           <div className="p-16 flex flex-col items-center justify-center space-y-4">
             <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 font-medium">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</p>
+            <p className="text-slate-500 font-medium">جاري التحميل...</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-right border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">Ø§Ø³Ù… Ø§Ù„Ø¯ÙˆØ±</th>
-                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">Ø§Ù„Ø­Ø§Ù„Ø©</th>
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-40 text-center">Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">اسم الدور</th>
+                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">الحالة</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-40 text-center">الإجراءات</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -80,14 +80,14 @@ export function RolesPage() {
                     <td className="p-5">
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-bold border ${role.isDeleted ? 'bg-red-50 text-red-700 border-red-100' : 'bg-emerald-50 text-emerald-700 border-emerald-100'}`}>
                         {role.isDeleted ? <XCircle size={14} /> : <CheckCircle2 size={14} />}
-                        {role.isDeleted ? 'Ù…Ø¹Ø·Ù„' : 'Ù†Ø´Ø·'}
+                        {role.isDeleted ? 'معطل' : 'نشط'}
                       </span>
                     </td>
                     <td className="p-5 px-8 flex items-center justify-center gap-2">
-                      <Button variant="ghost" size="icon" onClick={() => handleEdit(role.id)} title="ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±" className="bg-white border border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" onClick={() => handleEdit(role.id)} title="تعديل الدور" className="bg-white border border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Edit size={18} />
                       </Button>
-                      <Button variant="ghost" size="icon" onClick={() => toggleMutation.mutate(role.id)} title={role.isDeleted ? 'ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±' : 'ØªØ¹Ø·ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±'} className="bg-white border border-slate-200 hover:bg-slate-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" onClick={() => toggleMutation.mutate(role.id)} title={role.isDeleted ? 'تفعيل الدور' : 'تعطيل الدور'} className="bg-white border border-slate-200 hover:bg-slate-100 opacity-0 group-hover:opacity-100 transition-opacity">
                         {role.isDeleted ? (
                           <ToggleLeft size={22} className="text-slate-400" />
                         ) : (
@@ -100,7 +100,7 @@ export function RolesPage() {
                 {roles?.length === 0 && (
                   <tr>
                     <td colSpan={3} className="p-16 text-center text-slate-500 font-medium text-lg">
-                      Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø¯ÙˆØ§Ø± Ù…Ø³Ø¬Ù„Ø© Ø¨Ø¹Ø¯.
+                      لا توجد أدوار مسجلة بعد.
                     </td>
                   </tr>
                 )}

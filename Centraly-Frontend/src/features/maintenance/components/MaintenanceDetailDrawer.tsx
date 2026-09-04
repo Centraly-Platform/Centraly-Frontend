@@ -74,13 +74,13 @@ const [isPickerOpen, setIsPickerOpen] = useState(false);
     if (!data.deliveryDate) delete data.deliveryDate;
 
     updateTicket({ id, data }, {
-      onSuccess: () => toast.success('ØªÙ… Ø§Ù„Ø­ÙØ¸ Ø¨Ù†Ø¬Ø§Ø­')
+      onSuccess: () => toast.success('تم الحفظ بنجاح')
     });
   };
 
   const handleDeliver = () => {
     if (!id) return;
-    if (window.confirm(`Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† تسليم Ø§Ù„Ø¬Ù‡Ø§Ø²ØŸ\nØ³ÙŠØªÙ… Ø³Ø­Ø¨ Ù‚Ø·Ø¹ Ø§Ù„ØºÙŠØ§Ø± Ù…Ù† Ø§Ù„Ù…Ø®Ø²Ù†ØŒ ÙˆØ¥Ø¶Ø§ÙØ© Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ (${remaining} Ø¬.Ù…) Ù„Ù„Ø¯Ø±Ø¬.`)) {
+    if (window.confirm(`هل أنت متأكد من تسليم الجهاز؟\nسيتم سحب قطع الغيار من المخزن، وإضافة المتبقي (${remaining} ج.م) للدرج.`)) {
       deliverTicket(id, { onSuccess: onClose });
     }
   };
@@ -97,13 +97,13 @@ if (!id) return null;
     <Drawer 
       isOpen={!!id} 
       onClose={onClose} 
-      title={`ØªÙØ§ØµÙŠÙ„ Ø§Ù„ØµÙŠØ§Ù†Ø©`}
+      title={`تفاصيل الصيانة`}
       width="w-[700px] max-w-full"
     >
       {isLoading ? (
         <PageLoader />
       ) : !ticket ? (
-        <div className="p-5 text-red-500">Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªØ°ÙƒØ±Ø©</div>
+        <div className="p-5 text-red-500">حدث خطأ في تحميل التذكرة</div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit as any)} className="h-full flex flex-col">
           <div className="flex-1 overflow-y-auto p-5 space-y-6">
@@ -115,41 +115,41 @@ if (!id) return null;
               'bg-red-50 text-red-800 border border-red-200'
             }`}>
               <div className="font-bold text-lg">
-                Ø§Ù„Ø­Ø§Ù„Ø©: {ticket.status === 'Pending' ? 'Ù‚ÙŠØ¯ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±' : ticket.status === 'Delivered' ? 'ØªÙ… Ø§Ù„تسليم' : 'Ù…Ø±ØªØ¬Ø¹'}
+                الحالة: {ticket.status === 'Pending' ? 'قيد الانتظار' : ticket.status === 'Delivered' ? 'تم التسليم' : 'مرتجع'}
               </div>
               <div className="text-sm opacity-80">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡: {new Date(ticket.createdAt).toLocaleDateString('ar-EG')}
+                تاريخ الإنشاء: {new Date(ticket.createdAt).toLocaleDateString('ar-EG')}
               </div>
             </div>
 
             {/* Customer & Device Details */}
             <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 space-y-4">
-              <h3 className="font-bold text-gray-800 mb-3 border-b border-gray-200 pb-2">Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„ ÙˆØ§Ù„Ø¬Ù‡Ø§Ø²</h3>
+              <h3 className="font-bold text-gray-800 mb-3 border-b border-gray-200 pb-2">بيانات العميل والجهاز</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">اسم العميل *</label>
                   <Input {...register('customerName')}  disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">رقم الهاتف</label>
                   <Input {...register('customerPhone')}  disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ø¬Ù‡Ø§Ø² / Ø§Ù„Ù…ÙˆØ¯ÙŠÙ„</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">اسم الجهاز / الموديل</label>
                   <Input {...register('deviceDescription')}  disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ù…ÙˆØ¹Ø¯ Ø§Ù„تسليم</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">موعد التسليم</label>
                   <Input type="datetime-local" {...register('deliveryDate')}  disabled={ticket.status !== 'Pending'} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ù…Ø´ÙƒÙ„Ø© (Ù…Ù† Ø§Ù„Ø¹Ù…ÙŠÙ„)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">المشكلة (من العميل)</label>
                   <textarea {...register('problem')} className={tokens.input + " min-h-[80px] py-2 resize-y"} disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ø­Ù„ / Ø§Ù„ØªÙ‚Ø±ÙŠØ± Ø§Ù„ÙÙ†ÙŠ</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">الحل / التقرير الفني</label>
                   <textarea {...register('solution')} className={tokens.input + " min-h-[80px] py-2 resize-y"} disabled={ticket.status !== 'Pending'} />
                 </div>
               </div>
@@ -161,29 +161,29 @@ if (!id) return null;
                 <h3 className="font-bold text-gray-800">قطع الغيار المستخدمة</h3>
                 {ticket.status === 'Pending' && (
                   <button type="button" onClick={() => setIsPickerOpen(true)} className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium bg-blue-50 px-3 py-1.5 rounded-lg">
-                    <Plus className="w-4 h-4" /> Ø¥Ø¶Ø§ÙØ© Ù‚Ø·Ø¹Ø©
+                    <Plus className="w-4 h-4" /> إضافة قطعة
                   </button>
                 )}
               </div>
               
               <div className="space-y-3">
                 {fields.length === 0 ? (
-                  <p className="text-gray-400 text-sm text-center py-4">Ù„Ù… ÙŠØªÙ… Ø¥Ø¶Ø§ÙØ© Ù‚Ø·Ø¹ ØºÙŠØ§Ø±</p>
+                  <p className="text-gray-400 text-sm text-center py-4">لم يتم إضافة قطع غيار</p>
                 ) : (
                   fields.map((field, index) => {
                     const pId = watchProductsUsed[index]?.productId;
-                    const prodName = maintenanceProducts.find(p => p.productId === pId)?.name || 'Ù‚Ø·Ø¹Ø© ØºÙŠØ§Ø±';
+                    const prodName = maintenanceProducts.find(p => p.productId === pId)?.name || 'قطعة غيار';
                     
                     return (
                       <div key={field.id} className="flex items-center gap-3 bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
                         <div className="flex-1">
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Ø§Ù„Ù…Ù†ØªØ¬</label>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">المنتج</label>
                           <div className="font-bold text-sm text-gray-800 bg-gray-50/50 border border-gray-100 rounded-lg px-3 py-2">
                             {prodName}
                           </div>
                         </div>
                         <div className="w-24">
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Ø§Ù„ÙƒÙ…ÙŠØ©</label>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">الكمية</label>
                           <Input 
                             type="number" 
                             min="1" 
@@ -193,14 +193,14 @@ if (!id) return null;
                           />
                         </div>
                         <div className="w-32 bg-gray-50/50 border border-gray-100 rounded-lg p-2 text-center mt-[22px]">
-                          <label className="block text-xs font-medium text-gray-500 mb-0.5">Ø³Ø¹Ø± Ø§Ù„ØµÙŠØ§Ù†Ø©</label>
+                          <label className="block text-xs font-medium text-gray-500 mb-0.5">سعر الصيانة</label>
                           <div className="font-bold text-emerald-600 text-sm">
-                            {watchProductsUsed[index]?.maintenancePrice?.toLocaleString('ar-EG')} Ø¬.Ù…
+                            {watchProductsUsed[index]?.maintenancePrice?.toLocaleString('ar-EG')} ج.م
                           </div>
                           <input type="hidden" {...register(`productsUsed.${index}.maintenancePrice`)} />
                         </div>
                         <div className="w-32 bg-gray-50 border border-gray-200 rounded-lg p-2 text-center mt-[22px]">
-                          <label className="block text-xs font-medium text-gray-500 mb-0.5">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</label>
+                          <label className="block text-xs font-medium text-gray-500 mb-0.5">الإجمالي</label>
                           <div className="font-bold text-gray-800 text-sm">
                             {((watchProductsUsed[index]?.quantity || 0) * (watchProductsUsed[index]?.maintenancePrice || 0)).toLocaleString('ar-EG')}
                           </div>
@@ -250,18 +250,18 @@ if (!id) return null;
               <div className="bg-blue-900 text-white p-6 rounded-xl shadow-lg flex flex-col justify-center">
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between text-white font-bold border-b border-blue-800 pb-3">
-                    <span>Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„ÙŠ:</span>
-                    <span className="text-xl">{currentTotal.toLocaleString('ar-EG')} Ø¬.Ù…</span>
+                    <span>الإجمالي الكلي:</span>
+                    <span className="text-xl">{currentTotal.toLocaleString('ar-EG')} ج.م</span>
                   </div>
                   <div className="flex justify-between text-emerald-400 font-bold border-b border-blue-800 pb-3 pt-1">
-                    <span>Ø§Ù„Ù…Ø¯ÙÙˆØ¹ (Ù…Ù‚Ø¯Ù…):</span>
-                    <span className="text-lg">{Number(currentPaid).toLocaleString('ar-EG')} Ø¬.Ù…</span>
+                    <span>المدفوع (مقدم):</span>
+                    <span className="text-lg">{Number(currentPaid).toLocaleString('ar-EG')} ج.م</span>
                   </div>
                 </div>
                 <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm mt-auto">
-                  <div className="text-blue-200 text-sm mb-1">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ Ù„Ù„ØªØ­ØµÙŠÙ„ Ø¹Ù†Ø¯ Ø§Ù„تسليم</div>
+                  <div className="text-blue-200 text-sm mb-1">المبلغ المتبقي للتحصيل عند التسليم</div>
                   <div className={`text-3xl font-black ${remaining > 0 ? 'text-red-300' : 'text-green-300'}`}>
-                    {remaining.toLocaleString('ar-EG')} <span className="text-base font-normal opacity-80">Ø¬.Ù…</span>
+                    {remaining.toLocaleString('ar-EG')} <span className="text-base font-normal opacity-80">ج.م</span>
                   </div>
                 </div>
               </div>
@@ -281,7 +281,7 @@ if (!id) return null;
                     disabled={isUpdating || !isDirty || isDelivering || isReturning}
                     className={tokens.btn.secondary + " flex items-center gap-2"}
                   >
-                    <Save className="w-5 h-5" /> Ø­ÙØ¸ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„Ø§Øª
+                    <Save className="w-5 h-5" /> حفظ التعديلات
                   </button>
                   <button
                     type="button"
@@ -297,7 +297,7 @@ if (!id) return null;
                     disabled={isDelivering || isDirty || isUpdating || isReturning} title={isDirty ? "يجب حفظ التعديلات أولا" : ""}
                     className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2 shadow-md transition-colors"
                   >
-                    <CheckCircle className="w-5 h-5" /> تسليم Ù„Ù„Ø¹Ù…ÙŠÙ„ ÙˆØªØ­ØµÙŠÙ„
+                    <CheckCircle className="w-5 h-5" /> تسليم للعميل وتحصيل
                   </button>
                 </>
               )}

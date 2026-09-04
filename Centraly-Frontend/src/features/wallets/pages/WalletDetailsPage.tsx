@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useWalletDetails } from '../hooks/useWalletDetails';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { Wallet, ArrowDownToLine, ArrowUpFromLine, ChevronLeft, ChevronRight, TrendingUp, Filter } from 'lucide-react';
-import { formatDate } from '@/shared/utils/date';
+import { formatDate, toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
 import { WalletOperationType, WalletOperationResponse } from '../schemas/walletSchemas';
 import { tokens } from '@/shared/styles/tokens';
 
@@ -18,23 +18,23 @@ export function WalletDetailsPage() {
 
   const { wallet, isLoadingWallet, operations, totalPages, isLoadingOperations } = useWalletDetails(id || '', {
     pageNumber,
-    dateFrom: dateFrom || undefined,
-    dateTo: dateTo || undefined,
+    dateFrom: dateFrom ? toUtcStartOfDayISOString(dateFrom) : undefined,
+    dateTo: dateTo ? toUtcEndOfDayISOString(dateTo) : undefined,
     operationType: operationType !== '' ? operationType : undefined
   });
 
   useEffect(() => {
-    setTitle('ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø­ÙØ¸Ø©');
+    setTitle('تفاصيل المحفظة');
     setBackButton(true, '/settings/wallets');
     return () => setBackButton(false);
   }, [setTitle, setBackButton]);
 
   if (isLoadingWallet) {
-    return <div className="p-8 text-center text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª...</div>;
+    return <div className="p-8 text-center text-gray-500">جاري تحميل البيانات...</div>;
   }
 
   if (!wallet) {
-    return <div className="p-8 text-center text-red-500">Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø§Ù„Ù…Ø­ÙØ¸Ø©</div>;
+    return <div className="p-8 text-center text-red-500">لم يتم العثور على المحفظة</div>;
   }
 
   const isProfitable = wallet.netProfit >= 0;
@@ -57,16 +57,16 @@ export function WalletDetailsPage() {
             <p className="text-gray-500 text-lg mb-2" dir="ltr">{wallet.phoneNumber}</p>
             <div className="flex gap-3">
               <span className={`px-3 py-1 text-sm font-medium rounded-lg ${wallet.isActive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                {wallet.isActive ? 'Ù†Ø´Ø·' : 'ØºÙŠØ± Ù†Ø´Ø·'}
+                {wallet.isActive ? 'نشط' : 'غير نشط'}
               </span>
               <span className="px-3 py-1 text-sm font-medium bg-gray-50 text-gray-600 rounded-lg">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡: {formatDate(wallet.createdAt)}
+                تاريخ الإنشاء: {formatDate(wallet.createdAt)}
               </span>
             </div>
           </div>
           
           <div className="mr-auto text-center border-r border-gray-100 pr-6">
-            <p className="text-gray-500 font-medium mb-1">Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„ÙŠ</p>
+            <p className="text-gray-500 font-medium mb-1">الرصيد الحالي</p>
             <p className="text-3xl font-black text-[#0f8e4c] font-mono">
               {(wallet.balance || 0).toFixed(2)}
             </p>
@@ -77,7 +77,7 @@ export function WalletDetailsPage() {
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${isProfitable ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
             <TrendingUp size={24} />
           </div>
-          <p className="text-gray-500 font-medium mb-1">ØµØ§ÙÙŠ Ø§Ù„Ø£Ø±Ø¨Ø§Ø­ (Ù„ÙƒÙ„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª)</p>
+          <p className="text-gray-500 font-medium mb-1">صافي الأرباح (لكل العمليات)</p>
           <p className={`text-3xl font-black font-mono dir-ltr ${isProfitable ? 'text-green-600' : 'text-red-600'}`}>
             {isProfitable ? '+' : ''}{(wallet.netProfit || 0).toFixed(2)}
           </p>
@@ -87,7 +87,7 @@ export function WalletDetailsPage() {
       {/* Operations Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h2 className="text-lg font-bold text-gray-800">Ø³Ø¬Ù„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª</h2>
+          <h2 className="text-lg font-bold text-gray-800">سجل العمليات</h2>
           
           {/* Filters */}
           <div className="flex flex-wrap items-center gap-3">
@@ -101,9 +101,9 @@ export function WalletDetailsPage() {
                 }}
                 className="bg-transparent border-none text-sm focus:ring-0 text-gray-600 py-0"
               >
-                <option value="">ÙƒÙ„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª</option>
-                <option value={WalletOperationType.CashIn}>Ø¥ÙŠØ¯Ø§Ø¹</option>
-                <option value={WalletOperationType.CashOut}>Ø³Ø­Ø¨</option>
+                <option value="">كل العمليات</option>
+                <option value={WalletOperationType.CashIn}>إيداع</option>
+                <option value={WalletOperationType.CashOut}>سحب</option>
               </select>
             </div>
             <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export function WalletDetailsPage() {
                 value={dateFrom}
                 onChange={e => { setDateFrom(e.target.value); setPageNumber(1); }}
                 className={tokens.input + " py-1.5 text-sm w-auto"}
-                title="Ù…Ù† ØªØ§Ø±ÙŠØ®"
+                title="من تاريخ"
               />
               <span className="text-gray-400">-</span>
               <input
@@ -120,26 +120,26 @@ export function WalletDetailsPage() {
                 value={dateTo}
                 onChange={e => { setDateTo(e.target.value); setPageNumber(1); }}
                 className={tokens.input + " py-1.5 text-sm w-auto"}
-                title="Ø¥Ù„Ù‰ ØªØ§Ø±ÙŠØ®"
+                title="إلى تاريخ"
               />
             </div>
           </div>
         </div>
         
         {isLoadingOperations ? (
-          <div className="p-8 text-center text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø³Ø¬Ù„...</div>
+          <div className="p-8 text-center text-gray-500">جاري تحميل السجل...</div>
         ) : operations.length === 0 ? (
-          <div className="p-12 text-center text-gray-400">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¹Ù…Ù„ÙŠØ§Øª ØªØ·Ø§Ø¨Ù‚ Ø§Ù„Ø¨Ø­Ø«</div>
+          <div className="p-12 text-center text-gray-400">لا يوجد عمليات تطابق البحث</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-right">
               <thead className="bg-white text-slate-500 border-b border-slate-100">
                 <tr>
-                  <th className="px-6 py-4 font-semibold">Ø§Ù„ØªØ§Ø±ÙŠØ®</th>
-                  <th className="px-6 py-4 font-semibold">Ù†ÙˆØ¹ Ø§Ù„Ø¹Ù…Ù„ÙŠØ©</th>
-                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø­ÙˆÙ„</th>
-                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„ÙƒØ§Ø´</th>
-                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ø±Ø¨Ø­</th>
+                  <th className="px-6 py-4 font-semibold">التاريخ</th>
+                  <th className="px-6 py-4 font-semibold">نوع العملية</th>
+                  <th className="px-6 py-4 font-semibold">المبلغ المحول</th>
+                  <th className="px-6 py-4 font-semibold">المبلغ الكاش</th>
+                  <th className="px-6 py-4 font-semibold">الربح</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -151,7 +151,7 @@ export function WalletDetailsPage() {
                       <td className="px-6 py-4">
                         <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold ${isDeposit ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>
                           {isDeposit ? <ArrowDownToLine size={14} /> : <ArrowUpFromLine size={14} />}
-                          {isDeposit ? 'Ø¥ÙŠØ¯Ø§Ø¹' : 'Ø³Ø­Ø¨'}
+                          {isDeposit ? 'إيداع' : 'سحب'}
                         </div>
                       </td>
                       <td className="px-6 py-4 font-mono font-medium text-slate-700">{op.transferredAmount.toFixed(2)}</td>
@@ -179,7 +179,7 @@ export function WalletDetailsPage() {
               <ChevronRight size={20} />
             </button>
             <span className="font-semibold text-gray-700 text-sm">
-              ØµÙØ­Ø© {pageNumber} Ù…Ù† {totalPages}
+              صفحة {pageNumber} من {totalPages}
             </span>
             <button
               disabled={pageNumber === totalPages}

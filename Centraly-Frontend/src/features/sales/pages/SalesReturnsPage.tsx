@@ -1,3 +1,4 @@
+import { toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
 ﻿import { useState } from 'react';
 import { useSalesReturns } from '../hooks/useSales';
 import { DataTable } from '@/shared/components/ui/DataTable';
@@ -18,7 +19,9 @@ export const SalesReturnsPage = () => {
     pageNumber: page,
     pageSize: 10,
     searchValue: debouncedSearch,
-    // date: dateFilter // If backend supports it, otherwise frontend filter or just pass it if backend can handle it. Wait, backend RequestFilters doesn't have Date out of the box unless we add it. 
+    startDate: dateFilter ? toUtcStartOfDayISOString(dateFilter) : undefined,
+      endDate: dateFilter ? toUtcEndOfDayISOString(dateFilter) : undefined,
+
   });
 
   const columns = getSalesReturnsColumns();
@@ -33,7 +36,7 @@ export const SalesReturnsPage = () => {
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus size={20} />
-          <span>Ø¥Ø¶Ø§ÙØ© Ù…Ø±ØªØ¬Ø¹ Ø¬Ø¯ÙŠØ¯</span>
+          <span>إضافة مرتجع جديد</span>
         </button>
       </div>
 

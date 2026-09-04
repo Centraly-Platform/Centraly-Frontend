@@ -3,7 +3,7 @@ import { useGlobalWalletOperations } from '../hooks/useGlobalWalletOperations';
 import { useWallets } from '../hooks/useWallets';
 import { tokens } from '@/shared/styles/tokens';
 import { ArrowDownToLine, ArrowUpFromLine, ChevronLeft, ChevronRight, Filter, TrendingUp } from 'lucide-react';
-import { formatDate } from '@/shared/utils/date';
+import { formatDate, toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
 import { WalletOperationType, WalletOperationResponse } from '../schemas/walletSchemas';
 
 export function GlobalWalletOperationsTable() {
@@ -17,8 +17,8 @@ export function GlobalWalletOperationsTable() {
 
   const { operations, totalPages, isLoadingOperations, totalProfit } = useGlobalWalletOperations({
     pageNumber,
-    dateFrom: dateFrom || undefined,
-    dateTo: dateTo || undefined,
+    dateFrom: dateFrom ? toUtcStartOfDayISOString(dateFrom) : undefined,
+    dateTo: dateTo ? toUtcEndOfDayISOString(dateTo) : undefined,
     operationType: operationType !== '' ? operationType : undefined,
     walletId: walletId || undefined
   });

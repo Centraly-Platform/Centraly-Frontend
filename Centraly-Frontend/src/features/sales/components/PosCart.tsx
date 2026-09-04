@@ -35,13 +35,13 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
         
         <div className="flex flex-col items-end">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
-            Ø³Ù„Ø© Ø§Ù„Ù…Ø´ØªØ±ÙŠØ§Øª
+            سلة المشتريات
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           </h2>
           <div className="text-sm font-semibold flex items-center gap-1.5" dir="rtl">
-            <span className="text-[#0f8e4c]">Ø§Ù„ÙƒÙ…ÙŠØ© {totalQuantity}</span>
+            <span className="text-[#0f8e4c]">الكمية {totalQuantity}</span>
             <span className="text-gray-300">|</span>
-            <span className="text-[#0f8e4c]">{items.length} Ø£ØµÙ†Ø§Ù</span>
+            <span className="text-[#0f8e4c]">{items.length} أصناف</span>
           </div>
         </div>
 
@@ -60,7 +60,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
         {items.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-4">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="opacity-20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            <p className="font-semibold text-lg">Ø§Ù„Ø³Ù„Ø© ÙØ§Ø±ØºØ©</p>
+            <p className="font-semibold text-lg">السلة فارغة</p>
           </div>
         ) : (
           items.map(item => {
@@ -130,7 +130,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
                     <Undo2 size={16} />
                   </button>
                   <div className="font-bold text-[#0f8e4c] text-base mt-auto">
-                    {fmt(item.price * item.quantity)} <span className="text-xs font-normal">Ø¬.Ù…</span>
+                    {fmt(item.price * item.quantity)} <span className="text-xs font-normal">ج.م</span>
                   </div>
                 </div>
 
@@ -143,13 +143,13 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
       {/* Totals & Actions */}
       <div className="p-6 bg-[#f8f9fa] shrink-0 mt-2">
         <div className="flex items-center justify-between text-gray-900 font-bold mb-4">
-          <span className="text-sm">Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙØ±Ø¹ÙŠ</span>
-          <span className="text-sm">{fmt(subtotal)} <span className="text-xs font-normal">Ø¬.Ù…</span></span>
+          <span className="text-sm">المجموع الفرعي</span>
+          <span className="text-sm">{fmt(subtotal)} <span className="text-xs font-normal">ج.م</span></span>
         </div>
         
         <div className="flex items-center justify-between text-xl font-bold text-gray-900 mb-6">
-          <span className="text-xl">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</span>
-          <span className="text-[26px] text-[#0f8e4c]">{fmt(total)} <span className="text-sm font-normal">Ø¬.Ù…</span></span>
+          <span className="text-xl">الإجمالي</span>
+          <span className="text-[26px] text-[#0f8e4c]">{fmt(total)} <span className="text-sm font-normal">ج.م</span></span>
         </div>
 
         <div className="flex flex-col gap-4">
@@ -159,7 +159,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
             className="w-full py-4 rounded-xl font-bold text-white bg-[#0f8e4c] hover:bg-[#0c7a40] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm text-lg"
           >
             <Wallet size={22} />
-            Ø¯ÙØ¹ ÙƒØ§Ø´
+            دفع كاش
           </button>
           <button
             disabled={items.length === 0}
@@ -167,7 +167,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
             className="w-full py-4 rounded-xl font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg shadow-sm"
           >
             <CreditCard size={22} className="text-gray-500" />
-            Ø¯ÙØ¹ Ø¢Ø¬Ù„
+            دفع آجل
           </button>
         </div>
       </div>

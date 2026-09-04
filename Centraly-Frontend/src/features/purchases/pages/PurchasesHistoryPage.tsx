@@ -1,3 +1,4 @@
+import { toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
 import { useState } from 'react';
 import { usePurchases } from '../hooks/usePurchases';
 import { PurchasesTable } from '../components/PurchasesTable';
@@ -19,8 +20,8 @@ export function PurchasesHistoryPage() {
     pageSize: 10,
     searchValue: searchTerm || undefined,
     supplierId: supplierId || undefined,
-    startDate: startDate || undefined,
-    endDate: endDate || undefined,
+    startDate: startDate ? toUtcStartOfDayISOString(startDate) : undefined,
+    endDate: endDate ? toUtcEndOfDayISOString(endDate) : undefined,
   });
 
   return (

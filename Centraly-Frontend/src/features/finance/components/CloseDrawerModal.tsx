@@ -22,8 +22,8 @@ export function CloseDrawerModal({ isOpen, onClose, session }: CloseDrawerModalP
     });
   };
 
-  const runningIncome = session.transactions.filter(t => t.type === 1).reduce((acc, t) => acc + t.amount, 0);
-  const runningExpense = session.transactions.filter(t => t.type === 2).reduce((acc, t) => acc + t.amount, 0);
+  const runningIncome = (session.transactions || []).filter(t => t.type === 1).reduce((acc, t) => acc + t.amount, 0);
+  const runningExpense = (session.transactions || []).filter(t => t.type === 2).reduce((acc, t) => acc + t.amount, 0);
   const currentBalance = session.openingBalance + runningIncome - runningExpense;
 
   return (

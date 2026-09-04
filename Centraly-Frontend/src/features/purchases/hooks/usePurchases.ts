@@ -27,6 +27,7 @@ export function useCreatePurchaseInvoice() {
   return useMutation({
     mutationFn: (data: CreatePurchaseInvoiceRequest) => purchaseRepository.createPurchaseInvoice(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
       // Invalidate purchases history and supplier details so balances/statements update
       queryClient.invalidateQueries({ queryKey: ["purchases"] });
       queryClient.invalidateQueries({ queryKey: ["suppliers"] });

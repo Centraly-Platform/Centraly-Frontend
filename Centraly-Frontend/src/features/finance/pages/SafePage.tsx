@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useSafes, useSafeTransactions } from '../hooks/useFinance';
 import { SafeTransactionsTable } from '../components/SafeTransactionsTable';
 import { ReceiveDrawerDepositModal } from '../components/ReceiveDrawerDepositModal';
@@ -60,7 +60,7 @@ export function SafePage() {
               className="w-full bg-blue-600/30 hover:bg-blue-600/50 border border-white/20 text-white font-semibold py-3 px-5 rounded-xl flex items-center justify-center gap-2 transition-all"
             >
               <ArrowDownToLine className="w-5 h-5" />
-              استلام من الكاشير
+              استلام من درج مبيعات
             </button>
           </div>
 

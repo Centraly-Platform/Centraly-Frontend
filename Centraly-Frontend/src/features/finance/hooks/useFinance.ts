@@ -1,3 +1,4 @@
+import { getApiErrorMessage } from '@/shared/utils/apiError';
 ﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { financeRepository } from "../api/FinanceApi";
 
@@ -50,7 +51,7 @@ export function useOpenDrawer() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer(variables.type || 1) });
     },
-    onError: () => toast.error("حدث خطأ"),
+    onError: (err) => toast.error(getApiErrorMessage(err)),
   });
 }
 
@@ -62,9 +63,7 @@ export function useCloseDrawer() {
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer(type) });
       toast.success("تم التنفيذ بنجاح");
     },
-    onError: () => {
-      toast.error("حدث خطأ");
-    }
+    onError: (err) => { toast.error(getApiErrorMessage(err)); }
   });
 }
 
@@ -76,9 +75,7 @@ export function useAddDrawerTransaction() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
     },
-    onError: () => {
-      toast.error("حدث خطأ");
-    },
+    onError: (err) => { toast.error(getApiErrorMessage(err)); },
   });
 }
 
@@ -99,7 +96,7 @@ export function useCreateSafe() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: () => toast.error("حدث خطأ"),
+    onError: (err) => toast.error(getApiErrorMessage(err)),
   });
 }
 
@@ -113,7 +110,7 @@ export function useDepositFromDrawer() {
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
       queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
     },
-    onError: () => toast.error("حدث خطأ"),
+    onError: (err) => toast.error(getApiErrorMessage(err)),
   });
 }
 
@@ -127,7 +124,7 @@ export function useAddManualSafeTransaction() {
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
       queryClient.invalidateQueries({ queryKey: ["safes", variables.safeId, "transactions"] });
     },
-    onError: () => toast.error("حدث خطأ"),
+    onError: (err) => toast.error(getApiErrorMessage(err)),
   });
 }
 
@@ -157,7 +154,7 @@ export function useCreateExpenseCategory() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.expenseCategories });
     },
-    onError: () => toast.error("حدث خطأ"),
+    onError: (err) => toast.error(getApiErrorMessage(err)),
   });
 }
 
@@ -171,7 +168,7 @@ export function useRecordExpense() {
       queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: () => toast.error("حدث خطأ"),
+    onError: (err) => toast.error(getApiErrorMessage(err)),
   });
 }
 

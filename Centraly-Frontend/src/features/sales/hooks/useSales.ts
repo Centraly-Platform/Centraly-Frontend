@@ -15,6 +15,7 @@ export function useCreateSalesInvoice() {
   return useMutation({
     mutationFn: (data: CreateSalesInvoiceRequest) => salesRepository.createInvoice(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ["sales-invoices"] });
       toast.success("تم إنشاء فاتورة المبيعات بنجاح");
     },
@@ -44,6 +45,7 @@ export function useCreateSalesReturn() {
   return useMutation({
     mutationFn: (data: CreateSalesReturnRequest) => salesRepository.createReturn(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ["sales-returns"] });
       toast.success("تم حفظ المرتجع بنجاح");
     },
@@ -53,7 +55,7 @@ export function useCreateSalesReturn() {
   });
 }
 
-export function useSalesReturns(filters: { pageNumber: number; pageSize: number; searchValue?: string }) {
+export function useSalesReturns(filters: { pageNumber: number; pageSize: number; searchValue?: string; startDate?: string; endDate?: string }) {
   return useQuery({
     queryKey: ["sales-returns", filters],
     queryFn: () => salesRepository.getReturns(filters),

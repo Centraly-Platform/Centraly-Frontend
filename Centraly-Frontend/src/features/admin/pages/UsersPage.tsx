@@ -30,12 +30,12 @@ export function UsersPage() {
             <User size={24} />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†</h1>
-            <p className="text-slate-500 mt-1.5 text-sm font-medium">Ø£Ø¶Ù Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† Ø¬Ø¯Ø¯ ÙˆÙ‚Ù… Ø¨ØªØ¹ÙŠÙŠÙ† Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª ÙˆØ§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ù†Ø§Ø³Ø¨Ø© Ù„ÙƒÙ„ Ù…Ø³ØªØ®Ø¯Ù… Ù„Ø¶Ù…Ø§Ù† Ø£Ù…Ø§Ù† Ø§Ù„Ù†Ø¸Ø§Ù….</p>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">إدارة المستخدمين</h1>
+            <p className="text-slate-500 mt-1.5 text-sm font-medium">أضف مستخدمين جدد وقم بتعيين الصلاحيات والأدوار المناسبة لكل مستخدم لضمان أمان النظام.</p>
           </div>
         </div>
         <Button onClick={handleAdd} className="gap-2 shadow-blue-500/20 shadow-lg px-6 shrink-0 h-12">
-          <Plus size={18} /> Ø¥Ø¶Ø§ÙØ© Ù…Ø³ØªØ®Ø¯Ù… Ø¬Ø¯ÙŠØ¯
+          <Plus size={18} /> إضافة مستخدم جديد
         </Button>
       </div>
 
@@ -44,16 +44,16 @@ export function UsersPage() {
         {isLoading ? (
           <div className="p-16 flex flex-col items-center justify-center space-y-4">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 font-medium">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</p>
+            <p className="text-slate-500 font-medium">جاري التحميل...</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-right border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…</th>
-                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">Ø§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©</th>
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-32 text-center">Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">تفاصيل المستخدم</th>
+                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">الأدوار الممنوحة</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-32 text-center">الإجراءات</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -72,7 +72,7 @@ export function UsersPage() {
                     </td>
                     <td className="p-5">
                       <div className="flex flex-wrap gap-2">
-                        {user.roles.length === 0 && <span className="text-sm text-slate-400">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø£Ø¯ÙˆØ§Ø±</span>}
+                        {user.roles.length === 0 && <span className="text-sm text-slate-400">لا يوجد أدوار</span>}
                         {user.roles.map(role => (
                           <span key={role} className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-[13px] font-bold rounded-lg border border-blue-100/60 shadow-sm">
                             <Shield size={14} className="text-blue-500" />
@@ -91,7 +91,7 @@ export function UsersPage() {
                 {users?.length === 0 && (
                   <tr>
                     <td colSpan={3} className="p-16 text-center text-slate-500 font-medium text-lg">
-                      Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† Ù…Ø³Ø¬Ù„ÙŠÙ† Ø¨Ø¹Ø¯.
+                      لا يوجد مستخدمين مسجلين بعد.
                     </td>
                   </tr>
                 )}

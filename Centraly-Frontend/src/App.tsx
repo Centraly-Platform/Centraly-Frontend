@@ -1,4 +1,4 @@
-﻿import { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
@@ -58,8 +58,8 @@ function ProtectedRoute({ children, requiredPermissions = [] }: { children: Reac
     if (!hasAll) {
       return (
         <div className="flex h-screen items-center justify-center bg-gray-50 flex-col gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">Ã˜ÂºÃ™Å Ã˜Â± Ã™â€¦Ã˜ÂµÃ˜Â±Ã˜Â­ Ã™â€žÃ™Æ’ Ã˜Â¨Ã˜Â§Ã™â€žÃ˜Â¯Ã˜Â®Ã™Ë†Ã™â€ž</h1>
-          <p className="text-gray-500">Ã™â€žÃ˜Â§ Ã˜ÂªÃ™â€¦Ã™â€žÃ™Æ’ Ã˜Â§Ã™â€žÃ˜ÂµÃ™â€žÃ˜Â§Ã˜Â­Ã™Å Ã˜Â§Ã˜Âª Ã˜Â§Ã™â€žÃ™Æ’Ã˜Â§Ã™ÂÃ™Å Ã˜Â© Ã™â€žÃ™â€žÃ™Ë†Ã˜ÂµÃ™Ë†Ã™â€ž Ã˜Â¥Ã™â€žÃ™â€° Ã™â€¡Ã˜Â°Ã™â€¡ Ã˜Â§Ã™â€žÃ˜ÂµÃ™ÂÃ˜Â­Ã˜Â©.</p>
+          <h1 className="text-2xl font-bold text-gray-800">غير مصرح لك بالدخول</h1>
+          <p className="text-gray-500">لا تملك الصلاحيات الكافية للوصول إلى هذه الصفحة.</p>
         </div>
       );
     }
@@ -72,7 +72,7 @@ function ProtectedRoute({ children, requiredPermissions = [] }: { children: Reac
 function ComingSoon({ label }: { label: string }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-      <p className="text-gray-400 text-sm">{label} Ã¢â‚¬â€ Ã™â€¡Ã˜Â°Ã™â€¡ Ã˜Â§Ã™â€žÃ˜ÂµÃ™ÂÃ˜Â­Ã˜Â© Ã™â€šÃ™Å Ã˜Â¯ Ã˜Â§Ã™â€žÃ˜Â¥Ã™â€ Ã˜Â´Ã˜Â§Ã˜Â¡...</p>
+      <p className="text-gray-400 text-sm">{label} — هذه الصفحة قيد الإنشاء...</p>
     </div>
   );
 }
@@ -99,14 +99,14 @@ export default function App() {
               >
                 <Route path="/" element={<DashboardPage />} />
 
-                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â¨Ã™Å Ã˜Â¹Ã˜Â§Ã˜Âª" />}>
+                <Route element={<FeatureBoundaryLayout featureName="المبيعات" />}>
                   <Route path="/sales/pos"          element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><PosPage /></ProtectedRoute>} />
                   <Route path="/sales/history"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><SalesHistoryPage /></ProtectedRoute>} />
                   <Route path="/sales/returns"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><SalesReturnsPage /></ProtectedRoute>} />
                   <Route path="/sales/returns/new"  element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><NewSalesReturnPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â´Ã˜ÂªÃ˜Â±Ã™Å Ã˜Â§Ã˜Âª" />}>
+                <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
                   <Route path="/purchases/new"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><NewPurchasePage /></ProtectedRoute>} />
                   <Route path="/purchases/history"  element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><PurchasesHistoryPage /></ProtectedRoute>} />
                   <Route path="/purchases/returns"  element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SupplierReturnsPage /></ProtectedRoute>} />
@@ -115,20 +115,20 @@ export default function App() {
                   <Route path="/purchases/:id"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><PurchaseInvoiceDetailsPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â®Ã˜Â²Ã™Ë†Ã™â€ " />}>
+                <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
                   <Route path="/inventory/products"   element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><ProductsPage /></ProtectedRoute>} />
                   <Route path="/inventory/products/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><ProductDetailsPage /></ProtectedRoute>} />
                   <Route path="/inventory/categories" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><CategoriesPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="Ø¬Ù‡Ø§Øª Ø§Ù„Ø§ØªØµØ§Ù„" />}>
+                <Route element={<FeatureBoundaryLayout featureName="جهات الاتصال" />}>
                   <Route path="/contacts/customers" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><CustomersPage /></ProtectedRoute>} />
                   <Route path="/contacts/customers/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><CustomerDetailsPage /></ProtectedRoute>} />
                   <Route path="/contacts/suppliers" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SuppliersPage /></ProtectedRoute>} />
                   <Route path="/contacts/suppliers/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SupplierDetailsPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â§Ã™â€žÃ™Å Ã˜Â§Ã˜Âª" />}>
+                <Route element={<FeatureBoundaryLayout featureName="الماليات" />}>
                   <Route path="/finance/drawer"   element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><DrawerPage /></ProtectedRoute>} />
                   <Route path="/finance/drawer/history" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><DrawerHistoryPage /></ProtectedRoute>} />
                   <Route path="/finance/drawer/history/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><DrawerSessionDetailsPage /></ProtectedRoute>} />
@@ -138,16 +138,16 @@ export default function App() {
                   <Route path="/operations/wallets" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><WalletOperationsPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ˜ÂµÃ™Å Ã˜Â§Ã™â€ Ã˜Â©" />}>
+                <Route element={<FeatureBoundaryLayout featureName="الصيانة" />}>
                   <Route path="/maintenance" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Technician"]}><MaintenancePage /></ProtectedRoute>} />
                 </Route>
 
-                <Route element={<FeatureBoundaryLayout featureName="Ø§Ù„Ø¥Ø¯Ø§Ø±Ø© ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª" />}>
+                <Route element={<FeatureBoundaryLayout featureName="الإدارة والصلاحيات" />}>
                   <Route path="/admin/users" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><UsersPage /></ProtectedRoute>} />
                   <Route path="/admin/roles" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><RolesPage /></ProtectedRoute>} />
                 </Route>
 
-                <Route path="/settings" element={<ComingSoon label="Ã˜Â§Ã™â€žÃ˜Â¥Ã˜Â¹Ã˜Â¯Ã˜Â§Ã˜Â¯Ã˜Â§Ã˜Âª" />} />
+                <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
                 <Route path="/settings/finance-policies" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><FinancePoliciesPage /></ProtectedRoute>} />
                 <Route path="/settings/wallets" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><WalletsAdminPage /></ProtectedRoute>} />
                 <Route path="/wallets/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><WalletDetailsPage /></ProtectedRoute>} />

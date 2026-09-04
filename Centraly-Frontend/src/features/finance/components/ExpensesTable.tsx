@@ -1,24 +1,25 @@
-import { formatCurrency } from '@/shared/utils/currency';
+﻿import { formatCurrency } from '@/shared/utils/currency';
 import { formatDate } from '@/shared/utils/date';
 import { ExpenseResponse } from '../schemas/financeSchemas';
 
 interface ExpensesTableProps {
-  expenses: ExpenseResponse[];
+  expenses: ExpenseResponse[] | any;
 }
 
 export function ExpensesTable({ expenses }: ExpensesTableProps) {
-  if (!expenses || expenses.length === 0) {
+  const expenseList = Array.isArray(expenses) ? expenses : (expenses?.items || []);
+
+  if (!expenseList || expenseList.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-        <p className="text-gray-500">لا توجد مصروفات مسجلة حتى الآن.</p>
+        <p className="text-gray-500">لا توجد مصروفات مسجلة في هذا السجل حتى الآن.</p>
       </div>
     );
   }
 
   const getPaymentSourceLabel = (source: string | number) => {
-    // ExpensePaymentSource: 1 = Drawer, 2 = Safe. Could be returned as string or number.
-    if (source === '1' || source === 1 || source === 'Drawer') return 'الدرج (الكاشير)';
-    if (source === '2' || source === 2 || source === 'Safe') return 'الخزينة الرئيسية';
+    if (source === '1' || source === 1 || source === 'Drawer') return 'الدرج (درج المبيعات)';
+    if (source === '2' || source === 2 || source === 'Safe') return 'الخزينة (الخزينة الرئيسية)';
     return source;
   };
 
@@ -35,7 +36,7 @@ export function ExpensesTable({ expenses }: ExpensesTableProps) {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
-          {expenses.map((expense) => (
+          {expenseList.map((expense: ExpenseResponse) => (
             <tr key={expense.id} className="hover:bg-gray-50/50 transition-colors">
               <td className="px-4 py-3 text-sm text-gray-600" dir="ltr">
                 {formatDate(expense.expenseDate)}

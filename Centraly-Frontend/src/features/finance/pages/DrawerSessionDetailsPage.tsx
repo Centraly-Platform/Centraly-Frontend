@@ -1,15 +1,18 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDrawerSessionById } from '../hooks/useFinance';
 import { PageLoader } from '@/shared/components/ui/PageLoader';
 import { formatCurrency } from '@/shared/utils/currency';
 import { formatDate } from '@/shared/utils/date';
 import { DrawerTransactionsTable } from '../components/DrawerTransactionsTable';
+import { CloseDrawerModal } from '../components/CloseDrawerModal';
 import { CheckCircle, Clock, ChevronRight, Wallet } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 
 export function DrawerSessionDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
   
   const { data: session, isLoading, isError } = useDrawerSessionById(id!);
 
@@ -52,11 +55,25 @@ export function DrawerSessionDetailsPage() {
             <CheckCircle className="w-4 h-4" /> وردية مغلقة
           </span>
         ) : (
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-50 text-green-700 border border-green-200">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> جارية الآن
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-50 text-green-700 border border-green-200">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> وردية جارية الآن
+            </span>
+            <button 
+              onClick={() => setIsCloseModalOpen(true)}
+              className={tokens.btn.primary + " bg-red-600 hover:bg-red-700 ring-red-500 py-1.5 px-4 text-sm"}
+            >
+              إغلاق الوردية
+            </button>
+          </div>
         )}
       </div>
+
+      <CloseDrawerModal 
+        isOpen={isCloseModalOpen} 
+        onClose={() => setIsCloseModalOpen(false)} 
+        session={session} 
+      />
 
       {/* Main Info Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

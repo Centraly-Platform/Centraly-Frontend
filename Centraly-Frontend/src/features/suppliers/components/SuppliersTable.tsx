@@ -32,13 +32,13 @@ export function SuppliersTable({
 }: SuppliersTableProps) {
   const columns = [
     {
-      header: 'Ø§Ø³Ù… Ø§Ù„Ù…ÙˆØ±Ø¯',
+      header: 'اسم المورد',
       cell: (row: SupplierResponse) => (
         <span className="text-base font-bold text-gray-900">{row.name}</span>
       ),
     },
     {
-      header: 'Ø§Ù„Ù‡Ø§ØªÙ',
+      header: 'الهاتف',
       cell: (row: SupplierResponse) => (
         <span className="text-sm font-semibold text-gray-600 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-100" dir="ltr">
           {row.phone || '---'}
@@ -46,7 +46,7 @@ export function SuppliersTable({
       ),
     },
     {
-      header: 'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³ØªØ­Ù‚',
+      header: 'الرصيد المستحق',
       cell: (row: SupplierResponse) => (
         <div className="flex items-center gap-3">
           <span className={`text-base font-bold ${row.debtBalance > 0 ? 'text-green-600' : row.debtBalance < 0 ? 'text-red-600' : 'text-gray-900'}`}>
@@ -63,29 +63,29 @@ export function SuppliersTable({
                   ? 'bg-green-50 text-green-700 hover:bg-green-100 border-green-200' 
                   : 'bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200'
               }`}
-              title={row.debtBalance > 0 ? "ØªØ³Ø¯ÙŠØ¯ Ø¯ÙØ¹Ø©" : "Ø§Ø³ØªÙ„Ø§Ù… Ø¯ÙØ¹Ø©"}
+              title={row.debtBalance > 0 ? "تسديد دفعة" : "استلام دفعة"}
             >
               <CreditCard size={14} />
-              {row.debtBalance > 0 ? 'ØªØ³Ø¯ÙŠØ¯' : 'Ø§Ø³ØªÙ„Ø§Ù…'}
+              {row.debtBalance > 0 ? 'تسديد' : 'استلام'}
             </button>
           )}
         </div>
       ),
     },
     {
-      header: 'Ø¹Ø¯Ø¯ Ø§Ù„ÙÙˆØ§ØªÙŠØ±',
+      header: 'عدد الفواتير',
       cell: (row: SupplierResponse) => (
         <span className="text-sm font-bold text-gray-800">{row.purchaseInvoicesCount}</span>
       ),
     },
     {
-      header: 'Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø§Øª',
+      header: 'عدد المرتجعات',
       cell: (row: SupplierResponse) => (
         <span className="text-sm font-bold text-gray-800">{row.returnsCount}</span>
       ),
     },
     {
-      header: 'Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª',
+      header: 'الإجراءات',
       cell: (row: SupplierResponse) => (
         <div className="flex justify-center gap-3 text-gray-400">
           <HasPermission permission={Permissions.SuppliersWrite}>
@@ -96,8 +96,8 @@ export function SuppliersTable({
                 onEdit?.(row);
               }}
               className="hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-blue-50"
-              title="ØªØ¹Ø¯ÙŠÙ„"
-              aria-label="ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…ÙˆØ±Ø¯"
+              title="تعديل"
+              aria-label="تعديل المورد"
             >
               <Edit size={18} />
             </button>
@@ -108,8 +108,8 @@ export function SuppliersTable({
                 onDelete?.(row);
               }}
               className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
-              title="Ø­Ø°Ù"
-              aria-label="Ø­Ø°Ù Ø§Ù„Ù…ÙˆØ±Ø¯"
+              title="حذف"
+              aria-label="حذف المورد"
             >
               <Trash2 size={18} />
             </button>

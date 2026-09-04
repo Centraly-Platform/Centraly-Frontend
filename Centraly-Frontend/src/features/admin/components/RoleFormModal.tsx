@@ -64,9 +64,9 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
 
   const footer = (
     <div className="flex justify-end gap-2" dir="rtl">
-      <Button type="button" variant="outline" onClick={onClose}>Ø¥Ù„ØºØ§Ø¡</Button>
+      <Button type="button" variant="outline" onClick={onClose}>إلغاء</Button>
       <Button type="button" onClick={handleSubmit(onSubmit)} disabled={createMutation.isPending || updateMutation.isPending}>
-        Ø­ÙØ¸
+        حفظ
       </Button>
     </div>
   );
@@ -75,22 +75,22 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
     <BaseModal 
       isOpen={isOpen} 
       onClose={onClose}
-      title={roleId ? 'ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±' : 'Ø¥Ø¶Ø§ÙØ© Ø¯ÙˆØ± Ø¬Ø¯ÙŠØ¯'}
+      title={roleId ? 'تعديل الدور' : 'إضافة دور جديد'}
       size="2xl"
       footer={footer}
     >
         {isRoleLoading ? (
-          <div className="py-8 text-center">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>
+          <div className="py-8 text-center">جاري التحميل...</div>
         ) : (
           <form id="role-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4" dir="rtl">
             <div className="space-y-2">
-              <Label>Ø§Ø³Ù… Ø§Ù„Ø¯ÙˆØ±</Label>
-              <Input {...register('name')} placeholder="Ù…Ø«Ø§Ù„: Ù…Ø¯ÙŠØ± Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª" />
+              <Label>اسم الدور</Label>
+              <Input {...register('name')} placeholder="مثال: مدير المبيعات" />
               {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-3">
-              <Label className="text-base font-semibold border-b pb-2 block">Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª</Label>
+              <Label className="text-base font-semibold border-b pb-2 block">الصلاحيات</Label>
               {errors.permissions && <p className="text-red-500 text-sm">{errors.permissions.message}</p>}
               
               <Controller

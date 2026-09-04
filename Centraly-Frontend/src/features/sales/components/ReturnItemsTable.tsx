@@ -44,6 +44,7 @@ export function ReturnItemsTable({ invoice, returnItems, onReturnQtyChange }: Re
                       disabled={maxAllowed === 0}
                       value={currentQty}
                       onChange={(e) => onReturnQtyChange(item.id, maxAllowed, parseInt(e.target.value) || 0)}
+                      onFocus={(e) => e.target.select()}
                       className="w-full px-3 py-1 border border-gray-300 rounded text-center disabled:bg-gray-100"
                     />
                   </td>

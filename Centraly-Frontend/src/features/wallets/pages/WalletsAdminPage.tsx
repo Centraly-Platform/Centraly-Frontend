@@ -13,10 +13,10 @@ import { WalletResponse } from '../schemas/walletSchemas';
 import { GlobalWalletOperationsTable } from '../components/GlobalWalletOperationsTable';
 
 const walletFormSchema = z.object({
-  name: z.string().min(1, 'Ø§Ø³Ù… Ø§Ù„Ù…Ø­ÙØ¸Ø© Ù…Ø·Ù„ÙˆØ¨'),
-  phoneNumber: z.string().min(1, 'Ø±Ù‚Ù… Ø§Ù„ØªÙ„ÙŠÙÙˆÙ† Ù…Ø·Ù„ÙˆØ¨'), 
+  name: z.string().min(1, 'اسم المحفظة مطلوب'),
+  phoneNumber: z.string().min(1, 'رقم التليفون مطلوب'), 
   ownerName: z.string().optional(),
-  initialBalance: z.coerce.number().min(0, 'ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ø§Ù„Ø±ØµÙŠØ¯ 0 Ø£Ùˆ Ø£ÙƒØ«Ø±').optional(),
+  initialBalance: z.coerce.number().min(0, 'يجب أن يكون الرصيد 0 أو أكثر').optional(),
   isActive: z.boolean(),
   image: z.any().optional()
 });
@@ -32,7 +32,7 @@ export function WalletsAdminPage() {
   const [activeTab, setActiveTab] = useState<'list' | 'history'>('list');
 
   useEffect(() => {
-    setTitle('Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø­Ø§ÙØ¸');
+    setTitle('إدارة المحافظ');
   }, [setTitle]);
 
   const form = useForm<WalletFormValues>({
@@ -99,7 +99,7 @@ export function WalletsAdminPage() {
   const drawerFooter = (
     <>
       <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
-        Ø¥Ù„ØºØ§Ø¡
+        إلغاء
       </button>
       <button
         type="submit"
@@ -107,7 +107,7 @@ export function WalletsAdminPage() {
         disabled={isSaving}
         className={tokens.btn.primary + " disabled:opacity-60"}
       >
-        {isSaving ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸'}
+        {isSaving ? 'جاري الحفظ...' : 'حفظ'}
       </button>
     </>
   );
@@ -121,13 +121,13 @@ export function WalletsAdminPage() {
           onClick={() => setActiveTab('list')}
           className={`py-3 px-6 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'list' ? 'border-[#0f8e4c] text-[#0f8e4c]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          Ø§Ù„Ù…Ø­Ø§ÙØ¸
+          المحافظ
         </button>
         <button
           onClick={() => setActiveTab('history')}
           className={`py-3 px-6 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'history' ? 'border-[#0f8e4c] text-[#0f8e4c]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          Ø³Ø¬Ù„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ø´Ø§Ù…Ù„
+          سجل العمليات الشامل
         </button>
       </div>
 
@@ -139,33 +139,33 @@ export function WalletsAdminPage() {
               className={tokens.btn.primary + " flex items-center gap-2"}
             >
               <Plus size={18} />
-              Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©
+              محفظة جديدة
             </button>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {isLoading ? (
-              <div className="p-8 text-center text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø­Ø§ÙØ¸...</div>
+              <div className="p-8 text-center text-gray-500">جاري تحميل المحافظ...</div>
             ) : wallets.length === 0 ? (
               <div className="text-center py-12">
                 <div className="inline-flex w-16 h-16 rounded-full bg-blue-50 items-center justify-center text-blue-500 mb-4">
                   <Wallet size={32} />
                 </div>
-                <h3 className="text-lg font-bold text-gray-800 mb-1">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø­Ø§ÙØ¸ Ù…Ø³Ø¬Ù„Ø©</h3>
-                <p className="text-gray-500 mb-4">Ù‚Ù… Ø¨Ø¥Ø¶Ø§ÙØ© Ø£ÙˆÙ„ Ù…Ø­ÙØ¸Ø© Ù„Ù„Ø¨Ø¯Ø¡ ÙÙŠ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª</p>
+                <h3 className="text-lg font-bold text-gray-800 mb-1">لا يوجد محافظ مسجلة</h3>
+                <p className="text-gray-500 mb-4">قم بإضافة أول محفظة للبدء في العمليات</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-right">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200">
                 <tr>
-                  <th className="px-6 py-4 font-semibold">Ø§Ø³Ù… Ø§Ù„Ù…Ø­ÙØ¸Ø©</th>
-                  <th className="px-6 py-4 font-semibold">Ø±Ù‚Ù… Ø§Ù„ØªÙ„ÙŠÙÙˆÙ†</th>
-                  <th className="px-6 py-4 font-semibold">Ø§Ø³Ù… Ø§Ù„Ù…Ø§Ù„Ùƒ</th>
-                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„ÙŠ</th>
-                  <th className="px-6 py-4 font-semibold">ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡</th>
-                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ø­Ø§Ù„Ø©</th>
-                  <th className="px-6 py-4 font-semibold">Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
+                  <th className="px-6 py-4 font-semibold">اسم المحفظة</th>
+                  <th className="px-6 py-4 font-semibold">رقم التليفون</th>
+                  <th className="px-6 py-4 font-semibold">اسم المالك</th>
+                  <th className="px-6 py-4 font-semibold">الرصيد الحالي</th>
+                  <th className="px-6 py-4 font-semibold">تاريخ الإنشاء</th>
+                  <th className="px-6 py-4 font-semibold">الحالة</th>
+                  <th className="px-6 py-4 font-semibold">إجراءات</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -195,7 +195,7 @@ export function WalletsAdminPage() {
                     <td className="px-6 py-4 text-slate-500">{formatDate(wallet.createdAt)}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${wallet.isActive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                        {wallet.isActive ? 'Ù†Ø´Ø·' : 'ØºÙŠØ± Ù†Ø´Ø·'}
+                        {wallet.isActive ? 'نشط' : 'غير نشط'}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -203,13 +203,13 @@ export function WalletsAdminPage() {
                         <button 
                           onClick={(e) => openEditDrawer(wallet, e)}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="ØªØ¹Ø¯ÙŠÙ„"
+                          title="تعديل"
                         >
                           <Edit2 size={18} />
                         </button>
                         <button 
                           className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                          title="Ø§Ù„ØªÙØ§ØµÙŠÙ„"
+                          title="التفاصيل"
                         >
                           <Info size={18} />
                         </button>
@@ -232,48 +232,48 @@ export function WalletsAdminPage() {
       <RightDrawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
-        title={editingWallet ? "ØªØ¹Ø¯ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø­ÙØ¸Ø©" : "Ø¥Ø¶Ø§ÙØ© Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©"}
+        title={editingWallet ? "تعديل بيانات المحفظة" : "إضافة محفظة جديدة"}
         footer={drawerFooter}
       >
         <form id="wallet-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ù…Ø­ÙØ¸Ø© *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">اسم المحفظة *</label>
             <input
               {...form.register('name')}
               className={tokens.input}
-              placeholder="Ù…Ø«Ø§Ù„: ÙÙˆØ¯Ø§ÙÙˆÙ† ÙƒØ§Ø´ - Ø±Ù‚Ù… 1"
+              placeholder="مثال: فودافون كاش - رقم 1"
             />
             {form.formState.errors.name && (
               <p className="text-red-500 text-xs mt-1">{form.formState.errors.name.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ø±Ù‚Ù… Ø§Ù„ØªÙ„ÙŠÙÙˆÙ† *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">رقم التليفون *</label>
             <input
               {...form.register('phoneNumber')}
               className={tokens.input}
-              placeholder="Ù…Ø«Ø§Ù„: 01012345678"
+              placeholder="مثال: 01012345678"
             />
             {form.formState.errors.phoneNumber && (
               <p className="text-red-500 text-xs mt-1">{form.formState.errors.phoneNumber.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ù…Ø§Ù„Ùƒ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">اسم المالك (اختياري)</label>
             <input
               {...form.register('ownerName')}
               className={tokens.input}
-              placeholder="Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…Ø¯"
+              placeholder="مثال: أحمد محمد"
             />
           </div>
           
           {!editingWallet && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø§ÙØªØªØ§Ø­ÙŠ</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">الرصيد الافتتاحي</label>
               <input
                 type="number"
                 step="0.01"
-                {...form.register('initialBalance')}
+                {...form.register('initialBalance')} onFocus={(e) => e.target.select()}
                 className={tokens.input}
               />
               {form.formState.errors.initialBalance && (
@@ -291,14 +291,14 @@ export function WalletsAdminPage() {
                 className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
               />
               <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
-                Ø§Ù„Ù…Ø­ÙØ¸Ø© Ù†Ø´Ø·Ø©
+                المحفظة نشطة
               </label>
             </div>
           )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              ØµÙˆØ±Ø© Ø§Ù„Ù…Ø­ÙØ¸Ø© {editingWallet ? '(Ø§Ø®ØªÙŠØ§Ø±ÙŠ - Ù„Ø¹Ø¯Ù… Ø§Ù„ØªØºÙŠÙŠØ± Ø§ØªØ±ÙƒÙ‡Ø§ ÙØ§Ø±ØºØ©)' : '*'}
+              صورة المحفظة {editingWallet ? '(اختياري - لعدم التغيير اتركها فارغة)' : '*'}
             </label>
             <input
               type="file"

@@ -53,12 +53,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {/* Product Name */}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          Ø§Ø³Ù… Ø§Ù„Ù…Ù†ØªØ¬ <span className="text-red-500">*</span>
+          اسم المنتج <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
           {...register('name')}
-          placeholder="Ù…Ø«Ø§Ù„: Ù„Ø§Ø¨ØªÙˆØ¨ Ø¯ÙŠÙ„ XPS"
+          placeholder="مثال: لابتوب ديل XPS"
           className={tokens.input}
         />
         {errors.name && (
@@ -68,12 +68,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
 
       {/* Barcode */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ø¨Ø§Ø±ÙƒÙˆØ¯</label>
+        <label className={tokens.font.label + " block mb-1.5"}>الباركود</label>
         <div className="flex gap-2">
           <input
             type="text"
             {...register('barcode')}
-            placeholder="Ø§Ø¯Ø®Ù„ Ø§Ù„Ø¨Ø§Ø±ÙƒÙˆØ¯ Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… Ø§Ù„Ù‚Ø§Ø±Ø¦"
+            placeholder="ادخل الباركود أو استخدم القارئ"
             className={tokens.input}
           />
           <button 
@@ -84,7 +84,7 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
               setValue('barcode', randomBarcode, { shouldValidate: true });
             }}
           >
-            ØªÙˆÙ„ÙŠØ¯
+            توليد
           </button>
         </div>
         {errors.barcode && <p className={"text-xs text-[var(--color-danger)]"}>{String(errors.barcode.message)}</p>}
@@ -93,13 +93,13 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {/* Department Select */}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ <span className="text-red-500">*</span>
+          القسم الرئيسي <span className="text-red-500">*</span>
         </label>
         <select className={tokens.input} {...register('departmentId')} onChange={(e) => {
           register('departmentId').onChange(e);
           setValue('categoryId', ''); // Reset child when parent changes
         }}>
-          <option value="">Ø§Ø®ØªØ± Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ...</option>
+          <option value="">اختر القسم الرئيسي...</option>
           {departments?.map((dep) => (
             <option key={dep.departmentId} value={dep.departmentId}>
               {dep.name}
@@ -111,9 +111,9 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
 
       {/* Category Select */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ</label>
+        <label className={tokens.font.label + " block mb-1.5"}>القسم الفرعي</label>
         <select className={tokens.input} {...register('categoryId')} disabled={!selectedDepartmentId}>
-          <option value="">Ø§Ø®ØªØ± Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ...</option>
+          <option value="">اختر القسم الفرعي...</option>
           {categories?.map((cat) => (
             <option key={cat.categoryId} value={cat.categoryId}>
               {cat.name}
@@ -128,12 +128,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {/* Usage Select */}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          Ù†ÙˆØ¹ Ø§Ù„Ù…Ù†ØªØ¬ (Usage) <span className="text-red-500">*</span>
+          نوع المنتج (Usage) <span className="text-red-500">*</span>
         </label>
         <select className={tokens.input} {...register('usage')}>
-          <option value="3">Ø¨ÙŠØ¹ Ø£Ùˆ ØµÙŠØ§Ù†Ø©</option>
-          <option value="1">Ø¨ÙŠØ¹ ÙÙ‚Ø·</option>
-          <option value="2">ØµÙŠØ§Ù†Ø© ÙÙ‚Ø· (Ù‚Ø·Ø¹ ØºÙŠØ§Ø± Ø¯Ø§Ø®Ù„ÙŠØ©)</option>
+          <option value="3">بيع أو صيانة</option>
+          <option value="1">بيع فقط</option>
+          <option value="2">صيانة فقط (قطع غيار داخلية)</option>
         </select>
         {errors.usage && (
           <p className="text-red-500 text-xs mt-1">{String(errors.usage.message)}</p>
@@ -143,21 +143,21 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {/* Min Quantity Alert */}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          Ø­Ø¯ ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„ÙƒÙ…ÙŠØ© (Min Quantity Alert) <span className="text-red-500">*</span>
+          حد تنبيه الكمية (Min Quantity Alert) <span className="text-red-500">*</span>
         </label>
-        <input type="number" {...register('minQuantityAlert')} className={tokens.input} />
+        <input type="number" {...register('minQuantityAlert', { valueAsNumber: true })} onFocus={(e) => e.target.select()} className={tokens.input} />
         <p className={tokens.font.helperText + " mt-1"}>
-          Ø³ÙŠØªÙ… ØªÙ†Ø¨ÙŠÙ‡Ùƒ Ø¹Ù†Ø¯Ù…Ø§ ØªØµÙ„ ÙƒÙ…ÙŠØ© Ù‡Ø°Ø§ Ø§Ù„Ù…Ù†ØªØ¬ Ø¥Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø±Ù‚Ù…
+          سيتم تنبيهك عندما تصل كمية هذا المنتج إلى هذا الرقم
         </p>
       </div>
 
       {/* Storage Location */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>Ù…ÙƒØ§Ù† Ø§Ù„ØªØ®Ø²ÙŠÙ† (Storage Location)</label>
+        <label className={tokens.font.label + " block mb-1.5"}>مكان التخزين (Storage Location)</label>
         <input
           type="text"
           {...register('storageLocation')}
-          placeholder="Ù…Ø«Ø§Ù„: Ø§Ù„Ø±Ù A1"
+          placeholder="مثال: الرف A1"
           className={tokens.input}
         />
       </div>
@@ -165,13 +165,13 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {/* Properties (Dictionary) */}
       <div className="pt-2 border-t border-gray-100">
         <div className="flex justify-between items-center mb-3">
-          <label className={tokens.font.label}>Ø®ØµØ§Ø¦Øµ Ø¥Ø¶Ø§ÙÙŠØ© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</label>
+          <label className={tokens.font.label}>خصائص إضافية (اختياري)</label>
           <button
             type="button"
             onClick={() => append({ key: '', value: '' })}
             className="text-blue-600 text-xs font-semibold flex items-center gap-1 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded-md"
           >
-            <Plus size={14} /> Ø¥Ø¶Ø§ÙØ© Ø®Ø§ØµÙŠØ©
+            <Plus size={14} /> إضافة خاصية
           </button>
         </div>
 
@@ -182,7 +182,7 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
                 <div className="flex-1">
                   <input
                     {...register(`propertiesList.${index}.key`)}
-                    placeholder="Ø§Ù„Ø®Ø§ØµÙŠØ© (Ù…Ø«Ø§Ù„: Ø§Ù„Ù„ÙˆÙ†)"
+                    placeholder="الخاصية (مثال: اللون)"
                     className={tokens.input}
                   />
                   {errors.propertiesList?.[index]?.key && (
@@ -192,7 +192,7 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
                 <div className="flex-1">
                   <input
                     {...register(`propertiesList.${index}.value`)}
-                    placeholder="Ø§Ù„Ù‚ÙŠÙ…Ø© (Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø±)"
+                    placeholder="القيمة (مثال: أحمر)"
                     className={tokens.input}
                   />
                   {errors.propertiesList?.[index]?.value && (
@@ -210,13 +210,13 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
             ))}
           </div>
         ) : (
-          <p className="text-xs text-gray-400">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø®ØµØ§Ø¦Øµ Ù…Ø¶Ø§ÙØ©. ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¶Ø§ÙØ© ØªÙØ§ØµÙŠÙ„ Ù…Ø«Ù„ Ø§Ù„Ù„ÙˆÙ†ØŒ Ø§Ù„Ù…Ù‚Ø§Ø³ØŒ Ø¥Ù„Ø®.</p>
+          <p className="text-xs text-gray-400">لا توجد خصائص مضافة. يمكنك إضافة تفاصيل مثل اللون، المقاس، إلخ.</p>
         )}
       </div>
 
       {/* Image Upload */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>ØµÙˆØ±Ø© Ø§Ù„Ù…Ù†ØªØ¬</label>
+        <label className={tokens.font.label + " block mb-1.5"}>صورة المنتج</label>
         <input
           type="file"
           accept="image/*"

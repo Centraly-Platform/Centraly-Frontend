@@ -42,7 +42,7 @@ export function PosPage() {
   }, [searchTerm, selectedDepartmentId, selectedCategoryId]);
 
   useEffect(() => {
-    setTitle('Ù†Ù‚Ø·Ø© Ø§Ù„Ø¨ÙŠØ¹ (POS)');
+    setTitle('نقطة البيع (POS)');
     setBackButton(false);
   }, [setTitle, setBackButton]);
 
@@ -57,9 +57,9 @@ export function PosPage() {
     cart.addItem({
       id: `${selectedProduct.productId}_${batch.batchId}_${selectedPrice}`,
       productId: selectedProduct.productId,
-      productName: selectedProduct.name || 'Ù…Ù†ØªØ¬ ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ',
+      productName: selectedProduct.name || 'منتج غير معروف',
       batchId: batch.batchId,
-      batchName: batch.supplierName || 'Ø´Ø±ÙƒØ© ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙØ©',
+      batchName: batch.supplierName || 'شركة غير معروفة',
       imageUrl: selectedProduct.imageUrl,
       properties: selectedProduct.properties,
       price: selectedPrice,
@@ -137,15 +137,15 @@ export function PosPage() {
       {/* Mobile Cart Button / Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 flex items-center justify-between">
          <div className="flex flex-col">
-            <span className="text-gray-500 text-sm font-semibold">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ ({totalQuantity} Ù…Ù†ØªØ¬Ø§Øª)</span>
-            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} Ø¬.Ù…</span>
+            <span className="text-gray-500 text-sm font-semibold">الإجمالي ({totalQuantity} منتجات)</span>
+            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} ج.م</span>
          </div>
          <button 
            onClick={() => setIsMobileCartOpen(true)}
            className="bg-[#0f8e4c] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-sm"
          >
            <ShoppingCart size={20} />
-           Ø¹Ø±Ø¶ Ø§Ù„Ø³Ù„Ø©
+           عرض السلة
          </button>
       </div>
 

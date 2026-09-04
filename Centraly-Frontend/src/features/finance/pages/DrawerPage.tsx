@@ -61,8 +61,8 @@ function DrawerContent({ type }: { type: number }) {
     return <OpenDrawerForm type={type} />;
   }
 
-  const runningIncome = session.transactions.filter((t: DrawerTransactionResponse) => t.type === 1).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
-  const runningExpense = session.transactions.filter((t: DrawerTransactionResponse) => t.type === 2).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
+  const runningIncome = (session.transactions || []).filter((t: DrawerTransactionResponse) => t.type === 1).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
+  const runningExpense = (session.transactions || []).filter((t: DrawerTransactionResponse) => t.type === 2).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
   const currentBalance = session.openingBalance + runningIncome - runningExpense;
 
   return (

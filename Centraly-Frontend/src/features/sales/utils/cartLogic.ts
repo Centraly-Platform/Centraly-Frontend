@@ -1,3 +1,4 @@
+import { roundMoney } from '@/shared/utils/currency';
 export interface CartItem {
   id: string;
   productId: string;
@@ -35,5 +36,5 @@ export function removeCartItem(items: CartItem[], id: string): CartItem[] {
 }
 
 export function cartTotal(items: CartItem[]): number {
-  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  return roundMoney(items.reduce((sum, item) => sum + item.price * item.quantity, 0));
 }

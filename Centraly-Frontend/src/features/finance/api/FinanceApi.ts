@@ -57,9 +57,7 @@ export class FinanceRepository implements IFinanceRepository {
   }
 
   async addManualSafeTransaction(safeId: string, reqData: AddManualSafeTransactionRequest): Promise<SafeTransactionResponse> {
-    const { data } = await apiClient.post<SafeTransactionResponse>(`/Safe/${safeId}/manual-transaction`, null, {
-      params: reqData
-    });
+    const { data } = await apiClient.post<SafeTransactionResponse>(`/Safe/${safeId}/manual-transaction`, reqData);
     return data;
   }
 

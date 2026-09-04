@@ -59,9 +59,9 @@ export function UserFormModal({ isOpen, onClose, userId }: UserFormModalProps) {
 
   const footer = (
     <div className="flex justify-end gap-2" dir="rtl">
-      <Button type="button" variant="outline" onClick={onClose}>Ø¥Ù„ØºØ§Ø¡</Button>
+      <Button type="button" variant="outline" onClick={onClose}>إلغاء</Button>
       <Button type="button" onClick={handleSubmit(onSubmit)} disabled={createMutation.isPending || updateMutation.isPending}>
-        Ø­ÙØ¸
+        حفظ
       </Button>
     </div>
   );
@@ -70,29 +70,29 @@ export function UserFormModal({ isOpen, onClose, userId }: UserFormModalProps) {
     <BaseModal 
       isOpen={isOpen} 
       onClose={onClose}
-      title={userId ? 'ØªØ¹Ø¯ÙŠÙ„ Ù…Ø³ØªØ®Ø¯Ù…' : 'Ø¥Ø¶Ø§ÙØ© Ù…Ø³ØªØ®Ø¯Ù… Ø¬Ø¯ÙŠØ¯'}
+      title={userId ? 'تعديل مستخدم' : 'إضافة مستخدم جديد'}
       footer={footer}
     >
         {isUserLoading ? (
-          <div className="py-8 text-center">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>
+          <div className="py-8 text-center">جاري التحميل...</div>
         ) : (
           <form id="user-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4" dir="rtl">
             <div className="space-y-2">
-              <Label>Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…</Label>
-              <Input {...register('username')} placeholder="Ù…Ø«Ø§Ù„: ahmed" />
+              <Label>اسم المستخدم</Label>
+              <Input {...register('username')} placeholder="مثال: ahmed" />
               {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
             </div>
 
             {!userId && (
               <div className="space-y-2">
-                <Label>ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</Label>
+                <Label>كلمة المرور</Label>
                 <Input type="password" {...register('password')} placeholder="******" />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
               </div>
             )}
 
             <div className="space-y-3 border-t pt-4">
-              <Label className="text-base font-semibold block">Ø§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©</Label>
+              <Label className="text-base font-semibold block">الأدوار الممنوحة</Label>
               {errors.roles && <p className="text-red-500 text-sm">{errors.roles.message}</p>}
               
               <Controller

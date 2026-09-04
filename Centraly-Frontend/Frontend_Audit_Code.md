@@ -29,8 +29,8 @@ The content is organized as follows:
 ## Notes
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Only files matching these patterns are included: src/**/*, package.json, vite.config.ts, tsconfig*.json, index.html, components.json
-- Files matching these patterns are excluded: package-lock.json, pnpm-lock.yaml, yarn.lock, bun.lockb, *.lock, ai-context.md, repomix-output.*, tree.txt, verify-rebuild.sh, public/**, dist/**, build/**, coverage/**, .husky/**, .vscode/**, .idea/**, *.log, **/*.min.js, **/*.min.css, **/*.map, **/*.svg, **/*.png, **/*.jpg, **/*.jpeg, **/*.gif, **/*.webp, **/*.ico, **/*.avif, **/*.mp4, **/*.webm, **/*.mp3, **/*.pdf, **/*.woff, **/*.woff2, **/*.ttf, **/*.eot, **/__snapshots__/**
+- Only files matching these patterns are included: src/**/*, package.json, vite.config.ts, tsconfig*.json, index.html, components.json, src/**/*, package.json
+- Files matching these patterns are excluded: package-lock.json, pnpm-lock.yaml, yarn.lock, bun.lockb, *.lock, ai-context.md, repomix-output.*, tree.txt, verify-rebuild.sh, public/**, dist/**, build/**, coverage/**, .husky/**, .vscode/**, .idea/**, *.log, **/*.min.js, **/*.min.css, **/*.map, **/*.svg, **/*.png, **/*.jpg, **/*.jpeg, **/*.gif, **/*.webp, **/*.ico, **/*.avif, **/*.mp4, **/*.webm, **/*.mp3, **/*.pdf, **/*.woff, **/*.woff2, **/*.ttf, **/*.eot, **/__snapshots__/**, **/*.cjs, *.md, *.py, *.txt, dist/**, public/**, docs/**, .husky/**
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Code comments have been removed from supported file types
@@ -548,8 +548,8 @@ function ProtectedRoute({ children, requiredPermissions = [] }: { children: Reac
     if (!hasAll) {
       return (
         <div className="flex h-screen items-center justify-center bg-gray-50 flex-col gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">غير مصرح لك بالدخول</h1>
-          <p className="text-gray-500">لا تملك الصلاحيات الكافية للوصول إلى هذه الصفحة.</p>
+          <h1 className="text-2xl font-bold text-gray-800">Ã˜ÂºÃ™Å Ã˜Â± Ã™â€¦Ã˜ÂµÃ˜Â±Ã˜Â­ Ã™â€žÃ™Æ’ Ã˜Â¨Ã˜Â§Ã™â€žÃ˜Â¯Ã˜Â®Ã™Ë†Ã™â€ž</h1>
+          <p className="text-gray-500">Ã™â€žÃ˜Â§ Ã˜ÂªÃ™â€¦Ã™â€žÃ™Æ’ Ã˜Â§Ã™â€žÃ˜ÂµÃ™â€žÃ˜Â§Ã˜Â­Ã™Å Ã˜Â§Ã˜Âª Ã˜Â§Ã™â€žÃ™Æ’Ã˜Â§Ã™ÂÃ™Å Ã˜Â© Ã™â€žÃ™â€žÃ™Ë†Ã˜ÂµÃ™Ë†Ã™â€ž Ã˜Â¥Ã™â€žÃ™â€° Ã™â€¡Ã˜Â°Ã™â€¡ Ã˜Â§Ã™â€žÃ˜ÂµÃ™ÂÃ˜Â­Ã˜Â©.</p>
         </div>
       );
     }
@@ -559,7 +559,7 @@ function ProtectedRoute({ children, requiredPermissions = [] }: { children: Reac
 function ComingSoon({ label }: { label: string }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-      <p className="text-gray-400 text-sm">{label} — هذه الصفحة قيد الإنشاء...</p>
+      <p className="text-gray-400 text-sm">{label} Ã¢â‚¬â€ Ã™â€¡Ã˜Â°Ã™â€¡ Ã˜Â§Ã™â€žÃ˜ÂµÃ™ÂÃ˜Â­Ã˜Â© Ã™â€šÃ™Å Ã˜Â¯ Ã˜Â§Ã™â€žÃ˜Â¥Ã™â€ Ã˜Â´Ã˜Â§Ã˜Â¡...</p>
     </div>
   );
 }
@@ -582,13 +582,13 @@ export default function App() {
                 }
               >
                 <Route path="/" element={<DashboardPage />} />
-                <Route element={<FeatureBoundaryLayout featureName="المبيعات" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â¨Ã™Å Ã˜Â¹Ã˜Â§Ã˜Âª" />}>
                   <Route path="/sales/pos"          element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><PosPage /></ProtectedRoute>} />
                   <Route path="/sales/history"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><SalesHistoryPage /></ProtectedRoute>} />
                   <Route path="/sales/returns"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><SalesReturnsPage /></ProtectedRoute>} />
                   <Route path="/sales/returns/new"  element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><NewSalesReturnPage /></ProtectedRoute>} />
                 </Route>
-                <Route element={<FeatureBoundaryLayout featureName="المشتريات" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â´Ã˜ÂªÃ˜Â±Ã™Å Ã˜Â§Ã˜Âª" />}>
                   <Route path="/purchases/new"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><NewPurchasePage /></ProtectedRoute>} />
                   <Route path="/purchases/history"  element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><PurchasesHistoryPage /></ProtectedRoute>} />
                   <Route path="/purchases/returns"  element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SupplierReturnsPage /></ProtectedRoute>} />
@@ -596,18 +596,18 @@ export default function App() {
                   <Route path="/purchases/returns/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SupplierReturnDetailsPage /></ProtectedRoute>} />
                   <Route path="/purchases/:id"      element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><PurchaseInvoiceDetailsPage /></ProtectedRoute>} />
                 </Route>
-                <Route element={<FeatureBoundaryLayout featureName="المخزون" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â®Ã˜Â²Ã™Ë†Ã™â€ " />}>
                   <Route path="/inventory/products"   element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><ProductsPage /></ProtectedRoute>} />
                   <Route path="/inventory/products/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><ProductDetailsPage /></ProtectedRoute>} />
                   <Route path="/inventory/categories" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><CategoriesPage /></ProtectedRoute>} />
                 </Route>
-                <Route element={<FeatureBoundaryLayout featureName="جهات الاتصال" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ø¬Ù‡Ø§Øª Ø§Ù„Ø§ØªØµØ§Ù„" />}>
                   <Route path="/contacts/customers" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><CustomersPage /></ProtectedRoute>} />
                   <Route path="/contacts/customers/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><CustomerDetailsPage /></ProtectedRoute>} />
                   <Route path="/contacts/suppliers" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SuppliersPage /></ProtectedRoute>} />
                   <Route path="/contacts/suppliers/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><SupplierDetailsPage /></ProtectedRoute>} />
                 </Route>
-                <Route element={<FeatureBoundaryLayout featureName="الماليات" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ™â€¦Ã˜Â§Ã™â€žÃ™Å Ã˜Â§Ã˜Âª" />}>
                   <Route path="/finance/drawer"   element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><DrawerPage /></ProtectedRoute>} />
                   <Route path="/finance/drawer/history" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><DrawerHistoryPage /></ProtectedRoute>} />
                   <Route path="/finance/drawer/history/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><DrawerSessionDetailsPage /></ProtectedRoute>} />
@@ -616,14 +616,14 @@ export default function App() {
                   <Route path="/finance/owner-transactions" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><OwnerTransactionsPage /></ProtectedRoute>} />
                   <Route path="/operations/wallets" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><WalletOperationsPage /></ProtectedRoute>} />
                 </Route>
-                <Route element={<FeatureBoundaryLayout featureName="الصيانة" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ã˜Â§Ã™â€žÃ˜ÂµÃ™Å Ã˜Â§Ã™â€ Ã˜Â©" />}>
                   <Route path="/maintenance" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Technician"]}><MaintenancePage /></ProtectedRoute>} />
                 </Route>
-                <Route element={<FeatureBoundaryLayout featureName="الإدارة والصلاحيات" />}>
+                <Route element={<FeatureBoundaryLayout featureName="Ø§Ù„Ø¥Ø¯Ø§Ø±Ø© ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª" />}>
                   <Route path="/admin/users" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><UsersPage /></ProtectedRoute>} />
                   <Route path="/admin/roles" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><RolesPage /></ProtectedRoute>} />
                 </Route>
-                <Route path="/settings" element={<ComingSoon label="الإعدادات" />} />
+                <Route path="/settings" element={<ComingSoon label="Ã˜Â§Ã™â€žÃ˜Â¥Ã˜Â¹Ã˜Â¯Ã˜Â§Ã˜Â¯Ã˜Â§Ã˜Âª" />} />
                 <Route path="/settings/finance-policies" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson", "Technician"]}><FinancePoliciesPage /></ProtectedRoute>} />
                 <Route path="/settings/wallets" element={<ProtectedRoute requiredPermissions={["Admin", "Manager"]}><WalletsAdminPage /></ProtectedRoute>} />
                 <Route path="/wallets/:id" element={<ProtectedRoute requiredPermissions={["Admin", "Manager", "Salesperson"]}><WalletDetailsPage /></ProtectedRoute>} />
@@ -853,9 +853,9 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
   };
   const footer = (
     <div className="flex justify-end gap-2" dir="rtl">
-      <Button type="button" variant="outline" onClick={onClose}>إلغاء</Button>
+      <Button type="button" variant="outline" onClick={onClose}>Ø¥Ù„ØºØ§Ø¡</Button>
       <Button type="button" onClick={handleSubmit(onSubmit)} disabled={createMutation.isPending || updateMutation.isPending}>
-        حفظ
+        Ø­ÙØ¸
       </Button>
     </div>
   );
@@ -863,21 +863,21 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
     <BaseModal
       isOpen={isOpen}
       onClose={onClose}
-      title={roleId ? 'تعديل الدور' : 'إضافة دور جديد'}
+      title={roleId ? 'ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±' : 'Ø¥Ø¶Ø§ÙØ© Ø¯ÙˆØ± Ø¬Ø¯ÙŠØ¯'}
       size="2xl"
       footer={footer}
     >
         {isRoleLoading ? (
-          <div className="py-8 text-center">جاري التحميل...</div>
+          <div className="py-8 text-center">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>
         ) : (
           <form id="role-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4" dir="rtl">
             <div className="space-y-2">
-              <Label>اسم الدور</Label>
-              <Input {...register('name')} placeholder="مثال: مدير المبيعات" />
+              <Label>Ø§Ø³Ù… Ø§Ù„Ø¯ÙˆØ±</Label>
+              <Input {...register('name')} placeholder="Ù…Ø«Ø§Ù„: Ù…Ø¯ÙŠØ± Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª" />
               {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
             <div className="space-y-3">
-              <Label className="text-base font-semibold border-b pb-2 block">الصلاحيات</Label>
+              <Label className="text-base font-semibold border-b pb-2 block">Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª</Label>
               {errors.permissions && <p className="text-red-500 text-sm">{errors.permissions.message}</p>}
               <Controller
                 name="permissions"
@@ -981,9 +981,9 @@ export function UserFormModal({ isOpen, onClose, userId }: UserFormModalProps) {
   };
   const footer = (
     <div className="flex justify-end gap-2" dir="rtl">
-      <Button type="button" variant="outline" onClick={onClose}>إلغاء</Button>
+      <Button type="button" variant="outline" onClick={onClose}>Ø¥Ù„ØºØ§Ø¡</Button>
       <Button type="button" onClick={handleSubmit(onSubmit)} disabled={createMutation.isPending || updateMutation.isPending}>
-        حفظ
+        Ø­ÙØ¸
       </Button>
     </div>
   );
@@ -991,27 +991,27 @@ export function UserFormModal({ isOpen, onClose, userId }: UserFormModalProps) {
     <BaseModal
       isOpen={isOpen}
       onClose={onClose}
-      title={userId ? 'تعديل مستخدم' : 'إضافة مستخدم جديد'}
+      title={userId ? 'ØªØ¹Ø¯ÙŠÙ„ Ù…Ø³ØªØ®Ø¯Ù…' : 'Ø¥Ø¶Ø§ÙØ© Ù…Ø³ØªØ®Ø¯Ù… Ø¬Ø¯ÙŠØ¯'}
       footer={footer}
     >
         {isUserLoading ? (
-          <div className="py-8 text-center">جاري التحميل...</div>
+          <div className="py-8 text-center">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>
         ) : (
           <form id="user-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4" dir="rtl">
             <div className="space-y-2">
-              <Label>اسم المستخدم</Label>
-              <Input {...register('username')} placeholder="مثال: ahmed" />
+              <Label>Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…</Label>
+              <Input {...register('username')} placeholder="Ù…Ø«Ø§Ù„: ahmed" />
               {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
             </div>
             {!userId && (
               <div className="space-y-2">
-                <Label>كلمة المرور</Label>
+                <Label>ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</Label>
                 <Input type="password" {...register('password')} placeholder="******" />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
               </div>
             )}
             <div className="space-y-3 border-t pt-4">
-              <Label className="text-base font-semibold block">الأدوار الممنوحة</Label>
+              <Label className="text-base font-semibold block">Ø§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©</Label>
               {errors.roles && <p className="text-red-500 text-sm">{errors.roles.message}</p>}
               <Controller
                 name="roles"
@@ -1198,8 +1198,8 @@ export function RolesPage() {
             <ShieldAlert size={24} />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">إدارة الأدوار والصلاحيات</h1>
-            <p className="text-slate-500 mt-1.5 text-sm font-medium">التحكم في مجموعات الصلاحيات المتاحة في النظام وتخصيص وصول المستخدمين.</p>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø£Ø¯ÙˆØ§Ø± ÙˆØ§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª</h1>
+            <p className="text-slate-500 mt-1.5 text-sm font-medium">Ø§Ù„ØªØ­ÙƒÙ… ÙÙŠ Ù…Ø¬Ù…ÙˆØ¹Ø§Øª Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© ÙÙŠ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØªØ®ØµÙŠØµ ÙˆØµÙˆÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†.</p>
           </div>
         </div>
         <div className="flex gap-4 items-center shrink-0">
@@ -1210,10 +1210,10 @@ export function RolesPage() {
               onChange={(e) => setIncludeDisabled(e.target.checked)}
               className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer"
             />
-            <span className="text-sm font-bold text-slate-600">إظهار المعطلة</span>
+            <span className="text-sm font-bold text-slate-600">Ø¥Ø¸Ù‡Ø§Ø± Ø§Ù„Ù…Ø¹Ø·Ù„Ø©</span>
           </label>
           <Button onClick={handleAdd} className="gap-2 shadow-indigo-500/20 shadow-lg px-6 h-12 bg-indigo-600 hover:bg-indigo-700">
-            <Plus size={18} /> إضافة دور جديد
+            <Plus size={18} /> Ø¥Ø¶Ø§ÙØ© Ø¯ÙˆØ± Ø¬Ø¯ÙŠØ¯
           </Button>
         </div>
       </div>
@@ -1222,16 +1222,16 @@ export function RolesPage() {
         {isLoading ? (
           <div className="p-16 flex flex-col items-center justify-center space-y-4">
             <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 font-medium">جاري التحميل...</p>
+            <p className="text-slate-500 font-medium">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-right border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">اسم الدور</th>
-                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">الحالة</th>
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-40 text-center">الإجراءات</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">Ø§Ø³Ù… Ø§Ù„Ø¯ÙˆØ±</th>
+                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">Ø§Ù„Ø­Ø§Ù„Ø©</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-40 text-center">Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -1244,14 +1244,14 @@ export function RolesPage() {
                     <td className="p-5">
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[13px] font-bold border ${role.isDeleted ? 'bg-red-50 text-red-700 border-red-100' : 'bg-emerald-50 text-emerald-700 border-emerald-100'}`}>
                         {role.isDeleted ? <XCircle size={14} /> : <CheckCircle2 size={14} />}
-                        {role.isDeleted ? 'معطل' : 'نشط'}
+                        {role.isDeleted ? 'Ù…Ø¹Ø·Ù„' : 'Ù†Ø´Ø·'}
                       </span>
                     </td>
                     <td className="p-5 px-8 flex items-center justify-center gap-2">
-                      <Button variant="ghost" size="icon" onClick={() => handleEdit(role.id)} title="تعديل الدور" className="bg-white border border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" onClick={() => handleEdit(role.id)} title="ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±" className="bg-white border border-slate-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Edit size={18} />
                       </Button>
-                      <Button variant="ghost" size="icon" onClick={() => toggleMutation.mutate(role.id)} title={role.isDeleted ? 'تفعيل الدور' : 'تعطيل الدور'} className="bg-white border border-slate-200 hover:bg-slate-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button variant="ghost" size="icon" onClick={() => toggleMutation.mutate(role.id)} title={role.isDeleted ? 'ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±' : 'ØªØ¹Ø·ÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±'} className="bg-white border border-slate-200 hover:bg-slate-100 opacity-0 group-hover:opacity-100 transition-opacity">
                         {role.isDeleted ? (
                           <ToggleLeft size={22} className="text-slate-400" />
                         ) : (
@@ -1264,7 +1264,7 @@ export function RolesPage() {
                 {roles?.length === 0 && (
                   <tr>
                     <td colSpan={3} className="p-16 text-center text-slate-500 font-medium text-lg">
-                      لا توجد أدوار مسجلة بعد.
+                      Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø¯ÙˆØ§Ø± Ù…Ø³Ø¬Ù„Ø© Ø¨Ø¹Ø¯.
                     </td>
                   </tr>
                 )}
@@ -1312,12 +1312,12 @@ export function UsersPage() {
             <User size={24} />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">إدارة المستخدمين</h1>
-            <p className="text-slate-500 mt-1.5 text-sm font-medium">أضف مستخدمين جدد وقم بتعيين الصلاحيات والأدوار المناسبة لكل مستخدم لضمان أمان النظام.</p>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ†</h1>
+            <p className="text-slate-500 mt-1.5 text-sm font-medium">Ø£Ø¶Ù Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† Ø¬Ø¯Ø¯ ÙˆÙ‚Ù… Ø¨ØªØ¹ÙŠÙŠÙ† Ø§Ù„ØµÙ„Ø§Ø­ÙŠØ§Øª ÙˆØ§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ù†Ø§Ø³Ø¨Ø© Ù„ÙƒÙ„ Ù…Ø³ØªØ®Ø¯Ù… Ù„Ø¶Ù…Ø§Ù† Ø£Ù…Ø§Ù† Ø§Ù„Ù†Ø¸Ø§Ù….</p>
           </div>
         </div>
         <Button onClick={handleAdd} className="gap-2 shadow-blue-500/20 shadow-lg px-6 shrink-0 h-12">
-          <Plus size={18} /> إضافة مستخدم جديد
+          <Plus size={18} /> Ø¥Ø¶Ø§ÙØ© Ù…Ø³ØªØ®Ø¯Ù… Ø¬Ø¯ÙŠØ¯
         </Button>
       </div>
       {}
@@ -1325,16 +1325,16 @@ export function UsersPage() {
         {isLoading ? (
           <div className="p-16 flex flex-col items-center justify-center space-y-4">
             <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 font-medium">جاري التحميل...</p>
+            <p className="text-slate-500 font-medium">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-right border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">تفاصيل المستخدم</th>
-                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">الأدوار الممنوحة</th>
-                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-32 text-center">الإجراءات</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide">ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…</th>
+                  <th className="p-5 font-bold text-slate-600 text-sm tracking-wide">Ø§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©</th>
+                  <th className="p-5 px-8 font-bold text-slate-600 text-sm tracking-wide w-32 text-center">Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -1353,7 +1353,7 @@ export function UsersPage() {
                     </td>
                     <td className="p-5">
                       <div className="flex flex-wrap gap-2">
-                        {user.roles.length === 0 && <span className="text-sm text-slate-400">لا يوجد أدوار</span>}
+                        {user.roles.length === 0 && <span className="text-sm text-slate-400">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø£Ø¯ÙˆØ§Ø±</span>}
                         {user.roles.map(role => (
                           <span key={role} className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-[13px] font-bold rounded-lg border border-blue-100/60 shadow-sm">
                             <Shield size={14} className="text-blue-500" />
@@ -1372,7 +1372,7 @@ export function UsersPage() {
                 {users?.length === 0 && (
                   <tr>
                     <td colSpan={3} className="p-16 text-center text-slate-500 font-medium text-lg">
-                      لا يوجد مستخدمين مسجلين بعد.
+                      Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø³ØªØ®Ø¯Ù…ÙŠÙ† Ù…Ø³Ø¬Ù„ÙŠÙ† Ø¨Ø¹Ø¯.
                     </td>
                   </tr>
                 )}
@@ -1915,38 +1915,38 @@ export function CustomersTable({
 }: CustomersTableProps) {
   const columns = [
     {
-      header: 'اسم العميل',
+      header: 'Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„',
       cell: (row: CustomerResponse) => (
         <span className="font-bold text-gray-800">{row.name}</span>
       ),
     },
     {
-      header: 'رقم الهاتف',
+      header: 'Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ',
       cell: (row: CustomerResponse) => row.phone || <span className="text-gray-400">-</span>,
     },
     {
-      header: 'المديونية (الرصيد)',
+      header: 'Ø§Ù„Ù…Ø¯ÙŠÙˆÙ†ÙŠØ© (Ø§Ù„Ø±ØµÙŠØ¯)',
       cell: (row: CustomerResponse) => {
         const balance = row.debtBalance || 0;
-        if (balance === 0) return <span className="text-gray-500 font-medium">0 ج.م</span>;
+        if (balance === 0) return <span className="text-gray-500 font-medium">0 Ø¬.Ù…</span>;
         if (balance > 0) return <span className="text-red-600 font-bold" dir="ltr">{formatCurrency(balance)}</span>;
-        return <span className="text-green-600 font-bold" dir="ltr">{formatCurrency(Math.abs(balance))} (مقدم)</span>;
+        return <span className="text-green-600 font-bold" dir="ltr">{formatCurrency(Math.abs(balance))} (Ù…Ù‚Ø¯Ù…)</span>;
       },
     },
     {
-      header: 'تاريخ الإضافة',
+      header: 'ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ø¶Ø§ÙØ©',
       cell: (row: CustomerResponse) => new Date(row.createdAt).toLocaleDateString('ar-EG'),
     },
     {
-      header: 'إجراءات',
+      header: 'Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª',
       cell: (row: CustomerResponse) => (
         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
           <button
             type="button"
             onClick={() => onRowClick(row)}
             className="p-1.5 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-            title="كشف حساب / التفاصيل"
-            aria-label="تفاصيل العميل"
+            title="ÙƒØ´Ù Ø­Ø³Ø§Ø¨ / Ø§Ù„ØªÙØ§ØµÙŠÙ„"
+            aria-label="ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¹Ù…ÙŠÙ„"
           >
             <Eye size={18} />
           </button>
@@ -1955,8 +1955,8 @@ export function CustomersTable({
               type="button"
               onClick={() => onEdit(row)}
               className="p-1.5 text-orange-500 hover:bg-orange-50 rounded-lg transition-colors"
-              title="تعديل"
-              aria-label="تعديل العميل"
+              title="ØªØ¹Ø¯ÙŠÙ„"
+              aria-label="ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø¹Ù…ÙŠÙ„"
             >
               <Edit2 size={18} />
             </button>
@@ -1964,8 +1964,8 @@ export function CustomersTable({
               type="button"
               onClick={() => onDelete(row)}
               className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              title="حذف"
-              aria-label="حذف العميل"
+              title="Ø­Ø°Ù"
+              aria-label="Ø­Ø°Ù Ø§Ù„Ø¹Ù…ÙŠÙ„"
             >
               <Trash2 size={18} />
             </button>
@@ -2614,7 +2614,9 @@ export class FinanceRepository implements IFinanceRepository {
     return data;
   }
   async addManualSafeTransaction(safeId: string, reqData: AddManualSafeTransactionRequest): Promise<SafeTransactionResponse> {
-    const { data } = await apiClient.post<SafeTransactionResponse>(`/Safe/${safeId}/manual-transaction`, reqData);
+    const { data } = await apiClient.post<SafeTransactionResponse>(`/Safe/${safeId}/manual-transaction`, null, {
+      params: reqData
+    });
     return data;
   }
   async getSafeTransactions(safeId: string, filters?: FinanceFilters): Promise<SafeTransactionResponse[]> {
@@ -2710,8 +2712,8 @@ export function CloseDrawerModal({ isOpen, onClose, session }: CloseDrawerModalP
       }
     });
   };
-  const runningIncome = (session.transactions || []).filter(t => t.type === 1).reduce((acc, t) => acc + t.amount, 0);
-  const runningExpense = (session.transactions || []).filter(t => t.type === 2).reduce((acc, t) => acc + t.amount, 0);
+  const runningIncome = session.transactions.filter(t => t.type === 1).reduce((acc, t) => acc + t.amount, 0);
+  const runningExpense = session.transactions.filter(t => t.type === 2).reduce((acc, t) => acc + t.amount, 0);
   const currentBalance = session.openingBalance + runningIncome - runningExpense;
   return (
     <BaseModal isOpen={isOpen} onClose={onClose} title="إغلاق الوردية">
@@ -2941,20 +2943,19 @@ import { formatCurrency } from '@/shared/utils/currency';
 import { formatDate } from '@/shared/utils/date';
 import { ExpenseResponse } from '../schemas/financeSchemas';
 interface ExpensesTableProps {
-  expenses: ExpenseResponse[] | any;
+  expenses: ExpenseResponse[];
 }
 export function ExpensesTable({ expenses }: ExpensesTableProps) {
-  const expenseList = Array.isArray(expenses) ? expenses : (expenses?.items || []);
-  if (!expenseList || expenseList.length === 0) {
+  if (!expenses || expenses.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-        <p className="text-gray-500">لا توجد مصروفات مسجلة في هذا السجل حتى الآن.</p>
+        <p className="text-gray-500">لا توجد مصروفات مسجلة حتى الآن.</p>
       </div>
     );
   }
   const getPaymentSourceLabel = (source: string | number) => {
-    if (source === '1' || source === 1 || source === 'Drawer') return 'الدرج (درج المبيعات)';
-    if (source === '2' || source === 2 || source === 'Safe') return 'الخزينة (الخزينة الرئيسية)';
+    if (source === '1' || source === 1 || source === 'Drawer') return 'الدرج (الكاشير)';
+    if (source === '2' || source === 2 || source === 'Safe') return 'الخزينة الرئيسية';
     return source;
   };
   return (
@@ -2970,7 +2971,7 @@ export function ExpensesTable({ expenses }: ExpensesTableProps) {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
-          {expenseList.map((expense: ExpenseResponse) => (
+          {expenses.map((expense) => (
             <tr key={expense.id} className="hover:bg-gray-50/50 transition-colors">
               <td className="px-4 py-3 text-sm text-gray-600" dir="ltr">
                 {formatDate(expense.expenseDate)}
@@ -3034,7 +3035,7 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
     });
   };
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title="إضافة معاملة يدوية للخزينة">
+    <BaseModal isOpen={isOpen} onClose={onClose} title="Ø¥Ø¶Ø§ÙØ© Ù…Ø¹Ø§Ù…Ù„Ø© ÙŠØ¯ÙˆÙŠØ© Ù„Ù„Ø®Ø²ÙŠÙ†Ø©">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {}
         <div className="grid grid-cols-2 gap-3">
@@ -3044,7 +3045,7 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
             cursor-pointer rounded-xl border-2 p-4 text-center transition-all
             ${transactionType === 1 ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 hover:border-gray-300'}
           `}>
-            <div className="font-semibold text-lg">إيداع نقدي</div>
+            <div className="font-semibold text-lg">Ø¥ÙŠØ¯Ø§Ø¹ Ù†Ù‚Ø¯ÙŠ</div>
           </label>
           <label
             onClick={() => { setValue('type', 2, { shouldValidate: true }); setValue('category', 7); }}
@@ -3052,11 +3053,11 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
             cursor-pointer rounded-xl border-2 p-4 text-center transition-all
             ${transactionType === 2 ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-200 hover:border-gray-300'}
           `}>
-            <div className="font-semibold text-lg">سحب نقدي</div>
+            <div className="font-semibold text-lg">Ø³Ø­Ø¨ Ù†Ù‚Ø¯ÙŠ</div>
           </label>
         </div>
         <div>
-          <label className={tokens.font.label + " block mb-1.5"}>المبلغ (ج.م)</label>
+          <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ù…Ø¨Ù„Øº (Ø¬.Ù…)</label>
           <input
             type="number"
             step="0.01"
@@ -3068,24 +3069,24 @@ export function ManualSafeTransactionModal({ isOpen, onClose, safeId }: ManualSa
           {errors.amount && <p className="text-red-500 text-xs mt-1">{String(errors.amount.message)}</p>}
         </div>
         <div>
-          <label className={tokens.font.label + " block mb-1.5"}>البيان / السبب</label>
+          <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ø¨ÙŠØ§Ù† / Ø§Ù„Ø³Ø¨Ø¨</label>
           <input
             type="text"
             {...register('notes')}
             className={tokens.input}
-            placeholder="مثال: إيداع بنكي..."
+            placeholder="Ù…Ø«Ø§Ù„: Ø¥ÙŠØ¯Ø§Ø¹ Ø¨Ù†ÙƒÙŠ..."
           />
         </div>
         <div className="flex justify-end gap-3 pt-4 mt-2">
           <button type="button" onClick={onClose} className={tokens.btn.ghost}>
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button
             type="submit"
             disabled={addTransaction.isPending}
             className={tokens.btn.primary}
           >
-            {addTransaction.isPending ? 'جاري الحفظ...' : 'حفظ المعاملة'}
+            {addTransaction.isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø©'}
           </button>
         </div>
       </form>
@@ -3130,7 +3131,7 @@ export function ManualTransactionModal({ isOpen, onClose }: ManualTransactionMod
     });
   };
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title="إضافة معاملة يدوية للدرج">
+    <BaseModal isOpen={isOpen} onClose={onClose} title="Ø¥Ø¶Ø§ÙØ© Ù…Ø¹Ø§Ù…Ù„Ø© ÙŠØ¯ÙˆÙŠØ© Ù„Ù„Ø¯Ø±Ø¬">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {}
         <div className="grid grid-cols-2 gap-3">
@@ -3140,8 +3141,8 @@ export function ManualTransactionModal({ isOpen, onClose }: ManualTransactionMod
             cursor-pointer rounded-xl border-2 p-4 text-center transition-all
             ${transactionType === 1 ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-200 hover:border-gray-300'}
           `}>
-            <div className="font-semibold text-lg">إيداع نقدي</div>
-            <div className="text-sm opacity-80 mt-1">إضافة فلوس للدرج</div>
+            <div className="font-semibold text-lg">Ø¥ÙŠØ¯Ø§Ø¹ Ù†Ù‚Ø¯ÙŠ</div>
+            <div className="text-sm opacity-80 mt-1">Ø¥Ø¶Ø§ÙØ© ÙÙ„ÙˆØ³ Ù„Ù„Ø¯Ø±Ø¬</div>
           </label>
           <label
             onClick={() => { setValue('type', 2, { shouldValidate: true }); setValue('category', 4); }}
@@ -3149,12 +3150,12 @@ export function ManualTransactionModal({ isOpen, onClose }: ManualTransactionMod
             cursor-pointer rounded-xl border-2 p-4 text-center transition-all
             ${transactionType === 2 ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-200 hover:border-gray-300'}
           `}>
-            <div className="font-semibold text-lg">سحب نقدي</div>
-            <div className="text-sm opacity-80 mt-1">أخذ فلوس من الدرج</div>
+            <div className="font-semibold text-lg">Ø³Ø­Ø¨ Ù†Ù‚Ø¯ÙŠ</div>
+            <div className="text-sm opacity-80 mt-1">Ø£Ø®Ø° ÙÙ„ÙˆØ³ Ù…Ù† Ø§Ù„Ø¯Ø±Ø¬</div>
           </label>
         </div>
         <div>
-          <label className={tokens.font.label + " block mb-1.5"}>المبلغ (ج.م)</label>
+          <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ù…Ø¨Ù„Øº (Ø¬.Ù…)</label>
           <input
             type="number"
             step="0.01"
@@ -3166,24 +3167,24 @@ export function ManualTransactionModal({ isOpen, onClose }: ManualTransactionMod
           {errors.amount && <p className="text-red-500 text-xs mt-1">{String(errors.amount.message)}</p>}
         </div>
         <div>
-          <label className={tokens.font.label + " block mb-1.5"}>البيان / السبب</label>
+          <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ø¨ÙŠØ§Ù† / Ø§Ù„Ø³Ø¨Ø¨</label>
           <input
             type="text"
             {...register('notes')}
             className={tokens.input}
-            placeholder="مثال: فكة إضافية، شراء شاي..."
+            placeholder="Ù…Ø«Ø§Ù„: ÙÙƒØ© Ø¥Ø¶Ø§ÙÙŠØ©ØŒ Ø´Ø±Ø§Ø¡ Ø´Ø§ÙŠ..."
           />
         </div>
         <div className="flex justify-end gap-3 pt-4 mt-2">
           <button type="button" onClick={onClose} className={tokens.btn.ghost}>
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button
             type="submit"
             disabled={addTransaction.isPending}
             className={tokens.btn.primary}
           >
-            {addTransaction.isPending ? 'جاري الحفظ...' : 'حفظ المعاملة'}
+            {addTransaction.isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø©'}
           </button>
         </div>
       </form>
@@ -3359,14 +3360,13 @@ import { formatCurrency } from '@/shared/utils/currency';
 import { formatDate } from '@/shared/utils/date';
 import { SafeTransactionResponse } from '../schemas/financeSchemas';
 interface SafeTransactionsTableProps {
-  transactions: SafeTransactionResponse[] | any;
+  transactions: SafeTransactionResponse[];
 }
 export function SafeTransactionsTable({ transactions }: SafeTransactionsTableProps) {
-  const txList = Array.isArray(transactions) ? transactions : (transactions?.items || []);
-  if (!txList || txList.length === 0) {
+  if (!transactions || transactions.length === 0) {
     return (
       <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-        <p className="text-gray-500">لا توجد حركات مسجلة في هذه الخزينة حتى الآن.</p>
+        <p className="text-gray-500">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø±ÙƒØ§Øª Ù…Ø³Ø¬Ù„Ø© ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„Ø®Ø²ÙŠÙ†Ø© Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.</p>
       </div>
     );
   }
@@ -3375,16 +3375,16 @@ export function SafeTransactionsTable({ transactions }: SafeTransactionsTablePro
       <table className="w-full text-right border-collapse">
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">التاريخ</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">النوع</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">التصنيف</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">المبلغ</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">الرصيد بعد الحركة</th>
-            <th className="px-4 py-3 text-sm font-semibold text-gray-600">ملاحظات</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„ÙˆÙ‚Øª</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ù†ÙˆØ¹</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„ØªØµÙ†ÙŠÙ</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ù…Ø¨Ù„Øº</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ø±ØµÙŠØ¯ Ø¨Ø¹Ø¯ Ø§Ù„Ø­Ø±ÙƒØ©</th>
+            <th className="px-4 py-3 text-sm font-semibold text-gray-600">Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø§Øª</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
-          {txList.map((tx: SafeTransactionResponse) => {
+          {transactions.map((tx) => {
             const isIncome = tx.transactionType === 'Income' || tx.amount > 0;
             return (
               <tr key={tx.id} className="hover:bg-gray-50/50 transition-colors">
@@ -3392,12 +3392,14 @@ export function SafeTransactionsTable({ transactions }: SafeTransactionsTablePro
                   {formatDate(tx.createdAt)}
                 </td>
                 <td className="px-4 py-3">
-                  <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${isIncome ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                    {tx.transactionType === 'Income' ? 'إيداع' : (tx.transactionType === 'Withdrawal' ? 'سحب' : tx.transactionType)}
+                  <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${
+                    isIncome ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                  }`}>
+                    {tx.transactionType}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">
-                  {tx.category || '-'}
+                  {tx.category}
                 </td>
                 <td className="px-4 py-3 font-semibold text-gray-800" dir="ltr">
                   <span className={isIncome ? 'text-green-600' : 'text-red-600'}>
@@ -3422,8 +3424,7 @@ export function SafeTransactionsTable({ transactions }: SafeTransactionsTablePro
 
 ## File: src/features/finance/hooks/useFinance.ts
 ```typescript
-import { getApiErrorMessage } from '@/shared/utils/apiError';
-﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { financeRepository } from "../api/FinanceApi";
 import {
   OpenSessionRequest, AddManualTransactionRequest, CreateSafeRequest,
@@ -3467,7 +3468,7 @@ export function useOpenDrawer() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer(variables.type || 1) });
     },
-    onError: (err) => toast.error(getApiErrorMessage(err)),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 export function useCloseDrawer() {
@@ -3478,7 +3479,9 @@ export function useCloseDrawer() {
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.activeDrawer(type) });
       toast.success("تم التنفيذ بنجاح");
     },
-    onError: (err) => { toast.error(getApiErrorMessage(err)); }
+    onError: () => {
+      toast.error("حدث خطأ");
+    }
   });
 }
 export function useAddDrawerTransaction() {
@@ -3489,7 +3492,9 @@ export function useAddDrawerTransaction() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
     },
-    onError: (err) => { toast.error(getApiErrorMessage(err)); },
+    onError: () => {
+      toast.error("حدث خطأ");
+    },
   });
 }
 export function useSafes() {
@@ -3506,7 +3511,7 @@ export function useCreateSafe() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: (err) => toast.error(getApiErrorMessage(err)),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 export function useDepositFromDrawer() {
@@ -3519,7 +3524,7 @@ export function useDepositFromDrawer() {
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
       queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
     },
-    onError: (err) => toast.error(getApiErrorMessage(err)),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 export function useAddManualSafeTransaction() {
@@ -3532,7 +3537,7 @@ export function useAddManualSafeTransaction() {
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
       queryClient.invalidateQueries({ queryKey: ["safes", variables.safeId, "transactions"] });
     },
-    onError: (err) => toast.error(getApiErrorMessage(err)),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 export function useSafeTransactions(safeId: string, filters: FinanceFilters) {
@@ -3556,7 +3561,7 @@ export function useCreateExpenseCategory() {
       toast.success("تم التنفيذ بنجاح");
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.expenseCategories });
     },
-    onError: (err) => toast.error(getApiErrorMessage(err)),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 export function useRecordExpense() {
@@ -3569,7 +3574,7 @@ export function useRecordExpense() {
       queryClient.invalidateQueries({ queryKey: ["drawer", "active"] });
       queryClient.invalidateQueries({ queryKey: FINANCE_KEYS.safes });
     },
-    onError: (err) => toast.error(getApiErrorMessage(err)),
+    onError: () => toast.error("حدث خطأ"),
   });
 }
 export function useExpenses(filters: FinanceFilters) {
@@ -3934,8 +3939,8 @@ function DrawerContent({ type }: { type: number }) {
   if (!session) {
     return <OpenDrawerForm type={type} />;
   }
-  const runningIncome = (session.transactions || []).filter((t: DrawerTransactionResponse) => t.type === 1).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
-  const runningExpense = (session.transactions || []).filter((t: DrawerTransactionResponse) => t.type === 2).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
+  const runningIncome = session.transactions.filter((t: DrawerTransactionResponse) => t.type === 1).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
+  const runningExpense = session.transactions.filter((t: DrawerTransactionResponse) => t.type === 2).reduce((acc: number, t: DrawerTransactionResponse) => acc + t.amount, 0);
   const currentBalance = session.openingBalance + runningIncome - runningExpense;
   return (
     <div className="space-y-6">
@@ -4029,20 +4034,17 @@ function DrawerContent({ type }: { type: number }) {
 
 ## File: src/features/finance/pages/DrawerSessionDetailsPage.tsx
 ```typescript
-import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDrawerSessionById } from '../hooks/useFinance';
 import { PageLoader } from '@/shared/components/ui/PageLoader';
 import { formatCurrency } from '@/shared/utils/currency';
 import { formatDate } from '@/shared/utils/date';
 import { DrawerTransactionsTable } from '../components/DrawerTransactionsTable';
-import { CloseDrawerModal } from '../components/CloseDrawerModal';
 import { CheckCircle, Clock, ChevronRight, Wallet } from 'lucide-react';
 import { tokens } from '@/shared/styles/tokens';
 export function DrawerSessionDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
   const { data: session, isLoading, isError } = useDrawerSessionById(id!);
   if (isLoading) return <PageLoader />;
   if (isError || !session) {
@@ -4081,24 +4083,11 @@ export function DrawerSessionDetailsPage() {
             <CheckCircle className="w-4 h-4" /> وردية مغلقة
           </span>
         ) : (
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-50 text-green-700 border border-green-200">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> وردية جارية الآن
-            </span>
-            <button
-              onClick={() => setIsCloseModalOpen(true)}
-              className={tokens.btn.primary + " bg-red-600 hover:bg-red-700 ring-red-500 py-1.5 px-4 text-sm"}
-            >
-              إغلاق الوردية
-            </button>
-          </div>
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-green-50 text-green-700 border border-green-200">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> جارية الآن
+          </span>
         )}
       </div>
-      <CloseDrawerModal
-        isOpen={isCloseModalOpen}
-        onClose={() => setIsCloseModalOpen(false)}
-        session={session}
-      />
       {}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col justify-center">
@@ -4409,15 +4398,15 @@ export function OwnerTransactionsPage() {
   };
   const columns = [
     {
-      header: 'النوع',
+      header: 'Ø§Ù„Ù†ÙˆØ¹',
       cell: (row: OwnerTransactionResponse) => (
         <span className={row.category === 10 ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
-          {row.category === 10 ? 'إيداع رأس مال' : 'سحب أرباح'}
+          {row.category === 10 ? 'Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ù…Ø§Ù„' : 'Ø³Ø­Ø¨ Ø£Ø±Ø¨Ø§Ø­'}
         </span>
       ),
     },
     {
-      header: 'المبلغ',
+      header: 'Ø§Ù„Ù…Ø¨Ù„Øº',
       cell: (row: OwnerTransactionResponse) => (
         <span dir="ltr" className="font-semibold text-gray-800 inline-block">
           {formatCurrency(row.amount)}
@@ -4425,15 +4414,15 @@ export function OwnerTransactionsPage() {
       ),
     },
     {
-      header: 'المصدر',
+      header: 'Ø§Ù„Ù…ØµØ¯Ø±',
       cell: (row: OwnerTransactionResponse) => (
         <span className="text-gray-600 text-sm">
-          {row.paymentSource === 1 ? 'الدرج' : 'الخزينة'}
+          {row.paymentSource === 1 ? 'Ø§Ù„Ø¯Ø±Ø¬' : 'Ø§Ù„Ø®Ø²ÙŠÙ†Ø©'}
         </span>
       ),
     },
     {
-      header: 'التاريخ',
+      header: 'Ø§Ù„ØªØ§Ø±ÙŠØ®',
       cell: (row: OwnerTransactionResponse) => (
         <span className="text-gray-600 text-sm">
           {formatDate(row.createdAt)}
@@ -4441,7 +4430,7 @@ export function OwnerTransactionsPage() {
       ),
     },
     {
-      header: 'ملاحظات',
+      header: 'Ù…Ù„Ø§Ø­Ø¸Ø§Øª',
       cell: (row: OwnerTransactionResponse) => (
         <span className="text-gray-500 text-sm">
           {row.notes || '-'}
@@ -4455,10 +4444,10 @@ export function OwnerTransactionsPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <Wallet className="w-7 h-7 text-indigo-600" />
-            معاملات المالك
+            Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ø§Ù„Ù…Ø§Ù„Ùƒ
           </h1>
           <p className="text-gray-500 mt-1 flex items-center gap-1.5 text-sm">
-            إدارة إيداع رأس المال وسحب الأرباح
+            Ø¥Ø¯Ø§Ø±Ø© Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ø§Ù„Ù…Ø§Ù„ ÙˆØ³Ø­Ø¨ Ø§Ù„Ø£Ø±Ø¨Ø§Ø­
           </p>
         </div>
         <div className="flex gap-3">
@@ -4467,26 +4456,25 @@ export function OwnerTransactionsPage() {
             className={tokens.btn.primary + " flex items-center gap-2 bg-green-600 hover:bg-green-700"}
           >
             <ArrowDownCircle className="w-5 h-5" />
-            إيداع رأس مال
+            Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ù…Ø§Ù„
           </button>
           <button
             onClick={() => handleOpenModal('Withdrawal')}
             className={tokens.btn.primary + " flex items-center gap-2 bg-red-600 hover:bg-red-700"}
           >
             <ArrowUpCircle className="w-5 h-5" />
-            سحب أرباح
-            سحب أرباح
+            Ø³Ø­Ø¨ Ø£Ø±Ø¨Ø§Ø­
           </button>
         </div>
       </div>
       <div>
-        <h3 className="text-lg font-bold text-gray-800 mb-4">سجل المعاملات</h3>
+        <h3 className="text-lg font-bold text-gray-800 mb-4">Ø³Ø¬Ù„ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª</h3>
         <DataTable
           columns={columns}
-          data={Array.isArray(transactions) ? transactions : ((transactions as any)?.items || [])}
+          data={transactions || []}
           pageIndex={1}
           totalPages={1}
-          totalCount={Array.isArray(transactions) ? transactions.length : ((transactions as any)?.totalCount || 0)}
+          totalCount={transactions?.length || 0}
           pageSize={transactions?.length || 50}
           onNextPage={() => {}}
           onPrevPage={() => {}}
@@ -4496,11 +4484,11 @@ export function OwnerTransactionsPage() {
       <BaseModal
         isOpen={modalState.isOpen}
         onClose={() => setModalState({ isOpen: false, type: null })}
-        title={modalState.type === 'Deposit' ? 'إيداع رأس مال جديد' : 'سحب أرباح'}
+        title={modalState.type === 'Deposit' ? 'Ø¥ÙŠØ¯Ø§Ø¹ Ø±Ø£Ø³ Ù…Ø§Ù„ Ø¬Ø¯ÙŠØ¯' : 'Ø³Ø­Ø¨ Ø£Ø±Ø¨Ø§Ø­'}
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">المبلغ</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ù…Ø¨Ù„Øº</label>
             <input
               type="number"
               required
@@ -4513,25 +4501,25 @@ export function OwnerTransactionsPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ملاحظات (اختياري)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ù…Ù„Ø§Ø­Ø¸Ø§Øª (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className={tokens.input}
               rows={3}
-              placeholder="أدخل أي ملاحظات هنا..."
+              placeholder="Ø£Ø¯Ø®Ù„ Ø£ÙŠ Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ù‡Ù†Ø§..."
             />
           </div>
           <div className="flex gap-3 pt-4">
             <button type="submit" disabled={isSubmitting} className={`${tokens.btn.primary} flex-1`}>
-              {isSubmitting ? 'جاري الحفظ...' : 'تأكيد'}
+              {isSubmitting ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'ØªØ£ÙƒÙŠØ¯'}
             </button>
             <button
               type="button"
               onClick={() => setModalState({ isOpen: false, type: null })}
               className={`${tokens.btn.ghost} flex-1`}
             >
-              إلغاء
+              Ø¥Ù„ØºØ§Ø¡
             </button>
           </div>
         </form>
@@ -4597,7 +4585,7 @@ export function SafePage() {
               className="w-full bg-blue-600/30 hover:bg-blue-600/50 border border-white/20 text-white font-semibold py-3 px-5 rounded-xl flex items-center justify-center gap-2 transition-all"
             >
               <ArrowDownToLine className="w-5 h-5" />
-              استلام من درج مبيعات
+              استلام من الكاشير
             </button>
           </div>
         </div>
@@ -4905,12 +4893,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          اسم المنتج <span className="text-red-500">*</span>
+          Ø§Ø³Ù… Ø§Ù„Ù…Ù†ØªØ¬ <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
           {...register('name')}
-          placeholder="مثال: لابتوب ديل XPS"
+          placeholder="Ù…Ø«Ø§Ù„: Ù„Ø§Ø¨ØªÙˆØ¨ Ø¯ÙŠÙ„ XPS"
           className={tokens.input}
         />
         {errors.name && (
@@ -4919,12 +4907,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       </div>
       {}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>الباركود</label>
+        <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ø¨Ø§Ø±ÙƒÙˆØ¯</label>
         <div className="flex gap-2">
           <input
             type="text"
             {...register('barcode')}
-            placeholder="ادخل الباركود أو استخدم القارئ"
+            placeholder="Ø§Ø¯Ø®Ù„ Ø§Ù„Ø¨Ø§Ø±ÙƒÙˆØ¯ Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… Ø§Ù„Ù‚Ø§Ø±Ø¦"
             className={tokens.input}
           />
           <button
@@ -4935,7 +4923,7 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
               setValue('barcode', randomBarcode, { shouldValidate: true });
             }}
           >
-            توليد
+            ØªÙˆÙ„ÙŠØ¯
           </button>
         </div>
         {errors.barcode && <p className={"text-xs text-[var(--color-danger)]"}>{String(errors.barcode.message)}</p>}
@@ -4943,13 +4931,13 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          القسم الرئيسي <span className="text-red-500">*</span>
+          Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ <span className="text-red-500">*</span>
         </label>
         <select className={tokens.input} {...register('departmentId')} onChange={(e) => {
           register('departmentId').onChange(e);
           setValue('categoryId', ''); // Reset child when parent changes
         }}>
-          <option value="">اختر القسم الرئيسي...</option>
+          <option value="">Ø§Ø®ØªØ± Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ...</option>
           {departments?.map((dep) => (
             <option key={dep.departmentId} value={dep.departmentId}>
               {dep.name}
@@ -4960,9 +4948,9 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       </div>
       {/* Category Select */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>القسم الفرعي</label>
+        <label className={tokens.font.label + " block mb-1.5"}>Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ</label>
         <select className={tokens.input} {...register('categoryId')} disabled={!selectedDepartmentId}>
-          <option value="">اختر القسم الفرعي...</option>
+          <option value="">Ø§Ø®ØªØ± Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ...</option>
           {categories?.map((cat) => (
             <option key={cat.categoryId} value={cat.categoryId}>
               {cat.name}
@@ -4976,12 +4964,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          نوع المنتج (Usage) <span className="text-red-500">*</span>
+          Ù†ÙˆØ¹ Ø§Ù„Ù…Ù†ØªØ¬ (Usage) <span className="text-red-500">*</span>
         </label>
         <select className={tokens.input} {...register('usage')}>
-          <option value="3">بيع أو صيانة</option>
-          <option value="1">بيع فقط</option>
-          <option value="2">صيانة فقط (قطع غيار داخلية)</option>
+          <option value="3">Ø¨ÙŠØ¹ Ø£Ùˆ ØµÙŠØ§Ù†Ø©</option>
+          <option value="1">Ø¨ÙŠØ¹ ÙÙ‚Ø·</option>
+          <option value="2">ØµÙŠØ§Ù†Ø© ÙÙ‚Ø· (Ù‚Ø·Ø¹ ØºÙŠØ§Ø± Ø¯Ø§Ø®Ù„ÙŠØ©)</option>
         </select>
         {errors.usage && (
           <p className="text-red-500 text-xs mt-1">{String(errors.usage.message)}</p>
@@ -4990,33 +4978,33 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
       {}
       <div>
         <label className={tokens.font.label + " block mb-1.5"}>
-          حد تنبيه الكمية (Min Quantity Alert) <span className="text-red-500">*</span>
+          Ø­Ø¯ ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„ÙƒÙ…ÙŠØ© (Min Quantity Alert) <span className="text-red-500">*</span>
         </label>
-        <input type="number" {...register('minQuantityAlert', { valueAsNumber: true })} onFocus={(e) => e.target.select()} className={tokens.input} />
+        <input type="number" {...register('minQuantityAlert')} className={tokens.input} />
         <p className={tokens.font.helperText + " mt-1"}>
-          سيتم تنبيهك عندما تصل كمية هذا المنتج إلى هذا الرقم
+          Ø³ÙŠØªÙ… ØªÙ†Ø¨ÙŠÙ‡Ùƒ Ø¹Ù†Ø¯Ù…Ø§ ØªØµÙ„ ÙƒÙ…ÙŠØ© Ù‡Ø°Ø§ Ø§Ù„Ù…Ù†ØªØ¬ Ø¥Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø±Ù‚Ù…
         </p>
       </div>
       {}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>مكان التخزين (Storage Location)</label>
+        <label className={tokens.font.label + " block mb-1.5"}>Ù…ÙƒØ§Ù† Ø§Ù„ØªØ®Ø²ÙŠÙ† (Storage Location)</label>
         <input
           type="text"
           {...register('storageLocation')}
-          placeholder="مثال: الرف A1"
+          placeholder="Ù…Ø«Ø§Ù„: Ø§Ù„Ø±Ù A1"
           className={tokens.input}
         />
       </div>
       {}
       <div className="pt-2 border-t border-gray-100">
         <div className="flex justify-between items-center mb-3">
-          <label className={tokens.font.label}>خصائص إضافية (اختياري)</label>
+          <label className={tokens.font.label}>Ø®ØµØ§Ø¦Øµ Ø¥Ø¶Ø§ÙÙŠØ© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</label>
           <button
             type="button"
             onClick={() => append({ key: '', value: '' })}
             className="text-blue-600 text-xs font-semibold flex items-center gap-1 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded-md"
           >
-            <Plus size={14} /> إضافة خاصية
+            <Plus size={14} /> Ø¥Ø¶Ø§ÙØ© Ø®Ø§ØµÙŠØ©
           </button>
         </div>
         {fields.length > 0 ? (
@@ -5026,7 +5014,7 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
                 <div className="flex-1">
                   <input
                     {...register(`propertiesList.${index}.key`)}
-                    placeholder="الخاصية (مثال: اللون)"
+                    placeholder="Ø§Ù„Ø®Ø§ØµÙŠØ© (Ù…Ø«Ø§Ù„: Ø§Ù„Ù„ÙˆÙ†)"
                     className={tokens.input}
                   />
                   {errors.propertiesList?.[index]?.key && (
@@ -5036,7 +5024,7 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
                 <div className="flex-1">
                   <input
                     {...register(`propertiesList.${index}.value`)}
-                    placeholder="القيمة (مثال: أحمر)"
+                    placeholder="Ø§Ù„Ù‚ÙŠÙ…Ø© (Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø±)"
                     className={tokens.input}
                   />
                   {errors.propertiesList?.[index]?.value && (
@@ -5054,12 +5042,12 @@ export function AddProductForm({ onSubmit, initialData, isSubmitting: _ }: AddPr
             ))}
           </div>
         ) : (
-          <p className="text-xs text-gray-400">لا توجد خصائص مضافة. يمكنك إضافة تفاصيل مثل اللون، المقاس، إلخ.</p>
+          <p className="text-xs text-gray-400">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø®ØµØ§Ø¦Øµ Ù…Ø¶Ø§ÙØ©. ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¶Ø§ÙØ© ØªÙØ§ØµÙŠÙ„ Ù…Ø«Ù„ Ø§Ù„Ù„ÙˆÙ†ØŒ Ø§Ù„Ù…Ù‚Ø§Ø³ØŒ Ø¥Ù„Ø®.</p>
         )}
       </div>
       {/* Image Upload */}
       <div>
-        <label className={tokens.font.label + " block mb-1.5"}>صورة المنتج</label>
+        <label className={tokens.font.label + " block mb-1.5"}>ØµÙˆØ±Ø© Ø§Ù„Ù…Ù†ØªØ¬</label>
         <input
           type="file"
           accept="image/*"
@@ -5997,10 +5985,10 @@ export function useCreateProduct() {
   return useMutation({
     mutationFn: (data: CreateProductRequest) => inventoryRepository.createProduct(data),
     onSuccess: () => {
-      toast.success("تم إضافة المنتج بنجاح!");
+      toast.success("ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة المنتج"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù…Ù†ØªØ¬"),
   });
 }
 export function useUpdateProduct() {
@@ -6009,11 +5997,11 @@ export function useUpdateProduct() {
     mutationFn: ({ id, data }: { id: string; data: CreateProductRequest }) =>
       inventoryRepository.updateProduct(id, data),
     onSuccess: (_, { id }) => {
-      toast.success("تم تعديل المنتج بنجاح!");
+      toast.success("ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.productDetails(id) });
     },
-    onError: () => toast.error("حدث خطأ أثناء تعديل المنتج"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…Ù†ØªØ¬"),
   });
 }
 export function useDeleteProduct() {
@@ -6021,10 +6009,10 @@ export function useDeleteProduct() {
   return useMutation({
     mutationFn: (id: string) => inventoryRepository.deleteProduct(id),
     onSuccess: () => {
-      toast.success("تم حذف المنتج بنجاح!");
+      toast.success("ØªÙ… Ø­Ø°Ù Ø§Ù„Ù…Ù†ØªØ¬ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: () => toast.error("حدث خطأ أثناء حذف المنتج"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ù…Ù†ØªØ¬"),
   });
 }
 export function useCreateCategory() {
@@ -6032,10 +6020,10 @@ export function useCreateCategory() {
   return useMutation({
     mutationFn: (data: { name: string; departmentId: string }) => inventoryRepository.createCategory(data),
     onSuccess: () => {
-      toast.success("تم إضافة القسم الفرعي بنجاح!");
+      toast.success("ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الفرعي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ"),
   });
 }
 export function useUpdateCategory() {
@@ -6044,10 +6032,10 @@ export function useUpdateCategory() {
     mutationFn: ({ id, data }: { id: string; data: { name: string; departmentId: string } }) =>
       inventoryRepository.updateCategory(id, data),
     onSuccess: () => {
-      toast.success("تم تعديل القسم الفرعي بنجاح!");
+      toast.success("ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
     },
-    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الفرعي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ"),
   });
 }
 export function useDeleteCategory() {
@@ -6055,10 +6043,10 @@ export function useDeleteCategory() {
   return useMutation({
     mutationFn: (id: string) => inventoryRepository.deleteCategory(id),
     onSuccess: () => {
-      toast.success("تم حذف القسم الفرعي بنجاح!");
+      toast.success("ØªÙ… Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.categories });
     },
-    onError: () => toast.error("حدث خطأ أثناء حذف القسم الفرعي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„ÙØ±Ø¹ÙŠ"),
   });
 }
 export function useCreateDepartment() {
@@ -6066,10 +6054,10 @@ export function useCreateDepartment() {
   return useMutation({
     mutationFn: (data: { name: string }) => inventoryRepository.createDepartment(data),
     onSuccess: () => {
-      toast.success("تم إضافة القسم الرئيسي بنجاح!");
+      toast.success("ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments });
     },
-    onError: () => toast.error("حدث خطأ أثناء إضافة القسم الرئيسي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ"),
   });
 }
 export function useUpdateDepartment() {
@@ -6078,10 +6066,10 @@ export function useUpdateDepartment() {
     mutationFn: ({ id, data }: { id: string; data: { name: string } }) =>
       inventoryRepository.updateDepartment(id, data),
     onSuccess: () => {
-      toast.success("تم تعديل القسم الرئيسي بنجاح!");
+      toast.success("ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments });
     },
-    onError: () => toast.error("حدث خطأ أثناء تعديل القسم الرئيسي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ"),
   });
 }
 export function useDeleteDepartment() {
@@ -6089,10 +6077,10 @@ export function useDeleteDepartment() {
   return useMutation({
     mutationFn: (id: string) => inventoryRepository.deleteDepartment(id),
     onSuccess: () => {
-      toast.success("تم حذف القسم الرئيسي بنجاح!");
+      toast.success("ØªÙ… Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ Ø¨Ù†Ø¬Ø§Ø­!");
       queryClient.invalidateQueries({ queryKey: INVENTORY_KEYS.departments });
     },
-    onError: () => toast.error("حدث خطأ أثناء حذف القسم الرئيسي"),
+    onError: () => toast.error("Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ"),
   });
 }
 ```
@@ -6855,12 +6843,12 @@ const [isPickerOpen, setIsPickerOpen] = useState(false);
     if (!id) return;
     if (!data.deliveryDate) delete data.deliveryDate;
     updateTicket({ id, data }, {
-      onSuccess: () => toast.success('تم الحفظ بنجاح')
+      onSuccess: () => toast.success('ØªÙ… Ø§Ù„Ø­ÙØ¸ Ø¨Ù†Ø¬Ø§Ø­')
     });
   };
   const handleDeliver = () => {
     if (!id) return;
-    if (window.confirm(`هل أنت متأكد من تسليم الجهاز؟\nسيتم سحب قطع الغيار من المخزن، وإضافة المتبقي (${remaining} ج.م) للدرج.`)) {
+    if (window.confirm(`Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† تسليم Ø§Ù„Ø¬Ù‡Ø§Ø²ØŸ\nØ³ÙŠØªÙ… Ø³Ø­Ø¨ Ù‚Ø·Ø¹ Ø§Ù„ØºÙŠØ§Ø± Ù…Ù† Ø§Ù„Ù…Ø®Ø²Ù†ØŒ ÙˆØ¥Ø¶Ø§ÙØ© Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ (${remaining} Ø¬.Ù…) Ù„Ù„Ø¯Ø±Ø¬.`)) {
       deliverTicket(id, { onSuccess: onClose });
     }
   };
@@ -6875,13 +6863,13 @@ if (!id) return null;
     <Drawer
       isOpen={!!id}
       onClose={onClose}
-      title={`تفاصيل الصيانة`}
+      title={`ØªÙØ§ØµÙŠÙ„ Ø§Ù„ØµÙŠØ§Ù†Ø©`}
       width="w-[700px] max-w-full"
     >
       {isLoading ? (
         <PageLoader />
       ) : !ticket ? (
-        <div className="p-5 text-red-500">حدث خطأ في تحميل التذكرة</div>
+        <div className="p-5 text-red-500">Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªØ°ÙƒØ±Ø©</div>
       ) : (
         <form onSubmit={handleSubmit(onSubmit as any)} className="h-full flex flex-col">
           <div className="flex-1 overflow-y-auto p-5 space-y-6">
@@ -6892,40 +6880,40 @@ if (!id) return null;
               'bg-red-50 text-red-800 border border-red-200'
             }`}>
               <div className="font-bold text-lg">
-                الحالة: {ticket.status === 'Pending' ? 'قيد الانتظار' : ticket.status === 'Delivered' ? 'تم التسليم' : 'مرتجع'}
+                Ø§Ù„Ø­Ø§Ù„Ø©: {ticket.status === 'Pending' ? 'Ù‚ÙŠØ¯ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±' : ticket.status === 'Delivered' ? 'ØªÙ… Ø§Ù„تسليم' : 'Ù…Ø±ØªØ¬Ø¹'}
               </div>
               <div className="text-sm opacity-80">
-                تاريخ الإنشاء: {new Date(ticket.createdAt).toLocaleDateString('ar-EG')}
+                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡: {new Date(ticket.createdAt).toLocaleDateString('ar-EG')}
               </div>
             </div>
             {}
             <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 space-y-4">
-              <h3 className="font-bold text-gray-800 mb-3 border-b border-gray-200 pb-2">بيانات العميل والجهاز</h3>
+              <h3 className="font-bold text-gray-800 mb-3 border-b border-gray-200 pb-2">Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„ ÙˆØ§Ù„Ø¬Ù‡Ø§Ø²</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">اسم العميل *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ *</label>
                   <Input {...register('customerName')}  disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">رقم الهاتف</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</label>
                   <Input {...register('customerPhone')}  disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">اسم الجهاز / الموديل</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ø¬Ù‡Ø§Ø² / Ø§Ù„Ù…ÙˆØ¯ÙŠÙ„</label>
                   <Input {...register('deviceDescription')}  disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">موعد التسليم</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ù…ÙˆØ¹Ø¯ Ø§Ù„تسليم</label>
                   <Input type="datetime-local" {...register('deliveryDate')}  disabled={ticket.status !== 'Pending'} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">المشكلة (من العميل)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ù…Ø´ÙƒÙ„Ø© (Ù…Ù† Ø§Ù„Ø¹Ù…ÙŠÙ„)</label>
                   <textarea {...register('problem')} className={tokens.input + " min-h-[80px] py-2 resize-y"} disabled={ticket.status !== 'Pending'} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">الحل / التقرير الفني</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ø­Ù„ / Ø§Ù„ØªÙ‚Ø±ÙŠØ± Ø§Ù„ÙÙ†ÙŠ</label>
                   <textarea {...register('solution')} className={tokens.input + " min-h-[80px] py-2 resize-y"} disabled={ticket.status !== 'Pending'} />
                 </div>
               </div>
@@ -6936,27 +6924,27 @@ if (!id) return null;
                 <h3 className="font-bold text-gray-800">قطع الغيار المستخدمة</h3>
                 {ticket.status === 'Pending' && (
                   <button type="button" onClick={() => setIsPickerOpen(true)} className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium bg-blue-50 px-3 py-1.5 rounded-lg">
-                    <Plus className="w-4 h-4" /> إضافة قطعة
+                    <Plus className="w-4 h-4" /> Ø¥Ø¶Ø§ÙØ© Ù‚Ø·Ø¹Ø©
                   </button>
                 )}
               </div>
               <div className="space-y-3">
                 {fields.length === 0 ? (
-                  <p className="text-gray-400 text-sm text-center py-4">لم يتم إضافة قطع غيار</p>
+                  <p className="text-gray-400 text-sm text-center py-4">Ù„Ù… ÙŠØªÙ… Ø¥Ø¶Ø§ÙØ© Ù‚Ø·Ø¹ ØºÙŠØ§Ø±</p>
                 ) : (
                   fields.map((field, index) => {
                     const pId = watchProductsUsed[index]?.productId;
-                    const prodName = maintenanceProducts.find(p => p.productId === pId)?.name || 'قطعة غيار';
+                    const prodName = maintenanceProducts.find(p => p.productId === pId)?.name || 'Ù‚Ø·Ø¹Ø© ØºÙŠØ§Ø±';
                     return (
                       <div key={field.id} className="flex items-center gap-3 bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
                         <div className="flex-1">
-                          <label className="block text-xs font-medium text-gray-600 mb-1">المنتج</label>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Ø§Ù„Ù…Ù†ØªØ¬</label>
                           <div className="font-bold text-sm text-gray-800 bg-gray-50/50 border border-gray-100 rounded-lg px-3 py-2">
                             {prodName}
                           </div>
                         </div>
                         <div className="w-24">
-                          <label className="block text-xs font-medium text-gray-600 mb-1">الكمية</label>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">Ø§Ù„ÙƒÙ…ÙŠØ©</label>
                           <Input
                             type="number"
                             min="1"
@@ -6966,14 +6954,14 @@ if (!id) return null;
                           />
                         </div>
                         <div className="w-32 bg-gray-50/50 border border-gray-100 rounded-lg p-2 text-center mt-[22px]">
-                          <label className="block text-xs font-medium text-gray-500 mb-0.5">سعر الصيانة</label>
+                          <label className="block text-xs font-medium text-gray-500 mb-0.5">Ø³Ø¹Ø± Ø§Ù„ØµÙŠØ§Ù†Ø©</label>
                           <div className="font-bold text-emerald-600 text-sm">
-                            {watchProductsUsed[index]?.maintenancePrice?.toLocaleString('ar-EG')} ج.م
+                            {watchProductsUsed[index]?.maintenancePrice?.toLocaleString('ar-EG')} Ø¬.Ù…
                           </div>
                           <input type="hidden" {...register(`productsUsed.${index}.maintenancePrice`)} />
                         </div>
                         <div className="w-32 bg-gray-50 border border-gray-200 rounded-lg p-2 text-center mt-[22px]">
-                          <label className="block text-xs font-medium text-gray-500 mb-0.5">الإجمالي</label>
+                          <label className="block text-xs font-medium text-gray-500 mb-0.5">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</label>
                           <div className="font-bold text-gray-800 text-sm">
                             {((watchProductsUsed[index]?.quantity || 0) * (watchProductsUsed[index]?.maintenancePrice || 0)).toLocaleString('ar-EG')}
                           </div>
@@ -7021,18 +7009,18 @@ if (!id) return null;
               <div className="bg-blue-900 text-white p-6 rounded-xl shadow-lg flex flex-col justify-center">
                 <div className="space-y-3 mb-4">
                   <div className="flex justify-between text-white font-bold border-b border-blue-800 pb-3">
-                    <span>الإجمالي الكلي:</span>
-                    <span className="text-xl">{currentTotal.toLocaleString('ar-EG')} ج.م</span>
+                    <span>Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„ÙŠ:</span>
+                    <span className="text-xl">{currentTotal.toLocaleString('ar-EG')} Ø¬.Ù…</span>
                   </div>
                   <div className="flex justify-between text-emerald-400 font-bold border-b border-blue-800 pb-3 pt-1">
-                    <span>المدفوع (مقدم):</span>
-                    <span className="text-lg">{Number(currentPaid).toLocaleString('ar-EG')} ج.م</span>
+                    <span>Ø§Ù„Ù…Ø¯ÙÙˆØ¹ (Ù…Ù‚Ø¯Ù…):</span>
+                    <span className="text-lg">{Number(currentPaid).toLocaleString('ar-EG')} Ø¬.Ù…</span>
                   </div>
                 </div>
                 <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm mt-auto">
-                  <div className="text-blue-200 text-sm mb-1">المبلغ المتبقي للتحصيل عند التسليم</div>
+                  <div className="text-blue-200 text-sm mb-1">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ Ù„Ù„ØªØ­ØµÙŠÙ„ Ø¹Ù†Ø¯ Ø§Ù„تسليم</div>
                   <div className={`text-3xl font-black ${remaining > 0 ? 'text-red-300' : 'text-green-300'}`}>
-                    {remaining.toLocaleString('ar-EG')} <span className="text-base font-normal opacity-80">ج.م</span>
+                    {remaining.toLocaleString('ar-EG')} <span className="text-base font-normal opacity-80">Ø¬.Ù…</span>
                   </div>
                 </div>
               </div>
@@ -7048,7 +7036,7 @@ if (!id) return null;
                     disabled={isUpdating || !isDirty || isDelivering || isReturning}
                     className={tokens.btn.secondary + " flex items-center gap-2"}
                   >
-                    <Save className="w-5 h-5" /> حفظ التعديلات
+                    <Save className="w-5 h-5" /> Ø­ÙØ¸ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„Ø§Øª
                   </button>
                   <button
                     type="button"
@@ -7064,7 +7052,7 @@ if (!id) return null;
                     disabled={isDelivering || isDirty || isUpdating || isReturning} title={isDirty ? "يجب حفظ التعديلات أولا" : ""}
                     className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold flex items-center gap-2 shadow-md transition-colors"
                   >
-                    <CheckCircle className="w-5 h-5" /> تسليم للعميل وتحصيل
+                    <CheckCircle className="w-5 h-5" /> تسليم Ù„Ù„Ø¹Ù…ÙŠÙ„ ÙˆØªØ­ØµÙŠÙ„
                   </button>
                 </>
               )}
@@ -7513,15 +7501,15 @@ interface Props {
   onClose: () => void;
 }
 const TIME_PRESETS = [
-  { label: '30 دقيقة', minutes: 30 },
-  { label: 'ساعة', minutes: 60 },
-  { label: 'ساعتين', minutes: 120 },
-  { label: '3 ساعات', minutes: 180 },
-  { label: 'غداً', minutes: 1440 },
+  { label: '30 Ø¯Ù‚ÙŠÙ‚Ø©', minutes: 30 },
+  { label: 'Ø³Ø§Ø¹Ø©', minutes: 60 },
+  { label: 'Ø³Ø§Ø¹ØªÙŠÙ†', minutes: 120 },
+  { label: '3 Ø³Ø§Ø¹Ø§Øª', minutes: 180 },
+  { label: 'ØºØ¯Ø§Ù‹', minutes: 1440 },
 ];
 const COMMON_PROBLEMS = [
-  'تغيير شاشة', 'تغيير بطارية', 'سوكيت شحن', 'باغة',
-  'صيانة بوردة', 'سوفت وير', 'سماعة / مايك', 'فحص وكشف'
+  'ØªØºÙŠÙŠØ± Ø´Ø§Ø´Ø©', 'ØªØºÙŠÙŠØ± Ø¨Ø·Ø§Ø±ÙŠØ©', 'Ø³ÙˆÙƒÙŠØª Ø´Ø­Ù†', 'Ø¨Ø§ØºØ©',
+  'ØµÙŠØ§Ù†Ø© Ø¨ÙˆØ±Ø¯Ø©', 'Ø³ÙˆÙØª ÙˆÙŠØ±', 'Ø³Ù…Ø§Ø¹Ø© / Ù…Ø§ÙŠÙƒ', 'ÙØ­Øµ ÙˆÙƒØ´Ù'
 ];
 const ADVANCE_PRESETS = [0, 50, 100, 200];
 function toLocalDatetimeString(date: Date) {
@@ -7538,8 +7526,8 @@ function formatArabicDelivery(isoString?: string) {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const isTomorrow = date.toDateString() === tomorrow.toDateString();
   const timePart = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: true });
-  if (isToday) return `اليوم، ${timePart}`;
-  if (isTomorrow) return `غداً، ${timePart}`;
+  if (isToday) return `Ø§Ù„ÙŠÙˆÙ…ØŒ ${timePart}`;
+  if (isTomorrow) return `ØºØ¯Ø§Ù‹ØŒ ${timePart}`;
   return date.toLocaleDateString('ar-EG', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', hour12: true });
 }
 export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
@@ -7593,20 +7581,20 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
     createMaintenance(payload, { onSuccess: () => onClose() });
   };
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title="إضافة تذكرة صيانة" width="w-[500px]">
+    <Drawer isOpen={isOpen} onClose={onClose} title="Ø¥Ø¶Ø§ÙØ© ØªØ°ÙƒØ±Ø© ØµÙŠØ§Ù†Ø©" width="w-[500px]">
       <form onSubmit={handleSubmit(onSubmit as any)} className="h-full flex flex-col">
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8 bg-white">
           {}
           <section className="space-y-4">
             <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800">
-              <User className="w-4 h-4 text-blue-600" /> معلومات العميل
+              <User className="w-4 h-4 text-blue-600" /> Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„
             </h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
-                <label className="block text-xs font-semibold text-slate-500 mb-1.5">اسم العميل <span className="text-red-500">*</span></label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ <span className="text-red-500">*</span></label>
                 <Input
                   {...register('customerName')}
-                  placeholder="مثال: محمد علي"
+                  placeholder="Ù…Ø«Ø§Ù„: Ù…Ø­Ù…Ø¯ Ø¹Ù„ÙŠ"
                   autoComplete="off"
                   autoFocus
                   onChange={(e) => {
@@ -7638,7 +7626,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
                 )}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-1.5">رقم الهاتف</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</label>
                 <Input
                   {...register('customerPhone')}
                   placeholder="01xxxxxxxxx"
@@ -7654,21 +7642,21 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
           {}
           <section className="space-y-4">
             <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800">
-              <Smartphone className="w-4 h-4 text-blue-600" /> الجهاز والمشكلة
+              <Smartphone className="w-4 h-4 text-blue-600" /> Ø§Ù„Ø¬Ù‡Ø§Ø² ÙˆØ§Ù„Ù…Ø´ÙƒÙ„Ø©
             </h3>
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1.5">اسم الجهاز / الموديل</label>
+              <label className="block text-xs font-semibold text-slate-500 mb-1.5">Ø§Ø³Ù… Ø§Ù„Ø¬Ù‡Ø§Ø² / Ø§Ù„Ù…ÙˆØ¯ÙŠÙ„</label>
               <Input
                 {...register('deviceDescription')}
-                placeholder="مثال: iPhone 14 Pro"
+                placeholder="Ù…Ø«Ø§Ù„: iPhone 14 Pro"
                 className="bg-slate-50/50 border-slate-200 focus:bg-white h-11"
               />
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-xs font-semibold text-slate-500">تفاصيل العطل</label>
+                <label className="block text-xs font-semibold text-slate-500">ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¹Ø·Ù„</label>
                 <span className="text-[10px] font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" /> أضف سريعاً
+                  <Sparkles className="w-3 h-3" /> Ø£Ø¶Ù Ø³Ø±ÙŠØ¹Ø§Ù‹
                 </span>
               </div>
               <div className="flex flex-wrap gap-1.5 mb-3">
@@ -7685,7 +7673,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
               </div>
               <textarea
                 {...register('problem')}
-                placeholder="ملاحظات العميل أو تفاصيل الفحص السريع..."
+                placeholder="Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„ Ø£Ùˆ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ­Øµ Ø§Ù„Ø³Ø±ÙŠØ¹..."
                 className={cn(tokens.input, "min-h-[80px] bg-slate-50/50 border-slate-200 focus:bg-white resize-y py-3")}
               />
             </div>
@@ -7695,7 +7683,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
           <section className="space-y-6">
             <div>
               <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800 mb-4">
-                <Clock className="w-4 h-4 text-blue-600" /> موعد التسليم المتوقع
+                <Clock className="w-4 h-4 text-blue-600" /> Ù…ÙˆØ¹Ø¯ Ø§Ù„تسليم Ø§Ù„Ù…ØªÙˆÙ‚Ø¹
               </h3>
               <div className="bg-slate-100/70 p-1.5 rounded-xl flex items-center gap-1 mb-3">
                 {TIME_PRESETS.map((preset) => (
@@ -7730,14 +7718,14 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
             </div>
             <div>
               <h3 className="flex items-center gap-2 text-[15px] font-bold text-slate-800 mb-3">
-                <Coins className="w-4 h-4 text-emerald-600" /> الدفعة المقدمة (عربون)
+                <Coins className="w-4 h-4 text-emerald-600" /> Ø§Ù„Ø¯ÙØ¹Ø© Ø§Ù„Ù…Ù‚Ø¯Ù…Ø© (Ø¹Ø±Ø¨ÙˆÙ†)
               </h3>
               <div className="flex items-center gap-2">
                 <Input
                   type="number"
                   min="0"
                   step="0.01"
-                  {...register('paidAmount', { valueAsNumber: true })} onFocus={(e) => e.target.select()}
+                  {...register('paidAmount', { valueAsNumber: true })}
                   className="w-32 h-11 font-bold text-lg text-emerald-700 text-center bg-emerald-50/30 border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500"
                 />
                 <div className="flex-1 bg-slate-100/70 p-1 rounded-xl flex items-center gap-1">
@@ -7753,7 +7741,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
                           : "text-slate-500 hover:bg-slate-200/50"
                       )}
                     >
-                      {amt === 0 ? 'بدون' : `+${amt}`}
+                      {amt === 0 ? 'Ø¨Ø¯ÙˆÙ†' : `+${amt}`}
                     </button>
                   ))}
                 </div>
@@ -7776,7 +7764,7 @@ export function MaintenanceQuickCreateDrawer({ isOpen, onClose }: Props) {
             className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
           >
             <Save className="w-5 h-5" />
-            {isPending ? 'جاري الإنشاء...' : 'إنشاء التذكرة'}
+            {isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡...' : 'Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„ØªØ°ÙƒØ±Ø©'}
           </button>
         </div>
       </form>
@@ -8414,7 +8402,7 @@ export function PurchaseInvoiceItemsTable() {
 ## File: src/features/purchases/components/purchase-invoice-form/PurchaseInvoiceSummary.tsx
 ```typescript
 import { useFormContext } from 'react-hook-form';
-import { formatCurrency, roundMoney } from '@/shared/utils/currency';
+import { formatCurrency } from '@/shared/utils/currency';
 import { tokens } from '@/shared/styles/tokens';
 import { CreatePurchaseInvoiceRequest } from '../../schemas/purchaseSchemas';
 import { ClearablePriceInput } from '@/shared/components/ui/ClearablePriceInput';
@@ -8425,8 +8413,11 @@ export function PurchaseInvoiceSummary({ isSubmitting }: PurchaseInvoiceSummaryP
   const { register, watch, setValue } = useFormContext<CreatePurchaseInvoiceRequest>();
   const watchItems = watch('items');
   const watchPaidAmount = watch('paidAmount');
-  const totalInvoice = roundMoney((watchItems || []).reduce((acc, item) => acc + ((item.quantity || 0) * (item.unitCost || 0)), 0));
-  const remaining = roundMoney(totalInvoice - (watchPaidAmount || 0));
+  const totalInvoice = (watchItems || []).reduce(
+    (acc, item) => acc + ((item.quantity || 0) * (item.unitCost || 0)),
+    0
+  );
+  const remaining = totalInvoice - (watchPaidAmount || 0);
   const hasItems = watchItems && watchItems.length > 0;
   return (
     <div className={`${tokens.card} p-6 bg-white`}>
@@ -8890,7 +8881,6 @@ export function useCreatePurchaseInvoice() {
   return useMutation({
     mutationFn: (data: CreatePurchaseInvoiceRequest) => purchaseRepository.createPurchaseInvoice(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ["purchases"] });
       queryClient.invalidateQueries({ queryKey: ["suppliers"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
@@ -9008,12 +8998,12 @@ export function NewSupplierReturnPage() {
   const [isCashRefund, setIsCashRefund] = useState(false);
   const { promptPaymentSource, PaymentSourcePromptModal } = usePaymentSourcePrompt(4);
   useEffect(() => {
-    setTitle('مرتجع مورد جديد');
+    setTitle('Ù…Ø±ØªØ¬Ø¹ Ù…ÙˆØ±Ø¯ Ø¬Ø¯ÙŠØ¯');
     setBackButton(true, '/purchases/returns');
   }, [setTitle, setBackButton]);
   const handleOpenModal = () => {
     if (!supplierId) {
-      setError('يرجى اختيار المورد أولاً قبل إضافة الأصناف');
+      setError('ÙŠØ±Ø¬Ù‰ Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…ÙˆØ±Ø¯ Ø£ÙˆÙ„Ø§Ù‹ Ù‚Ø¨Ù„ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø£ØµÙ†Ø§Ù');
       return;
     }
     setError(null);
@@ -9021,7 +9011,7 @@ export function NewSupplierReturnPage() {
   };
   const handleSelectBatch = (batch: SupplierBatchResponse) => {
     if (items.some(i => i.batchId === batch.batchId)) {
-      alert('تم إضافة هذا الصنف مسبقاً');
+      alert('ØªÙ… Ø¥Ø¶Ø§ÙØ© Ù‡Ø°Ø§ Ø§Ù„ØµÙ†Ù Ù…Ø³Ø¨Ù‚Ø§Ù‹');
       return;
     }
     setItems([...items, {
@@ -9043,10 +9033,10 @@ export function NewSupplierReturnPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!supplierId) return setError('يجب اختيار مورد');
-    if (items.length === 0) return setError('يجب إضافة صنف واحد على الأقل');
+    if (!supplierId) return setError('ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…ÙˆØ±Ø¯');
+    if (items.length === 0) return setError('ÙŠØ¬Ø¨ Ø¥Ø¶Ø§ÙØ© ØµÙ†Ù ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„');
     if (items.some(i => !i.productId || !i.batchId || i.quantity <= 0)) {
-      return setError('يرجى استكمال جميع بيانات الأصناف بشكل صحيح (معرف المنتج ومعرف الدفعة والكمية)');
+      return setError('ÙŠØ±Ø¬Ù‰ Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ø¬Ù…ÙŠØ¹ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø£ØµÙ†Ø§Ù Ø¨Ø´ÙƒÙ„ ØµØ­ÙŠØ­ (Ù…Ø¹Ø±Ù Ø§Ù„Ù…Ù†ØªØ¬ ÙˆÙ…Ø¹Ø±Ù Ø§Ù„Ø¯ÙØ¹Ø© ÙˆØ§Ù„ÙƒÙ…ÙŠØ©)');
     }
     let finalPaymentSource: number | undefined;
     if (isCashRefund) {
@@ -9058,10 +9048,10 @@ export function NewSupplierReturnPage() {
       { supplierId, reason: reason as 1 | 2 | 3, notes, items, isCashRefund, paymentSource: finalPaymentSource },
       {
         onSuccess: () => {
-          toast.success("تم حفظ المرتجع بنجاح!");
+          toast.success("ØªÙ… Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹ Ø¨Ù†Ø¬Ø§Ø­!");
           navigate('/purchases/returns');
         },
-        onError: (err: unknown) => setError(getApiErrorMessage(err, 'حدث خطأ أثناء حفظ المرتجع'))
+        onError: (err: unknown) => setError(getApiErrorMessage(err, 'Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹'))
       }
     );
   };
@@ -9077,17 +9067,17 @@ export function NewSupplierReturnPage() {
       <form id="new-return-form" onSubmit={handleSubmit} className="space-y-6">
         {}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
-          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3">بيانات المرتجع الأساسية</h2>
+          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3">Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±ØªØ¬Ø¹ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-              <label className={`${tokens.font.label} block mb-2`}>المورد <span className="text-red-500">*</span></label>
+              <label className={`${tokens.font.label} block mb-2`}>Ø§Ù„Ù…ÙˆØ±Ø¯ <span className="text-red-500">*</span></label>
               <select
                 value={supplierId}
                 onChange={(e) => setSupplierId(e.target.value)}
                 className={tokens.input}
                 disabled={isLoadingSuppliers}
               >
-                <option value="">-- اختر المورد --</option>
+                <option value="">-- Ø§Ø®ØªØ± Ø§Ù„Ù…ÙˆØ±Ø¯ --</option>
                 {suppliersData?.items.map(s => (
                   <option key={s.supplierId} value={s.supplierId}>{s.name}</option>
                 ))}
@@ -9106,14 +9096,14 @@ export function NewSupplierReturnPage() {
         {/* Items */}
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <h2 className="text-lg font-bold text-gray-800">الأصناف المرتجعة <span className="text-red-500">*</span></h2>
+            <h2 className="text-lg font-bold text-gray-800">Ø§Ù„Ø£ØµÙ†Ø§Ù Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø© <span className="text-red-500">*</span></h2>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={handleOpenModal}
                 className="text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors"
               >
-                <ShoppingCart size={16} /> اختيار صنف من المورد
+                <ShoppingCart size={16} /> Ø§Ø®ØªÙŠØ§Ø± ØµÙ†Ù Ù…Ù† Ø§Ù„Ù…ÙˆØ±Ø¯
               </button>
             </div>
           </div>
@@ -9124,12 +9114,12 @@ export function NewSupplierReturnPage() {
                   type="button"
                   onClick={() => handleRemoveItem(index)}
                   className="absolute top-2 left-2 text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors"
-                  title="حذف الصنف"
+                  title="Ø­Ø°Ù Ø§Ù„ØµÙ†Ù"
                 >
                   <Trash2 size={16} />
                 </button>
                 <div className="w-full md:w-1/3">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">معرف المنتج (ID)</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ù…Ø¹Ø±Ù Ø§Ù„Ù…Ù†ØªØ¬ (ID)</label>
                   <input
                     type="text"
                     value={item.productId}
@@ -9139,7 +9129,7 @@ export function NewSupplierReturnPage() {
                   />
                 </div>
                 <div className="w-full md:w-1/3">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">معرف الدفعة (Batch ID)</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ù…Ø¹Ø±Ù Ø§Ù„Ø¯ÙØ¹Ø© (Batch ID)</label>
                   <input
                     type="text"
                     value={item.batchId}
@@ -9149,7 +9139,7 @@ export function NewSupplierReturnPage() {
                   />
                 </div>
                 <div className="w-1/2 md:w-24">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">الكمية</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ø§Ù„ÙƒÙ…ÙŠØ©</label>
                   <input
                     type="number"
                     min="1"
@@ -9160,7 +9150,7 @@ export function NewSupplierReturnPage() {
                   />
                 </div>
                 <div className="w-1/2 md:w-32">
-                  <label className="text-xs font-semibold text-gray-600 mb-1 block">سعر الإرجاع</label>
+                  <label className="text-xs font-semibold text-gray-600 mb-1 block">Ø³Ø¹Ø± Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹</label>
                   <input
                     type="number"
                     min="0"
@@ -9176,8 +9166,8 @@ export function NewSupplierReturnPage() {
             {items.length === 0 && (
               <div className="py-10 text-center border-2 border-dashed border-gray-200 rounded-xl">
                 <Package size={40} className="mx-auto text-gray-300 mb-3" />
-                <p className="text-gray-500">لم يتم إضافة أي أصناف للمرتجع.</p>
-                <p className="text-sm text-gray-400 mt-1">اضغط على زر الإضافة لاختيار الأصناف.</p>
+                <p className="text-gray-500">Ù„Ù… ÙŠØªÙ… Ø¥Ø¶Ø§ÙØ© Ø£ÙŠ Ø£ØµÙ†Ø§Ù Ù„Ù„Ù…Ø±ØªØ¬Ø¹.</p>
+                <p className="text-sm text-gray-400 mt-1">Ø§Ø¶ØºØ· Ø¹Ù„Ù‰ Ø²Ø± Ø§Ù„Ø¥Ø¶Ø§ÙØ© Ù„Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ø£ØµÙ†Ø§Ù.</p>
               </div>
             )}
           </div>
@@ -9186,12 +9176,12 @@ export function NewSupplierReturnPage() {
       {}
       <div className="fixed bottom-0 left-0 right-0 md:right-64 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex justify-between items-center z-10">
         <div>
-          <p className="text-sm text-gray-500 font-semibold">إجمالي المرتجع</p>
+          <p className="text-sm text-gray-500 font-semibold">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø±ØªØ¬Ø¹</p>
           <p className="text-xl font-bold text-blue-700">{formatCurrency(totalAmount)}</p>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={() => navigate('/purchases/returns')} className={tokens.btn.secondary}>
-            إلغاء
+            Ø¥Ù„ØºØ§Ø¡
           </button>
           <button
             type="submit"
@@ -9199,7 +9189,7 @@ export function NewSupplierReturnPage() {
             disabled={createReturn.isPending}
             className={`${tokens.btn.primary} disabled:opacity-50 min-w-[120px]`}
           >
-            {createReturn.isPending ? 'جاري الحفظ...' : 'حفظ المرتجع'}
+            {createReturn.isPending ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹'}
           </button>
         </div>
       </div>
@@ -9233,20 +9223,20 @@ export function PurchaseInvoiceDetailsPage() {
   const { data: invoice, isLoading, error } = usePurchaseInvoice(id!);
   useEffect(() => {
     if (invoice) {
-      setTitle(`فاتورة مشتريات #${invoice.invoiceNumber}`);
+      setTitle(`ÙØ§ØªÙˆØ±Ø© Ù…Ø´ØªØ±ÙŠØ§Øª #${invoice.invoiceNumber}`);
     } else {
-      setTitle('تفاصيل الفاتورة');
+      setTitle('ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©');
     }
     setBackButton(true, "/purchases/history");
   }, [invoice, setTitle, setBackButton]);
   if (isLoading) {
     return (
       <div className="p-6 h-screen bg-gray-50">
-        <BackButton to="/purchases/history" label="رجوع للسجل" />
+        <BackButton to="/purchases/history" label="Ø±Ø¬ÙˆØ¹ Ù„Ù„Ø³Ø¬Ù„" />
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <Spinner size={40} className="mx-auto mb-3" />
-            <p className="text-gray-500">جاري تحميل تفاصيل الفاتورة...</p>
+            <p className="text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ ØªÙØ§ØµÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©...</p>
           </div>
         </div>
       </div>
@@ -9256,9 +9246,9 @@ export function PurchaseInvoiceDetailsPage() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
         <AlertCircle size={48} className="text-red-400" />
-        <p className="text-gray-500">الفاتورة غير موجودة أو حدث خطأ أثناء التحميل.</p>
+        <p className="text-gray-500">Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø© Ø£Ùˆ Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù…ÙŠÙ„.</p>
         <button className={tokens.btn.primary} onClick={() => navigate('/purchases/history')}>
-          العودة لسجل المشتريات
+          Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ø³Ø¬Ù„ Ø§Ù„Ù…Ø´ØªØ±ÙŠØ§Øª
         </button>
       </div>
     );
@@ -9276,8 +9266,8 @@ export function PurchaseInvoiceDetailsPage() {
             isPaid ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
           }`}>
             {isPaid
-              ? <><CheckCircle size={13} /> مدفوعة بالكامل</>
-              : <><Clock size={13} /> متبقي دفع</>
+              ? <><CheckCircle size={13} /> Ù…Ø¯ÙÙˆØ¹Ø© Ø¨Ø§Ù„ÙƒØ§Ù…Ù„</>
+              : <><Clock size={13} /> Ù…ØªØ¨Ù‚ÙŠ Ø¯ÙØ¹</>
             }
           </span>
         </div>
@@ -9286,7 +9276,7 @@ export function PurchaseInvoiceDetailsPage() {
           onClick={() => window.print()}
         >
           <Printer size={16} />
-          <span>طباعة</span>
+          <span>Ø·Ø¨Ø§Ø¹Ø©</span>
         </button>
       </div>
       {}
@@ -9296,7 +9286,7 @@ export function PurchaseInvoiceDetailsPage() {
           className={`${tokens.card} p-4 md:col-span-1 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
           onClick={() => invoice.supplier?.id && navigate(`/contacts/suppliers/${invoice.supplier.id}`)}
         >
-          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <p className="text-xs text-gray-500 mb-2">Ø§Ù„Ù…ÙˆØ±Ø¯</p>
           <div className="flex items-center gap-3">
             {}
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
@@ -9315,17 +9305,17 @@ export function PurchaseInvoiceDetailsPage() {
         </div>
         {}
         <div className={`${tokens.card} p-4`}>
-          <p className="text-xs text-gray-500 mb-1">إجمالي الفاتورة</p>
+          <p className="text-xs text-gray-500 mb-1">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø©</p>
           <p className="text-base font-bold text-gray-900">{formatCurrency(invoice.totalAmount)}</p>
         </div>
         {}
         <div className={`${tokens.card} p-4`}>
-          <p className="text-xs text-gray-500 mb-1">المبلغ المدفوع</p>
+          <p className="text-xs text-gray-500 mb-1">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹</p>
           <p className="text-base font-bold text-green-600">{formatCurrency(invoice.paidAmount)}</p>
         </div>
         {}
         <div className={`${tokens.card} p-4`}>
-          <p className="text-xs text-gray-500 mb-1">المتبقي للمورد</p>
+          <p className="text-xs text-gray-500 mb-1">Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ Ù„Ù„Ù…ÙˆØ±Ø¯</p>
           <p className={`text-base font-bold ${invoice.remainingAmount > 0 ? 'text-red-600' : 'text-gray-400'}`}>
             {formatCurrency(invoice.remainingAmount)}
           </p>
@@ -9334,7 +9324,7 @@ export function PurchaseInvoiceDetailsPage() {
       {}
       {invoice.notes && (
         <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
-          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات الفاتورة</p>
+          <p className="text-xs text-blue-600 font-semibold mb-1">Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©</p>
           <p className="text-gray-700 text-sm">{invoice.notes}</p>
         </div>
       )}
@@ -9342,18 +9332,18 @@ export function PurchaseInvoiceDetailsPage() {
       <div className={tokens.card}>
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-bold text-gray-800">
-            الأصناف
-            <span className="mr-2 text-sm font-normal text-gray-400">({invoice.items?.length || 0} صنف)</span>
+            Ø§Ù„Ø£ØµÙ†Ø§Ù
+            <span className="mr-2 text-sm font-normal text-gray-400">({invoice.items?.length || 0} ØµÙ†Ù)</span>
           </h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-right text-sm">
             <thead>
               <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
-                <th className="px-5 py-3 font-semibold">الصنف</th>
-                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
-                <th className="px-5 py-3 font-semibold text-center">سعر الشراء (للوحدة)</th>
-                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
+                <th className="px-5 py-3 font-semibold">Ø§Ù„ØµÙ†Ù</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø§Ù„ÙƒÙ…ÙŠØ©</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø³Ø¹Ø± Ø§Ù„Ø´Ø±Ø§Ø¡ (Ù„Ù„ÙˆØ­Ø¯Ø©)</th>
+                <th className="px-5 py-3 font-semibold text-left">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -9403,7 +9393,7 @@ export function PurchaseInvoiceDetailsPage() {
             <tfoot className="bg-gray-50 border-t border-gray-200">
               <tr>
                 <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
-                  الإجمالي الكلي للفاتورة
+                  Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„ÙŠ Ù„Ù„ÙØ§ØªÙˆØ±Ø©
                 </td>
                 <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
                   {formatCurrency(invoice.totalAmount)}
@@ -9420,7 +9410,6 @@ export function PurchaseInvoiceDetailsPage() {
 
 ## File: src/features/purchases/pages/PurchasesHistoryPage.tsx
 ```typescript
-import { toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
 import { useState } from 'react';
 import { usePurchases } from '../hooks/usePurchases';
 import { PurchasesTable } from '../components/PurchasesTable';
@@ -9440,8 +9429,8 @@ export function PurchasesHistoryPage() {
     pageSize: 10,
     searchValue: searchTerm || undefined,
     supplierId: supplierId || undefined,
-    startDate: startDate ? toUtcStartOfDayISOString(startDate) : undefined,
-    endDate: endDate ? toUtcEndOfDayISOString(endDate) : undefined,
+    startDate: startDate || undefined,
+    endDate: endDate || undefined,
   });
   return (
     <div className="space-y-4">
@@ -9492,9 +9481,9 @@ export function SupplierReturnDetailsPage() {
   const { data: returnData, isLoading, error } = useSupplierReturn(id!);
   useEffect(() => {
     if (returnData) {
-      setTitle(`مرتجع #${returnData.supplierReturnId.substring(0, 8)}`);
+      setTitle(`Ù…Ø±ØªØ¬Ø¹ #${returnData.supplierReturnId.substring(0, 8)}`);
     } else {
-      setTitle('تفاصيل المرتجع');
+      setTitle('ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø±ØªØ¬Ø¹');
     }
     setBackButton(true, '/purchases/returns');
   }, [returnData, setTitle, setBackButton]);
@@ -9504,7 +9493,7 @@ export function SupplierReturnDetailsPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <Spinner size={40} className="mx-auto mb-3" />
-            <p className="text-gray-500">جاري تحميل تفاصيل المرتجع...</p>
+            <p className="text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø±ØªØ¬Ø¹...</p>
           </div>
         </div>
       </div>
@@ -9514,9 +9503,9 @@ export function SupplierReturnDetailsPage() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
         <AlertCircle size={48} className="text-red-400" />
-        <p className="text-gray-500">المرتجع غير موجود أو حدث خطأ أثناء التحميل.</p>
+        <p className="text-gray-500">Ø§Ù„Ù…Ø±ØªØ¬Ø¹ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ Ø£Ùˆ Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù…ÙŠÙ„.</p>
         <button className={tokens.btn.primary} onClick={() => navigate('/purchases/returns')}>
-          العودة لسجل المرتجعات
+          Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ø³Ø¬Ù„ Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø§Øª
         </button>
       </div>
     );
@@ -9531,7 +9520,7 @@ export function SupplierReturnDetailsPage() {
             {new Intl.DateTimeFormat('ar-EG', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(returnData.returnDate))}
           </span>
           <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${RETURN_REASON_COLORS[returnData.reason] || RETURN_REASON_COLORS[3]}`}>
-            {RETURN_REASON_LABELS[returnData.reason] || 'سبب غير معروف'}
+            {RETURN_REASON_LABELS[returnData.reason] || 'Ø³Ø¨Ø¨ ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ'}
           </span>
         </div>
       </div>
@@ -9542,7 +9531,7 @@ export function SupplierReturnDetailsPage() {
           className={`${tokens.card} p-4 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group`}
           onClick={() => returnData.supplier?.id && navigate(`/contacts/suppliers/${returnData.supplier.id}`)}
         >
-          <p className="text-xs text-gray-500 mb-2">المورد</p>
+          <p className="text-xs text-gray-500 mb-2">Ø§Ù„Ù…ÙˆØ±Ø¯</p>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600">
               <Building2 size={20} />
@@ -9560,14 +9549,14 @@ export function SupplierReturnDetailsPage() {
         </div>
         {}
         <div className={`${tokens.card} p-4 flex flex-col justify-center`}>
-          <p className="text-xs text-gray-500 mb-1">إجمالي المرتجع</p>
+          <p className="text-xs text-gray-500 mb-1">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø±ØªØ¬Ø¹</p>
           <p className="text-xl font-bold text-gray-900">{formatCurrency(returnData.totalReturnedAmount)}</p>
         </div>
       </div>
       {}
       {returnData.notes && (
         <div className={`${tokens.card} p-4 border-r-4 border-blue-400 bg-blue-50`}>
-          <p className="text-xs text-blue-600 font-semibold mb-1">ملاحظات المرتجع</p>
+          <p className="text-xs text-blue-600 font-semibold mb-1">Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ù…Ø±ØªØ¬Ø¹</p>
           <p className="text-gray-700 text-sm">{returnData.notes}</p>
         </div>
       )}
@@ -9575,18 +9564,18 @@ export function SupplierReturnDetailsPage() {
       <div className={tokens.card}>
         <div className="p-4 border-b border-gray-100">
           <h2 className="font-bold text-gray-800">
-            الأصناف المرتجعة
-            <span className="mr-2 text-sm font-normal text-gray-400">({returnData.items?.length || 0} صنف)</span>
+            Ø§Ù„Ø£ØµÙ†Ø§Ù Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø©
+            <span className="mr-2 text-sm font-normal text-gray-400">({returnData.items?.length || 0} ØµÙ†Ù)</span>
           </h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-right text-sm">
             <thead>
               <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide border-b border-gray-100">
-                <th className="px-5 py-3 font-semibold">الصنف</th>
-                <th className="px-5 py-3 font-semibold text-center">الكمية</th>
-                <th className="px-5 py-3 font-semibold text-center">سعر الإرجاع (للوحدة)</th>
-                <th className="px-5 py-3 font-semibold text-left">الإجمالي</th>
+                <th className="px-5 py-3 font-semibold">Ø§Ù„ØµÙ†Ù</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø§Ù„ÙƒÙ…ÙŠØ©</th>
+                <th className="px-5 py-3 font-semibold text-center">Ø³Ø¹Ø± Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹ (Ù„Ù„ÙˆØ­Ø¯Ø©)</th>
+                <th className="px-5 py-3 font-semibold text-left">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -9630,7 +9619,7 @@ export function SupplierReturnDetailsPage() {
             <tfoot className="bg-gray-50 border-t border-gray-200">
               <tr>
                 <td colSpan={3} className="px-5 py-3 text-left text-sm font-semibold text-gray-600">
-                  الإجمالي الكلي
+                  Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙƒÙ„ÙŠ
                 </td>
                 <td className="px-5 py-3 text-left font-bold text-lg text-gray-900">
                   {formatCurrency(returnData.totalReturnedAmount)}
@@ -9743,22 +9732,22 @@ describe('createPurchaseInvoiceSchema', () => {
 import * as z from 'zod';
 import { BaseFilters } from '@/shared/types/pagination';
 export const purchaseInvoiceItemSchema = z.object({
-  productId: z.string().min(1, "يجب اختيار منتج"),
+  productId: z.string().min(1, "ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…Ù†ØªØ¬"),
   productName: z.string().optional(),
   productUsage: z.number().optional(),
-  quantity: z.number().min(1, "الكمية يجب أن تكون أكبر من صفر"),
-  unitCost: z.number().min(0, "تكلفة الوحدة يجب أن تكون 0 أو أكثر"),
-  wholesalePrice: z.number().min(0, "سعر الجملة غير صالح"),
-  retailPrice: z.number().min(0, "سعر التجزئة غير صالح"),
-  maintenancePrice: z.number().min(0, "سعر الصيانة غير صالح").optional(),
+  quantity: z.number().min(1, "Ø§Ù„ÙƒÙ…ÙŠØ© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† Ø£ÙƒØ¨Ø± Ù…Ù† ØµÙØ±"),
+  unitCost: z.number().min(0, "ØªÙƒÙ„ÙØ© Ø§Ù„ÙˆØ­Ø¯Ø© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† 0 Ø£Ùˆ Ø£ÙƒØ«Ø±"),
+  wholesalePrice: z.number().min(0, "Ø³Ø¹Ø± Ø§Ù„Ø¬Ù…Ù„Ø© ØºÙŠØ± ØµØ§Ù„Ø­"),
+  retailPrice: z.number().min(0, "Ø³Ø¹Ø± Ø§Ù„ØªØ¬Ø²Ø¦Ø© ØºÙŠØ± ØµØ§Ù„Ø­"),
+  maintenancePrice: z.number().min(0, "Ø³Ø¹Ø± Ø§Ù„ØµÙŠØ§Ù†Ø© ØºÙŠØ± ØµØ§Ù„Ø­").optional(),
 });
 export type CreatePurchaseInvoiceItemRequest = z.infer<typeof purchaseInvoiceItemSchema>;
 export const createPurchaseInvoiceSchema = z.object({
-  supplierId: z.string().min(1, "يجب اختيار مورد"),
-  paidAmount: z.number().min(0, "المبلغ المدفوع غير صالح"),
+  supplierId: z.string().min(1, "ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…ÙˆØ±Ø¯"),
+  paidAmount: z.number().min(0, "Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ ØºÙŠØ± ØµØ§Ù„Ø­"),
   paymentSource: z.number().optional(),
   notes: z.string().optional(),
-  items: z.array(purchaseInvoiceItemSchema).min(1, "يجب إضافة منتج واحد على الأقل"),
+  items: z.array(purchaseInvoiceItemSchema).min(1, "ÙŠØ¬Ø¨ Ø¥Ø¶Ø§ÙØ© Ù…Ù†ØªØ¬ ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„"),
 });
 export type CreatePurchaseInvoiceRequest = z.infer<typeof createPurchaseInvoiceSchema>;
 export interface ProductSummary {
@@ -9804,9 +9793,9 @@ export interface PurchaseFilters extends BaseFilters {
 import * as z from 'zod';
 import { BaseFilters } from '@/shared/types/pagination';
 export const RETURN_REASON_LABELS: Record<number, string> = {
-  1: 'عيب أو خلل في المنتج',
-  2: 'تغيير رأي',
-  3: 'سبب آخر',
+  1: 'Ø¹ÙŠØ¨ Ø£Ùˆ Ø®Ù„Ù„ ÙÙŠ Ø§Ù„Ù…Ù†ØªØ¬',
+  2: 'ØªØºÙŠÙŠØ± Ø±Ø£ÙŠ',
+  3: 'Ø³Ø¨Ø¨ Ø¢Ø®Ø±',
 };
 export const RETURN_REASON_COLORS: Record<number, string> = {
   1: 'bg-red-50 text-red-700',
@@ -9843,17 +9832,17 @@ export interface SupplierReturnResponse {
   items: SupplierReturnItemResponse[];
 }
 export const createSupplierReturnItemSchema = z.object({
-  productId: z.string().min(1, 'يجب اختيار منتج'),
-  batchId: z.string().min(1, 'يجب تحديد الدفعة'),
-  quantity: z.number().min(1, 'الكمية يجب أن تكون 1 على الأقل'),
-  returnPrice: z.number().min(0, 'سعر الإرجاع غير صالح'),
+  productId: z.string().min(1, 'ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…Ù†ØªØ¬'),
+  batchId: z.string().min(1, 'ÙŠØ¬Ø¨ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯ÙØ¹Ø©'),
+  quantity: z.number().min(1, 'Ø§Ù„ÙƒÙ…ÙŠØ© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† 1 Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„'),
+  returnPrice: z.number().min(0, 'Ø³Ø¹Ø± Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­'),
 });
 export type CreateSupplierReturnItemRequest = z.infer<typeof createSupplierReturnItemSchema>;
 export const createSupplierReturnSchema = z.object({
-  supplierId: z.string().min(1, 'يجب اختيار مورد'),
+  supplierId: z.string().min(1, 'ÙŠØ¬Ø¨ Ø§Ø®ØªÙŠØ§Ø± Ù…ÙˆØ±Ø¯'),
   reason: z.union([z.literal(1), z.literal(2), z.literal(3)]),
   notes: z.string().optional(),
-  items: z.array(createSupplierReturnItemSchema).min(1, 'يجب إضافة صنف واحد على الأقل'),
+  items: z.array(createSupplierReturnItemSchema).min(1, 'ÙŠØ¬Ø¨ Ø¥Ø¶Ø§ÙØ© ØµÙ†Ù ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„'),
   isCashRefund: z.boolean().default(false),
   paymentSource: z.number().optional(),
 });
@@ -10013,20 +10002,20 @@ export function CheckoutModal({
     setError('');
     const paid = Number(paidAmount);
     if (isNaN(paid) || paid < 0) {
-      setError('يرجى إدخال مبلغ دفع صحيح');
+      setError('ÙŠØ±Ø¬Ù‰ Ø¥Ø¯Ø®Ø§Ù„ Ù…Ø¨Ù„Øº Ø¯ÙØ¹ ØµØ­ÙŠØ­');
       return;
     }
     if (isCredit) {
       if (!customerName.trim() || !customerPhone.trim()) {
-        setError('يجب إدخال اسم العميل ورقم الهاتف في حالة البيع الآجل');
+        setError('ÙŠØ¬Ø¨ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ ÙˆØ±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¢Ø¬Ù„');
         return;
       }
       if (paid >= totalAmount) {
-        setError('لا يمكن أن يكون المبلغ المدفوع أكبر من أو يساوي الإجمالي في حالة البيع الآجل');
+        setError('Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø£Ù† ÙŠÙƒÙˆÙ† Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ Ø£ÙƒØ¨Ø± Ù…Ù† Ø£Ùˆ ÙŠØ³Ø§ÙˆÙŠ Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¢Ø¬Ù„');
         return;
       }
     } else if (paid < totalAmount) {
-      setError('في حالة الدفع النقدي يجب دفع المبلغ كاملاً');
+      setError('ÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ù†Ù‚Ø¯ÙŠ ÙŠØ¬Ø¨ Ø¯ÙØ¹ Ø§Ù„Ù…Ø¨Ù„Øº ÙƒØ§Ù…Ù„Ø§Ù‹');
       return;
     }
     let finalSource: PaymentSource | undefined = undefined;
@@ -10043,14 +10032,14 @@ export function CheckoutModal({
       <BaseModal
         isOpen={isOpen}
         onClose={onClose}
-        title={isCredit ? 'إتمام الدفع الآجل' : 'إتمام الدفع النقدي'}
+        title={isCredit ? 'Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø¢Ø¬Ù„' : 'Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ù†Ù‚Ø¯ÙŠ'}
         size="md"
         zIndexClassName="z-[60]"
         headerClassName={isCredit ? 'bg-amber-50' : 'bg-emerald-50'}
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="bg-[var(--color-page-bg)] p-4 rounded-xl flex items-center justify-between border border-[var(--color-border)]">
-            <span className="text-[var(--color-text-muted)] font-semibold">الإجمالي المطلوب:</span>
+            <span className="text-[var(--color-text-muted)] font-semibold">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨:</span>
             <span className="text-2xl font-bold text-[var(--color-text-main)]">{formatCurrency(totalAmount)}</span>
           </div>
           {error && (
@@ -10073,7 +10062,7 @@ export function CheckoutModal({
               <option value={SaleType.Wholesale}>جملة</option>
             </select>
           </div>
-          <div>`n            <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">`n              <span className="flex items-center gap-1.5">`n                <Phone size={16} /> رقم الهاتف
+          <div>`n            <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">`n              <span className="flex items-center gap-1.5">`n                <Phone size={16} /> Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ
               </span>
               {isCredit && <span className="text-[var(--color-danger)]">*</span>}
             </label>
@@ -10081,7 +10070,7 @@ export function CheckoutModal({
               type="text"
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
-              placeholder="مثال: 010xxxxxxxx"
+              placeholder="Ù…Ø«Ø§Ù„: 010xxxxxxxx"
               className={tokens.input + ' py-3 text-left'}
               required={isCredit}
               dir="ltr"
@@ -10090,7 +10079,7 @@ export function CheckoutModal({
           <div>
             <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <User size={16} /> اسم العميل
+                <User size={16} /> Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„
               </span>
               {isCredit && <span className="text-[var(--color-danger)]">*</span>}
             </label>
@@ -10098,7 +10087,7 @@ export function CheckoutModal({
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="مثال: أحمد محمد"
+              placeholder="Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…Ø¯"
               className={tokens.input + ' py-3'}
               required={isCredit}
             />
@@ -10107,7 +10096,7 @@ export function CheckoutModal({
             <div className="pt-2 border-t border-[var(--color-border)]">
               <label className="text-sm font-semibold text-[var(--color-text-main)] mb-2 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <Banknote size={16} /> المبلغ المدفوع الآن
+                  <Banknote size={16} /> Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø¯ÙÙˆØ¹ Ø§Ù„Ø¢Ù†
                 </span>
                 <span className="text-[var(--color-danger)]">*</span>
               </label>
@@ -10129,7 +10118,7 @@ export function CheckoutModal({
               />
               {Number(paidAmount) >= 0 && Number(paidAmount) < totalAmount && (
                 <p className="text-sm text-amber-700 mt-2.5 font-bold">
-                  المتبقي كمديونية: {formatCurrency(totalAmount - Number(paidAmount))}
+                  Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ ÙƒÙ…Ø¯ÙŠÙˆÙ†ÙŠØ©: {formatCurrency(totalAmount - Number(paidAmount))}
                 </p>
               )}
             </div>
@@ -10141,7 +10130,7 @@ export function CheckoutModal({
               isCredit ? 'bg-amber-600 hover:bg-amber-700' : 'bg-emerald-600 hover:bg-emerald-700'
             }`}
           >
-            {isSubmitting ? 'جاري التأكيد...' : 'تأكيد وحفظ الفاتورة'}
+            {isSubmitting ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ£ÙƒÙŠØ¯...' : 'ØªØ£ÙƒÙŠØ¯ ÙˆØ­ÙØ¸ Ø§Ù„ÙØ§ØªÙˆØ±Ø©'}
           </button>
         </form>
       </BaseModal>
@@ -10344,13 +10333,13 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
       <div className="p-6 pb-4 flex items-start justify-between shrink-0 bg-[#f8f9fa]">
         <div className="flex flex-col items-end">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
-            سلة المشتريات
+            Ø³Ù„Ø© Ø§Ù„Ù…Ø´ØªØ±ÙŠØ§Øª
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           </h2>
           <div className="text-sm font-semibold flex items-center gap-1.5" dir="rtl">
-            <span className="text-[#0f8e4c]">الكمية {totalQuantity}</span>
+            <span className="text-[#0f8e4c]">Ø§Ù„ÙƒÙ…ÙŠØ© {totalQuantity}</span>
             <span className="text-gray-300">|</span>
-            <span className="text-[#0f8e4c]">{items.length} أصناف</span>
+            <span className="text-[#0f8e4c]">{items.length} Ø£ØµÙ†Ø§Ù</span>
           </div>
         </div>
         <button
@@ -10366,7 +10355,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
         {items.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-gray-400 gap-4">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="opacity-20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            <p className="font-semibold text-lg">السلة فارغة</p>
+            <p className="font-semibold text-lg">Ø§Ù„Ø³Ù„Ø© ÙØ§Ø±ØºØ©</p>
           </div>
         ) : (
           items.map(item => {
@@ -10432,7 +10421,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
                     <Undo2 size={16} />
                   </button>
                   <div className="font-bold text-[#0f8e4c] text-base mt-auto">
-                    {fmt(item.price * item.quantity)} <span className="text-xs font-normal">ج.م</span>
+                    {fmt(item.price * item.quantity)} <span className="text-xs font-normal">Ø¬.Ù…</span>
                   </div>
                 </div>
               </div>
@@ -10443,12 +10432,12 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
       {}
       <div className="p-6 bg-[#f8f9fa] shrink-0 mt-2">
         <div className="flex items-center justify-between text-gray-900 font-bold mb-4">
-          <span className="text-sm">المجموع الفرعي</span>
-          <span className="text-sm">{fmt(subtotal)} <span className="text-xs font-normal">ج.م</span></span>
+          <span className="text-sm">Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙØ±Ø¹ÙŠ</span>
+          <span className="text-sm">{fmt(subtotal)} <span className="text-xs font-normal">Ø¬.Ù…</span></span>
         </div>
         <div className="flex items-center justify-between text-xl font-bold text-gray-900 mb-6">
-          <span className="text-xl">الإجمالي</span>
-          <span className="text-[26px] text-[#0f8e4c]">{fmt(total)} <span className="text-sm font-normal">ج.م</span></span>
+          <span className="text-xl">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ</span>
+          <span className="text-[26px] text-[#0f8e4c]">{fmt(total)} <span className="text-sm font-normal">Ø¬.Ù…</span></span>
         </div>
         <div className="flex flex-col gap-4">
           <button
@@ -10457,7 +10446,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
             className="w-full py-4 rounded-xl font-bold text-white bg-[#0f8e4c] hover:bg-[#0c7a40] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm text-lg"
           >
             <Wallet size={22} />
-            دفع كاش
+            Ø¯ÙØ¹ ÙƒØ§Ø´
           </button>
           <button
             disabled={items.length === 0}
@@ -10465,7 +10454,7 @@ export function PosCart({ items, onUpdateQuantity, onRemoveItem, onClearCart, on
             className="w-full py-4 rounded-xl font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-lg shadow-sm"
           >
             <CreditCard size={22} className="text-gray-500" />
-            دفع آجل
+            Ø¯ÙØ¹ Ø¢Ø¬Ù„
           </button>
         </div>
       </div>
@@ -10524,7 +10513,7 @@ export function PosProductGrid({
           <div className="relative flex-1 h-12">
             <input
               type="text"
-              placeholder="ابحث عن منتج بالاسم أو امسح الباركود"
+              placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ù†ØªØ¬ Ø¨Ø§Ù„Ø§Ø³Ù… Ø£Ùˆ Ø§Ù…Ø³Ø­ Ø§Ù„Ø¨Ø§Ø±ÙƒÙˆØ¯"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`${tokens.input} pl-12 h-full`}
@@ -10543,7 +10532,7 @@ export function PosProductGrid({
               }}
               className={`${tokens.select} h-full cursor-pointer`}
             >
-              <option value="">اختر القسم الرئيسي</option>
+              <option value="">Ø§Ø®ØªØ± Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ</option>
               {departments.map((dept) => (
                 <option key={dept.departmentId} value={dept.departmentId}>
                   {dept.name}
@@ -10569,7 +10558,7 @@ export function PosProductGrid({
                   : 'bg-white text-gray-600 border-gray-100 hover:border-gray-200 hover:bg-gray-50'
               }`}
             >
-              الكل
+              Ø§Ù„ÙƒÙ„
             </button>
             {categories.map((cat: CategorySummary) => (
               <button
@@ -10597,20 +10586,20 @@ export function PosProductGrid({
           ) : products.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-400">
               <Package size={64} className="text-gray-300 mb-4" />
-              <p className="text-xl font-semibold">لا توجد منتجات</p>
+              <p className="text-xl font-semibold">Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ù†ØªØ¬Ø§Øª</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 h-full content-start">
               {products.map(product => {
                 const hasStock = product.totalQuantity > 0;
                 const isLowStock = product.isLowStock;
-                let statusLabel = 'متوفر';
+                let statusLabel = 'Ù…ØªÙˆÙØ±';
                 let statusClass = 'bg-[#e6f4ed] text-[#0f8e4c]'; // Light green bg, dark green text
                 if (!hasStock) {
-                  statusLabel = 'نفد المخزون';
+                  statusLabel = 'Ù†ÙØ¯ Ø§Ù„Ù…Ø®Ø²ÙˆÙ†';
                   statusClass = 'bg-[#fce8e6] text-[#c5221f]'; // Light red bg, dark red text
                 } else if (isLowStock) {
-                  statusLabel = 'مخزون منخفض';
+                  statusLabel = 'Ù…Ø®Ø²ÙˆÙ† Ù…Ù†Ø®ÙØ¶';
                   statusClass = 'bg-[#fef7e0] text-[#ea8600]'; // Light orange bg, dark orange text
                 }
                 const imageSrc = product.imageUrl ? resolveProductImageUrl(product.imageUrl) : null;
@@ -10639,7 +10628,7 @@ export function PosProductGrid({
                           : product.category.name}
                       </p>
                       <div className="mt-auto mb-3 font-bold text-[11px] sm:text-[12px] text-[#0f8e4c]">
-                        المخزون: {product.totalQuantity}
+                        Ø§Ù„Ù…Ø®Ø²ÙˆÙ†: {product.totalQuantity}
                       </div>
                       <button
                         onClick={() => hasStock && onProductClick(product)}
@@ -10651,7 +10640,7 @@ export function PosProductGrid({
                         }`}
                       >
                         <ShoppingCart size={14} />
-                        إضافة
+                        Ø¥Ø¶Ø§ÙØ©
                       </button>
                     </div>
                   </div>
@@ -10671,7 +10660,7 @@ export function PosProductGrid({
               <ChevronRight size={20} />
             </button>
             <span className="font-semibold text-gray-700 text-sm">
-              صفحة {pageNumber} من {totalPages}
+              ØµÙØ­Ø© {pageNumber} Ù…Ù† {totalPages}
             </span>
             <button
               disabled={pageNumber === totalPages}
@@ -10733,7 +10722,6 @@ export function ReturnItemsTable({ invoice, returnItems, onReturnQtyChange }: Re
                       disabled={maxAllowed === 0}
                       value={currentQty}
                       onChange={(e) => onReturnQtyChange(item.id, maxAllowed, parseInt(e.target.value) || 0)}
-                      onFocus={(e) => e.target.select()}
                       className="w-full px-3 py-1 border border-gray-300 rounded text-center disabled:bg-gray-100"
                     />
                   </td>
@@ -11045,7 +11033,6 @@ export function useCreateSalesInvoice() {
   return useMutation({
     mutationFn: (data: CreateSalesInvoiceRequest) => salesRepository.createInvoice(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ["sales-invoices"] });
       toast.success("تم إنشاء فاتورة المبيعات بنجاح");
     },
@@ -11072,7 +11059,6 @@ export function useCreateSalesReturn() {
   return useMutation({
     mutationFn: (data: CreateSalesReturnRequest) => salesRepository.createReturn(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ["sales-returns"] });
       toast.success("تم حفظ المرتجع بنجاح");
     },
@@ -11081,7 +11067,7 @@ export function useCreateSalesReturn() {
     }
   });
 }
-export function useSalesReturns(filters: { pageNumber: number; pageSize: number; searchValue?: string; startDate?: string; endDate?: string }) {
+export function useSalesReturns(filters: { pageNumber: number; pageSize: number; searchValue?: string }) {
   return useQuery({
     queryKey: ["sales-returns", filters],
     queryFn: () => salesRepository.getReturns(filters),
@@ -11153,7 +11139,7 @@ export const NewSalesReturnPage = () => {
         };
       });
     if (itemsToReturn.length === 0) {
-      toast.error('يجب تحديد كمية لمنتج واحد على الأقل للإرجاع');
+      toast.error('ÙŠØ¬Ø¨ ØªØ­Ø¯ÙŠØ¯ ÙƒÙ…ÙŠØ© Ù„Ù…Ù†ØªØ¬ ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„Ù„Ø¥Ø±Ø¬Ø§Ø¹');
       return;
     }
     let source: number | undefined = undefined;
@@ -11178,7 +11164,7 @@ export const NewSalesReturnPage = () => {
   return (
     <div className="space-y-6 w-full max-w-4xl mx-auto">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">إضافة مرتجع مبيعات جديد</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Ø¥Ø¶Ø§ÙØ© Ù…Ø±ØªØ¬Ø¹ Ù…Ø¨ÙŠØ¹Ø§Øª Ø¬Ø¯ÙŠØ¯</h1>
       </div>
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-6">
         <InvoiceSearchBar
@@ -11186,8 +11172,8 @@ export const NewSalesReturnPage = () => {
           onInvoiceIdChange={setInvoiceId}
           onSearch={handleSearch}
         />
-        {isLoading && <div className="text-center py-4">جاري البحث...</div>}
-        {fetchError && <div className="text-red-500 text-center py-4 flex items-center justify-center gap-2"><AlertCircle size={20} /> الفاتورة غير موجودة</div>}
+        {isLoading && <div className="text-center py-4">Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¨Ø­Ø«...</div>}
+        {fetchError && <div className="text-red-500 text-center py-4 flex items-center justify-center gap-2"><AlertCircle size={20} /> Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø©</div>}
         {invoice && (
           <div className="space-y-6 mt-6 border-t pt-6">
             <InvoiceDetailsCard invoice={invoice} />
@@ -11211,7 +11197,7 @@ export const NewSalesReturnPage = () => {
                 className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
               >
                 <Save size={20} />
-                <span>حفظ المرتجع</span>
+                <span>Ø­ÙØ¸ Ø§Ù„Ù…Ø±ØªØ¬Ø¹</span>
               </button>
             </div>
           </div>
@@ -11262,7 +11248,7 @@ export function PosPage() {
     setPageNumber(1);
   }, [searchTerm, selectedDepartmentId, selectedCategoryId]);
   useEffect(() => {
-    setTitle('نقطة البيع (POS)');
+    setTitle('Ù†Ù‚Ø·Ø© Ø§Ù„Ø¨ÙŠØ¹ (POS)');
     setBackButton(false);
   }, [setTitle, setBackButton]);
   const handleProductClick = (product: ProductResponse) => {
@@ -11274,9 +11260,9 @@ export function PosPage() {
     cart.addItem({
       id: `${selectedProduct.productId}_${batch.batchId}_${selectedPrice}`,
       productId: selectedProduct.productId,
-      productName: selectedProduct.name || 'منتج غير معروف',
+      productName: selectedProduct.name || 'Ù…Ù†ØªØ¬ ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ',
       batchId: batch.batchId,
-      batchName: batch.supplierName || 'شركة غير معروفة',
+      batchName: batch.supplierName || 'Ø´Ø±ÙƒØ© ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙØ©',
       imageUrl: selectedProduct.imageUrl,
       properties: selectedProduct.properties,
       price: selectedPrice,
@@ -11346,15 +11332,15 @@ export function PosPage() {
       {/* Mobile Cart Button / Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40 flex items-center justify-between">
          <div className="flex flex-col">
-            <span className="text-gray-500 text-sm font-semibold">الإجمالي ({totalQuantity} منتجات)</span>
-            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} ج.م</span>
+            <span className="text-gray-500 text-sm font-semibold">Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ ({totalQuantity} Ù…Ù†ØªØ¬Ø§Øª)</span>
+            <span className="text-[#0f8e4c] font-bold text-lg">{new Intl.NumberFormat('en-EG', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(totalAmount)} Ø¬.Ù…</span>
          </div>
          <button
            onClick={() => setIsMobileCartOpen(true)}
            className="bg-[#0f8e4c] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-sm"
          >
            <ShoppingCart size={20} />
-           عرض السلة
+           Ø¹Ø±Ø¶ Ø§Ù„Ø³Ù„Ø©
          </button>
       </div>
       {}
@@ -11470,8 +11456,7 @@ export function SalesHistoryPage() {
 
 ## File: src/features/sales/pages/SalesReturnsPage.tsx
 ```typescript
-import { toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useSalesReturns } from '../hooks/useSales';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { Plus } from 'lucide-react';
@@ -11489,8 +11474,7 @@ export const SalesReturnsPage = () => {
     pageNumber: page,
     pageSize: 10,
     searchValue: debouncedSearch,
-    startDate: dateFilter ? toUtcStartOfDayISOString(dateFilter) : undefined,
-      endDate: dateFilter ? toUtcEndOfDayISOString(dateFilter) : undefined,
+    // date: dateFilter // If backend supports it, otherwise frontend filter or just pass it if backend can handle it. Wait, backend RequestFilters doesn't have Date out of the box unless we add it.
   });
   const columns = getSalesReturnsColumns();
   const filteredData = data?.items || [];
@@ -11502,7 +11486,7 @@ export const SalesReturnsPage = () => {
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus size={20} />
-          <span>إضافة مرتجع جديد</span>
+          <span>Ø¥Ø¶Ø§ÙØ© Ù…Ø±ØªØ¬Ø¹ Ø¬Ø¯ÙŠØ¯</span>
         </button>
       </div>
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
@@ -11701,7 +11685,6 @@ describe('posUtils', () => {
 
 ## File: src/features/sales/utils/cartLogic.ts
 ```typescript
-import { roundMoney } from '@/shared/utils/currency';
 export interface CartItem {
   id: string;
   productId: string;
@@ -11735,7 +11718,7 @@ export function removeCartItem(items: CartItem[], id: string): CartItem[] {
   return items.filter((item) => item.id !== id);
 }
 export function cartTotal(items: CartItem[]): number {
-  return roundMoney(items.reduce((sum, item) => sum + item.price * item.quantity, 0));
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 ```
 
@@ -12198,13 +12181,13 @@ export function SuppliersTable({
 }: SuppliersTableProps) {
   const columns = [
     {
-      header: 'اسم المورد',
+      header: 'Ø§Ø³Ù… Ø§Ù„Ù…ÙˆØ±Ø¯',
       cell: (row: SupplierResponse) => (
         <span className="text-base font-bold text-gray-900">{row.name}</span>
       ),
     },
     {
-      header: 'الهاتف',
+      header: 'Ø§Ù„Ù‡Ø§ØªÙ',
       cell: (row: SupplierResponse) => (
         <span className="text-sm font-semibold text-gray-600 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-100" dir="ltr">
           {row.phone || '---'}
@@ -12212,7 +12195,7 @@ export function SuppliersTable({
       ),
     },
     {
-      header: 'الرصيد المستحق',
+      header: 'Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ù…Ø³ØªØ­Ù‚',
       cell: (row: SupplierResponse) => (
         <div className="flex items-center gap-3">
           <span className={`text-base font-bold ${row.debtBalance > 0 ? 'text-green-600' : row.debtBalance < 0 ? 'text-red-600' : 'text-gray-900'}`}>
@@ -12229,29 +12212,29 @@ export function SuppliersTable({
                   ? 'bg-green-50 text-green-700 hover:bg-green-100 border-green-200'
                   : 'bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200'
               }`}
-              title={row.debtBalance > 0 ? "تسديد دفعة" : "استلام دفعة"}
+              title={row.debtBalance > 0 ? "ØªØ³Ø¯ÙŠØ¯ Ø¯ÙØ¹Ø©" : "Ø§Ø³ØªÙ„Ø§Ù… Ø¯ÙØ¹Ø©"}
             >
               <CreditCard size={14} />
-              {row.debtBalance > 0 ? 'تسديد' : 'استلام'}
+              {row.debtBalance > 0 ? 'ØªØ³Ø¯ÙŠØ¯' : 'Ø§Ø³ØªÙ„Ø§Ù…'}
             </button>
           )}
         </div>
       ),
     },
     {
-      header: 'عدد الفواتير',
+      header: 'Ø¹Ø¯Ø¯ Ø§Ù„ÙÙˆØ§ØªÙŠØ±',
       cell: (row: SupplierResponse) => (
         <span className="text-sm font-bold text-gray-800">{row.purchaseInvoicesCount}</span>
       ),
     },
     {
-      header: 'عدد المرتجعات',
+      header: 'Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ø±ØªØ¬Ø¹Ø§Øª',
       cell: (row: SupplierResponse) => (
         <span className="text-sm font-bold text-gray-800">{row.returnsCount}</span>
       ),
     },
     {
-      header: 'الإجراءات',
+      header: 'Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª',
       cell: (row: SupplierResponse) => (
         <div className="flex justify-center gap-3 text-gray-400">
           <HasPermission permission={Permissions.SuppliersWrite}>
@@ -12262,8 +12245,8 @@ export function SuppliersTable({
                 onEdit?.(row);
               }}
               className="hover:text-blue-500 transition-colors p-2 rounded-lg hover:bg-blue-50"
-              title="تعديل"
-              aria-label="تعديل المورد"
+              title="ØªØ¹Ø¯ÙŠÙ„"
+              aria-label="ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ù…ÙˆØ±Ø¯"
             >
               <Edit size={18} />
             </button>
@@ -12274,8 +12257,8 @@ export function SuppliersTable({
                 onDelete?.(row);
               }}
               className="hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
-              title="حذف"
-              aria-label="حذف المورد"
+              title="Ø­Ø°Ù"
+              aria-label="Ø­Ø°Ù Ø§Ù„Ù…ÙˆØ±Ø¯"
             >
               <Trash2 size={18} />
             </button>
@@ -12706,7 +12689,7 @@ export interface SupplierStatementItemResponse {
   notes?: string;
 }
 export const createSupplierSchema = z.object({
-  name: z.string().min(1, "اسم المورد مطلوب"),
+  name: z.string().min(1, "Ø§Ø³Ù… Ø§Ù„Ù…ÙˆØ±Ø¯ Ù…Ø·Ù„ÙˆØ¨"),
   type: z.string().optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
@@ -12724,7 +12707,7 @@ export interface SupplierBatchResponse {
 }
 export const createSupplierPaymentSchema = z.object({
   supplierId: z.string().min(1),
-  amount: z.number().min(0.01, "المبلغ يجب أن يكون أكبر من 0"),
+  amount: z.number().min(0.01, "Ø§Ù„Ù…Ø¨Ù„Øº ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ø£ÙƒØ¨Ø± Ù…Ù† 0"),
   isReceipt: z.boolean().default(false),
   paymentSource: z.number().optional(),
   notes: z.string().optional(),
@@ -12817,7 +12800,7 @@ import { useGlobalWalletOperations } from '../hooks/useGlobalWalletOperations';
 import { useWallets } from '../hooks/useWallets';
 import { tokens } from '@/shared/styles/tokens';
 import { ArrowDownToLine, ArrowUpFromLine, ChevronLeft, ChevronRight, Filter, TrendingUp } from 'lucide-react';
-import { formatDate, toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
+import { formatDate } from '@/shared/utils/date';
 import { WalletOperationType, WalletOperationResponse } from '../schemas/walletSchemas';
 export function GlobalWalletOperationsTable() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -12828,8 +12811,8 @@ export function GlobalWalletOperationsTable() {
   const { wallets } = useWallets();
   const { operations, totalPages, isLoadingOperations, totalProfit } = useGlobalWalletOperations({
     pageNumber,
-    dateFrom: dateFrom ? toUtcStartOfDayISOString(dateFrom) : undefined,
-    dateTo: dateTo ? toUtcEndOfDayISOString(dateTo) : undefined,
+    dateFrom: dateFrom || undefined,
+    dateTo: dateTo || undefined,
     operationType: operationType !== '' ? operationType : undefined,
     walletId: walletId || undefined
   });
@@ -13085,7 +13068,7 @@ import { useParams } from 'react-router-dom';
 import { useWalletDetails } from '../hooks/useWalletDetails';
 import { useHeaderStore } from '@/shared/hooks/useHeaderStore';
 import { Wallet, ArrowDownToLine, ArrowUpFromLine, ChevronLeft, ChevronRight, TrendingUp, Filter } from 'lucide-react';
-import { formatDate, toUtcStartOfDayISOString, toUtcEndOfDayISOString } from '@/shared/utils/date';
+import { formatDate } from '@/shared/utils/date';
 import { WalletOperationType, WalletOperationResponse } from '../schemas/walletSchemas';
 import { tokens } from '@/shared/styles/tokens';
 export function WalletDetailsPage() {
@@ -13097,20 +13080,20 @@ export function WalletDetailsPage() {
   const [operationType, setOperationType] = useState<WalletOperationType | ''>('');
   const { wallet, isLoadingWallet, operations, totalPages, isLoadingOperations } = useWalletDetails(id || '', {
     pageNumber,
-    dateFrom: dateFrom ? toUtcStartOfDayISOString(dateFrom) : undefined,
-    dateTo: dateTo ? toUtcEndOfDayISOString(dateTo) : undefined,
+    dateFrom: dateFrom || undefined,
+    dateTo: dateTo || undefined,
     operationType: operationType !== '' ? operationType : undefined
   });
   useEffect(() => {
-    setTitle('تفاصيل المحفظة');
+    setTitle('ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ø­ÙØ¸Ø©');
     setBackButton(true, '/settings/wallets');
     return () => setBackButton(false);
   }, [setTitle, setBackButton]);
   if (isLoadingWallet) {
-    return <div className="p-8 text-center text-gray-500">جاري تحميل البيانات...</div>;
+    return <div className="p-8 text-center text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª...</div>;
   }
   if (!wallet) {
-    return <div className="p-8 text-center text-red-500">لم يتم العثور على المحفظة</div>;
+    return <div className="p-8 text-center text-red-500">Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø§Ù„Ù…Ø­ÙØ¸Ø©</div>;
   }
   const isProfitable = wallet.netProfit >= 0;
   return (
@@ -13130,15 +13113,15 @@ export function WalletDetailsPage() {
             <p className="text-gray-500 text-lg mb-2" dir="ltr">{wallet.phoneNumber}</p>
             <div className="flex gap-3">
               <span className={`px-3 py-1 text-sm font-medium rounded-lg ${wallet.isActive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                {wallet.isActive ? 'نشط' : 'غير نشط'}
+                {wallet.isActive ? 'Ù†Ø´Ø·' : 'ØºÙŠØ± Ù†Ø´Ø·'}
               </span>
               <span className="px-3 py-1 text-sm font-medium bg-gray-50 text-gray-600 rounded-lg">
-                تاريخ الإنشاء: {formatDate(wallet.createdAt)}
+                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡: {formatDate(wallet.createdAt)}
               </span>
             </div>
           </div>
           <div className="mr-auto text-center border-r border-gray-100 pr-6">
-            <p className="text-gray-500 font-medium mb-1">الرصيد الحالي</p>
+            <p className="text-gray-500 font-medium mb-1">Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„ÙŠ</p>
             <p className="text-3xl font-black text-[#0f8e4c] font-mono">
               {(wallet.balance || 0).toFixed(2)}
             </p>
@@ -13148,7 +13131,7 @@ export function WalletDetailsPage() {
           <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${isProfitable ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
             <TrendingUp size={24} />
           </div>
-          <p className="text-gray-500 font-medium mb-1">صافي الأرباح (لكل العمليات)</p>
+          <p className="text-gray-500 font-medium mb-1">ØµØ§ÙÙŠ Ø§Ù„Ø£Ø±Ø¨Ø§Ø­ (Ù„ÙƒÙ„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª)</p>
           <p className={`text-3xl font-black font-mono dir-ltr ${isProfitable ? 'text-green-600' : 'text-red-600'}`}>
             {isProfitable ? '+' : ''}{(wallet.netProfit || 0).toFixed(2)}
           </p>
@@ -13157,7 +13140,7 @@ export function WalletDetailsPage() {
       {/* Operations Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h2 className="text-lg font-bold text-gray-800">سجل العمليات</h2>
+          <h2 className="text-lg font-bold text-gray-800">Ø³Ø¬Ù„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª</h2>
           {/* Filters */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5 shadow-sm">
@@ -13170,9 +13153,9 @@ export function WalletDetailsPage() {
                 }}
                 className="bg-transparent border-none text-sm focus:ring-0 text-gray-600 py-0"
               >
-                <option value="">كل العمليات</option>
-                <option value={WalletOperationType.CashIn}>إيداع</option>
-                <option value={WalletOperationType.CashOut}>سحب</option>
+                <option value="">ÙƒÙ„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª</option>
+                <option value={WalletOperationType.CashIn}>Ø¥ÙŠØ¯Ø§Ø¹</option>
+                <option value={WalletOperationType.CashOut}>Ø³Ø­Ø¨</option>
               </select>
             </div>
             <div className="flex items-center gap-2">
@@ -13181,7 +13164,7 @@ export function WalletDetailsPage() {
                 value={dateFrom}
                 onChange={e => { setDateFrom(e.target.value); setPageNumber(1); }}
                 className={tokens.input + " py-1.5 text-sm w-auto"}
-                title="من تاريخ"
+                title="Ù…Ù† ØªØ§Ø±ÙŠØ®"
               />
               <span className="text-gray-400">-</span>
               <input
@@ -13189,25 +13172,25 @@ export function WalletDetailsPage() {
                 value={dateTo}
                 onChange={e => { setDateTo(e.target.value); setPageNumber(1); }}
                 className={tokens.input + " py-1.5 text-sm w-auto"}
-                title="إلى تاريخ"
+                title="Ø¥Ù„Ù‰ ØªØ§Ø±ÙŠØ®"
               />
             </div>
           </div>
         </div>
         {isLoadingOperations ? (
-          <div className="p-8 text-center text-gray-500">جاري تحميل السجل...</div>
+          <div className="p-8 text-center text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø³Ø¬Ù„...</div>
         ) : operations.length === 0 ? (
-          <div className="p-12 text-center text-gray-400">لا يوجد عمليات تطابق البحث</div>
+          <div className="p-12 text-center text-gray-400">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø¹Ù…Ù„ÙŠØ§Øª ØªØ·Ø§Ø¨Ù‚ Ø§Ù„Ø¨Ø­Ø«</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-right">
               <thead className="bg-white text-slate-500 border-b border-slate-100">
                 <tr>
-                  <th className="px-6 py-4 font-semibold">التاريخ</th>
-                  <th className="px-6 py-4 font-semibold">نوع العملية</th>
-                  <th className="px-6 py-4 font-semibold">المبلغ المحول</th>
-                  <th className="px-6 py-4 font-semibold">المبلغ الكاش</th>
-                  <th className="px-6 py-4 font-semibold">الربح</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ù„ØªØ§Ø±ÙŠØ®</th>
+                  <th className="px-6 py-4 font-semibold">Ù†ÙˆØ¹ Ø§Ù„Ø¹Ù…Ù„ÙŠØ©</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„Ù…Ø­ÙˆÙ„</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ù…Ø¨Ù„Øº Ø§Ù„ÙƒØ§Ø´</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ø±Ø¨Ø­</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -13219,7 +13202,7 @@ export function WalletDetailsPage() {
                       <td className="px-6 py-4">
                         <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold ${isDeposit ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}`}>
                           {isDeposit ? <ArrowDownToLine size={14} /> : <ArrowUpFromLine size={14} />}
-                          {isDeposit ? 'إيداع' : 'سحب'}
+                          {isDeposit ? 'Ø¥ÙŠØ¯Ø§Ø¹' : 'Ø³Ø­Ø¨'}
                         </div>
                       </td>
                       <td className="px-6 py-4 font-mono font-medium text-slate-700">{op.transferredAmount.toFixed(2)}</td>
@@ -13246,7 +13229,7 @@ export function WalletDetailsPage() {
               <ChevronRight size={20} />
             </button>
             <span className="font-semibold text-gray-700 text-sm">
-              صفحة {pageNumber} من {totalPages}
+              ØµÙØ­Ø© {pageNumber} Ù…Ù† {totalPages}
             </span>
             <button
               disabled={pageNumber === totalPages}
@@ -13511,10 +13494,10 @@ import { useNavigate } from 'react-router-dom';
 import { WalletResponse } from '../schemas/walletSchemas';
 import { GlobalWalletOperationsTable } from '../components/GlobalWalletOperationsTable';
 const walletFormSchema = z.object({
-  name: z.string().min(1, 'اسم المحفظة مطلوب'),
-  phoneNumber: z.string().min(1, 'رقم التليفون مطلوب'),
+  name: z.string().min(1, 'Ø§Ø³Ù… Ø§Ù„Ù…Ø­ÙØ¸Ø© Ù…Ø·Ù„ÙˆØ¨'),
+  phoneNumber: z.string().min(1, 'Ø±Ù‚Ù… Ø§Ù„ØªÙ„ÙŠÙÙˆÙ† Ù…Ø·Ù„ÙˆØ¨'),
   ownerName: z.string().optional(),
-  initialBalance: z.coerce.number().min(0, 'يجب أن يكون الرصيد 0 أو أكثر').optional(),
+  initialBalance: z.coerce.number().min(0, 'ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ø§Ù„Ø±ØµÙŠØ¯ 0 Ø£Ùˆ Ø£ÙƒØ«Ø±').optional(),
   isActive: z.boolean(),
   image: z.any().optional()
 });
@@ -13527,7 +13510,7 @@ export function WalletsAdminPage() {
   const [editingWallet, setEditingWallet] = useState<WalletResponse | null>(null);
   const [activeTab, setActiveTab] = useState<'list' | 'history'>('list');
   useEffect(() => {
-    setTitle('إدارة المحافظ');
+    setTitle('Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…Ø­Ø§ÙØ¸');
   }, [setTitle]);
   const form = useForm<WalletFormValues>({
     resolver: zodResolver(walletFormSchema) as any,
@@ -13587,7 +13570,7 @@ export function WalletsAdminPage() {
   const drawerFooter = (
     <>
       <button type="button" onClick={closeDrawer} className={tokens.btn.secondary}>
-        إلغاء
+        Ø¥Ù„ØºØ§Ø¡
       </button>
       <button
         type="submit"
@@ -13595,7 +13578,7 @@ export function WalletsAdminPage() {
         disabled={isSaving}
         className={tokens.btn.primary + " disabled:opacity-60"}
       >
-        {isSaving ? 'جاري الحفظ...' : 'حفظ'}
+        {isSaving ? 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸...' : 'Ø­ÙØ¸'}
       </button>
     </>
   );
@@ -13607,13 +13590,13 @@ export function WalletsAdminPage() {
           onClick={() => setActiveTab('list')}
           className={`py-3 px-6 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'list' ? 'border-[#0f8e4c] text-[#0f8e4c]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          المحافظ
+          Ø§Ù„Ù…Ø­Ø§ÙØ¸
         </button>
         <button
           onClick={() => setActiveTab('history')}
           className={`py-3 px-6 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'history' ? 'border-[#0f8e4c] text-[#0f8e4c]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          سجل العمليات الشامل
+          Ø³Ø¬Ù„ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ø´Ø§Ù…Ù„
         </button>
       </div>
       {activeTab === 'list' && (
@@ -13624,32 +13607,32 @@ export function WalletsAdminPage() {
               className={tokens.btn.primary + " flex items-center gap-2"}
             >
               <Plus size={18} />
-              محفظة جديدة
+              Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©
             </button>
           </div>
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {isLoading ? (
-              <div className="p-8 text-center text-gray-500">جاري تحميل المحافظ...</div>
+              <div className="p-8 text-center text-gray-500">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…Ø­Ø§ÙØ¸...</div>
             ) : wallets.length === 0 ? (
               <div className="text-center py-12">
                 <div className="inline-flex w-16 h-16 rounded-full bg-blue-50 items-center justify-center text-blue-500 mb-4">
                   <Wallet size={32} />
                 </div>
-                <h3 className="text-lg font-bold text-gray-800 mb-1">لا يوجد محافظ مسجلة</h3>
-                <p className="text-gray-500 mb-4">قم بإضافة أول محفظة للبدء في العمليات</p>
+                <h3 className="text-lg font-bold text-gray-800 mb-1">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø­Ø§ÙØ¸ Ù…Ø³Ø¬Ù„Ø©</h3>
+                <p className="text-gray-500 mb-4">Ù‚Ù… Ø¨Ø¥Ø¶Ø§ÙØ© Ø£ÙˆÙ„ Ù…Ø­ÙØ¸Ø© Ù„Ù„Ø¨Ø¯Ø¡ ÙÙŠ Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-right">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200">
                 <tr>
-                  <th className="px-6 py-4 font-semibold">اسم المحفظة</th>
-                  <th className="px-6 py-4 font-semibold">رقم التليفون</th>
-                  <th className="px-6 py-4 font-semibold">اسم المالك</th>
-                  <th className="px-6 py-4 font-semibold">الرصيد الحالي</th>
-                  <th className="px-6 py-4 font-semibold">تاريخ الإنشاء</th>
-                  <th className="px-6 py-4 font-semibold">الحالة</th>
-                  <th className="px-6 py-4 font-semibold">إجراءات</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ø³Ù… Ø§Ù„Ù…Ø­ÙØ¸Ø©</th>
+                  <th className="px-6 py-4 font-semibold">Ø±Ù‚Ù… Ø§Ù„ØªÙ„ÙŠÙÙˆÙ†</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ø³Ù… Ø§Ù„Ù…Ø§Ù„Ùƒ</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø­Ø§Ù„ÙŠ</th>
+                  <th className="px-6 py-4 font-semibold">ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ù†Ø´Ø§Ø¡</th>
+                  <th className="px-6 py-4 font-semibold">Ø§Ù„Ø­Ø§Ù„Ø©</th>
+                  <th className="px-6 py-4 font-semibold">Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -13679,7 +13662,7 @@ export function WalletsAdminPage() {
                     <td className="px-6 py-4 text-slate-500">{formatDate(wallet.createdAt)}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${wallet.isActive ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                        {wallet.isActive ? 'نشط' : 'غير نشط'}
+                        {wallet.isActive ? 'Ù†Ø´Ø·' : 'ØºÙŠØ± Ù†Ø´Ø·'}
                       </span>
                     </td>
                     <td className="px-6 py-4">
@@ -13687,13 +13670,13 @@ export function WalletsAdminPage() {
                         <button
                           onClick={(e) => openEditDrawer(wallet, e)}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="تعديل"
+                          title="ØªØ¹Ø¯ÙŠÙ„"
                         >
                           <Edit2 size={18} />
                         </button>
                         <button
                           className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                          title="التفاصيل"
+                          title="Ø§Ù„ØªÙØ§ØµÙŠÙ„"
                         >
                           <Info size={18} />
                         </button>
@@ -13714,47 +13697,47 @@ export function WalletsAdminPage() {
       <RightDrawer
         isOpen={isDrawerOpen}
         onClose={closeDrawer}
-        title={editingWallet ? "تعديل بيانات المحفظة" : "إضافة محفظة جديدة"}
+        title={editingWallet ? "ØªØ¹Ø¯ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø­ÙØ¸Ø©" : "Ø¥Ø¶Ø§ÙØ© Ù…Ø­ÙØ¸Ø© Ø¬Ø¯ÙŠØ¯Ø©"}
         footer={drawerFooter}
       >
         <form id="wallet-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">اسم المحفظة *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ù…Ø­ÙØ¸Ø© *</label>
             <input
               {...form.register('name')}
               className={tokens.input}
-              placeholder="مثال: فودافون كاش - رقم 1"
+              placeholder="Ù…Ø«Ø§Ù„: ÙÙˆØ¯Ø§ÙÙˆÙ† ÙƒØ§Ø´ - Ø±Ù‚Ù… 1"
             />
             {form.formState.errors.name && (
               <p className="text-red-500 text-xs mt-1">{form.formState.errors.name.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">رقم التليفون *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ø±Ù‚Ù… Ø§Ù„ØªÙ„ÙŠÙÙˆÙ† *</label>
             <input
               {...form.register('phoneNumber')}
               className={tokens.input}
-              placeholder="مثال: 01012345678"
+              placeholder="Ù…Ø«Ø§Ù„: 01012345678"
             />
             {form.formState.errors.phoneNumber && (
               <p className="text-red-500 text-xs mt-1">{form.formState.errors.phoneNumber.message}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">اسم المالك (اختياري)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ø³Ù… Ø§Ù„Ù…Ø§Ù„Ùƒ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</label>
             <input
               {...form.register('ownerName')}
               className={tokens.input}
-              placeholder="مثال: أحمد محمد"
+              placeholder="Ù…Ø«Ø§Ù„: Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…Ø¯"
             />
           </div>
           {!editingWallet && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">الرصيد الافتتاحي</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ø§Ù„Ø±ØµÙŠØ¯ Ø§Ù„Ø§ÙØªØªØ§Ø­ÙŠ</label>
               <input
                 type="number"
                 step="0.01"
-                {...form.register('initialBalance')} onFocus={(e) => e.target.select()}
+                {...form.register('initialBalance')}
                 className={tokens.input}
               />
               {form.formState.errors.initialBalance && (
@@ -13771,13 +13754,13 @@ export function WalletsAdminPage() {
                 className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
               />
               <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
-                المحفظة نشطة
+                Ø§Ù„Ù…Ø­ÙØ¸Ø© Ù†Ø´Ø·Ø©
               </label>
             </div>
           )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              صورة المحفظة {editingWallet ? '(اختياري - لعدم التغيير اتركها فارغة)' : '*'}
+              ØµÙˆØ±Ø© Ø§Ù„Ù…Ø­ÙØ¸Ø© {editingWallet ? '(Ø§Ø®ØªÙŠØ§Ø±ÙŠ - Ù„Ø¹Ø¯Ù… Ø§Ù„ØªØºÙŠÙŠØ± Ø§ØªØ±ÙƒÙ‡Ø§ ÙØ§Ø±ØºØ©)' : '*'}
             </label>
             <input
               type="file"
@@ -15532,24 +15515,12 @@ describe('formatCurrency', () => {
 ```typescript
 import axios from 'axios';
 interface ApiErrorBody {
-  code?: string;
   message?: string;
   description?: string;
 }
-const ERROR_TRANSLATIONS: Record<string, string> = {
-  "Drawer.InsufficientFunds": "عفواً، لا يوجد رصيد كافٍ في الدرج لإتمام هذه المعاملة.",
-  "Drawer.NoActiveSession": "لا توجد وردية مفتوحة للدرج. يرجى فتح وردية أولاً.",
-  "Safe.InsufficientFunds": "عفواً، لا يوجد رصيد كافٍ في الخزينة.",
-  "Transaction.SourceRequired": "يجب تحديد جهة الدفع (الخزينة أو الدرج).",
-  "Drawer.AlreadyOpen": "يوجد وردية مفتوحة بالفعل للدرج.",
-  "Drawer.InvalidAmount": "المبلغ غير صالح، يجب أن يكون أكبر من الصفر."
-};
 export function getApiErrorMessage(error: unknown, fallback = 'حدث خطأ غير متوقع'): string {
   if (axios.isAxiosError(error)) {
     const data = error.response?.data as ApiErrorBody | undefined;
-    if (data?.code && ERROR_TRANSLATIONS[data.code]) {
-      return ERROR_TRANSLATIONS[data.code];
-    }
     return data?.description || data?.message || fallback;
   }
   if (error instanceof Error && error.message) {
@@ -15582,9 +15553,6 @@ export function formatCurrency(value: number): string {
   });
   return formatter.format(value);
 }
-export function roundMoney(value: number): number {
-  return Math.round((value + Number.EPSILON) * 100) / 100;
-}
 ```
 
 ## File: src/shared/utils/date.ts
@@ -15598,16 +15566,6 @@ export function formatDate(dateString: string | Date | undefined): string {
     hour: '2-digit',
     minute: '2-digit',
   }).format(new Date(dateString));
-}
-export function toUtcStartOfDayISOString(dateString: string): string {
-  const localDate = new Date(dateString);
-  localDate.setHours(0, 0, 0, 0);
-  return localDate.toISOString();
-}
-export function toUtcEndOfDayISOString(dateString: string): string {
-  const localDate = new Date(dateString);
-  localDate.setHours(23, 59, 59, 999);
-  return localDate.toISOString();
 }
 ```
 
